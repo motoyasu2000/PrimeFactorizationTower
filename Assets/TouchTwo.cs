@@ -7,6 +7,8 @@ public class TouchTwo : TouchPrimeNumber
     private void Start()
     {
         SetSelfPrefab();
+        SetMyNumber(2);
+        Debug.Log(myNumber);
     }
     public override void SetSelfPrefab()
     {

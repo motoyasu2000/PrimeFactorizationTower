@@ -7,8 +7,9 @@ public abstract class TouchPrimeNumber : MonoBehaviour
     protected GameObject selfPrefab; //自分自身のプレファブを格納する変数(継承先クラスから見た自分自身)
     protected Vector3 initialPosition; //touchした瞬間の位置の取得
     protected bool isDragging = false; //ドラッグしているかどうか
-    private Transform draggedObject = null; //いま触れているオブジェクトを格納する変数　Update内でRaycastを毎秒行っているので、
-                                            //洗濯しているゲームオブジェクトが変更されてしまう可能性があるため、ドラッグ中のオブジェクトのみを取得し続けるようにしている。
+    protected Transform draggedObject = null; //いま触れているオブジェクトを格納する変数　Update内でRaycastを毎秒行っているので、
+                                              //洗濯しているゲームオブジェクトが変更されてしまう可能性があるため、ドラッグ中のオブジェクトのみを取得し続けるようにしている。
+    protected int myNumber; //自分の持つ数字。合成数とかの計算はこれを利用する
     void Update()
     {
         //Input.touchesはフレームごとのtouchの数を取得する(指の本数や、１フレームでの超高速touch)
@@ -58,6 +59,12 @@ public abstract class TouchPrimeNumber : MonoBehaviour
     }
     public abstract void SetSelfPrefab(); //自分自身のプレファブが何であるかは継承先のスクリプトで決定すべき
     public abstract void AddRigidbody2D(); //ブロックごとに重力のかけ方が違うかもしれないので、継承先のクラスで記述
+
+    //自分自身の番号を設定するクラス。継承先のクラスのstart内に記述。
+    public void SetMyNumber(int setNumber)
+    {
+        myNumber = setNumber;
+    }
 
     //クリックしたときに複製されるようにし、このぶろっぐがいつでも元の位置からドラッグできるようにする。
     public void DuplicatePrimeNumberBlock()
