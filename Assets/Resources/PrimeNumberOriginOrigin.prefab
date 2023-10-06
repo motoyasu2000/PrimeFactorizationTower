@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6526292304093931351}
   - component: {fileID: 4124707381341075405}
   - component: {fileID: 3602577082659433843}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: PrimeNumberText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -181,9 +181,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8997849181804842525}
-  m_Layer: 0
-  m_Name: PrimeNumberObj
-  m_TagString: Untagged
+  m_Layer: 7
+  m_Name: PrimeNumberOriginOrigin
+  m_TagString: PrimeNumberOrigin
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -48,6 +48,8 @@ public abstract class TouchPrimeNumber : MonoBehaviour
                         isDragging = false; //ドラッグ状態を解除
                         draggedObject = null; //何のオブジェクトも洗濯していない状態に
                         this.enabled = false; //このスクリプトのｉｎｓｔａｎｃｅを消去し、タッチできないようにする。
+                        this.tag = "PrimeNumberBlock"; //タグを素数オブジェクトに変更する
+                        gameObject.layer = LayerMask.NameToLayer("PrimeNumberBlock"); //レイヤーも素数ブロックにかえる
                         AddRigidbody2D(); //重力を加える。
                     }
                     break;
