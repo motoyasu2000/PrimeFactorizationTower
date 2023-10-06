@@ -5,7 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - PrimeNumberOrigin
-  - PrimeNumberObj
+  - PrimeNumberBlock
   layers:
   - Default
   - TransparentFX
@@ -14,8 +14,8 @@ TagManager:
   - Water
   - UI
   - 
-  - 
-  - 
+  - PrimeNumberOrigin
+  - PrimeNumberBlock
   - 
   - 
   - 
