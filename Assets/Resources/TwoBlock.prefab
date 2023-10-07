@@ -191,7 +191,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &8248754491008484038
+--- !u!114 &1816830300648443816
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -200,6 +200,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 6707072226896291388}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1a1022cbdbd3e94448dc2173133ed455, type: 3}
+  m_Script: {fileID: 11500000, guid: e888b8e16743a5742ae7bf6f8c04e504, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
