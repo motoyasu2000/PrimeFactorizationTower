@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Block2Info : BlockInfo
+public class Block5Info : BlockInfo
 {
     public override void SetSelfPrefab()
     {
-        selfPrefab = (GameObject)Resources.Load("TwoBlock");
+        selfPrefab = (GameObject)Resources.Load("FiveBlock");
     }
 
     public override void AddRigidbody2D()
@@ -16,6 +16,6 @@ public class Block2Info : BlockInfo
     }
     public override void SetMyNumber()
     {
-        myNumber = 2;
+        myNumber = 5;
     }
 }
