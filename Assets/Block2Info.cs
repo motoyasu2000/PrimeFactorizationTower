@@ -2,14 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TouchTwo : TouchPrimeNumber
+public class Block2Info : BlockInfo
 {
-    private void Start()
-    {
-        SetSelfPrefab();
-        SetMyNumber(2);
-        Debug.Log(myNumber);
-    }
     public override void SetSelfPrefab()
     {
         selfPrefab = (GameObject)Resources.Load("TwoBlock");
@@ -19,5 +13,9 @@ public class TouchTwo : TouchPrimeNumber
     {
         Rigidbody2D rb2D = gameObject.AddComponent<Rigidbody2D>();
         rb2D.freezeRotation = true;
+    }
+    public override void SetMyNumber()
+    {
+        myNumber = 2;
     }
 }
