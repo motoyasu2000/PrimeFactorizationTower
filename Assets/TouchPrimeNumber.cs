@@ -9,7 +9,7 @@ public class TouchPrimeNumber : MonoBehaviour
     protected bool isDragging = false; //ドラッグしているかどうか
     protected Transform draggedObject = null; //いま触れているオブジェクトを格納する変数　Update内でRaycastを毎秒行っているので、
                                               //洗濯しているゲームオブジェクトが変更されてしまう可能性があるため、ドラッグ中のオブジェクトのみを取得し続けるようにしている。
-    protected BlockInfo blockInfo;
+    protected BlockInfo blockInfo; //ブロックに関わる様々な情報が格納されたクラス
 
     private void Start()
     {
