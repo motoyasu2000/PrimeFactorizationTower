@@ -13,7 +13,7 @@ public class Block3Info : BlockInfo
     public override void AddRigidbody2D()
     {
         Rigidbody2D rb2D = gameObject.AddComponent<Rigidbody2D>();
-        rb2D.freezeRotation = true;
+        //rb2D.freezeRotation = true;
     }
     public override void SetMyNumber()
     {
