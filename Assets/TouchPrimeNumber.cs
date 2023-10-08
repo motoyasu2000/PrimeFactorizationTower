@@ -10,10 +10,13 @@ public class TouchPrimeNumber : MonoBehaviour
     protected Transform draggedObject = null; //いま触れているオブジェクトを格納する変数　Update内でRaycastを毎秒行っているので、
                                               //洗濯しているゲームオブジェクトが変更されてしまう可能性があるため、ドラッグ中のオブジェクトのみを取得し続けるようにしている。
     protected BlockInfo blockInfo; //ブロックに関わる様々な情報が格納されたクラス
-
+    protected GameObject primeNumberGeneratingPoint; //ボタンを押した瞬間のblockが生成される地点が格納されたゲームオブジェクト、ゲームオブジェクトが単一であることを保証するためのcomponentがアタッチしてある。
+    protected SingleGenerateManager singleGenerateManager; //ゲームオブジェクトが単一であることを保証するためのクラス
     private void Start()
     {
         blockInfo = GetComponent<BlockInfo>();
+        primeNumberGeneratingPoint = GameObject.Find("PrimeNumberGeneratingPoint");
+        singleGenerateManager = primeNumberGeneratingPoint.GetComponent<SingleGenerateManager>();
     }
 
     void Update()
@@ -24,19 +27,16 @@ public class TouchPrimeNumber : MonoBehaviour
             Vector3 touchPosition = Camera.main.ScreenToWorldPoint(touch.position); //ワールド座標に変換
             touchPosition.z = Camera.main.nearClipPlane; //クリッピングされないように
 
-            RaycastHit2D hit = Physics2D.Raycast(touchPosition, Vector2.zero);
-
             // タッチの状態に応じて処理
             switch (touch.phase)
             {
                 //タッチした瞬間であれば
                 case TouchPhase.Began:
-                    if (!isDragging && hit.collider != null && hit.transform == this.transform)
+                    if (!isDragging)
                     {
+                        if (singleGenerateManager.GetSingleGameObject() == null) return;
+                        draggedObject = singleGenerateManager.GetSingleGameObject().transform;
                         isDragging = true; //ドラッグ状態にする (もしかするといらないかも)
-                        draggedObject = hit.transform; //ドラッグ中のオブジェクトをｔｏｕｃｈした瞬間のオブジェクトに設定。
-                        initialPosition = draggedObject.position; //初期位置をｂｌｏｃｋが元のあった位置に設定
-                        DuplicatePrimeNumberBlock(); //元の位置に複製しておく
                     }
                     break;
 
@@ -44,7 +44,7 @@ public class TouchPrimeNumber : MonoBehaviour
                 case TouchPhase.Moved:
                     if (isDragging) //もしドラッグ中なら
                     {
-                        draggedObject.position = touchPosition; //ブロックの位置をタッチしている座標に
+                        draggedObject.position = new Vector3(touchPosition.x, primeNumberGeneratingPoint.transform.position.y, touchPosition.z); //ブロックx座標をタッチしている座標に
                     }
                     break;
 
@@ -62,12 +62,5 @@ public class TouchPrimeNumber : MonoBehaviour
                     break;
             }
         }
-    }
-
-
-    //クリックしたときに複製されるようにし、このぶろっぐがいつでも元の位置からドラッグできるようにする。
-    public void DuplicatePrimeNumberBlock()
-    {
-        Instantiate(blockInfo.SelfPrefab, initialPosition, Quaternion.identity);
     }
 }

@@ -18,4 +18,9 @@ public class SingleGenerateManager : MonoBehaviour
             singleGameObject = setObject;
         }
     }
+
+    public GameObject GetSingleGameObject()
+    {
+        return singleGameObject;
+    }
 }
