@@ -5,7 +5,8 @@ public class TransformIntoSquare : MonoBehaviour
 {
     public RectTransform myRectTransform;
 
-    private void Start()
+    //Start‚Å‰æ‘œ‚ğ‘}“ü‚·‚é‚½‚ßA‚±‚±‚ÍAwake
+    private void Awake()
     {
         myRectTransform = GetComponent<RectTransform>();
     }
