@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
@@ -23,6 +24,10 @@ public class GameManager : MonoBehaviour
     List<int> difficultPool = new List<int>();
     List<int> insanePool = new List<int>();
 
+    [SerializeField] TextMeshProUGUI text; //画面上部の合成数のテキスト
+
+    int nowPhase = 1; //現在のphase
+
     void Start()
     {
         for(int i=0; i<primeNumberPool.Length; i++)
@@ -36,11 +41,32 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (string.IsNullOrWhiteSpace(text.text))//文字列が空であれば
+        {
+            text.text = GenerateNumber().ToString();
+        }
     }
 
     void ChangeDifficultyLevel(DifficultyLevel newDifficultyLevel)
     {
         myDifficultyLevel = newDifficultyLevel;
+    }
+
+    int GenerateNumber()
+    {
+        int randomIndex;
+        int randomPrimeNumber;
+        int compositeNumber = 1;
+        if (myDifficultyLevel == DifficultyLevel.Normal)
+        {
+            for (int i=0; i<2+(int)(Random.value*nowPhase/2); i++)
+            {
+                randomIndex = Random.Range(0, normalPool.Count);
+                randomPrimeNumber = normalPool[randomIndex];
+                compositeNumber *= randomPrimeNumber;
+            }
+        }
+        nowPhase++;
+        return compositeNumber;
     }
 }
