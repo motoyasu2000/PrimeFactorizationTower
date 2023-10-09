@@ -36,6 +36,7 @@ public class TouchPrimeNumber : MonoBehaviour
                     {
                         if (singleGenerateManager.GetSingleGameObject() == null) return;
                         draggedObject = singleGenerateManager.GetSingleGameObject().transform;
+                        draggedObject.position = new Vector3(touchPosition.x, primeNumberGeneratingPoint.transform.position.y, touchPosition.z); //ブロックx座標をタッチしている座標に
                         isDragging = true; //ドラッグ状態にする (もしかするといらないかも)
                     }
                     break;
