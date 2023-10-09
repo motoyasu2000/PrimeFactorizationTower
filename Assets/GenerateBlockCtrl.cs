@@ -1,16 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class GenerateBlockCtrl : MonoBehaviour
 {
     [SerializeField] PrimeNumberData primeNumberData;
     [SerializeField] GameObject primeNumberGeneratingPoint;
     SingleGenerateManager singleGenerateManager;
+    TextMeshProUGUI text;
 
     private void Start()
     {
         singleGenerateManager = primeNumberGeneratingPoint.GetComponent<SingleGenerateManager>();
+        text = transform.Find("Text").GetComponent<TextMeshProUGUI>();
+        text.text = primeNumberData.primeNumber.ToString();
     }
     public void GenerateBlock()
     {
