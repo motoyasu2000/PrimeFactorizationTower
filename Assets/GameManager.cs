@@ -121,8 +121,8 @@ public class GameManager : MonoBehaviour
         {
             block.SetParent(completedBlocks.transform);
         }
-        text.text = "";
-        allBlockNumber = 1;
+        text.text = ""; //テキストの初期化
+        allBlockNumber = 1; //素数の積の初期化
         completeNumberFlag = false; //これがtrueの間はblockが生成されないようになっているので、removeの瞬間に直してあげるひつようがある。
         
     }
