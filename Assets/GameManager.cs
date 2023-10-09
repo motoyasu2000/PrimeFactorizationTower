@@ -27,6 +27,14 @@ public class GameManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI text; //画面上部の合成数のテキスト
 
     int nowPhase = 1; //現在のphase
+    int compositeNumber = 1;
+
+    int allBlockNumber = 1;
+
+    [SerializeField] GameObject blockField;
+    [SerializeField] GameObject completedBlocks;
+    bool isGroundAll = false;
+    bool completeNumberFlag = false;
 
     void Start()
     {
@@ -43,8 +51,36 @@ public class GameManager : MonoBehaviour
     {
         if (string.IsNullOrWhiteSpace(text.text))//文字列が空であれば
         {
-            text.text = GenerateNumber().ToString();
+            text.text = GenerateUpNumber().ToString();
         }
+
+        isGroundAll = true; //初期はtrueにしておく
+        allBlockNumber = 1; //初期は1にしておく
+        foreach (Transform block in blockField.transform) //すべてのゲームオブジェクトのチェック
+        {
+            BlockInfo blockInfo = block.GetComponent<BlockInfo>();
+            if (!blockInfo.CheckIsGround()) //一つでも地面に接地してなければ
+            {
+                isGroundAll = false; //isGroundAllはfalse
+            }
+
+            allBlockNumber *= blockInfo.GetNumber();
+        }
+
+        if(allBlockNumber == compositeNumber) //もしブロッグの数値が
+        {
+            completeNumberFlag = true;
+        }
+
+        if(completeNumberFlag && isGroundAll)
+        {
+            RemoveUpNumber();
+        }
+    }
+
+    public bool GetCompleteNumberFlag()
+    {
+        return completeNumberFlag;
     }
 
     void ChangeDifficultyLevel(DifficultyLevel newDifficultyLevel)
@@ -52,11 +88,12 @@ public class GameManager : MonoBehaviour
         myDifficultyLevel = newDifficultyLevel;
     }
 
-    int GenerateNumber()
+    int GenerateUpNumber()
     {
         int randomIndex;
         int randomPrimeNumber;
-        int compositeNumber = 1;
+        compositeNumber = 1;
+
         if (myDifficultyLevel == DifficultyLevel.Normal)
         {
             for (int i=0; i<2+(int)(Random.value*nowPhase/2); i++)
@@ -68,5 +105,25 @@ public class GameManager : MonoBehaviour
         }
         nowPhase++;
         return compositeNumber;
+    }
+
+    void RemoveUpNumber()
+    {
+        //まずは、blockFieldから移動する。
+        List<Transform> blocksToMove = new List<Transform>();
+        //すべての子オブジェクトを一時的なリストに追加。Transformをイテレートしながらtransformを変更しないように、一旦リストに追加。
+        foreach (Transform block in blockField.transform)
+        {
+            blocksToMove.Add(block);
+        }
+        //一時的なリストを使用して子オブジェクトの親を変更
+        foreach (Transform block in blocksToMove)
+        {
+            block.SetParent(completedBlocks.transform);
+        }
+        text.text = "";
+        allBlockNumber = 1;
+        completeNumberFlag = false; //これがtrueの間はblockが生成されないようになっているので、removeの瞬間に直してあげるひつようがある。
+        
     }
 }

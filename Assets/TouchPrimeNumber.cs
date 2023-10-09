@@ -13,11 +13,13 @@ public class TouchPrimeNumber : MonoBehaviour
     protected BlockInfo blockInfo; //ブロックに関わる様々な情報が格納されたクラス
     protected GameObject primeNumberGeneratingPoint; //ボタンを押した瞬間のblockが生成される地点が格納されたゲームオブジェクト、ゲームオブジェクトが単一であることを保証するためのcomponentがアタッチしてある。
     protected SingleGenerateManager singleGenerateManager; //ゲームオブジェクトが単一であることを保証するためのクラス
+    protected GameManager gameManager;
     private void Start()
     {
         blockInfo = GetComponent<BlockInfo>();
         primeNumberGeneratingPoint = GameObject.Find("PrimeNumberGeneratingPoint");
         singleGenerateManager = primeNumberGeneratingPoint.GetComponent<SingleGenerateManager>();
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 
     void Update()
