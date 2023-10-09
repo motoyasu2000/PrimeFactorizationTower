@@ -9,6 +9,7 @@ public abstract class BlockInfo : MonoBehaviour
     protected GameObject selfPrefab; //自分自身のプレファブを格納する変数(継承先クラスから見た自分自身)
     public GameObject SelfPrefab => selfPrefab;
     protected TextMeshPro primeNumberText;
+    bool isGround = false;
     
     private void Start()
     {
@@ -27,4 +28,21 @@ public abstract class BlockInfo : MonoBehaviour
 
     //自分自身の番号を設定するクラス。継承先に記述。
     public abstract void SetMyNumber();
+
+    public int GetNumber()
+    {
+        return myNumber;
+    }
+
+    public bool CheckIsGround()
+    {
+        return isGround;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("PrimeNumberBlock")){
+            isGround = true;
+        }
+    }
 }
