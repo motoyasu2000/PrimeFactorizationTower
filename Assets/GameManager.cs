@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -67,8 +68,13 @@ public class GameManager : MonoBehaviour
             {
                 isGroundAll = false; //isGroundAllはfalse
             }
-
+            
             allBlockNumber *= blockInfo.GetNumber();
+
+            if (compositeNumber % allBlockNumber != 0)
+            {
+                GameOver();
+            }
         }
 
         if(allBlockNumber == compositeNumber) //もしブロックの数値の積が、上部の合成数と一致していたなら
@@ -129,5 +135,10 @@ public class GameManager : MonoBehaviour
         allBlockNumber = 1; //素数の積の初期化
         completeNumberFlag = false; //これがtrueの間はblockが生成されないようになっているので、removeの瞬間に直してあげるひつようがある。
         
+    }
+
+    public static void GameOver()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }
