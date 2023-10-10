@@ -14,12 +14,16 @@ public class TouchPrimeNumber : MonoBehaviour
     protected GameObject primeNumberGeneratingPoint; //ボタンを押した瞬間のblockが生成される地点が格納されたゲームオブジェクト、ゲームオブジェクトが単一であることを保証するためのcomponentがアタッチしてある。
     protected SingleGenerateManager singleGenerateManager; //ゲームオブジェクトが単一であることを保証するためのクラス
     protected GameManager gameManager;
+    GameObject blockField;
+    GameObject afterField;
     private void Start()
     {
         blockInfo = GetComponent<BlockInfo>();
         primeNumberGeneratingPoint = GameObject.Find("PrimeNumberGeneratingPoint");
         singleGenerateManager = primeNumberGeneratingPoint.GetComponent<SingleGenerateManager>();
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        blockField = GameObject.Find("BlockField");
+        afterField = blockField.transform.Find("AfterField").gameObject;
     }
 
     void Update()
@@ -66,6 +70,7 @@ public class TouchPrimeNumber : MonoBehaviour
                             this.tag = "PrimeNumberBlock"; //タグを素数オブジェクトに変更する
                             gameObject.layer = LayerMask.NameToLayer("PrimeNumberBlock"); //レイヤーも素数ブロックにかえる
                             blockInfo.AddRigidbody2D(); //重力を加える。
+                            gameObject.transform.parent = afterField.transform;
                         }
                         break;
                 }

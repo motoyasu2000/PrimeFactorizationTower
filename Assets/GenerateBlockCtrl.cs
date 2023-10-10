@@ -8,6 +8,7 @@ public class GenerateBlockCtrl : MonoBehaviour
     [SerializeField] PrimeNumberData primeNumberData;
     [SerializeField] GameObject primeNumberGeneratingPoint;
     GameObject blockField;
+    GameObject beforeField;
     SingleGenerateManager singleGenerateManager;
     TextMeshProUGUI text;
     protected GameManager gameManager;
@@ -18,6 +19,7 @@ public class GenerateBlockCtrl : MonoBehaviour
         text = transform.Find("Text").GetComponent<TextMeshProUGUI>();
         text.text = primeNumberData.primeNumber.ToString();
         blockField = GameObject.Find("BlockField");
+        beforeField = blockField.transform.Find("BeforeField").gameObject;
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
     public void GenerateBlock()
@@ -27,7 +29,7 @@ public class GenerateBlockCtrl : MonoBehaviour
     }
     void HundleGenerateBlock(int primeNumber)
     {
-        GameObject generateObject = Instantiate(GetPrimeNumberBlock(primeNumber), primeNumberGeneratingPoint.transform.position, GetPrimeNumberBlock(primeNumber).transform.rotation, blockField.transform);
+        GameObject generateObject = Instantiate(GetPrimeNumberBlock(primeNumber), primeNumberGeneratingPoint.transform.position, GetPrimeNumberBlock(primeNumber).transform.rotation, beforeField.transform);
         singleGenerateManager.SetSingleGameObject(generateObject);
     }
     GameObject GetPrimeNumberBlock(int primeNumber)
