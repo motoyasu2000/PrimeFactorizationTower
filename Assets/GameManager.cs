@@ -32,9 +32,12 @@ public class GameManager : MonoBehaviour
     int allBlockNumber = 1;
 
     [SerializeField] GameObject blockField;
-    [SerializeField] GameObject completedBlocks;
+    GameObject afterField;
+    [SerializeField] GameObject completedField;
+
     bool isGroundAll = false;
     bool completeNumberFlag = false;
+
 
     void Start()
     {
@@ -44,6 +47,7 @@ public class GameManager : MonoBehaviour
             if (primeNumberPool[i] >= 2 && primeNumberPool[i] <= 13) difficultPool.Add(primeNumberPool[i]);
             if (primeNumberPool[i] >= 2 && primeNumberPool[i] <= 23) insanePool.Add(primeNumberPool[i]);
         }
+        afterField = blockField.transform.Find("AfterField").gameObject;
     }
 
     // Update is called once per frame
@@ -54,9 +58,9 @@ public class GameManager : MonoBehaviour
             text.text = GenerateUpNumber().ToString();
         }
 
-        isGroundAll = true; //初期はtrueにしておく
-        allBlockNumber = 1; //初期は1にしておく
-        foreach (Transform block in blockField.transform) //すべてのゲームオブジェクトのチェック
+        isGroundAll = true; //初期はtrueにしておく(現状使っていない)
+        allBlockNumber = 1; //初期は1にしておく(現状使っていない)
+        foreach (Transform block in afterField.transform) //すべてのゲームオブジェクトのチェック
         {
             BlockInfo blockInfo = block.GetComponent<BlockInfo>();
             if (!blockInfo.CheckIsGround()) //一つでも地面に接地してなければ
@@ -67,12 +71,12 @@ public class GameManager : MonoBehaviour
             allBlockNumber *= blockInfo.GetNumber();
         }
 
-        if(allBlockNumber == compositeNumber) //もしブロッグの数値が
+        if(allBlockNumber == compositeNumber) //もしブロックの数値の積が、上部の合成数と一致していたなら
         {
             completeNumberFlag = true;
         }
 
-        if(completeNumberFlag && isGroundAll)
+        if(completeNumberFlag)
         {
             RemoveUpNumber();
         }
@@ -112,14 +116,14 @@ public class GameManager : MonoBehaviour
         //まずは、blockFieldから移動する。
         List<Transform> blocksToMove = new List<Transform>();
         //すべての子オブジェクトを一時的なリストに追加。Transformをイテレートしながらtransformを変更しないように、一旦リストに追加。
-        foreach (Transform block in blockField.transform)
+        foreach (Transform block in afterField.transform)
         {
             blocksToMove.Add(block);
         }
         //一時的なリストを使用して子オブジェクトの親を変更
         foreach (Transform block in blocksToMove)
         {
-            block.SetParent(completedBlocks.transform);
+            block.SetParent(completedField.transform);
         }
         text.text = ""; //テキストの初期化
         allBlockNumber = 1; //素数の積の初期化
