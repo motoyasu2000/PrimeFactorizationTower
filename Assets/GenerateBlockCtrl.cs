@@ -27,7 +27,7 @@ public class GenerateBlockCtrl : MonoBehaviour
     }
     void HundleGenerateBlock(int primeNumber)
     {
-        GameObject generateObject = Instantiate(GetPrimeNumberBlock(primeNumber), primeNumberGeneratingPoint.transform.position, Quaternion.identity, blockField.transform);
+        GameObject generateObject = Instantiate(GetPrimeNumberBlock(primeNumber), primeNumberGeneratingPoint.transform.position, GetPrimeNumberBlock(primeNumber).transform.rotation, blockField.transform);
         singleGenerateManager.SetSingleGameObject(generateObject);
     }
     GameObject GetPrimeNumberBlock(int primeNumber)
