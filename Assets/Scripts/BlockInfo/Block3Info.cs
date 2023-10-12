@@ -9,12 +9,6 @@ public class Block3Info : BlockInfo
     {
         selfPrefab = (GameObject)Resources.Load("ThreeBlock");
     }
-
-    public override void AddRigidbody2D()
-    {
-        Rigidbody2D rb2D = gameObject.AddComponent<Rigidbody2D>();
-        //rb2D.freezeRotation = true;
-    }
     public override void SetMyNumber()
     {
         myNumber = 3;
