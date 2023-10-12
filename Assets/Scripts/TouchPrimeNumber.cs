@@ -69,7 +69,8 @@ public class TouchPrimeNumber : MonoBehaviour
                             this.enabled = false; //このスクリプトのｉｎｓｔａｎｃｅを消去し、タッチできないようにする。
                             this.tag = "PrimeNumberBlock"; //タグを素数オブジェクトに変更する
                             gameObject.layer = LayerMask.NameToLayer("PrimeNumberBlock"); //レイヤーも素数ブロックにかえる
-                            blockInfo.AddRigidbody2D(); //重力を加える。
+                            blockInfo.ChangeDynamic(); //重力の影響を受けるようにする。
+                            blockInfo.EnableCollider(); //ラインの描画の際に一時的にコライダーを非表示にするので、ここでコライダーを復活させる。
                             gameObject.transform.parent = afterField.transform;
                         }
                         break;

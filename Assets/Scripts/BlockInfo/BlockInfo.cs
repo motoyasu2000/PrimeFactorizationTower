@@ -10,17 +10,26 @@ public abstract class BlockInfo : MonoBehaviour
     public GameObject SelfPrefab => selfPrefab;
     protected TextMeshPro primeNumberText;
     bool isGround = false;
+    protected Rigidbody2D rb2D;
+    protected Collider2D myCollider;
     
     private void Start()
     {
+        rb2D = GetComponent<Rigidbody2D>();
         primeNumberText = transform.Find("PrimeNumberText").GetComponent<TextMeshPro>();
         SetMyNumber();
         SetSelfPrefab();
         SetText();
+        myCollider = GetComponent<Collider2D>();
     }
 
     public abstract void SetSelfPrefab(); //自分自身のプレファブが何であるかは継承先のスクリプトで決定すべき
-    public abstract void AddRigidbody2D(); //ブロックごとに重力のかけ方が違うかもしれないので、継承先のクラスで記述
+
+    //クリックするとkinematicからdynamicに変化するようにする。
+    public void ChangeDynamic()
+    {
+        rb2D.bodyType = RigidbodyType2D.Dynamic;
+    }
     public void SetText()
     {
         primeNumberText.text = myNumber.ToString();
@@ -39,10 +48,17 @@ public abstract class BlockInfo : MonoBehaviour
         return isGround;
     }
 
+    public void EnableCollider()
+    {
+        myCollider.enabled = true;
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if(collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("PrimeNumberBlock")){
             isGround = true;
         }
     }
+
+
 }
