@@ -25,7 +25,8 @@ public class GameManager : MonoBehaviour
     List<int> difficultPool = new List<int>();
     List<int> insanePool = new List<int>();
 
-    [SerializeField] TextMeshProUGUI text; //画面上部の合成数のテキスト
+    [SerializeField] TextMeshProUGUI upNumberText; //画面上部の合成数のテキスト
+    [SerializeField] TextMeshProUGUI remainingNumberText;
 
     int nowPhase = 1; //現在のphase
     int compositeNumber = 1;
@@ -54,9 +55,9 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (string.IsNullOrWhiteSpace(text.text))//文字列が空であれば
+        if (string.IsNullOrWhiteSpace(upNumberText.text))//文字列が空であれば
         {
-            text.text = GenerateUpNumber().ToString();
+            upNumberText.text = GenerateUpNumber().ToString();
         }
 
         isGroundAll = true; //初期はtrueにしておく(現状使っていない)
@@ -69,7 +70,9 @@ public class GameManager : MonoBehaviour
                 isGroundAll = false; //isGroundAllはfalse
             }
             
-            allBlockNumber *= blockInfo.GetNumber();
+            allBlockNumber *= blockInfo.GetNumber();//もしblockの素数が上の合成数の素因数じゃなかったら
+            remainingNumberText.text = (compositeNumber / allBlockNumber).ToString(); //残りの数字を計算して描画。ただしafterFieldが空になるとこの中の処理が行われなくなるので
+                                                                                      //UpNumberの更新のたびに、この値も更新してあげる必要がある。
 
             if (compositeNumber % allBlockNumber != 0)
             {
@@ -113,6 +116,7 @@ public class GameManager : MonoBehaviour
                 compositeNumber *= randomPrimeNumber;
             }
         }
+        remainingNumberText.text = compositeNumber.ToString(); //残りの数値を更新するタイミングで残りナンバーを更新する必要がある。
         nowPhase++;
         return compositeNumber;
     }
@@ -131,7 +135,7 @@ public class GameManager : MonoBehaviour
         {
             block.SetParent(completedField.transform);
         }
-        text.text = ""; //テキストの初期化
+        upNumberText.text = ""; //テキストの初期化
         allBlockNumber = 1; //素数の積の初期化
         completeNumberFlag = false; //これがtrueの間はblockが生成されないようになっているので、removeの瞬間に直してあげるひつようがある。
         
