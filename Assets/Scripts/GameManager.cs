@@ -35,6 +35,7 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] GameObject blockField;
     GameObject afterField;
+    [SerializeField] GameObject tmpField;
     [SerializeField] GameObject completedField;
 
     bool isGroundAll = false;
@@ -121,6 +122,7 @@ public class GameManager : MonoBehaviour
         return compositeNumber;
     }
 
+    //上部の数字を消して親オブジェクトをcompletedFieldに転送する関数
     void RemoveUpNumber()
     {
         //まずは、blockFieldから移動する。
@@ -133,7 +135,7 @@ public class GameManager : MonoBehaviour
         //一時的なリストを使用して子オブジェクトの親を変更
         foreach (Transform block in blocksToMove)
         {
-            block.SetParent(completedField.transform);
+            block.SetParent(tmpField.transform);
         }
         upNumberText.text = ""; //テキストの初期化
         allBlockNumber = 1; //素数の積の初期化
