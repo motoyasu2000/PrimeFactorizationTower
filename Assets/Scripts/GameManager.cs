@@ -34,10 +34,12 @@ public class GameManager : MonoBehaviour
     int allBlockNumber = 1;
 
     [SerializeField] GameObject blockField;
+    [SerializeField] GameObject beforeField;
     GameObject afterField;
     [SerializeField] GameObject tmpField;
     [SerializeField] GameObject completedField;
 
+    bool existTmpBlocks = false;
     bool isGroundAll = false;
     bool completeNumberFlag = false;
 
@@ -63,7 +65,7 @@ public class GameManager : MonoBehaviour
 
         isGroundAll = true; //初期はtrueにしておく(現状使っていない)
         allBlockNumber = 1; //初期は1にしておく(現状使っていない)
-        foreach (Transform block in afterField.transform) //すべてのゲームオブジェクトのチェック
+        foreach (Transform block in afterField.transform) //afterFieldのチェック
         {
             BlockInfo blockInfo = block.GetComponent<BlockInfo>();
             if (!blockInfo.CheckIsGround()) //一つでも地面に接地してなければ
@@ -71,24 +73,51 @@ public class GameManager : MonoBehaviour
                 isGroundAll = false; //isGroundAllはfalse
             }
             
+            //素数の積を更新。
             allBlockNumber *= blockInfo.GetNumber();//もしblockの素数が上の合成数の素因数じゃなかったら
             remainingNumberText.text = (compositeNumber / allBlockNumber).ToString(); //残りの数字を計算して描画。ただしafterFieldが空になるとこの中の処理が行われなくなるので
                                                                                       //UpNumberの更新のたびに、この値も更新してあげる必要がある。
-
-            if (compositeNumber % allBlockNumber != 0)
+        }
+        if (beforeField.transform.childCount != 0) //beforeFieldもチェック
+        {
+            if (!beforeField.transform.GetChild(0).GetComponent<BlockInfo>().CheckIsGround())
             {
-                GameOver();
+                isGroundAll = false;
+            }
+            if (beforeField.transform.childCount >= 2)
+            {
+                Debug.LogError("beforeFieldに二つ以上のブロックが存在します。");
+            }
+        }
+        foreach (Transform block in tmpField.transform) //tmpFieldのチェック afterFieldのぶろっくがそろった瞬間にtmpFieldに転送されるため
+        {
+            BlockInfo blockInfo = block.GetComponent<BlockInfo>();
+            if (!blockInfo.CheckIsGround()) //一つでも地面に接地してなければ
+            {
+                isGroundAll = false; //isGroundAllはfalse
             }
         }
 
-        if(allBlockNumber == compositeNumber) //もしブロックの数値の積が、上部の合成数と一致していたなら
+
+        if (allBlockNumber == compositeNumber) //もしブロックの数値の積が、上部の合成数と一致していたなら
         {
             completeNumberFlag = true;
         }
 
         if(completeNumberFlag)
         {
+            SendTempBlocks();
             RemoveUpNumber();
+        }
+
+        if(isGroundAll && existTmpBlocks)
+        {
+            ConnectCompleteBlocks();
+        }
+
+        if (compositeNumber % allBlockNumber != 0 && isGroundAll) //数値がリセットされるのが素数ブロックがすべてそろったタイミングで、AfterFieldからCompletedFiledに送られるのが地面に設置したタイミング。この差を埋めるロジックを組む必要がある。→番号がそろった地点でtmpblocksに送信してあげる。そうすればafterblocks内での探索が行われない。
+        {
+            GameOver();
         }
     }
 
@@ -122,27 +151,66 @@ public class GameManager : MonoBehaviour
         return compositeNumber;
     }
 
-    //上部の数字を消して親オブジェクトをcompletedFieldに転送する関数
+    //上部の数字を消す関数
     void RemoveUpNumber()
     {
-        //まずは、blockFieldから移動する。
-        List<Transform> blocksToMove = new List<Transform>();
-        //すべての子オブジェクトを一時的なリストに追加。Transformをイテレートしながらtransformを変更しないように、一旦リストに追加。
-        foreach (Transform block in afterField.transform)
-        {
-            blocksToMove.Add(block);
-        }
-        //一時的なリストを使用して子オブジェクトの親を変更
-        foreach (Transform block in blocksToMove)
-        {
-            block.SetParent(tmpField.transform);
-        }
         upNumberText.text = ""; //テキストの初期化
         allBlockNumber = 1; //素数の積の初期化
         completeNumberFlag = false; //これがtrueの間はblockが生成されないようになっているので、removeの瞬間に直してあげるひつようがある。
-        
     }
 
+    //完成したブロックをいったんtempblockに転送する関数
+    void SendTempBlocks()
+    {
+        //まずは、blockFieldから移動する。
+        List<Transform> TmpBlocks = new List<Transform>();
+        //すべての子オブジェクトを一時的なリストに追加。Transformをイテレートしながらtransformを変更しないように、一旦リストに追加。
+        foreach (Transform block in afterField.transform)
+        {
+            TmpBlocks.Add(block);
+        }
+        foreach (Transform block in TmpBlocks)
+        {
+            block.SetParent(tmpField.transform);
+        }
+        existTmpBlocks = true;
+    }
+
+    //完成したブロックを結合し、親オブジェクトをcompletedFieldに転送する関数
+    void ConnectCompleteBlocks()
+    {
+        //まずは、blockFieldから移動する。
+        List<Transform> JointTmpBlocks = new List<Transform>();
+        //すべての子オブジェクトを一時的なリストに追加。Transformをイテレートしながらtransformを変更しないように、一旦リストに追加。
+        foreach (Transform block in tmpField.transform)
+        {
+            JointTmpBlocks.Add(block);
+        }
+
+        for (int i = 0; i < JointTmpBlocks.Count; i++)
+        {
+            //最後の要素は0番目の要素と結合
+            if (i >= JointTmpBlocks.Count - 1)
+            {
+                FixedJoint2D fixedJoint = JointTmpBlocks[i].gameObject.AddComponent<FixedJoint2D>();
+                fixedJoint.connectedBody = JointTmpBlocks[0].GetComponent<Rigidbody2D>();
+            }
+            //次の番号を持つオブジェクトと結合
+            else
+            {
+                FixedJoint2D fixedJoint = JointTmpBlocks[i].gameObject.AddComponent<FixedJoint2D>();
+                fixedJoint.connectedBody = JointTmpBlocks[i + 1].GetComponent<Rigidbody2D>();
+            }
+            JointTmpBlocks[i].SetParent(tmpField.transform);
+        }
+
+        //一時的なリストを使用して子オブジェクトの親を変更
+        foreach (Transform block in JointTmpBlocks)
+        {
+            block.SetParent(completedField.transform);
+        }
+        existTmpBlocks = false;
+    }
     public static void GameOver()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);

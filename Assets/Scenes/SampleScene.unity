@@ -626,6 +626,7 @@ MonoBehaviour:
   upNumberText: {fileID: 189060418}
   remainingNumberText: {fileID: 1329954533}
   blockField: {fileID: 1999789152}
+  beforeField: {fileID: 572052747}
   tmpField: {fileID: 251294804}
   completedField: {fileID: 1158517000}
 --- !u!4 &328716100
