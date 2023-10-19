@@ -187,6 +187,7 @@ public class GameManager : MonoBehaviour
             JointTmpBlocks.Add(block);
         }
 
+
         for (int i = 0; i < JointTmpBlocks.Count; i++)
         {
             //最後の要素は0番目の要素と結合
@@ -203,11 +204,13 @@ public class GameManager : MonoBehaviour
             }
             JointTmpBlocks[i].SetParent(tmpField.transform);
         }
-
+        //管理しやすいように結合させたゲームオブジェクトには共通の親オブジェクトを持たせておく。
+        GameObject parentGameObject = new GameObject("CompletedBlocks");
+        parentGameObject.transform.SetParent(completedField.transform);
         //一時的なリストを使用して子オブジェクトの親を変更
         foreach (Transform block in JointTmpBlocks)
         {
-            block.SetParent(completedField.transform);
+            block.SetParent(parentGameObject.transform);
         }
         existTmpBlocks = false;
     }
