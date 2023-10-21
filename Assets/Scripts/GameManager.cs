@@ -39,6 +39,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject tmpField;
     [SerializeField] GameObject completedField;
 
+    [SerializeField] List<Color> completedBlocksColors = new List<Color> { };
+    int nowColorNumber = 0;
+
     bool existTmpBlocks = false;
     bool isGroundAll = false;
     bool completeNumberFlag = false;
@@ -202,8 +205,10 @@ public class GameManager : MonoBehaviour
                 FixedJoint2D fixedJoint = JointTmpBlocks[i].gameObject.AddComponent<FixedJoint2D>();
                 fixedJoint.connectedBody = JointTmpBlocks[i + 1].GetComponent<Rigidbody2D>();
             }
+            
             JointTmpBlocks[i].SetParent(tmpField.transform);
         }
+        SetColors(JointTmpBlocks);
         //管理しやすいように結合させたゲームオブジェクトには共通の親オブジェクトを持たせておく。
         GameObject parentGameObject = new GameObject("CompletedBlocks");
         parentGameObject.transform.SetParent(completedField.transform);
@@ -213,6 +218,16 @@ public class GameManager : MonoBehaviour
             block.SetParent(parentGameObject.transform);
         }
         existTmpBlocks = false;
+    }
+
+    void SetColors(List<Transform> colorChangeTargets)
+    {
+        foreach (Transform target in colorChangeTargets)
+        {
+            target.GetComponent<SpriteRenderer>().color = completedBlocksColors[nowColorNumber];
+        }
+        nowColorNumber++;
+        if(nowColorNumber >= completedBlocksColors.Count) nowColorNumber = 0;
     }
     public static void GameOver()
     {
