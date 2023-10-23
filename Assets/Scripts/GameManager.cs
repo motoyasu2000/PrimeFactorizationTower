@@ -118,7 +118,7 @@ public class GameManager : MonoBehaviour
             ConnectCompleteBlocks();
         }
 
-        if (compositeNumber % allBlockNumber != 0 && isGroundAll) //数値がリセットされるのが素数ブロックがすべてそろったタイミングで、AfterFieldからCompletedFiledに送られるのが地面に設置したタイミング。この差を埋めるロジックを組む必要がある。→番号がそろった地点でtmpblocksに送信してあげる。そうすればafterblocks内での探索が行われない。
+        if (compositeNumber % allBlockNumber != 0)
         {
             GameOver();
         }
@@ -142,7 +142,7 @@ public class GameManager : MonoBehaviour
 
         if (myDifficultyLevel == DifficultyLevel.Normal)
         {
-            for (int i=0; i<2+(int)(Random.value*nowPhase/2); i++)
+            for (int i=0; i<3+(int)(Random.value*nowPhase/2) && i < 8; i++)
             {
                 randomIndex = Random.Range(0, normalPool.Count);
                 randomPrimeNumber = normalPool[randomIndex];
