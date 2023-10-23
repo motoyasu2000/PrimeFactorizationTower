@@ -56,6 +56,7 @@ public abstract class BlockInfo : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if(collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("PrimeNumberBlock")){
+            Debug.Log($"isGroundはtrueになりました。衝突元： {gameObject.name}　衝突先： {collision.gameObject.name}");
             isGround = true;
         }
     }
