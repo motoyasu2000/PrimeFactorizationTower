@@ -32,6 +32,8 @@ public abstract class BlockInfo : MonoBehaviour
     {
         rb2D.bodyType = RigidbodyType2D.Dynamic;
     }
+
+    //ï\é¶Ç≥ÇÍÇÈêîílÇÃê›íË
     public void SetText()
     {
         primeNumberText.text = myNumber.ToString();
@@ -55,12 +57,12 @@ public abstract class BlockInfo : MonoBehaviour
         myCollider.enabled = true;
     }
 
-    public void RemoveNeighjborBlock(GameObject block)
+    public void RemoveNeighborBlock(GameObject block)
     {
         neighborEdge.Remove(block);
     }
 
-    public void AddNeighjborBlock(GameObject block)
+    public void AddNeighborBlock(GameObject block)
     {
         neighborEdge.Add(block);
     }
