@@ -6,6 +6,8 @@ using TMPro;
 public abstract class BlockInfo : MonoBehaviour
 {
     protected int myNumber; //自分の持つ数字。合成数とかの計算はこれを利用する
+    protected List<GameObject> neighborEdge = new List<GameObject>(); //隣接するゲームオブジェクトを格納
+
     protected GameObject selfPrefab; //自分自身のプレファブを格納する変数(継承先クラスから見た自分自身)
     public GameObject SelfPrefab => selfPrefab;
     protected TextMeshPro primeNumberText;
@@ -51,6 +53,16 @@ public abstract class BlockInfo : MonoBehaviour
     public void EnableCollider()
     {
         myCollider.enabled = true;
+    }
+
+    public void RemoveNeighjborBlock(GameObject block)
+    {
+        neighborEdge.Remove(block);
+    }
+
+    public void AddNeighjborBlock(GameObject block)
+    {
+        neighborEdge.Add(block);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
