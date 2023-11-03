@@ -30,17 +30,17 @@ public class NetWork : MonoBehaviour
     public void DetachNode(GameObject node1, GameObject node2)
     {
         BlockInfo info1 = node1.GetComponent<BlockInfo>();
-        info1.RemoveNeighjborBlock(node2);
+        info1.RemoveNeighborBlock(node2);
         BlockInfo info2 = node2.GetComponent<BlockInfo>();
-        info2.RemoveNeighjborBlock(node1);
+        info2.RemoveNeighborBlock(node1);
     }
 
     public void AttachNode(GameObject node1, GameObject node2)
     {
         BlockInfo info1 = node1.GetComponent<BlockInfo>();
-        info1.RemoveNeighjborBlock(node2);
+        info1.RemoveNeighborBlock(node2);
         BlockInfo info2 = node2.GetComponent<BlockInfo>();
-        info2.RemoveNeighjborBlock(node1);
+        info2.RemoveNeighborBlock(node1);
     }
 
 }
