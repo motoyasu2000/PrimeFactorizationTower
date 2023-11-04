@@ -12,6 +12,7 @@ public class GenerateBlockCtrl : MonoBehaviour
     SingleGenerateManager singleGenerateManager;
     TextMeshProUGUI text;
     protected GameManager gameManager;
+    static int IDCounter = 0;
 
     private void Start()
     {
@@ -33,6 +34,8 @@ public class GenerateBlockCtrl : MonoBehaviour
     void HundleGenerateBlock(int primeNumber)
     {
         GameObject generateObject = Instantiate(GetPrimeNumberBlock(primeNumber), primeNumberGeneratingPoint.transform.position, GetPrimeNumberBlock(primeNumber).transform.rotation, beforeField.transform);
+        generateObject.GetComponent<BlockInfo>().SetID(IDCounter);
+        generateObject.name = $"Block{primeNumber}_{IDCounter++}";
         singleGenerateManager.SetSingleGameObject(generateObject);
     }
     GameObject GetPrimeNumberBlock(int primeNumber)
