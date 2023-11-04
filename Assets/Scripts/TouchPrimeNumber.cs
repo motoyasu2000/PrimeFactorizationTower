@@ -16,6 +16,8 @@ public class TouchPrimeNumber : MonoBehaviour
     protected GameManager gameManager;
     GameObject blockField;
     GameObject afterField;
+
+    NetWork netWork;
     private void Start()
     {
         blockInfo = GetComponent<BlockInfo>();
@@ -24,6 +26,7 @@ public class TouchPrimeNumber : MonoBehaviour
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         blockField = GameObject.Find("BlockField");
         afterField = blockField.transform.Find("AfterField").gameObject;
+        netWork = GameObject.Find("NetWork").GetComponent<NetWork>();
     }
 
     void Update()
@@ -72,6 +75,7 @@ public class TouchPrimeNumber : MonoBehaviour
                             blockInfo.ChangeDynamic(); //重力の影響を受けるようにする。
                             blockInfo.EnableCollider(); //ラインの描画の際に一時的にコライダーを非表示にするので、ここでコライダーを復活させる。
                             gameObject.transform.parent = afterField.transform;
+                            netWork.AddNode(gameObject);//指を話した瞬間にブロックをノードとしてネットワークに追加する。
                         }
                         break;
                 }
