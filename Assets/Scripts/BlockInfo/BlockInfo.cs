@@ -11,7 +11,7 @@ public abstract class BlockInfo : MonoBehaviour
     protected GameObject selfPrefab; //自分自身のプレファブを格納する変数(継承先クラスから見た自分自身)
     public GameObject SelfPrefab => selfPrefab;
     protected TextMeshPro primeNumberText;
-    bool isGround = false;
+    [SerializeField]bool isGround = false;
     protected Rigidbody2D rb2D;
     protected Collider2D myCollider;
 
