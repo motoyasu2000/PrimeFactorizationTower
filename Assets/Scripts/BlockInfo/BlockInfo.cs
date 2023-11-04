@@ -5,6 +5,7 @@ using TMPro;
 
 public abstract class BlockInfo : MonoBehaviour
 {
+    protected int ID = -1;
     protected int myNumber; //自分の持つ数字。合成数とかの計算はこれを利用する
     [SerializeField]protected List<GameObject> neighborEdge = new List<GameObject>(); //隣接するゲームオブジェクトを格納
 
@@ -58,6 +59,11 @@ public abstract class BlockInfo : MonoBehaviour
     public void EnableCollider()
     {
         myCollider.enabled = true;
+    }
+
+    public void SetID(int newID)
+    {
+        ID = newID;
     }
 
     public void RemoveNeighborBlock(GameObject block)
