@@ -4,8 +4,8 @@ using UnityEngine;
 public class NetWork : MonoBehaviour
 {
     static int[] primeNumbers = { 2, 3, 5, 7, 11, 13, 17, 19, 23 };
-    List<GameObject> allNodes = new List<GameObject>();
-    Dictionary<int, GameObject> nodesDict = new Dictionary<int, GameObject>();
+    [SerializeField]List<GameObject> allNodes = new List<GameObject>();
+    [SerializeField]Dictionary<int, List<GameObject>> nodesDict = new Dictionary<int, List<GameObject>>();
     public void AddNode(GameObject node)
     {
         allNodes.Add(node);
@@ -14,12 +14,9 @@ public class NetWork : MonoBehaviour
         {
             if (!nodesDict.ContainsKey(info.GetNumber()))
             {
-                nodesDict.Add(info.GetNumber(), node);
+                nodesDict.Add(info.GetNumber(), new List<GameObject>());
             }
-            else
-            {
-                nodesDict[info.GetNumber()] = node;
-            }
+            nodesDict[info.GetNumber()].Add(node);
         }
         else
         {
@@ -45,6 +42,9 @@ public class NetWork : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log(allNodes.Count);
+        foreach (var nodes in nodesDict) 
+        {
+            Debug.Log($"number: {nodes.Key}  nodesCount:{nodes.Value.Count}");
+        }
     }
 }
