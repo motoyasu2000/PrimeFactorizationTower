@@ -70,7 +70,7 @@ public abstract class BlockInfo : MonoBehaviour
     {
         if (!neighborEdge.Contains(block))
         {
-            Debug.Log("存在しないエッジを消去しようとしています。");
+            //Debug.Log("存在しないエッジを消去しようとしています。");
         }
         else
         {
@@ -83,7 +83,7 @@ public abstract class BlockInfo : MonoBehaviour
     {
         if (neighborEdge.Contains(block))
         {
-            Debug.Log("存在するエッジを追加しようとしています。");
+            //Debug.Log("存在するエッジを追加しようとしています。");
         }
         else 
         {
@@ -100,7 +100,7 @@ public abstract class BlockInfo : MonoBehaviour
         if (collision.gameObject.CompareTag("PrimeNumberBlock"))
         {
             netWork.AttachNode(gameObject, collision.gameObject);
-            Debug.Log($"AttachNode: {gameObject.name} ------ {collision.gameObject.name}");
+            //Debug.Log($"AttachNode: {gameObject.name} ------ {collision.gameObject.name}");
         }
     }
     private void OnCollisionExit2D(Collision2D collision)
@@ -109,7 +109,7 @@ public abstract class BlockInfo : MonoBehaviour
         if (collision.gameObject.CompareTag("PrimeNumberBlock"))
         {
             netWork.DetachNode(gameObject, collision.gameObject);
-            Debug.Log($"DetachNode: {gameObject.name} ------ {collision.gameObject.name}");
+            //Debug.Log($"DetachNode: {gameObject.name} ------ {collision.gameObject.name}");
         }
     }
 
