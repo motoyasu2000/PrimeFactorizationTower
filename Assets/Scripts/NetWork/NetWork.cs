@@ -6,6 +6,16 @@ public class NetWork : MonoBehaviour
     static int[] primeNumbers = { 2, 3, 5, 7, 11, 13, 17, 19, 23 };
     [SerializeField]List<GameObject> allNodes = new List<GameObject>();
     [SerializeField]Dictionary<int, List<GameObject>> nodesDict = new Dictionary<int, List<GameObject>>();
+
+    private void Start()
+    {
+        //nodeDictの初期化
+        foreach(var value in primeNumbers)
+        {
+            nodesDict.Add(value, new List<GameObject>());
+        }
+    }
+
     public void AddNode(GameObject node)
     {
         allNodes.Add(node);
@@ -40,11 +50,32 @@ public class NetWork : MonoBehaviour
         info2.AddNeighborBlock(node1);
     }
 
+    //最も少ない素数のキーを返す関数
+    public int SearchMinNode()
+    {
+        int nowNodeCount = -1;
+        int minNodeCount = int.MaxValue;
+        int minNodeNumber = -1;
+        foreach(var nodes in nodesDict)
+        {
+            nowNodeCount = nodes.Value.Count;
+            if(minNodeCount > nowNodeCount)
+            {
+                minNodeCount = nowNodeCount;
+                minNodeNumber = nodes.Key;
+            }
+        }
+        Debug.Log("最もネットワーク内部に少ない素数" + minNodeNumber);
+        return minNodeNumber;
+    }
+    
     private void Update()
     {
         foreach (var nodes in nodesDict) 
         {
-            Debug.Log($"number: {nodes.Key}  nodesCount:{nodes.Value.Count}");
+            //Debug.Log($"number: {nodes.Key}  nodesCount:{nodes.Value.Count}");
         }
+
+        SearchMinNode();
     }
 }
