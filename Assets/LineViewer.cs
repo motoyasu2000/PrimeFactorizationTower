@@ -20,7 +20,7 @@ public class LineViewer : MonoBehaviour
         RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down);
         if (hit.collider != null)
         {
-            Debug.Log(hit.point);
+            //Debug.Log(hit.point);
             lineRenderer.SetPosition(0, transform.position);
             lineRenderer.SetPosition(1, hit.point);
         }
