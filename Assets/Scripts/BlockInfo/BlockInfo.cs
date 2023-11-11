@@ -107,10 +107,11 @@ public abstract class BlockInfo : MonoBehaviour
         if(collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("PrimeNumberBlock")){
             isGround = true;
         }
-        //もし二つのブロック(ノード)が接触したなら、その二つのノード間にエッジを設定
+        //もし二つのブロック(ノード)が接触したなら、その二つのノード間にエッジを設定、そしてサブグラフの抽出
         if (collision.gameObject.CompareTag("PrimeNumberBlock"))
         {
             netWork.AttachNode(gameObject, collision.gameObject);
+            netWork.CreateSubNetwork(new HashSet<int> { 2, 3, 4 });
             //Debug.Log($"AttachNode: {gameObject.name} ------ {collision.gameObject.name}");
         }
     }

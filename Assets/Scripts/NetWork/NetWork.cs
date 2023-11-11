@@ -41,7 +41,7 @@ public class NetWork : MonoBehaviour
     }
 
     //与えられたパターンからallnodeを切り取り、サブネットワークを作る。(subnodesとsubnodesdictの更新)
-    void CreateSubNetwork(HashSet<int> subNetPattern)
+    public void CreateSubNetwork(HashSet<int> subNetPattern)
     {
         //サブグラフの作成
         foreach(GameObject mainNode in allNodes)
@@ -56,6 +56,15 @@ public class NetWork : MonoBehaviour
         foreach(var subnode in allNodes)
         {
             subnode.GetComponent<BlockInfo>().DeleteMissNeighberBlock(subNetPattern);
+        }
+
+        //デバッグ用
+        foreach (var subnode in subNodes)
+        {
+            foreach (var neighbor in subnode.GetComponent<BlockInfo>().GetNeighborEdge())
+            {
+                Debug.Log($"{subnode.name}-------------{neighbor.name}");
+            }
         }
     }
 
@@ -135,9 +144,9 @@ public class NetWork : MonoBehaviour
         //    Debug.Log($"number: {nodes.Key}  nodesCount:{nodes.Value.Count}");
         //}
         //SearchMinNode();
-        if (allNodes.Count > 3) 
-        {
-            CreateSubNetwork(new HashSet<int> {2,3,4});
+        //if (allNodes.Count > 3) 
+        //{
+            
             //foreach(var node in subNodes)
             //{
             //    Debug.Log($"node:{node.name}");
@@ -151,14 +160,6 @@ public class NetWork : MonoBehaviour
             //    }
             //}
 
-            //edgeの検索
-            foreach (var subnode in subNodes)
-            {
-                foreach(var neighbor in subnode.GetComponent<BlockInfo>().GetNeighborEdge())
-                {
-                    Debug.Log($"{subnode.name}-------------{neighbor.name}");
-                }
-            }
-        }
+        //}
     }
 }
