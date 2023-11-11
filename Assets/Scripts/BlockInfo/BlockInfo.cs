@@ -56,6 +56,11 @@ public abstract class BlockInfo : MonoBehaviour
         return isGround;
     }
 
+    public List<GameObject> GetNeighborEdge()
+    {
+        return neighborEdge;
+    }
+
     public void EnableCollider()
     {
         myCollider.enabled = true;
@@ -89,6 +94,12 @@ public abstract class BlockInfo : MonoBehaviour
         {
             neighborEdge.Add(block);
         }
+    }
+
+    //サブグラフに使うメソッド、patternにマッチしないエッジを消去する。
+    public void DeleteMissNeighberBlock(HashSet<int> subNetPattern)
+    {
+        neighborEdge.RemoveAll(item => !subNetPattern.Contains(item.GetComponent<BlockInfo>().GetNumber()));
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
