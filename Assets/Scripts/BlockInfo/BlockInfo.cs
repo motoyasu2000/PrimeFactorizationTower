@@ -113,7 +113,7 @@ public abstract class BlockInfo : MonoBehaviour
             netWork.AttachNode(gameObject, collision.gameObject);
             netWork.CreateSubNetwork(new HashSet<int> { 2, 3, 5 , 7});　//※※こっちは集合で指定してるけど
             netWork.SearchMatchingPattern(new Dictionary<int, int>() { { 2,1},{ 3,1},{ 5,1}, {7,2 } }); //※※こっちはリストで指定してるのが気持ち悪いので後で治す！
-            //Debug.Log($"AttachNode: {gameObject.name} ------ {collision.gameObject.name}");
+            //Debug.Log($"AttachNode: {gameObject.name} ------ {collision.gameObject.name}");a
         }
     }
     private void OnCollisionExit2D(Collision2D collision)
