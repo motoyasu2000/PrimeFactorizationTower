@@ -1,21 +1,24 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 public class NetWork : MonoBehaviour
 {
     static int[] primeNumbers = { 2, 3, 5, 7, 11, 13, 17, 19, 23 }; //素数配列
-    [SerializeField]List<GameObject> allNodes = new List<GameObject>(); //全ノードのリスト
-    [SerializeField]Dictionary<int, List<GameObject>> nodesDict = new Dictionary<int, List<GameObject>>(); //各ノードがいくつあるのかを格納したリスト
+    [SerializeField] List<GameObject> allNodes = new List<GameObject>(); //全ノードのリスト
+    [SerializeField] Dictionary<int, List<GameObject>> nodesDict = new Dictionary<int, List<GameObject>>(); //各ノードがいくつあるのかを格納したリスト
     List<GameObject> subNodes = new List<GameObject>(); //サブネットワーク用のリスト
     [SerializeField] Dictionary<int, List<GameObject>> subNodesDict = new Dictionary<int, List<GameObject>>(); //探索用のサブネットワークに各ノードがいくつあるのかを格納したリスト
+
 
 
     private void Start()
     {
         //nodeDictの初期化
-        foreach(var value in primeNumbers)
+        foreach (var value in primeNumbers)
         {
             nodesDict.Add(value, new List<GameObject>());
         }
@@ -44,28 +47,29 @@ public class NetWork : MonoBehaviour
     public void CreateSubNetwork(HashSet<int> subNetPattern)
     {
         //サブグラフの作成
-        foreach(GameObject mainNode in allNodes)
+        foreach (GameObject mainNode in allNodes)
         {
             int mainNodeNum = mainNode.GetComponent<BlockInfo>().GetNumber();
-            if (subNetPattern.Contains(mainNodeNum)){
+            if (subNetPattern.Contains(mainNodeNum))
+            {
                 subNodes.Add(mainNode); //サブグラフのノードを更新
                 RenuealSubgraphDict(mainNodeNum); //サブグラフの辞書を更新するメソッド
             }
         }
         //エッジの消去
-        foreach(var subnode in allNodes)
+        foreach (var subnode in allNodes)
         {
             subnode.GetComponent<BlockInfo>().DeleteMissNeighberBlock(subNetPattern);
         }
 
         //デバッグ用
-        foreach (var subnode in subNodes)
-        {
-            foreach (var neighbor in subnode.GetComponent<BlockInfo>().GetNeighborEdge())
-            {
-                Debug.Log($"{subnode.name}-------------{neighbor.name}");
-            }
-        }
+        //foreach (var subnode in subNodes)
+        //{
+        //    foreach (var neighbor in subnode.GetComponent<BlockInfo>().GetNeighborEdge())
+        //    {
+        //        Debug.Log($"{subnode.name}-------------{neighbor.name}");
+        //    }
+        //}
     }
 
     //エッジの更新を行う(削除)
@@ -86,22 +90,22 @@ public class NetWork : MonoBehaviour
         info2.AddNeighborBlock(node1);
     }
 
-    //最も少ない素数のキーを返す関数
+    //サブグラフの最も少ない素数のキーを返す関数
     public int SearchMinNode()
     {
         int nowNodeCount = -1;
         int minNodeCount = int.MaxValue;
         int minNodeNumber = -1;
-        foreach(var nodes in nodesDict)
+        foreach (var nodes in subNodesDict)
         {
             nowNodeCount = nodes.Value.Count;
-            if(minNodeCount > nowNodeCount)
+            if (minNodeCount > nowNodeCount)
             {
                 minNodeCount = nowNodeCount;
                 minNodeNumber = nodes.Key;
             }
         }
-        Debug.Log("最もネットワーク内部に少ない素数" + minNodeNumber);
+        //Debug.Log("最もネットワーク内部に少ない素数" + minNodeNumber);
         return minNodeNumber;
     }
 
@@ -136,6 +140,126 @@ public class NetWork : MonoBehaviour
         }
     }
 
+    //このネットワークを拡張していきpatternにマッチしたgraphを探索する。拡張するとは拡張されたインスタンスを生成することで、後退するとはbeforeNetworkに戻り、戻る前に追加していたリストをクローズドリストに追加する。
+    class ExpandNetwork
+    {
+        public List<GameObject> myNetwork { get; private set; } = new List<GameObject>(); //現在のネットワーク情報
+        public List<GameObject> closedList { get; private set; } = new List<GameObject>(); //現在のネットワークに対するクローズドリスト。これより小さいクローズドリストの情報も引き継ぐ。
+        ExpandNetwork beforeNetwork;　//ひとつ前のネットワークに戻ることがあるので必要
+
+        //コンストラクタ。呼び出す側から見て、現在のネットワークと追加したいノードを引数で指定する。
+        public ExpandNetwork(ExpandNetwork beforeNetwork, GameObject nowNode, Dictionary<int, int> requiredNodesDict)
+        {
+            //beforeNetworkがある==１番目以降のノード => closedListとmyNetworkをbeforeNetworkで初期化
+            if (beforeNetwork != null)
+            {
+                closedList = new List<GameObject>(beforeNetwork.closedList);
+                myNetwork = new List<GameObject>(beforeNetwork.myNetwork);
+                this.beforeNetwork = beforeNetwork;
+            }
+            closedList.Add(nowNode);
+            // ノードが要件を満たしているか確認
+            int nodeValue = nowNode.GetComponent<BlockInfo>().GetNumber();
+            if (requiredNodesDict.ContainsKey(nodeValue))
+            {
+                int requiredCount = requiredNodesDict[nodeValue];
+                int currentCount = myNetwork.Count(node => node.GetComponent<BlockInfo>().GetNumber() == nodeValue);
+
+                // ノードが要件を満たしている場合にのみ追加
+                if (currentCount < requiredCount)
+                {
+                    myNetwork.Add(nowNode);
+                }
+                //要件を満たしていなければひとつ前のネットワークに戻る。
+                else
+                {
+                    myNetwork = beforeNetwork.myNetwork;
+                }
+            }
+        }
+
+        // ネットワークに隣接ノードを追加するメソッド（重複を防ぐ）
+        public void AddAdjacentNodes(List<GameObject> adjacentNodes)
+        {
+            foreach (var node in adjacentNodes)
+            {
+                if (!myNetwork.Contains(node) && !closedList.Contains(node))
+                {
+                    myNetwork.Add(node);
+                    closedList.Add(node);
+                }
+
+            }
+        }
+
+        // パターンマッチングのロジックを修正（辞書を使用して重複を許容）
+        public bool ContainsAllRequiredNodes(Dictionary<int, int> requiredNodesDict)
+        {
+            Dictionary<int, int> requiredCounts = new Dictionary<int, int>(requiredNodesDict);
+
+            // 現在のネットワーク内のノードの出現回数をカウント
+            foreach (var node in myNetwork)
+            {
+                int nodeValue = node.GetComponent<BlockInfo>().GetNumber();
+                if (requiredCounts.ContainsKey(nodeValue))
+                {
+                    requiredCounts[nodeValue]--;
+                    if (requiredCounts[nodeValue] == 0)
+                        requiredCounts.Remove(nodeValue);
+                }
+            }
+
+            return requiredCounts.Count == 0; // 必要なノードがすべて含まれていればtrue
+        }
+    }
+
+    public void SearchMatchingPattern(Dictionary<int, int> requiredNodesDict)
+    {
+
+        foreach (var startNode in subNodesDict[SearchMinNode()])
+        {
+            ExpandNetwork currentNetwork = new ExpandNetwork(null, startNode, requiredNodesDict);
+
+            // ネットワークを拡張していく処理
+            ExpandAndSearch(currentNetwork, requiredNodesDict);
+        }
+
+    }
+
+    // ネットワークを拡張しながらサブグラフを探索する再帰的メソッド
+    private void ExpandAndSearch(ExpandNetwork currentNetwork, Dictionary<int, int> requiredNodesDict)
+    {
+        if (currentNetwork.ContainsAllRequiredNodes(requiredNodesDict))
+        {
+            foreach (var node in currentNetwork.myNetwork)
+            {
+                Destroy(node);
+            }
+            return;
+        }
+
+        // 各ノードの隣接ノードを探索
+        foreach (var node in currentNetwork.myNetwork)
+        {
+            List<GameObject> adjacentNodes = node.GetComponent<BlockInfo>().GetNeighborEdge();
+
+            // 現在のネットワークとclosedListに含まれていないノードのみを選択
+            adjacentNodes = adjacentNodes.Where(n => !currentNetwork.closedList.Contains(n) && !currentNetwork.myNetwork.Contains(n)).ToList();
+
+            if (adjacentNodes.Count == 0)
+            {
+                continue; // 隣接する新しいノードがなければスキップ
+            }
+
+            foreach (var adjacentNode in adjacentNodes)
+            {
+                ExpandNetwork newNetwork = new ExpandNetwork(currentNetwork, adjacentNode, requiredNodesDict);
+                ExpandAndSearch(newNetwork, requiredNodesDict);
+            }
+        }
+    }
+
+
     private void Update()
     {
         //Debug.Log(subNodesDict.Count);
@@ -146,19 +270,19 @@ public class NetWork : MonoBehaviour
         //SearchMinNode();
         //if (allNodes.Count > 3) 
         //{
-            
-            //foreach(var node in subNodes)
-            //{
-            //    Debug.Log($"node:{node.name}");
-            //}
-            //foreach (var nodePair in subNodesDict)
-            //{
-            //    Debug.Log(nodePair.Key + "  " + nodePair.Value.Count);
-            //    foreach (var node in nodePair.Value)
-            //    {
-            //        Debug.Log($"{nodePair.Key} -----> {node}");
-            //    }
-            //}
+
+        //foreach(var node in subNodes)
+        //{
+        //    Debug.Log($"node:{node.name}");
+        //}
+        //foreach (var nodePair in subNodesDict)
+        //{
+        //    Debug.Log(nodePair.Key + "  " + nodePair.Value.Count);
+        //    foreach (var node in nodePair.Value)
+        //    {
+        //        Debug.Log($"{nodePair.Key} -----> {node}");
+        //    }
+        //}
 
         //}
     }
