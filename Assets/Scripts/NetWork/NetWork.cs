@@ -229,6 +229,7 @@ public class NetWork : MonoBehaviour
     // ネットワークを拡張しながらサブグラフを探索する再帰的メソッド
     private void ExpandAndSearch(ExpandNetwork currentNetwork, Dictionary<int, int> requiredNodesDict)
     {
+        Debug.Log(string.Join(", ", currentNetwork));
         if (currentNetwork.ContainsAllRequiredNodes(requiredNodesDict))
         {
             foreach (var node in currentNetwork.myNetwork)
