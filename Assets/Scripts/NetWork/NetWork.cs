@@ -146,10 +146,14 @@ public class NetWork : MonoBehaviour
         public List<GameObject> myNetwork { get; private set; } = new List<GameObject>(); //現在のネットワーク情報
         public List<GameObject> closedList { get; private set; } = new List<GameObject>(); //現在のネットワークに対するクローズドリスト。これより小さいクローズドリストの情報も引き継ぐ。
         ExpandNetwork beforeNetwork;　//ひとつ前のネットワークに戻ることがあるので必要
+        public ExpandNetwork Beforenetwork => beforeNetwork;
+        bool backFlag = false;
+        public bool BackFlag => backFlag;
 
         //コンストラクタ。呼び出す側から見て、現在のネットワークと追加したいノードを引数で指定する。
         public ExpandNetwork(ExpandNetwork beforeNetwork, GameObject nowNode, Dictionary<int, int> requiredNodesDict)
         {
+            
             //beforeNetworkがある==１番目以降のノード => closedListとmyNetworkをbeforeNetworkで初期化
             if (beforeNetwork != null)
             {
@@ -157,7 +161,7 @@ public class NetWork : MonoBehaviour
                 myNetwork = new List<GameObject>(beforeNetwork.myNetwork);
                 this.beforeNetwork = beforeNetwork;
             }
-            closedList.Add(nowNode);
+            if(beforeNetwork != null) beforeNetwork.closedList.Add(nowNode); //一個前のネットワークに今追加したノードをクローズドリストに追加する。
             // ノードが要件を満たしているか確認
             int nodeValue = nowNode.GetComponent<BlockInfo>().GetNumber();
             if (requiredNodesDict.ContainsKey(nodeValue))
@@ -173,9 +177,10 @@ public class NetWork : MonoBehaviour
                 //要件を満たしていなければひとつ前のネットワークに戻る。
                 else
                 {
-                    myNetwork = beforeNetwork.myNetwork;
+                    backFlag = true;
                 }
             }
+            //Debug.Log(string.Join(", ", closedList));
         }
 
         // ネットワークに隣接ノードを追加するメソッド（重複を防ぐ）
@@ -196,6 +201,7 @@ public class NetWork : MonoBehaviour
         public bool ContainsAllRequiredNodes(Dictionary<int, int> requiredNodesDict)
         {
             Dictionary<int, int> requiredCounts = new Dictionary<int, int>(requiredNodesDict);
+            //Debug.Log(string.Join(", ", requiredCounts));
 
             // 現在のネットワーク内のノードの出現回数をカウント
             foreach (var node in myNetwork)
@@ -213,23 +219,29 @@ public class NetWork : MonoBehaviour
         }
     }
 
-    public void SearchMatchingPattern(Dictionary<int, int> requiredNodesDict)
+    public void SearchMatchingPattern(Dictionary<int, int> requiredNodesDict, HashSet<GameObject> neiborSet)
     {
-
-        foreach (var startNode in subNodesDict[SearchMinNode()])
+        ExpandNetwork currentNetwork = null;
+        foreach (var startNode in neiborSet)
         {
-            ExpandNetwork currentNetwork = new ExpandNetwork(null, startNode, requiredNodesDict);
-
-            // ネットワークを拡張していく処理
-            ExpandAndSearch(currentNetwork, requiredNodesDict);
+            if(currentNetwork == null)
+            {
+                currentNetwork = new ExpandNetwork(null, startNode, requiredNodesDict);
+            }
+            else
+            {
+                currentNetwork = new ExpandNetwork(currentNetwork, startNode, requiredNodesDict);
+            }
         }
-
+        //Debug.Log(string.Join(", ",currentNetwork.myNetwork));
+        // ネットワークを拡張していく処理
+        ExpandAndSearch(currentNetwork, requiredNodesDict);
     }
 
     // ネットワークを拡張しながらサブグラフを探索する再帰的メソッド
     private void ExpandAndSearch(ExpandNetwork currentNetwork, Dictionary<int, int> requiredNodesDict)
     {
-        Debug.Log(string.Join(", ", currentNetwork));
+        //Debug.Log(string.Join(", ", currentNetwork));
         if (currentNetwork.ContainsAllRequiredNodes(requiredNodesDict))
         {
             foreach (var node in currentNetwork.myNetwork)
@@ -255,6 +267,11 @@ public class NetWork : MonoBehaviour
             foreach (var adjacentNode in adjacentNodes)
             {
                 ExpandNetwork newNetwork = new ExpandNetwork(currentNetwork, adjacentNode, requiredNodesDict);
+                if (newNetwork.BackFlag)
+                {
+                    newNetwork = newNetwork.Beforenetwork;
+                }
+                
                 ExpandAndSearch(newNetwork, requiredNodesDict);
             }
         }
