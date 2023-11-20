@@ -40,7 +40,7 @@ public class GenerateBlockCtrl : MonoBehaviour
     }
     GameObject GetPrimeNumberBlock(int primeNumber)
     {
-        Debug.Log("Block" + primeNumber.ToString());
+        //Debug.Log("Block" + primeNumber.ToString());
         return (GameObject)Resources.Load("Block" + primeNumber.ToString());
     }
 }
