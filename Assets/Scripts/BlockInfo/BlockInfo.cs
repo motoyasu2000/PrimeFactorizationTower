@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using Unity.VisualScripting;
+using UnityEditor.Build;
 
 public abstract class BlockInfo : MonoBehaviour
 {
@@ -102,18 +104,44 @@ public abstract class BlockInfo : MonoBehaviour
         neighborEdge.RemoveAll(item => !subNetPattern.Contains(item.GetComponent<BlockInfo>().GetNumber()));
     }
 
+    private bool IsUpOrRight(GameObject myself, GameObject other)
+    {
+        if(myself.transform.position == other.transform.position)
+        {
+            Debug.LogError("衝突した二つのゲームオブジェクトは同じ座標にあります。");
+        }
+
+        //第一引数のgameobjectが上側にあるならtrueを返す。もし同じであれば、右側の場合にtrueを返す。
+        if(myself.transform.position.y > other.transform.position.y)
+        {
+            return true;
+        }
+        else if(myself.transform.position.y == other.transform.position.y)
+        {
+            if(myself.transform.position.x > other.transform.position.x)
+            {
+                return true;
+            }
+            else { return false; }
+        }
+        else
+        {
+            return false;
+        }
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if(collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("PrimeNumberBlock")){
             isGround = true;
         }
         //もし二つのブロック(ノード)が接触したなら、その二つのノード間にエッジを設定、そしてサブグラフの抽出、そして探索
-        if (collision.gameObject.CompareTag("PrimeNumberBlock"))
+        if (collision.gameObject.CompareTag("PrimeNumberBlock") && IsUpOrRight(gameObject, collision.gameObject))
         {
             netWork.AttachNode(gameObject, collision.gameObject);
             netWork.CreateSubNetwork(new HashSet<int> { 2, 3, 5 , 7});　//※※こっちは集合で指定してるけど
             netWork.SearchMatchingPattern(new Dictionary<int, int>() { { 2,1},{ 3,1},{ 5,1}, {7,1 } },new HashSet<GameObject> {gameObject, collision.gameObject}); //※※こっちは辞書で指定してるのが気持ち悪いので後で治す！
-            //Debug.Log($"AttachNode: {gameObject.name} ------ {collision.gameObject.name}");a
+            Debug.Log($"myself:{gameObject.name} ------ other:{collision.gameObject.name}");
         }
     }
     private void OnCollisionExit2D(Collision2D collision)
