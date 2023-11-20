@@ -46,6 +46,7 @@ public class NetWork : MonoBehaviour
     //与えられたパターンからallnodeを切り取り、サブネットワークを作る。(subnodesとsubnodesdictの更新)
     public void CreateSubNetwork(HashSet<int> subNetPattern)
     {
+        subNodes = new List<GameObject>(); //サブネットワークをリセット
         //サブグラフの作成
         foreach (GameObject mainNode in allNodes)
         {
@@ -88,6 +89,35 @@ public class NetWork : MonoBehaviour
         info1.AddNeighborBlock(node2);
         BlockInfo info2 = node2.GetComponent<BlockInfo>();
         info2.AddNeighborBlock(node1);
+    }
+
+    //ネットワークから特定のノードを削除するメソッド
+    private void SafeDestroyNode(GameObject originNode)
+    {
+
+        //削除元と隣接するエッジを一時的な変数に格納(コレクションがイテレーション中に変更してはならないため)
+        List<GameObject> tmpNeighborNode = new List<GameObject>();
+        foreach(var neighborNode in originNode.GetComponent<BlockInfo>().GetNeighborEdge())
+        {
+            tmpNeighborNode.Add(neighborNode);
+        }
+        //削除元と隣接するエッジを実際に削除する
+        foreach (var neighborNode in tmpNeighborNode)
+        {
+            DetachNode(neighborNode, originNode);
+        }
+        //ネットワークからそのノードを削除
+        allNodes.Remove(originNode);
+        //ゲームオブジェクトも削除
+        Destroy(originNode);
+    }
+
+    private void SafeDestroyNodes(List<GameObject> nodes)
+    {
+        foreach (var node in nodes)
+        {
+            SafeDestroyNode(node);
+        }
     }
 
     //サブグラフの最も少ない素数のキーを返す関数
@@ -246,10 +276,9 @@ public class NetWork : MonoBehaviour
         if (currentNetwork.ContainsAllRequiredNodes(requiredNodesDict))
         {
             Debug.Log(string.Join(", ", currentNetwork.myNetwork));
-            foreach (var node in currentNetwork.myNetwork)
-            {
-                Destroy(node);
-            }
+
+            SafeDestroyNodes(currentNetwork.myNetwork);
+
             return;
         }
 
@@ -278,6 +307,8 @@ public class NetWork : MonoBehaviour
             }
         }
     }
+
+    
 
 
     private void Update()
