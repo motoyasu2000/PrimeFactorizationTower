@@ -19,14 +19,19 @@ public abstract class BlockInfo : MonoBehaviour
     protected Collider2D myCollider;
 
     NetWork netWork;
-    
-    private void Start()
+
+    //èâä˙âªÉRÅ[Éh
+    private void Awake()
     {
-        rb2D = GetComponent<Rigidbody2D>();
         primeNumberText = transform.Find("PrimeNumberText").GetComponent<TextMeshPro>();
         SetMyNumber();
         SetSelfPrefab();
         SetText();
+    }
+    private void Start()
+    {
+        rb2D = GetComponent<Rigidbody2D>();
+
         myCollider = GetComponent<Collider2D>();
         netWork = GameObject.Find("NetWork").GetComponent<NetWork>();
     }
