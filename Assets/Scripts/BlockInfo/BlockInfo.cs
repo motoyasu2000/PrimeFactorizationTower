@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using Unity.VisualScripting;
+using UnityEditor.Build;
 
 public abstract class BlockInfo : MonoBehaviour
 {
@@ -56,6 +58,11 @@ public abstract class BlockInfo : MonoBehaviour
         return isGround;
     }
 
+    public List<GameObject> GetNeighborEdge()
+    {
+        return neighborEdge;
+    }
+
     public void EnableCollider()
     {
         myCollider.enabled = true;
@@ -70,7 +77,7 @@ public abstract class BlockInfo : MonoBehaviour
     {
         if (!neighborEdge.Contains(block))
         {
-            Debug.Log("存在しないエッジを消去しようとしています。");
+            //Debug.Log("存在しないエッジを消去しようとしています。");
         }
         else
         {
@@ -83,11 +90,43 @@ public abstract class BlockInfo : MonoBehaviour
     {
         if (neighborEdge.Contains(block))
         {
-            Debug.Log("存在するエッジを追加しようとしています。");
+            //Debug.Log("存在するエッジを追加しようとしています。");
         }
         else 
         {
             neighborEdge.Add(block);
+        }
+    }
+
+    //サブグラフに使うメソッド、patternにマッチしないエッジを消去する。
+    public void DeleteMissNeighberBlock(HashSet<int> subNetPattern)
+    {
+        neighborEdge.RemoveAll(item => item!=null && !subNetPattern.Contains(item.GetComponent<BlockInfo>().GetNumber()));
+    }
+
+    private bool IsUpOrRight(GameObject myself, GameObject other)
+    {
+        if(myself.transform.position == other.transform.position)
+        {
+            Debug.LogError("衝突した二つのゲームオブジェクトは同じ座標にあります。");
+        }
+
+        //第一引数のgameobjectが上側にあるならtrueを返す。もし同じであれば、右側の場合にtrueを返す。
+        if(myself.transform.position.y > other.transform.position.y)
+        {
+            return true;
+        }
+        else if(myself.transform.position.y == other.transform.position.y)
+        {
+            if(myself.transform.position.x > other.transform.position.x)
+            {
+                return true;
+            }
+            else { return false; }
+        }
+        else
+        {
+            return false;
         }
     }
 
@@ -96,11 +135,13 @@ public abstract class BlockInfo : MonoBehaviour
         if(collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("PrimeNumberBlock")){
             isGround = true;
         }
-        //もし二つのブロック(ノード)が接触したなら、その二つのノード間にエッジを設定
-        if (collision.gameObject.CompareTag("PrimeNumberBlock"))
+        //もし二つのブロック(ノード)が接触したなら、その二つのノード間にエッジを設定、そしてサブグラフの抽出、そして探索
+        if (collision.gameObject.CompareTag("PrimeNumberBlock") && IsUpOrRight(gameObject, collision.gameObject))
         {
             netWork.AttachNode(gameObject, collision.gameObject);
-            Debug.Log($"AttachNode: {gameObject.name} ------ {collision.gameObject.name}");
+            netWork.CreateSubNetwork(new HashSet<int> { 2, 3, 5 , 7});　//※※こっちは集合で指定してるけど
+            netWork.SearchMatchingPattern(new Dictionary<int, int>() { { 2,1},{ 3,1},{ 5,1}, {7,1 } },new HashSet<GameObject> {gameObject, collision.gameObject}); //※※こっちは辞書で指定してるのが気持ち悪いので後で治す！
+            Debug.Log($"myself:{gameObject.name} ------ other:{collision.gameObject.name}");
         }
     }
     private void OnCollisionExit2D(Collision2D collision)
@@ -109,7 +150,7 @@ public abstract class BlockInfo : MonoBehaviour
         if (collision.gameObject.CompareTag("PrimeNumberBlock"))
         {
             netWork.DetachNode(gameObject, collision.gameObject);
-            Debug.Log($"DetachNode: {gameObject.name} ------ {collision.gameObject.name}");
+            //Debug.Log($"DetachNode: {gameObject.name} ------ {collision.gameObject.name}");
         }
     }
 
