@@ -181,6 +181,7 @@ public class NetWork : MonoBehaviour
                 }
             }
             //Debug.Log(string.Join(", ", closedList));
+            //Debug.Log(string.Join(", ", myNetwork));
         }
 
         // ネットワークに隣接ノードを追加するメソッド（重複を防ぐ）
@@ -244,6 +245,7 @@ public class NetWork : MonoBehaviour
         //Debug.Log(string.Join(", ", currentNetwork));
         if (currentNetwork.ContainsAllRequiredNodes(requiredNodesDict))
         {
+            Debug.Log(string.Join(", ", currentNetwork.myNetwork));
             foreach (var node in currentNetwork.myNetwork)
             {
                 Destroy(node);
