@@ -101,7 +101,7 @@ public abstract class BlockInfo : MonoBehaviour
     //サブグラフに使うメソッド、patternにマッチしないエッジを消去する。
     public void DeleteMissNeighberBlock(HashSet<int> subNetPattern)
     {
-        neighborEdge.RemoveAll(item => !subNetPattern.Contains(item.GetComponent<BlockInfo>().GetNumber()));
+        neighborEdge.RemoveAll(item => item!=null && !subNetPattern.Contains(item.GetComponent<BlockInfo>().GetNumber()));
     }
 
     private bool IsUpOrRight(GameObject myself, GameObject other)
