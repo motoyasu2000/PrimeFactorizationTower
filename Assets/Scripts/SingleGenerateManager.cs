@@ -5,13 +5,13 @@ using UnityEngine;
 public class SingleGenerateManager : MonoBehaviour
 {
     GameObject singleGameObject;
-    float spinSpeed = 10f;
+    float spinSpeed = 20f;
     float rotateCounter = 0;
     bool rotateFlag = false;
 
     private void Update()
     {
-        RotateUntil(60);
+        RotateUntil(45);
     }
     public void SetSingleGameObject(GameObject setObject)
     {
@@ -51,13 +51,13 @@ public class SingleGenerateManager : MonoBehaviour
     {
         //null‚©flag‚ªfalse‚È‚çreturn
         if (singleGameObject == null || !rotateFlag) return;
-        singleGameObject.transform.Rotate(0, 0, spinSpeed);
+        singleGameObject.transform.Rotate(0, 0, -spinSpeed);
         rotateCounter += spinSpeed;
         if(rotateCounter >= dMaxAngle)
         {
             
             //—]•ª‚É‰ñ“]‚µ‚½‚ç‚à‚Ç‚éB
-            singleGameObject.transform.Rotate(0, 0, dMaxAngle - rotateCounter);
+            singleGameObject.transform.Rotate(0, 0, rotateCounter - dMaxAngle);
             //‰ñ“]ó‘Ô‚Ì‰Šú‰»
             rotateCounter = 0;
             rotateFlag = false;
