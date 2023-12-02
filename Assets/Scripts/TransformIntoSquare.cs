@@ -9,10 +9,11 @@ public class TransformIntoSquare : MonoBehaviour
     private void Awake()
     {
         myRectTransform = GetComponent<RectTransform>();
+        AdjustSize();
     }
     private void Update()
     {
-        AdjustSize();
+        
     }
 
     private void AdjustSize()
