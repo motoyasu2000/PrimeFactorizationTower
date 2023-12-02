@@ -58,7 +58,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6526292304093931351, guid: 65b6fe0cae63e7346a7200419f8991ea, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.5
+      value: 0.66
+      objectReference: {fileID: 0}
+    - target: {fileID: 6526292304093931351, guid: 65b6fe0cae63e7346a7200419f8991ea, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.66
       objectReference: {fileID: 0}
     - target: {fileID: 8752291938880664593, guid: 65b6fe0cae63e7346a7200419f8991ea, type: 3}
       propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[0].time
@@ -70,7 +74,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8997849181804842525, guid: 65b6fe0cae63e7346a7200419f8991ea, type: 3}
       propertyPath: m_LocalScale.x
-      value: 2
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8997849181804842525, guid: 65b6fe0cae63e7346a7200419f8991ea, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 8997849181804842525, guid: 65b6fe0cae63e7346a7200419f8991ea, type: 3}
       propertyPath: m_LocalPosition.x
@@ -240,3 +248,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e888b8e16743a5742ae7bf6f8c04e504, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  neighborEdge: []
+  isGround: 0

@@ -278,6 +278,10 @@ public class NetWork : MonoBehaviour
             Debug.Log(string.Join(", ", currentNetwork.myNetwork));
 
             SafeDestroyNodes(currentNetwork.myNetwork);
+            //foreach(var node in currentNetwork.myNetwork)
+            //{
+            //    node.gameObject.GetComponent<SpriteRenderer>().color = Color.white;
+            //}
 
             return;
         }
