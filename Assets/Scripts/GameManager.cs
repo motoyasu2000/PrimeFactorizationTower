@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI remainingNumberText;
 
     int nowPhase = 1; //現在のphase
-    int compositeNumber = 1;
+    int nowUpNumber = 1;
 
     int allBlockNumber = 1;
 
@@ -39,6 +39,8 @@ public class GameManager : MonoBehaviour
 
     bool isGroundAll = false;
     bool completeNumberFlag = false;
+
+    [SerializeField]Queue<int> upNumberqueue = new Queue<int>();
 
 
     void Start()
@@ -50,6 +52,7 @@ public class GameManager : MonoBehaviour
             if (primeNumberPool[i] >= 2 && primeNumberPool[i] <= 23) insanePool.Add(primeNumberPool[i]);
         }
         afterField = blockField.transform.Find("AfterField").gameObject;
+        upNumberqueue.Enqueue(GenerateUpNumber());
     }
 
     // Update is called once per frame
@@ -57,7 +60,10 @@ public class GameManager : MonoBehaviour
     {
         if (string.IsNullOrWhiteSpace(upNumberText.text))//文字列が空であれば
         {
-            upNumberText.text = GenerateUpNumber().ToString();
+            upNumberqueue.Enqueue(GenerateUpNumber());
+            nowUpNumber = upNumberqueue.Dequeue();
+            upNumberText.text = nowUpNumber.ToString();
+            remainingNumberText.text = nowUpNumber.ToString(); //残りの数値を更新するタイミングで残りナンバーを更新する必要がある。
         }
 
         isGroundAll = true; //初期はtrueにしておく(現状使っていない)
@@ -71,16 +77,16 @@ public class GameManager : MonoBehaviour
             }
             
             allBlockNumber *= blockInfo.GetNumber();//もしblockの素数が上の合成数の素因数じゃなかったら
-            remainingNumberText.text = (compositeNumber / allBlockNumber).ToString(); //残りの数字を計算して描画。ただしafterFieldが空になるとこの中の処理が行われなくなるので
+            remainingNumberText.text = (nowUpNumber / allBlockNumber).ToString(); //残りの数字を計算して描画。ただしafterFieldが空になるとこの中の処理が行われなくなるので
                                                                                       //UpNumberの更新のたびに、この値も更新してあげる必要がある。
 
-            if (compositeNumber % allBlockNumber != 0)
+            if (nowUpNumber % allBlockNumber != 0)
             {
                 GameOver();
             }
         }
 
-        if(allBlockNumber == compositeNumber) //もしブロックの数値の積が、上部の合成数と一致していたなら
+        if(allBlockNumber == nowUpNumber) //もしブロックの数値の積が、上部の合成数と一致していたなら
         {
             completeNumberFlag = true;
         }
@@ -105,20 +111,20 @@ public class GameManager : MonoBehaviour
     {
         int randomIndex;
         int randomPrimeNumber;
-        compositeNumber = 1;
+        int returnUpNumber = 1;
 
         if (myDifficultyLevel == DifficultyLevel.Normal)
         {
-            for (int i=0; i<2+(int)(Random.value*nowPhase/2); i++)
+            for (int i = 0; i < 2 + (int)(Random.value * nowPhase / 2); i++)
             {
                 randomIndex = Random.Range(0, normalPool.Count);
                 randomPrimeNumber = normalPool[randomIndex];
-                compositeNumber *= randomPrimeNumber;
+                returnUpNumber *= randomPrimeNumber;
             }
         }
-        remainingNumberText.text = compositeNumber.ToString(); //残りの数値を更新するタイミングで残りナンバーを更新する必要がある。
+        
         nowPhase++;
-        return compositeNumber;
+        return returnUpNumber;
     }
 
     void RemoveUpNumber()
