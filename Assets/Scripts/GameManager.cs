@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour
     List<int> insanePool = new List<int>();
 
     [SerializeField] TextMeshProUGUI upNumberText; //画面上部の合成数のテキスト
+    [SerializeField] TextMeshProUGUI nextUpNumberText;
     [SerializeField] TextMeshProUGUI remainingNumberText;
 
     int nowPhase = 1; //現在のphase
@@ -63,6 +64,7 @@ public class GameManager : MonoBehaviour
             upNumberqueue.Enqueue(GenerateUpNumber());
             nowUpNumber = upNumberqueue.Dequeue();
             upNumberText.text = nowUpNumber.ToString();
+            nextUpNumberText.text = upNumberqueue.Peek().ToString();
             remainingNumberText.text = nowUpNumber.ToString(); //残りの数値を更新するタイミングで残りナンバーを更新する必要がある。
         }
 
