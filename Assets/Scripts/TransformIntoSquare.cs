@@ -8,12 +8,11 @@ public class TransformIntoSquare : MonoBehaviour
     //StartÇ≈âÊëúÇë}ì¸Ç∑ÇÈÇΩÇﬂÅAÇ±Ç±ÇÕAwake
     private void Awake()
     {
-        myRectTransform = GetComponent<RectTransform>();
-        AdjustSize();
+
     }
     private void Update()
     {
-        
+        AdjustSize();
     }
 
     private void AdjustSize()
@@ -22,6 +21,12 @@ public class TransformIntoSquare : MonoBehaviour
         float height = myRectTransform.rect.height;
         myRectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, height);
 
+    }
+
+    private void OnEnable()
+    {
+        myRectTransform = GetComponent<RectTransform>();
+        AdjustSize();
     }
 }
 
