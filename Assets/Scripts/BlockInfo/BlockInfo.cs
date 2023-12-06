@@ -27,6 +27,7 @@ public abstract class BlockInfo : MonoBehaviour
         SetMyNumber();
         SetSelfPrefab();
         SetText();
+        SetShader();
     }
     private void Start()
     {
@@ -135,6 +136,14 @@ public abstract class BlockInfo : MonoBehaviour
         }
     }
 
+    private void SetShader()
+    {
+        Color myColor = GetComponent<SpriteRenderer>().color;
+        GetComponent<SpriteRenderer>().material.SetColor("_GlowColor", myColor);
+        GetComponent<SpriteRenderer>().material.SetColor("_Color", myColor);
+        Debug.Log($"{GetComponent<SpriteRenderer>().material.GetColor("_GlowColor")}");
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if(collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("PrimeNumberBlock")){
@@ -158,6 +167,7 @@ public abstract class BlockInfo : MonoBehaviour
             //Debug.Log($"DetachNode: {gameObject.name} ------ {collision.gameObject.name}");
         }
     }
+
 
     private void Update()
     {
