@@ -228,13 +228,13 @@ public class NetWork : MonoBehaviour
             }
         }
 
-        // パターンマッチングのロジックを修正（辞書を使用して重複を許容）
+        //パターンマッチングのロジックを修正
         public bool ContainsAllRequiredNodes(Dictionary<int, int> requiredNodesDict)
         {
             Dictionary<int, int> requiredCounts = new Dictionary<int, int>(requiredNodesDict);
             //Debug.Log(string.Join(", ", requiredCounts));
 
-            // 現在のネットワーク内のノードの出現回数をカウント
+            //現在のネットワーク内のノードの出現回数をカウント
             foreach (var node in myNetwork)
             {
                 int nodeValue = node.GetComponent<BlockInfo>().GetNumber();
@@ -246,7 +246,7 @@ public class NetWork : MonoBehaviour
                 }
             }
 
-            return requiredCounts.Count == 0; // 必要なノードがすべて含まれていればtrue
+            return requiredCounts.Count == 0; //必要なノードがすべて含まれていればtrue
         }
     }
 
@@ -265,11 +265,11 @@ public class NetWork : MonoBehaviour
             }
         }
         //Debug.Log(string.Join(", ",currentNetwork.myNetwork));
-        // ネットワークを拡張していく処理
+        //ネットワークを拡張していく処理
         ExpandAndSearch(currentNetwork, requiredNodesDict);
     }
 
-    // ネットワークを拡張しながらサブグラフを探索する再帰的メソッド
+    //ネットワークを拡張しながらサブグラフを探索する再帰的メソッド
     private void ExpandAndSearch(ExpandNetwork currentNetwork, Dictionary<int, int> requiredNodesDict)
     {
         //Debug.Log(string.Join(", ", currentNetwork));
@@ -286,17 +286,17 @@ public class NetWork : MonoBehaviour
             return;
         }
 
-        // 各ノードの隣接ノードを探索
+        //各ノードの隣接ノードを探索
         foreach (var node in currentNetwork.myNetwork)
         {
             List<GameObject> adjacentNodes = node.GetComponent<BlockInfo>().GetNeighborEdge();
 
-            // 現在のネットワークとclosedListに含まれていないノードのみを選択
+            //現在のネットワークとclosedListに含まれていないノードのみを選択
             adjacentNodes = adjacentNodes.Where(n => !currentNetwork.closedList.Contains(n) && !currentNetwork.myNetwork.Contains(n)).ToList();
 
             if (adjacentNodes.Count == 0)
             {
-                continue; // 隣接する新しいノードがなければスキップ
+                continue; //隣接する新しいノードがなければスキップ
             }
 
             foreach (var adjacentNode in adjacentNodes)
