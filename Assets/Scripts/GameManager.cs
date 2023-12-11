@@ -43,6 +43,8 @@ public class GameManager : MonoBehaviour
 
     [SerializeField]Queue<int> upNumberqueue = new Queue<int>();
 
+    SoundManager soundManager;
+
 
     void Start()
     {
@@ -54,6 +56,7 @@ public class GameManager : MonoBehaviour
         }
         afterField = blockField.transform.Find("AfterField").gameObject;
         upNumberqueue.Enqueue(GenerateUpNumber());
+        soundManager = transform.Find("SoundManager").GetComponent<SoundManager>();
     }
 
     // Update is called once per frame
@@ -93,9 +96,11 @@ public class GameManager : MonoBehaviour
             completeNumberFlag = true;
         }
 
+        //‡¬”’B¬‚Ìˆ—
         if(completeNumberFlag)
         {
-            RemoveUpNumber();
+            RemoveUpNumber(); //ã‚Ì”š‚ÌÁ‹
+            soundManager.Recite("Done"); //done‚Ì“Ç‚İã‚°
         }
     }
 
