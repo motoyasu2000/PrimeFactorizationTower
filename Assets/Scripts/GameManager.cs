@@ -28,6 +28,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI upNumberText; //画面上部の合成数のテキスト
     [SerializeField] TextMeshProUGUI nextUpNumberText;
     [SerializeField] TextMeshProUGUI remainingNumberText;
+    [SerializeField] TextMeshProUGUI DoneText;
 
     int nowPhase = 1; //現在のphase
     int nowUpNumber = 1;
@@ -44,6 +45,7 @@ public class GameManager : MonoBehaviour
     [SerializeField]Queue<int> upNumberqueue = new Queue<int>();
 
     SoundManager soundManager;
+
 
 
     void Start()
@@ -101,6 +103,7 @@ public class GameManager : MonoBehaviour
         {
             RemoveUpNumber(); //上の数字の消去
             soundManager.Recite("Done"); //doneの読み上げ
+            TmpPrintDone();
         }
     }
 
@@ -157,5 +160,19 @@ public class GameManager : MonoBehaviour
     public static void GameOver()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    void TmpPrintDone()
+    {
+        DoneText.gameObject.SetActive(true);
+        DoneText.text = "Done";
+        StartCoroutine(HiddenDone());
+    }
+
+    IEnumerator HiddenDone()
+    {
+        yield return new WaitForSeconds(1.2f);
+        DoneText.gameObject.SetActive(false);
+        yield return null;
     }
 }
