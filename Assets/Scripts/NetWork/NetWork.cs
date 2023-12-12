@@ -166,8 +166,16 @@ public class NetWork : MonoBehaviour
                 FriezeNodes(nodes);
                 mainTextManager.TmpPrintMainText("Criteria Met");
                 soundManager.PlayAudio("V_CriteriaMet");
+
+                StartCoroutine(soundManager.PlayAudio("V_Freeze",1.5f));
                 break;
         }
+    }
+
+    IEnumerable Wait(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        yield return null;
     }
 
     //サブグラフの最も少ない素数のキーを返す関数
