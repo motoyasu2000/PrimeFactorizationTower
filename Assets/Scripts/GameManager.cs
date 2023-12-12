@@ -161,17 +161,5 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
-    void TmpPrintMainText(string str)
-    {
-        MainText.gameObject.SetActive(true);
-        MainText.text = str;
-        StartCoroutine(HiddenMainText());
-    }
 
-    IEnumerator HiddenMainText()
-    {
-        yield return new WaitForSeconds(1.2f);
-        MainText.gameObject.SetActive(false);
-        yield return null;
-    }
 }

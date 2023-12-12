@@ -13,6 +13,8 @@ public class NetWork : MonoBehaviour
     List<GameObject> subNodes = new List<GameObject>(); //サブネットワーク用のリスト
     [SerializeField] Dictionary<int, List<GameObject>> subNodesDict = new Dictionary<int, List<GameObject>>(); //探索用のサブネットワークに各ノードがいくつあるのかを格納したリスト
     [SerializeField] GameModeManager gameModeManager;
+    [SerializeField] SoundManager soundManager;
+    [SerializeField] MainTextManager mainTextManager;
 
 
     private void Start()
@@ -162,6 +164,8 @@ public class NetWork : MonoBehaviour
         {
             case GameModeManager.GameMode.PileUp:
                 FriezeNodes(nodes);
+                mainTextManager.TmpPrintMainText("Criteria Met");
+                soundManager.PlayAudio("V_CriteriaMet");
                 break;
         }
     }
