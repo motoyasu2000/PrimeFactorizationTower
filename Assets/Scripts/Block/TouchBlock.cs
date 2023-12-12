@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class TouchPrimeNumber : MonoBehaviour
+public class TouchBlock : MonoBehaviour
 {
     
     protected Vector3 initialPosition; //touch‚µ‚½uŠÔ‚ÌˆÊ’u‚Ìæ“¾
