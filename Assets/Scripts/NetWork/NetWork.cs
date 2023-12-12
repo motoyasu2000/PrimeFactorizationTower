@@ -91,32 +91,46 @@ public class NetWork : MonoBehaviour
         info2.AddNeighborBlock(node1);
     }
 
-    //ネットワークから特定のノードを削除するメソッド
+    //ネットワークから特定のノードをDestroyするメソッド
     private void SafeDestroyNode(GameObject originNode)
     {
+        SafeCutNode(originNode);
+        Destroy(originNode);
+    }
 
-        //削除元と隣接するエッジを一時的な変数に格納(コレクションがイテレーション中に変更してはならないため)
+    //ネットワークから特定のサブネットワークをDestroyするメソッド
+    private void SafeDestroyNodes(List<GameObject> nodes)
+    {
+        foreach (var node in nodes)
+        {
+            SafeDestroyNode(node);
+        }
+    }
+
+    //ネットワークから特定のノードを切り離すメソッド(Destroyはしない)
+    private void SafeCutNode(GameObject originNode)
+    {
+        //切り離し元のノードと隣接するエッジを一時的な変数に格納(コレクションがイテレーション中に変更してはならないため)
         List<GameObject> tmpNeighborNode = new List<GameObject>();
-        foreach(var neighborNode in originNode.GetComponent<BlockInfo>().GetNeighborEdge())
+        foreach (var neighborNode in originNode.GetComponent<BlockInfo>().GetNeighborEdge())
         {
             tmpNeighborNode.Add(neighborNode);
         }
-        //削除元と隣接するエッジを実際に削除する
+        //切り離し元のノードと隣接するエッジを実際に削除する
         foreach (var neighborNode in tmpNeighborNode)
         {
             DetachNode(neighborNode, originNode);
         }
         //ネットワークからそのノードを削除
         allNodes.Remove(originNode);
-        //ゲームオブジェクトも削除
-        Destroy(originNode);
     }
 
-    private void SafeDestroyNodes(List<GameObject> nodes)
+    //ネットワークから特定のサブネットワークを切り離すメソッド
+    private void SafeCutNodes(List<GameObject> nodes)
     {
         foreach (var node in nodes)
         {
-            SafeDestroyNode(node);
+            SafeCutNode(node);
         }
     }
 
