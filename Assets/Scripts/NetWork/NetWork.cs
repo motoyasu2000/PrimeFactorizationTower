@@ -12,7 +12,7 @@ public class NetWork : MonoBehaviour
     [SerializeField] Dictionary<int, List<GameObject>> nodesDict = new Dictionary<int, List<GameObject>>(); //各ノードがいくつあるのかを格納したリスト
     List<GameObject> subNodes = new List<GameObject>(); //サブネットワーク用のリスト
     [SerializeField] Dictionary<int, List<GameObject>> subNodesDict = new Dictionary<int, List<GameObject>>(); //探索用のサブネットワークに各ノードがいくつあるのかを格納したリスト
-
+    [SerializeField] GameModeManager gameModeManager;
 
 
     private void Start()
@@ -153,6 +153,17 @@ public class NetWork : MonoBehaviour
         }
         SafeCutNodes(nodes);
         ChangeColorNodes(nodes);
+    }
+
+    //条件を満たしたときの処理
+    private void CompleteConditions(List<GameObject> nodes)
+    {
+        switch (gameModeManager.NowGameMode)
+        {
+            case GameModeManager.GameMode.PileUp:
+                FriezeNodes(nodes);
+                break;
+        }
     }
 
     //サブグラフの最も少ない素数のキーを返す関数
@@ -312,7 +323,7 @@ public class NetWork : MonoBehaviour
         {
             Debug.Log(string.Join(", ", currentNetwork.myNetwork));
 
-            FriezeNodes(currentNetwork.myNetwork);
+            CompleteConditions(currentNetwork.myNetwork);
             //foreach(var node in currentNetwork.myNetwork)
             //{
             //    node.gameObject.GetComponent<SpriteRenderer>().color = Color.white;
