@@ -5,6 +5,7 @@ using UnityEngine;
 public class SoundManager : MonoBehaviour
 {
     [SerializeField] AudioSource Voice_done;
+    [SerializeField] AudioSource Voice_CriteriaMet;
     [SerializeField] AudioSource SE_done;
     void Start()
     {
@@ -21,6 +22,9 @@ public class SoundManager : MonoBehaviour
         {
             case "V_Done":
                 Voice_done.Play();
+                break;
+            case "V_CriteriaMet":
+                Voice_CriteriaMet.Play(); 
                 break;
             case "SE_Done":
                 SE_done.Play();
