@@ -12,7 +12,9 @@ public class NetWork : MonoBehaviour
     [SerializeField] Dictionary<int, List<GameObject>> nodesDict = new Dictionary<int, List<GameObject>>(); //各ノードがいくつあるのかを格納したリスト
     List<GameObject> subNodes = new List<GameObject>(); //サブネットワーク用のリスト
     [SerializeField] Dictionary<int, List<GameObject>> subNodesDict = new Dictionary<int, List<GameObject>>(); //探索用のサブネットワークに各ノードがいくつあるのかを格納したリスト
-
+    [SerializeField] GameModeManager gameModeManager;
+    [SerializeField] SoundManager soundManager;
+    [SerializeField] MainTextManager mainTextManager;
 
 
     private void Start()
@@ -91,32 +93,83 @@ public class NetWork : MonoBehaviour
         info2.AddNeighborBlock(node1);
     }
 
-    //ネットワークから特定のノードを削除するメソッド
+    //ネットワークから特定のノードをDestroyするメソッド
     private void SafeDestroyNode(GameObject originNode)
     {
+        SafeCutNode(originNode);
+        Destroy(originNode);
+    }
 
-        //削除元と隣接するエッジを一時的な変数に格納(コレクションがイテレーション中に変更してはならないため)
+    //ネットワークから特定のサブネットワークをDestroyするメソッド
+    private void SafeDestroyNodes(List<GameObject> nodes)
+    {
+        foreach (var node in nodes)
+        {
+            SafeDestroyNode(node);
+        }
+    }
+
+    //ネットワークから特定のノードを切り離すメソッド(Destroyはしない)
+    private void SafeCutNode(GameObject originNode)
+    {
+        //切り離し元のノードと隣接するエッジを一時的な変数に格納(コレクションがイテレーション中に変更してはならないため)
         List<GameObject> tmpNeighborNode = new List<GameObject>();
-        foreach(var neighborNode in originNode.GetComponent<BlockInfo>().GetNeighborEdge())
+        foreach (var neighborNode in originNode.GetComponent<BlockInfo>().GetNeighborEdge())
         {
             tmpNeighborNode.Add(neighborNode);
         }
-        //削除元と隣接するエッジを実際に削除する
+        //切り離し元のノードと隣接するエッジを実際に削除する
         foreach (var neighborNode in tmpNeighborNode)
         {
             DetachNode(neighborNode, originNode);
         }
         //ネットワークからそのノードを削除
         allNodes.Remove(originNode);
-        //ゲームオブジェクトも削除
-        Destroy(originNode);
     }
 
-    private void SafeDestroyNodes(List<GameObject> nodes)
+    //ネットワークから特定のサブネットワークを切り離すメソッド
+    private void SafeCutNodes(List<GameObject> nodes)
     {
         foreach (var node in nodes)
         {
-            SafeDestroyNode(node);
+            SafeCutNode(node);
+        }
+    }
+
+    //サブネットワークの色を変更させるメソッド
+    private void ChangeColorNodes(List<GameObject> nodes)
+    {
+        foreach (var node in nodes)
+        {
+            node.GetComponent<SpriteRenderer>().color = Color.white;
+            node.GetComponent<SpriteRenderer>().material.color = Color.white;
+        }
+    }
+
+    //サブネットワークを物理的に結合し色を変更し、仮想的なネットワークから切り離すメソッド
+    private void FriezeNodes(List<GameObject> nodes)
+    {
+        for(int i=1; i<nodes.Count; i++)
+        {
+            nodes[i].AddComponent<FixedJoint2D>().connectedBody = nodes[i - 1].GetComponent<Rigidbody2D>();
+        }
+        SafeCutNodes(nodes);
+        ChangeColorNodes(nodes);
+    }
+
+    //条件を満たしたときの処理
+    private void CompleteConditions(List<GameObject> nodes)
+    {
+        switch (gameModeManager.NowGameMode)
+        {
+            case GameModeManager.GameMode.PileUp:
+                FriezeNodes(nodes);
+                mainTextManager.TmpPrintMainText("Criteria Met");
+                soundManager.PlayAudio("V_CriteriaMet");
+
+                StartCoroutine(soundManager.PlayAudio("V_Freeze",1.5f));
+                StartCoroutine(mainTextManager.TmpPrintMainText("Freeze",1.5f));
+                break;
         }
     }
 
@@ -277,7 +330,7 @@ public class NetWork : MonoBehaviour
         {
             Debug.Log(string.Join(", ", currentNetwork.myNetwork));
 
-            SafeDestroyNodes(currentNetwork.myNetwork);
+            CompleteConditions(currentNetwork.myNetwork);
             //foreach(var node in currentNetwork.myNetwork)
             //{
             //    node.gameObject.GetComponent<SpriteRenderer>().color = Color.white;
