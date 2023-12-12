@@ -26,7 +26,7 @@ public class SoundManager : MonoBehaviour
                 SE_done.Play();
                 break;
             default:
-                Debug.LogError("SoundManagerのRiciteメソッドの引数が間違っています。");
+                Debug.LogError("SoundManagerのPlayAudioメソッドの引数が間違っています。");
                 break;
         }
     }
