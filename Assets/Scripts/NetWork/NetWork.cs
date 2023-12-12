@@ -134,6 +134,27 @@ public class NetWork : MonoBehaviour
         }
     }
 
+    //サブネットワークの色を変更させるメソッド
+    private void ChangeColorNodes(List<GameObject> nodes)
+    {
+        foreach (var node in nodes)
+        {
+            node.GetComponent<SpriteRenderer>().color = Color.white;
+            node.GetComponent<SpriteRenderer>().material.color = Color.white;
+        }
+    }
+
+    //サブネットワークを物理的に結合し色を変更し、仮想的なネットワークから切り離すメソッド
+    private void FriezeNodes(List<GameObject> nodes)
+    {
+        for(int i=1; i<nodes.Count; i++)
+        {
+            nodes[i].AddComponent<FixedJoint2D>().connectedBody = nodes[i - 1].GetComponent<Rigidbody2D>();
+        }
+        SafeCutNodes(nodes);
+        ChangeColorNodes(nodes);
+    }
+
     //サブグラフの最も少ない素数のキーを返す関数
     public int SearchMinNode()
     {
@@ -291,7 +312,7 @@ public class NetWork : MonoBehaviour
         {
             Debug.Log(string.Join(", ", currentNetwork.myNetwork));
 
-            SafeDestroyNodes(currentNetwork.myNetwork);
+            FriezeNodes(currentNetwork.myNetwork);
             //foreach(var node in currentNetwork.myNetwork)
             //{
             //    node.gameObject.GetComponent<SpriteRenderer>().color = Color.white;
