@@ -19,6 +19,7 @@ public class FitScreenSize : MonoBehaviour
         //この大枠の処理を行ったのち、子要素のリサイジングを行う。
         foreach (Transform child in transform)
         {
+            if (child.gameObject.name == "DoneText") continue;
             child.gameObject.SetActive(true);
         }
     }

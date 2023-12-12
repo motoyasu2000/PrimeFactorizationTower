@@ -28,6 +28,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI upNumberText; //画面上部の合成数のテキスト
     [SerializeField] TextMeshProUGUI nextUpNumberText;
     [SerializeField] TextMeshProUGUI remainingNumberText;
+    [SerializeField] TextMeshProUGUI MainText;
 
     int nowPhase = 1; //現在のphase
     int nowUpNumber = 1;
@@ -43,6 +44,9 @@ public class GameManager : MonoBehaviour
 
     [SerializeField]Queue<int> upNumberqueue = new Queue<int>();
 
+    SoundManager soundManager;
+
+
 
     void Start()
     {
@@ -54,6 +58,7 @@ public class GameManager : MonoBehaviour
         }
         afterField = blockField.transform.Find("AfterField").gameObject;
         upNumberqueue.Enqueue(GenerateUpNumber());
+        soundManager = transform.Find("SoundManager").GetComponent<SoundManager>();
     }
 
     // Update is called once per frame
@@ -93,9 +98,11 @@ public class GameManager : MonoBehaviour
             completeNumberFlag = true;
         }
 
+        //合成数達成時の処理
         if(completeNumberFlag)
         {
-            RemoveUpNumber();
+            RemoveUpNumber(); //上の数字の消去
+            soundManager.PlayAudio("SE_Done"); //doneの再生
         }
     }
 
@@ -152,5 +159,19 @@ public class GameManager : MonoBehaviour
     public static void GameOver()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    void TmpPrintMainText(string str)
+    {
+        MainText.gameObject.SetActive(true);
+        MainText.text = str;
+        StartCoroutine(HiddenMainText());
+    }
+
+    IEnumerator HiddenMainText()
+    {
+        yield return new WaitForSeconds(1.2f);
+        MainText.gameObject.SetActive(false);
+        yield return null;
     }
 }
