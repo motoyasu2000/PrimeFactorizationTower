@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class SoundManager : MonoBehaviour
 {
-    [SerializeField] AudioSource done;
+    [SerializeField] AudioSource Voice_done;
+    [SerializeField] AudioSource SE_done;
     void Start()
     {
     }
@@ -14,12 +15,15 @@ public class SoundManager : MonoBehaviour
     {
         
     }
-    public void Recite(string name)
+    public void PlayAudio(string name)
     {
         switch (name)
         {
-            case "Done":
-                done.Play();
+            case "V_Done":
+                Voice_done.Play();
+                break;
+            case "SE_Done":
+                SE_done.Play();
                 break;
             default:
                 Debug.LogError("SoundManagerのRiciteメソッドの引数が間違っています。");

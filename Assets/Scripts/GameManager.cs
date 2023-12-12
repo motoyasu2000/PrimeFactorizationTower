@@ -28,7 +28,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI upNumberText; //画面上部の合成数のテキスト
     [SerializeField] TextMeshProUGUI nextUpNumberText;
     [SerializeField] TextMeshProUGUI remainingNumberText;
-    [SerializeField] TextMeshProUGUI DoneText;
+    [SerializeField] TextMeshProUGUI MainText;
 
     int nowPhase = 1; //現在のphase
     int nowUpNumber = 1;
@@ -102,8 +102,7 @@ public class GameManager : MonoBehaviour
         if(completeNumberFlag)
         {
             RemoveUpNumber(); //上の数字の消去
-            soundManager.Recite("Done"); //doneの読み上げ
-            TmpPrintDone();
+            soundManager.PlayAudio("SE_Done"); //doneの再生
         }
     }
 
@@ -162,17 +161,17 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
-    void TmpPrintDone()
+    void TmpPrintMainText(string str)
     {
-        DoneText.gameObject.SetActive(true);
-        DoneText.text = "Done";
-        StartCoroutine(HiddenDone());
+        MainText.gameObject.SetActive(true);
+        MainText.text = str;
+        StartCoroutine(HiddenMainText());
     }
 
-    IEnumerator HiddenDone()
+    IEnumerator HiddenMainText()
     {
         yield return new WaitForSeconds(1.2f);
-        DoneText.gameObject.SetActive(false);
+        MainText.gameObject.SetActive(false);
         yield return null;
     }
 }
