@@ -69,6 +69,11 @@ public abstract class BlockInfo : MonoBehaviour
         return neighborEdge;
     }
 
+    public void RemoveEdges()
+    {
+        neighborEdge = null;
+    }
+
     public void EnableCollider()
     {
         myCollider.enabled = true;
