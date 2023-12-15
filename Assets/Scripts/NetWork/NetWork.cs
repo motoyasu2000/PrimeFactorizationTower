@@ -125,6 +125,9 @@ public class NetWork : MonoBehaviour
         }
         //ネットワークからそのノードを削除
         allNodes.Remove(originNode);
+        //ブロックの情報も失わせる。
+        originNode.GetComponent<BlockInfo>().enabled = false;
+
     }
 
     //ネットワークから特定のサブネットワークを切り離すメソッド
