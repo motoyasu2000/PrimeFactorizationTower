@@ -15,7 +15,8 @@ public class NetWork : MonoBehaviour
     [SerializeField] GameModeManager gameModeManager;
     [SerializeField] SoundManager soundManager;
     [SerializeField] MainTextManager mainTextManager;
-
+    Queue<(ExpandNetwork, Dictionary<int, int>)> startExpandNetworks = new Queue<(ExpandNetwork, Dictionary<int, int>)>(); //ネットワークの拡張を開始する最初のサブネットワークをリストとして保存しておく。非同期の処理を一つずつ実行するため、タプルの２つ目の要素は条件の辞書
+    bool wasCriteriaMet = false;
 
     private void Start()
     {
@@ -24,6 +25,23 @@ public class NetWork : MonoBehaviour
         {
             nodesDict.Add(value, new List<GameObject>());
         }
+    }
+
+    private void Update()
+    {
+        if (startExpandNetworks.Count == 0) return;
+        //foreach(var currentNetwork in startExpandNetworks)
+        //{
+        //    ExpandAndSearch(currentNetwork.Item1, currentNetwork.Item2);
+        //}
+        var item = startExpandNetworks.Dequeue();
+        foreach(var block in item.Item1.myNetwork)
+        {
+            if (block.GetComponent<BlockInfo>().enabled == false) return; //もうネットワークから切り離されて処理を行う予定でないブロックもこの中に含まれてしまっており、そのようなものは条件を満たさない。
+        }
+        wasCriteriaMet = false;
+        ExpandAndSearch(item.Item1, item.Item2);
+
     }
 
     //ノードの追加、allNodesとnodesDictの更新を行う。
@@ -306,7 +324,7 @@ public class NetWork : MonoBehaviour
         }
     }
 
-    public void SearchMatchingPattern(Dictionary<int, int> requiredNodesDict, HashSet<GameObject> neiborSet)
+    public void AddStartExpandNetworks(Dictionary<int, int> requiredNodesDict, HashSet<GameObject> neiborSet)
     {
         ExpandNetwork currentNetwork = null;
         foreach (var startNode in neiborSet)
@@ -322,15 +340,18 @@ public class NetWork : MonoBehaviour
         }
         //Debug.Log(string.Join(", ",currentNetwork.myNetwork));
         //ネットワークを拡張していく処理
-        ExpandAndSearch(currentNetwork, requiredNodesDict);
+        startExpandNetworks.Enqueue(new (currentNetwork,requiredNodesDict));
     }
 
     //ネットワークを拡張しながらサブグラフを探索する再帰的メソッド
     private void ExpandAndSearch(ExpandNetwork currentNetwork, Dictionary<int, int> requiredNodesDict)
     {
+        if (wasCriteriaMet) return; //もし現在のフレームで条件を達成済みならreturnする 1フレームあたりに一つの衝突パターンからの検知しか行わないので1フレーム内で発見済みならそれ以上探さなくてよい
+        Debug.Log(string.Join(", ", currentNetwork.myNetwork));
         //Debug.Log(string.Join(", ", currentNetwork));
         if (currentNetwork.ContainsAllRequiredNodes(requiredNodesDict))
         {
+            wasCriteriaMet = true;
             Debug.Log(string.Join(", ", currentNetwork.myNetwork));
 
             CompleteConditions(currentNetwork.myNetwork);
@@ -357,6 +378,7 @@ public class NetWork : MonoBehaviour
 
             foreach (var adjacentNode in adjacentNodes)
             {
+                if (adjacentNode.gameObject.GetComponent<BlockInfo>().enabled == false) continue; //ネットワークから切り離されてblockinfoがなくなったブロックに対してもadjacentNodesに含まれる可能性があるのではじいておく。
                 ExpandNetwork newNetwork = new ExpandNetwork(currentNetwork, adjacentNode, requiredNodesDict);
                 if (newNetwork.BackFlag)
                 {
@@ -366,35 +388,5 @@ public class NetWork : MonoBehaviour
                 ExpandAndSearch(newNetwork, requiredNodesDict);
             }
         }
-    }
-
-    
-
-
-    private void Update()
-    {
-        //Debug.Log(subNodesDict.Count);
-        //foreach (var nodes in nodesDict)
-        //{
-        //    Debug.Log($"number: {nodes.Key}  nodesCount:{nodes.Value.Count}");
-        //}
-        //SearchMinNode();
-        //if (allNodes.Count > 3) 
-        //{
-
-        //foreach(var node in subNodes)
-        //{
-        //    Debug.Log($"node:{node.name}");
-        //}
-        //foreach (var nodePair in subNodesDict)
-        //{
-        //    Debug.Log(nodePair.Key + "  " + nodePair.Value.Count);
-        //    foreach (var node in nodePair.Value)
-        //    {
-        //        Debug.Log($"{nodePair.Key} -----> {node}");
-        //    }
-        //}
-
-        //}
     }
 }
