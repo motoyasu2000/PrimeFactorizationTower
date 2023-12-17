@@ -346,7 +346,7 @@ public class NetWork : MonoBehaviour
     //ネットワークを拡張しながらサブグラフを探索する再帰的メソッド
     private void ExpandAndSearch(ExpandNetwork currentNetwork, Dictionary<int, int> requiredNodesDict)
     {
-        if (wasCriteriaMet) return; //もし現在のフレームで条件を達成済みならreturnする 1フレームあたりに一つの衝突パターンからの検知しか行わないので1フレーム内で発見済みならそれ以上探さなくてよい
+        if (wasCriteriaMet) return; //もし現在のフレームで条件を達成済みならreturnする 1フレームあたりに一つの衝突パターンからの検知しか行わないので1フレーム内で発見済みならそれ以上探さなくてよい 単一の衝突から探索する条件を満たすサブネットワークが複数存在する場合があるが、見つけるのは一つでいいということ。
         Debug.Log(string.Join(", ", currentNetwork.myNetwork));
         //Debug.Log(string.Join(", ", currentNetwork));
         if (currentNetwork.ContainsAllRequiredNodes(requiredNodesDict))
