@@ -29,6 +29,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI nextUpNumberText;
     [SerializeField] TextMeshProUGUI remainingNumberText;
     [SerializeField] TextMeshProUGUI MainText;
+    [SerializeField] TextMeshProUGUI scoreText;
 
     int nowPhase = 1; //現在のphase
     int nowUpNumber = 1;
@@ -40,11 +41,16 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject completedField;
 
     bool isGroundAll = false;
+    bool isGroundAll_past = false;
+    public bool IsGroundAll => isGroundAll;
+    public bool IsGroundAll_past => isGroundAll_past;
     bool completeNumberFlag = false;
 
     [SerializeField]Queue<int> upNumberqueue = new Queue<int>();
 
     SoundManager soundManager;
+    ScoreManager scoreManager;
+    GameModeManager gameModeManager;
 
 
 
@@ -59,6 +65,8 @@ public class GameManager : MonoBehaviour
         afterField = blockField.transform.Find("AfterField").gameObject;
         upNumberqueue.Enqueue(GenerateUpNumber());
         soundManager = transform.Find("SoundManager").GetComponent<SoundManager>();
+        scoreManager = transform.Find("ScoreManager").GetComponent <ScoreManager>();
+        gameModeManager = transform.Find("GameModeManager").GetComponent<GameModeManager>();
     }
 
     // Update is called once per frame
@@ -73,6 +81,8 @@ public class GameManager : MonoBehaviour
             remainingNumberText.text = nowUpNumber.ToString(); //残りの数値を更新するタイミングで残りナンバーを更新する必要がある。
         }
 
+        isGroundAll_past = isGroundAll;
+
         isGroundAll = true; //初期はtrueにしておく(現状使っていない)
         allBlockNumber = 1; //初期は1にしておく(現状使っていない)
         foreach (Transform block in afterField.transform) //すべてのゲームオブジェクトのチェック
@@ -82,7 +92,7 @@ public class GameManager : MonoBehaviour
             {
                 isGroundAll = false; //isGroundAllはfalse
             }
-            
+
             allBlockNumber *= blockInfo.GetNumber();//もしblockの素数が上の合成数の素因数じゃなかったら
             remainingNumberText.text = (nowUpNumber / allBlockNumber).ToString(); //残りの数字を計算して描画。ただしafterFieldが空になるとこの中の処理が行われなくなるので
                                                                                       //UpNumberの更新のたびに、この値も更新してあげる必要がある。
@@ -90,6 +100,23 @@ public class GameManager : MonoBehaviour
             if (nowUpNumber % allBlockNumber != 0)
             {
                 GameOver();
+            }
+        }
+        foreach(Transform block in completedField.transform)
+        {
+            BlockInfo blockInfo = block.GetComponent<BlockInfo>();
+            if (!blockInfo.CheckIsGround()) //一つでも地面に接地してなければ
+            {
+                isGroundAll = false; //isGroundAllはfalse
+            }
+        }
+
+        //もし積み上げモードで、地面に設置しているなら高さを計算する。
+        if(gameModeManager.NowGameMode == GameModeManager.GameMode.PileUp)
+        {
+            if (isGroundAll)
+            {
+                scoreText.text = scoreManager.CalculateAllVerticesHeight().ToString();
             }
         }
 
@@ -133,7 +160,7 @@ public class GameManager : MonoBehaviour
         }
         
         nowPhase++;
-        return 2*2*2*3*3*3*5*5*5*7*7*7;
+        return returnUpNumber;
     }
 
     void RemoveUpNumber()
@@ -160,6 +187,7 @@ public class GameManager : MonoBehaviour
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
+
 
 
 }
