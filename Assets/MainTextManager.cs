@@ -9,7 +9,6 @@ public class MainTextManager : MonoBehaviour
     private void Start()
     {
         mainText = GetComponent<TextMeshProUGUI>();
-        mainText.gameObject.SetActive(false);
     }
     public void TmpPrintMainText(string str)
     {
