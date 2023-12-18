@@ -46,32 +46,51 @@ public class GameManager : MonoBehaviour
     public bool IsGroundAll_past => isGroundAll_past;
     bool completeNumberFlag = false;
 
-    [SerializeField]Queue<int> upNumberqueue = new Queue<int>();
+    [SerializeField] Queue<int> upNumberqueue = new Queue<int>();
 
     SoundManager soundManager;
     ScoreManager scoreManager;
     GameModeManager gameModeManager;
 
+    bool isFirstAwake = true;
 
 
-    void Start()
+    private void Awake()
     {
-        for(int i=0; i<primeNumberPool.Length; i++)
+        DontDestroyOnLoad(gameObject);
+        for (int i = 0; i < primeNumberPool.Length; i++)
         {
             if (primeNumberPool[i] >= 2 && primeNumberPool[i] <= 7) normalPool.Add(primeNumberPool[i]);
             if (primeNumberPool[i] >= 2 && primeNumberPool[i] <= 13) difficultPool.Add(primeNumberPool[i]);
             if (primeNumberPool[i] >= 2 && primeNumberPool[i] <= 23) insanePool.Add(primeNumberPool[i]);
         }
-        afterField = blockField.transform.Find("AfterField").gameObject;
-        upNumberqueue.Enqueue(GenerateUpNumber());
-        soundManager = transform.Find("SoundManager").GetComponent<SoundManager>();
-        scoreManager = transform.Find("ScoreManager").GetComponent <ScoreManager>();
-        gameModeManager = transform.Find("GameModeManager").GetComponent<GameModeManager>();
+        
+
+    }
+    void Start()
+    {
+
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (SceneManager.GetActiveScene().name != "PlayScene") return;
+        if (upNumberText == null)
+        {
+            upNumberText = GameObject.Find("NowUpNumber").GetComponent<TextMeshProUGUI>();
+            nextUpNumberText = GameObject.Find("NextUpNumber").GetComponent<TextMeshProUGUI>();
+            remainingNumberText = GameObject.Find("RemainingNumberText").GetComponent<TextMeshProUGUI>();
+            MainText = GameObject.Find("MainText").GetComponent<TextMeshProUGUI>();
+            scoreText = GameObject.Find("ScoreText").GetComponent<TextMeshProUGUI>();
+            blockField = GameObject.Find("BlockField");
+            completedField = GameObject.Find("CompletedField");
+            afterField = blockField.transform.Find("AfterField").gameObject;
+            upNumberqueue.Enqueue(GenerateUpNumber());
+            soundManager = transform.Find("SoundManager").GetComponent<SoundManager>();
+            scoreManager = transform.Find("ScoreManager").GetComponent<ScoreManager>();
+            gameModeManager = transform.Find("GameModeManager").GetComponent<GameModeManager>();
+        }
         if (string.IsNullOrWhiteSpace(upNumberText.text))//文字列が空であれば
         {
             upNumberqueue.Enqueue(GenerateUpNumber());
@@ -95,14 +114,14 @@ public class GameManager : MonoBehaviour
 
             allBlockNumber *= blockInfo.GetNumber();//もしblockの素数が上の合成数の素因数じゃなかったら
             remainingNumberText.text = (nowUpNumber / allBlockNumber).ToString(); //残りの数字を計算して描画。ただしafterFieldが空になるとこの中の処理が行われなくなるので
-                                                                                      //UpNumberの更新のたびに、この値も更新してあげる必要がある。
+                                                                                  //UpNumberの更新のたびに、この値も更新してあげる必要がある。
 
             if (nowUpNumber % allBlockNumber != 0)
             {
                 GameOver();
             }
         }
-        foreach(Transform block in completedField.transform)
+        foreach (Transform block in completedField.transform)
         {
             BlockInfo blockInfo = block.GetComponent<BlockInfo>();
             if (!blockInfo.CheckIsGround()) //一つでも地面に接地してなければ
@@ -112,21 +131,21 @@ public class GameManager : MonoBehaviour
         }
 
         //もし積み上げモードで、地面に設置しているなら高さを計算する。
-        if(gameModeManager.NowGameMode == GameModeManager.GameMode.PileUp)
+        if (gameModeManager.NowGameMode == GameModeManager.GameMode.PileUp)
         {
             if (isGroundAll)
             {
-                scoreText.text = ((int)(scoreManager.CalculateAllVerticesHeight()*1000)).ToString();
+                scoreText.text = ((int)(scoreManager.CalculateAllVerticesHeight() * 1000)).ToString();
             }
         }
 
-        if(allBlockNumber == nowUpNumber) //もしブロックの数値の積が、上部の合成数と一致していたなら
+        if (allBlockNumber == nowUpNumber) //もしブロックの数値の積が、上部の合成数と一致していたなら
         {
             completeNumberFlag = true;
         }
 
         //合成数達成時の処理
-        if(completeNumberFlag)
+        if (completeNumberFlag)
         {
             RemoveUpNumber(); //上の数字の消去
             soundManager.PlayAudio("SE_Done"); //doneの再生
@@ -158,7 +177,7 @@ public class GameManager : MonoBehaviour
                 returnUpNumber *= randomPrimeNumber;
             }
         }
-        
+
         nowPhase++;
         return returnUpNumber;
     }
@@ -180,7 +199,7 @@ public class GameManager : MonoBehaviour
         upNumberText.text = ""; //テキストの初期化
         allBlockNumber = 1; //素数の積の初期化
         completeNumberFlag = false; //これがtrueの間はblockが生成されないようになっているので、removeの瞬間に直してあげるひつようがある。
-        
+
     }
 
     public static void GameOver()
