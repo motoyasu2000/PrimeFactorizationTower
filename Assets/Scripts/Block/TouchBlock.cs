@@ -23,7 +23,8 @@ public class TouchBlock : MonoBehaviour
         blockInfo = GetComponent<BlockInfo>();
         primeNumberGeneratingPoint = GameObject.Find("PrimeNumberGeneratingPoint");
         singleGenerateManager = primeNumberGeneratingPoint.GetComponent<SingleGenerateManager>();
-        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        if (GameObject.Find("GameManager") != null) gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        else gameManager = GameObject.Find("_GameManager").GetComponent<GameManager>();
         blockField = GameObject.Find("BlockField");
         afterField = blockField.transform.Find("AfterField").gameObject;
         netWork = GameObject.Find("NetWork").GetComponent<NetWork>();

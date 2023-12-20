@@ -20,6 +20,9 @@ public class NetWork : MonoBehaviour
 
     private void Start()
     {
+        gameModeManager = GameObject.Find("GameModeManager").GetComponent<GameModeManager>();
+        soundManager = GameObject.Find("SoundManager").GetComponent<SoundManager>();
+
         //nodeDict‚Ì‰Šú‰»
         foreach (var value in primeNumbers)
         {
