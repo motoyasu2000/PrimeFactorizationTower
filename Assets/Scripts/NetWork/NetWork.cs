@@ -189,9 +189,9 @@ public class NetWork : MonoBehaviour
             case GameModeManager.GameMode.PileUp:
                 FriezeNodes(nodes);
                 mainTextManager.TmpPrintMainText("Criteria Met");
-                soundManager.PlayAudio("V_CriteriaMet");
+                soundManager.PlayAudio(soundManager.VOICE_CRITERIAMAT);
 
-                StartCoroutine(soundManager.PlayAudio("V_Freeze",1.5f));
+                StartCoroutine(soundManager.PlayAudio(soundManager.VOICE_FREEZE,1.5f));
                 StartCoroutine(mainTextManager.TmpPrintMainText("Freeze",1.5f));
                 break;
         }
