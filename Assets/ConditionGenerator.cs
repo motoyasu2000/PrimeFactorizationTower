@@ -9,8 +9,7 @@ public class ConditionGenerator : MonoBehaviour
     DifficultyLevel MyDifficultyLevel => gameManager.MyDifficultyLevel;
     void Start()
     {
-        if (GameObject.Find("GameManager") != null) gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-        else gameManager = GameObject.Find("_GameManager").GetComponent<GameManager>();
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
         Dictionary<int, int> DebugDict = GenerateCondition();
         Debug.Log("Keys : " + string.Join(", ", DebugDict.Keys));
