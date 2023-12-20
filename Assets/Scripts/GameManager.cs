@@ -148,7 +148,7 @@ public class GameManager : MonoBehaviour
         if (completeNumberFlag)
         {
             RemoveUpNumber(); //ã‚Ì”š‚ÌÁ‹
-            soundManager.PlayAudio("SE_Done"); //done‚ÌÄ¶
+            soundManager.PlayAudio(soundManager.SE_DONE); //done‚ÌÄ¶
         }
     }
 
