@@ -10,18 +10,15 @@ public class ScoreManager : MonoBehaviour
     GameObject completedField;
     void Awake()
     {
-
+        blockField = GameObject.Find("BlockField");
+        afterField = blockField.transform.Find("AfterField").gameObject;
+        completedField = blockField.transform.Find("CompletedField").gameObject;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (SceneManager.GetActiveScene().name == "PlayScene" && blockField == null)
-        {
-            blockField = GameObject.Find("BlockField");
-            afterField = blockField.transform.Find("AfterField").gameObject;
-            completedField = blockField.transform.Find("CompletedField").gameObject;
-        }
+        
     }
 
     //全ゲームオブジェクトの頂点から最も高い頂点のy座標を返すメソッド
