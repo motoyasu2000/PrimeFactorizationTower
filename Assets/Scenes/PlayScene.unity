@@ -123,6 +123,50 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &1141479
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1141480}
+  - component: {fileID: 1141481}
+  m_Layer: 0
+  m_Name: ConditionGenerator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1141480
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1141479}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 259954749}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1141481
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1141479}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32a2f7fc41a7c254fa20c380322312cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &59473823
 GameObject:
   m_ObjectHideFlags: 0
@@ -785,7 +829,8 @@ Transform:
   m_LocalPosition: {x: 585, y: 1266, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1141480}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &308109031
@@ -5094,10 +5139,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d6aa88e012a7364fbfdc8a4c597a778, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Voice_done: {fileID: 658914611}
-  Voice_CriteriaMet: {fileID: 1603598916}
-  Voice_Freeze: {fileID: 1129500733}
-  SE_done: {fileID: 308109033}
+  voice_done: {fileID: 0}
+  voice_criteriaMet: {fileID: 0}
+  voice_freeze: {fileID: 0}
+  se_done: {fileID: 0}
 --- !u!1 &1703497008
 GameObject:
   m_ObjectHideFlags: 0
@@ -5258,8 +5303,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -307, y: 755.19}
-  m_SizeDelta: {x: 614, y: 273.40002}
+  m_AnchoredPosition: {x: -428.8203, y: 881.69586}
+  m_SizeDelta: {x: 370.3594, y: 20.3887}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1745967750
 MonoBehaviour:
