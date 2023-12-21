@@ -9,6 +9,7 @@ public class NetWork : MonoBehaviour
 {
     static int[] primeNumbers = { 2, 3, 5, 7, 11, 13, 17, 19, 23 }; //素数配列
     [SerializeField] List<GameObject> allNodes = new List<GameObject>(); //全ノードのリストト
+    [SerializeField] Dictionary<int, List<GameObject>> nodesDict = new Dictionary<int, List<GameObject>>();
     [SerializeField] GameModeManager gameModeManager;
     [SerializeField] SoundManager soundManager;
     [SerializeField] MainTextManager mainTextManager;
@@ -34,6 +35,10 @@ public class NetWork : MonoBehaviour
         {
             freezeSet.Add(key);
         }
+        foreach (var value in primeNumbers)
+        {
+            nodesDict.Add(value, new List<GameObject>());
+        }
     }
 
     private void Update()
@@ -57,6 +62,23 @@ public class NetWork : MonoBehaviour
     public void AddNode(GameObject node)
     {
         allNodes.Add(node);
+        BlockInfo info = node.GetComponent<BlockInfo>();
+        if (System.Array.Exists(primeNumbers, element => element == info.GetNumber()))
+        {
+            if (!nodesDict.ContainsKey(info.GetNumber()))
+            {
+                nodesDict.Add(info.GetNumber(), new List<GameObject>());
+            }
+            nodesDict[info.GetNumber()].Add(node);
+            foreach(var value in nodesDict.Values)
+            {
+                Debug.Log(string.Join(",", value));
+            }
+        }
+        else
+        {
+            Debug.LogError("素数定義外のノードが定義されようとしています。");
+        }
     }
 
     //エッジの更新を行う(削除)
@@ -109,9 +131,10 @@ public class NetWork : MonoBehaviour
         }
         //ネットワークからそのノードを削除
         allNodes.Remove(originNode);
+        //ネットワーク辞書からもそのノードを削除
+        nodesDict[originNode.GetComponent<BlockInfo>().GetNumber()].Remove(originNode);
         //ブロックの情報も失わせる。
         originNode.GetComponent<BlockInfo>().enabled = false;
-
     }
 
     //ネットワークから特定のサブネットワークを切り離すメソッド
@@ -203,7 +226,6 @@ public class NetWork : MonoBehaviour
         //Debug.Log(string.Join(", ",currentNetwork.myNetwork));
         //ネットワークを拡張していく処理
         startExpandNetworks.Enqueue(currentNetwork);
-        Debug.Log(currentNetwork);
     }
 
     //ネットワークを拡張しながらサブグラフを探索する再帰的メソッド

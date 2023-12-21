@@ -146,7 +146,7 @@ public abstract class BlockInfo : MonoBehaviour
         Color myColor = GetComponent<SpriteRenderer>().color;
         GetComponent<SpriteRenderer>().material.SetColor("_GlowColor", myColor);
         GetComponent<SpriteRenderer>().material.SetColor("_Color", myColor);
-        Debug.Log($"{GetComponent<SpriteRenderer>().material.GetColor("_GlowColor")}");
+        //Debug.Log($"{GetComponent<SpriteRenderer>().material.GetColor("_GlowColor")}");
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
