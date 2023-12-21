@@ -158,7 +158,6 @@ public abstract class BlockInfo : MonoBehaviour
         if (collision.gameObject.CompareTag("PrimeNumberBlock") && collision.gameObject.GetComponent<BlockInfo>() != null && IsUpOrRight(gameObject, collision.gameObject))
         {
             netWork.AttachNode(gameObject, collision.gameObject);
-            netWork.CreateSubNetwork(netWork.FreezeSet);　//※※こっちは集合で指定してるけど
             netWork.AddStartExpandNetworks(new HashSet<GameObject> {gameObject, collision.gameObject}); //※※こっちは辞書で指定してるのが気持ち悪いので後で治す！
             //Debug.Log($"myself:{gameObject.name} ------ other:{collision.gameObject.name}");
         }
