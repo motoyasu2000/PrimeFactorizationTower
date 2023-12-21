@@ -43,8 +43,9 @@ public class ExpandNetwork
                 backFlag = true;
             }
         }
-        //Debug.Log(string.Join(", ", closedList));
-        //Debug.Log(string.Join(", ", myNetwork));
+        closedList.Add(nowNode);
+        Debug.Log(string.Join(", ", closedList));
+        Debug.Log(string.Join(", ", myNetwork));
     }
 
     // ネットワークに隣接ノードを追加するメソッド（重複を防ぐ）
