@@ -70,10 +70,10 @@ public class NetWork : MonoBehaviour
                 nodesDict.Add(info.GetNumber(), new List<GameObject>());
             }
             nodesDict[info.GetNumber()].Add(node);
-            foreach(var value in nodesDict.Values)
-            {
-                Debug.Log(string.Join(",", value));
-            }
+            //foreach(var value in nodesDict.Values)
+            //{
+            //    Debug.Log(string.Join(",", value));
+            //}
         }
         else
         {
@@ -184,6 +184,29 @@ public class NetWork : MonoBehaviour
         }
     }
 
+    //ネットワーク全体に条件にマッチするものがないかを探索するためのメソッド
+    void CheckConditionAllNetwork()
+    {
+        int minNodeNum = int.MaxValue; //条件に存在するノードの数字の内、ネットワーク内に最小個数である数字の個数を格納する変数
+        int minNode = -1; //最小個数の素数
+        //条件に存在する素数を全探索し、最小個数のものを探す
+        foreach(int valueInFreezeCondition in freezeCondition.Keys)
+        {
+            //もし、現在の最小個数よりも、今見ている条件の個数のほうがすくなかったら、最小個数の更新と最小個数の素数が何であるのかの更新をする。
+            if(minNodeNum > nodesDict[valueInFreezeCondition].Count)
+            {
+                minNodeNum = nodesDict[valueInFreezeCondition].Count;
+                minNode = valueInFreezeCondition;
+            }
+        }
+
+        //最小個数の素数はすでに求まっているので、それに対してfor分を回してstartExpandNetworks
+        foreach(var node in nodesDict[minNode])
+        {
+            startExpandNetworks.Enqueue(new ExpandNetwork(null, node, freezeCondition));
+        }
+    }
+
     //パターンマッチングのロジック
     bool ContainsAllRequiredNodes(List<GameObject> myNetwork, Dictionary<int, int> requiredNodesDict)
     {
@@ -231,20 +254,18 @@ public class NetWork : MonoBehaviour
     //ネットワークを拡張しながらサブグラフを探索する再帰的メソッド
     private void ExpandAndSearch(ExpandNetwork currentNetwork)
     {
-        if (wasCriteriaMet) return; //もし現在のフレームで条件を達成済みならreturnする 1フレームあたりに一つの衝突パターンからの検知しか行わないので1フレーム内で発見済みならそれ以上探さなくてよい 単一の衝突から探索する条件を満たすサブネットワークが複数存在する場合があるが、見つけるのは一つでいいということ。
+        //if (wasCriteriaMet) return; //もし現在のフレームで条件を達成済みならreturnする 1フレームあたりに一つの衝突パターンからの検知しか行わないので1フレーム内で発見済みならそれ以上探さなくてよい 単一の衝突から探索する条件を満たすサブネットワークが複数存在する場合があるが、見つけるのは一つでいいということ。
         //Debug.Log(string.Join(", ", currentNetwork.myNetwork));
         //Debug.Log(string.Join(", ", currentNetwork));
 
         if (ContainsAllRequiredNodes(currentNetwork.myNetwork, freezeCondition))
         {
-            wasCriteriaMet = true;
+            //wasCriteriaMet = true;
             Debug.Log(string.Join(", ", currentNetwork.myNetwork));
 
             CompleteConditions(currentNetwork.myNetwork);
-            //foreach(var node in currentNetwork.myNetwork)
-            //{
-            //    node.gameObject.GetComponent<SpriteRenderer>().color = Color.white;
-            //}
+            startExpandNetworks = new Queue<ExpandNetwork>(); //探索が完了したらもうネットワーク内に条件を満たすものが存在しないと考えられるので、キューをリセットしておく。
+            CheckConditionAllNetwork();
 
             return;
         }
