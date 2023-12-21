@@ -7,13 +7,10 @@ public class ConditionGenerator : MonoBehaviour
 {
     GameManager gameManager;
     DifficultyLevel MyDifficultyLevel => gameManager.MyDifficultyLevel;
+
     void Start()
     {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-
-        Dictionary<int, int> DebugDict = GenerateCondition();
-        Debug.Log("Keys : " + string.Join(", ", DebugDict.Keys));
-        Debug.Log("Values : " + string.Join(", ", DebugDict.Values));
     }
 
     // Update is called once per frame
@@ -39,6 +36,8 @@ public class ConditionGenerator : MonoBehaviour
                 if (!returnDict.TryAdd(randomPrimeNumber,1)) returnDict[randomPrimeNumber] += 1;
             }
         }
+        Debug.Log("Keys : " + string.Join(",", returnDict.Keys));
+        Debug.Log("Values : " + string.Join(",", returnDict.Values));
         return returnDict;
     }
 }
