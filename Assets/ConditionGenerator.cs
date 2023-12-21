@@ -25,7 +25,7 @@ public class ConditionGenerator : MonoBehaviour
         int randomIndex;
         int randomPrimeNumber;
 
-        int rand = Random.Range(3, 6);
+        int rand = Random.Range(3, 4);
 
         if (MyDifficultyLevel == DifficultyLevel.Normal)
         {
