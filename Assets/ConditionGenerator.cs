@@ -1,25 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static GameManager;
 
 public class ConditionGenerator : MonoBehaviour
 {
     GameManager gameManager;
-    DifficultyLevel MyDifficultyLevel => gameManager.MyDifficultyLevel;
+    GameModeManager gameModeManager;
     [SerializeField] ConditionNumberManager conditionNumberManager;
 
     void Start()
     {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        gameModeManager = GameObject.Find("GameModeManager").GetComponent<GameModeManager>();
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public Dictionary<int,int> GenerateCondition()
     {
         Dictionary<int,int> returnDict = new Dictionary<int,int>();
@@ -30,12 +23,12 @@ public class ConditionGenerator : MonoBehaviour
 
         int rand = Random.Range(3, 4);
 
-        if (MyDifficultyLevel == DifficultyLevel.Normal)
+        if (gameModeManager.MyDifficultyLevel == GameModeManager.DifficultyLevel.Normal)
         {
             for (int i = 0; i<rand; i++)
             {
-                randomIndex = Random.Range(0, gameManager.NormalPool.Count);
-                randomPrimeNumber = gameManager.NormalPool[randomIndex];
+                randomIndex = Random.Range(0, gameModeManager.NormalPool.Count);
+                randomPrimeNumber = gameModeManager.NormalPool[randomIndex];
                 resultCompositNumber *= randomPrimeNumber;
                 if (!returnDict.TryAdd(randomPrimeNumber,1)) returnDict[randomPrimeNumber] += 1;
             }

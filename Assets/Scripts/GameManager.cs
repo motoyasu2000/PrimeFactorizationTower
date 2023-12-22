@@ -6,28 +6,6 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    //難易度を表す列挙型の定義
-    public enum DifficultyLevel
-    {
-        Normal,
-        difficult,
-        Insane
-    }
-
-    DifficultyLevel myDifficultyLevel = DifficultyLevel.Normal; //難易度型の変数を定義、とりあえずNormalで初期化 適切なタイミングで難易度調整ができるように切り替える必要がある。
-    public DifficultyLevel MyDifficultyLevel => myDifficultyLevel;
-
-    int[] primeNumberPool = new int[9]
-    {
-        2,3,5,7,11,13,17,19,23
-    };
-
-    List<int> normalPool = new List<int>();
-    List<int> difficultPool = new List<int>();
-    List<int> insanePool = new List<int>();
-
-    public List<int> NormalPool => normalPool;
-
     [SerializeField] TextMeshProUGUI upNumberText; //画面上部の合成数のテキスト
     [SerializeField] TextMeshProUGUI nextUpNumberText;
     [SerializeField] TextMeshProUGUI remainingNumberText;
@@ -57,22 +35,11 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        for (int i = 0; i < primeNumberPool.Length; i++)
-        {
-            if (primeNumberPool[i] >= 2 && primeNumberPool[i] <= 7) normalPool.Add(primeNumberPool[i]);
-            if (primeNumberPool[i] >= 2 && primeNumberPool[i] <= 13) difficultPool.Add(primeNumberPool[i]);
-            if (primeNumberPool[i] >= 2 && primeNumberPool[i] <= 23) insanePool.Add(primeNumberPool[i]);
-        }
         afterField = blockField.transform.Find("AfterField").gameObject;
-        upNumberqueue.Enqueue(GenerateUpNumber());
         soundManager = transform.Find("SoundManager").GetComponent<SoundManager>();
         scoreManager = transform.Find("ScoreManager").GetComponent<ScoreManager>();
-        gameModeManager = transform.Find("GameModeManager").GetComponent<GameModeManager>();
-    }
-
-    void Start()
-    {
-
+        gameModeManager = GameModeManager.GameModemanagerInstance;
+        upNumberqueue.Enqueue(GenerateUpNumber());
     }
 
     // Update is called once per frame
@@ -144,23 +111,18 @@ public class GameManager : MonoBehaviour
         return completeNumberFlag;
     }
 
-    void ChangeDifficultyLevel(DifficultyLevel newDifficultyLevel)
-    {
-        myDifficultyLevel = newDifficultyLevel;
-    }
-
     int GenerateUpNumber()
     {
         int randomIndex;
         int randomPrimeNumber;
         int returnUpNumber = 1;
 
-        if (myDifficultyLevel == DifficultyLevel.Normal)
+        if (gameModeManager.MyDifficultyLevel == GameModeManager.DifficultyLevel.Normal)
         {
             for (int i = 0; i < 2 + (int)(Random.value * nowPhase / 2); i++)
             {
-                randomIndex = Random.Range(0, normalPool.Count);
-                randomPrimeNumber = normalPool[randomIndex];
+                randomIndex = Random.Range(0, gameModeManager.NormalPool.Count);
+                randomPrimeNumber = gameModeManager.NormalPool[randomIndex];
                 returnUpNumber *= randomPrimeNumber;
             }
         }
