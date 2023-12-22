@@ -8,22 +8,33 @@ using UnityEngine;
 public class NetWork : MonoBehaviour
 {
     static int[] primeNumbers = { 2, 3, 5, 7, 11, 13, 17, 19, 23 }; //素数配列
-    [SerializeField] List<GameObject> allNodes = new List<GameObject>(); //全ノードのリスト
-    [SerializeField] Dictionary<int, List<GameObject>> nodesDict = new Dictionary<int, List<GameObject>>(); //各ノードがいくつあるのかを格納したリスト
-    List<GameObject> subNodes = new List<GameObject>(); //サブネットワーク用のリスト
-    [SerializeField] Dictionary<int, List<GameObject>> subNodesDict = new Dictionary<int, List<GameObject>>(); //探索用のサブネットワークに各ノードがいくつあるのかを格納したリスト
+    [SerializeField] List<GameObject> allNodes = new List<GameObject>(); //全ノードのリストト
+    [SerializeField] Dictionary<int, List<GameObject>> nodesDict = new Dictionary<int, List<GameObject>>();
     [SerializeField] GameModeManager gameModeManager;
     [SerializeField] SoundManager soundManager;
     [SerializeField] MainTextManager mainTextManager;
-    Queue<(ExpandNetwork, Dictionary<int, int>)> startExpandNetworks = new Queue<(ExpandNetwork, Dictionary<int, int>)>(); //ネットワークの拡張を開始する最初のサブネットワークをリストとして保存しておく。非同期の処理を一つずつ実行するため、タプルの２つ目の要素は条件の辞書
+    ConditionGenerator conditionGenerator;
+    public ConditionGenerator _conditionGenerator => conditionGenerator;
+    [SerializeField]Dictionary<int, int> freezeCondition;
+    HashSet<int> freezeSet = new HashSet<int>();
+    public HashSet<int> FreezeSet => freezeSet;
+
+    public Dictionary<int, int> FreezeCondition => freezeCondition;
+    Queue<ExpandNetwork> startExpandNetworks = new Queue<ExpandNetwork>(); //ネットワークの拡張を開始する最初のサブネットワークをリストとして保存しておく。非同期の処理を一つずつ実行するため、タプルの２つ目の要素は条件の辞書
     bool wasCriteriaMet = false;
+
 
     private void Start()
     {
         gameModeManager = GameObject.Find("GameModeManager").GetComponent<GameModeManager>();
         soundManager = GameObject.Find("SoundManager").GetComponent<SoundManager>();
+        conditionGenerator = transform.Find("ConditionGenerator").GetComponent<ConditionGenerator>();
 
-        //nodeDictの初期化
+        freezeCondition = _conditionGenerator.GenerateCondition();
+        foreach(var key in freezeCondition.Keys)
+        {
+            freezeSet.Add(key);
+        }
         foreach (var value in primeNumbers)
         {
             nodesDict.Add(value, new List<GameObject>());
@@ -38,12 +49,12 @@ public class NetWork : MonoBehaviour
         //    ExpandAndSearch(currentNetwork.Item1, currentNetwork.Item2);
         //}
         var item = startExpandNetworks.Dequeue();
-        foreach(var block in item.Item1.myNetwork)
+        foreach(var block in item.myNetwork)
         {
             if (block.GetComponent<BlockInfo>().enabled == false) return; //もうネットワークから切り離されて処理を行う予定でないブロックもこの中に含まれてしまっており、そのようなものは条件を満たさない。
         }
         wasCriteriaMet = false;
-        ExpandAndSearch(item.Item1, item.Item2);
+        ExpandAndSearch(item);
 
     }
 
@@ -59,41 +70,15 @@ public class NetWork : MonoBehaviour
                 nodesDict.Add(info.GetNumber(), new List<GameObject>());
             }
             nodesDict[info.GetNumber()].Add(node);
+            //foreach(var value in nodesDict.Values)
+            //{
+            //    Debug.Log(string.Join(",", value));
+            //}
         }
         else
         {
             Debug.LogError("素数定義外のノードが定義されようとしています。");
         }
-    }
-
-    //与えられたパターンからallnodeを切り取り、サブネットワークを作る。(subnodesとsubnodesdictの更新)
-    public void CreateSubNetwork(HashSet<int> subNetPattern)
-    {
-        subNodes = new List<GameObject>(); //サブネットワークをリセット
-        //サブグラフの作成
-        foreach (GameObject mainNode in allNodes)
-        {
-            int mainNodeNum = mainNode.GetComponent<BlockInfo>().GetNumber();
-            if (subNetPattern.Contains(mainNodeNum))
-            {
-                subNodes.Add(mainNode); //サブグラフのノードを更新
-                RenuealSubgraphDict(mainNodeNum); //サブグラフの辞書を更新するメソッド
-            }
-        }
-        //エッジの消去
-        foreach (var subnode in allNodes)
-        {
-            subnode.GetComponent<BlockInfo>().DeleteMissNeighberBlock(subNetPattern);
-        }
-
-        //デバッグ用
-        //foreach (var subnode in subNodes)
-        //{
-        //    foreach (var neighbor in subnode.GetComponent<BlockInfo>().GetNeighborEdge())
-        //    {
-        //        Debug.Log($"{subnode.name}-------------{neighbor.name}");
-        //    }
-        //}
     }
 
     //エッジの更新を行う(削除)
@@ -146,9 +131,10 @@ public class NetWork : MonoBehaviour
         }
         //ネットワークからそのノードを削除
         allNodes.Remove(originNode);
+        //ネットワーク辞書からもそのノードを削除
+        nodesDict[originNode.GetComponent<BlockInfo>().GetNumber()].Remove(originNode);
         //ブロックの情報も失わせる。
         originNode.GetComponent<BlockInfo>().enabled = false;
-
     }
 
     //ネットワークから特定のサブネットワークを切り離すメソッド
@@ -193,175 +179,93 @@ public class NetWork : MonoBehaviour
 
                 StartCoroutine(soundManager.PlayAudio(soundManager.VOICE_FREEZE,1.5f));
                 StartCoroutine(mainTextManager.TmpPrintMainText("Freeze",1.5f));
+                freezeCondition = _conditionGenerator.GenerateCondition();
                 break;
         }
     }
 
-    //サブグラフの最も少ない素数のキーを返す関数
-    public int SearchMinNode()
+    //ネットワーク全体に条件にマッチするものがないかを探索するためのメソッド
+    void CheckConditionAllNetwork()
     {
-        int nowNodeCount = -1;
-        int minNodeCount = int.MaxValue;
-        int minNodeNumber = -1;
-        foreach (var nodes in subNodesDict)
+        int minNodeNum = int.MaxValue; //条件に存在するノードの数字の内、ネットワーク内に最小個数である数字の個数を格納する変数
+        int minNode = -1; //最小個数の素数
+        //条件に存在する素数を全探索し、最小個数のものを探す
+        foreach(int valueInFreezeCondition in freezeCondition.Keys)
         {
-            nowNodeCount = nodes.Value.Count;
-            if (minNodeCount > nowNodeCount)
+            //もし、現在の最小個数よりも、今見ている条件の個数のほうがすくなかったら、最小個数の更新と最小個数の素数が何であるのかの更新をする。
+            if(minNodeNum > nodesDict[valueInFreezeCondition].Count)
             {
-                minNodeCount = nowNodeCount;
-                minNodeNumber = nodes.Key;
+                minNodeNum = nodesDict[valueInFreezeCondition].Count;
+                minNode = valueInFreezeCondition;
             }
         }
-        //Debug.Log("最もネットワーク内部に少ない素数" + minNodeNumber);
-        return minNodeNumber;
-    }
 
-    //サブグラフの辞書を更新するメソッド
-    void RenuealSubgraphDict(int mainNodeNum)
-    {
-        //サブグラフの各素数の辞書を更新
-        if (!subNodesDict.ContainsKey(mainNodeNum)) //キーがぞんざいしないときのみ、メインのnodesDictのキーバリューのセットを入れる。allNodesに対してfor分を回しているので、重複の可能性もあるため
+        //最小個数の素数はすでに求まっているので、それに対してfor分を回してstartExpandNetworks
+        foreach(var node in nodesDict[minNode])
         {
-            subNodesDict.Add(mainNodeNum, nodesDict[mainNodeNum]);
-            //foreach (var pair in subNodesDict)
-            //{
-            //    foreach (var value in pair.Value)
-            //    {
-            //        Debug.Log($"{pair.Key} ： {value.name}");
-            //    }
-            //}
-
-        }
-        //もし存在すればサブグラフの辞書をリセットし、再生成
-        else
-        {
-            subNodesDict = new Dictionary<int, List<GameObject>>();
-            subNodesDict.Add(mainNodeNum, nodesDict[mainNodeNum]);
-            //foreach (var pair in subNodesDict)
-            //{
-            //    foreach (var value in pair.Value)
-            //    {
-            //        Debug.Log($"{pair.Key} ： {value.name}");
-            //    }
-            //}
+            startExpandNetworks.Enqueue(new ExpandNetwork(null, node, freezeCondition));
         }
     }
 
-    //このネットワークを拡張していきpatternにマッチしたgraphを探索する。拡張するとは拡張されたインスタンスを生成することで、後退するとはbeforeNetworkに戻り、戻る前に追加していたリストをクローズドリストに追加する。
-    class ExpandNetwork
+    //パターンマッチングのロジック
+    bool ContainsAllRequiredNodes(List<GameObject> myNetwork, Dictionary<int, int> requiredNodesDict)
     {
-        public List<GameObject> myNetwork { get; private set; } = new List<GameObject>(); //現在のネットワーク情報
-        public List<GameObject> closedList { get; private set; } = new List<GameObject>(); //現在のネットワークに対するクローズドリスト。これより小さいクローズドリストの情報も引き継ぐ。
-        ExpandNetwork beforeNetwork;　//ひとつ前のネットワークに戻ることがあるので必要
-        public ExpandNetwork Beforenetwork => beforeNetwork;
-        bool backFlag = false;
-        public bool BackFlag => backFlag;
+        Dictionary<int, int> requiredCounts = new Dictionary<int, int>(requiredNodesDict);
+        //Debug.Log(string.Join(", ", requiredCounts));
 
-        //コンストラクタ。呼び出す側から見て、現在のネットワークと追加したいノードを引数で指定する。
-        public ExpandNetwork(ExpandNetwork beforeNetwork, GameObject nowNode, Dictionary<int, int> requiredNodesDict)
+        //現在のネットワーク内のノードの出現回数をカウント
+        foreach (var node in myNetwork)
         {
-            
-            //beforeNetworkがある==１番目以降のノード => closedListとmyNetworkをbeforeNetworkで初期化
-            if (beforeNetwork != null)
+            int nodeValue = node.GetComponent<BlockInfo>().GetNumber();
+            if (requiredCounts.ContainsKey(nodeValue))
             {
-                closedList = new List<GameObject>(beforeNetwork.closedList);
-                myNetwork = new List<GameObject>(beforeNetwork.myNetwork);
-                this.beforeNetwork = beforeNetwork;
+                requiredCounts[nodeValue]--;
+                if (requiredCounts[nodeValue] == 0)
+                    requiredCounts.Remove(nodeValue);
             }
-            if(beforeNetwork != null) beforeNetwork.closedList.Add(nowNode); //一個前のネットワークに今追加したノードをクローズドリストに追加する。
-            // ノードが要件を満たしているか確認
-            int nodeValue = nowNode.GetComponent<BlockInfo>().GetNumber();
-            if (requiredNodesDict.ContainsKey(nodeValue))
+            //もしサブネットワーク内に関係のない数値があればfalseを返す
+            else
             {
-                int requiredCount = requiredNodesDict[nodeValue];
-                int currentCount = myNetwork.Count(node => node.GetComponent<BlockInfo>().GetNumber() == nodeValue);
-
-                // ノードが要件を満たしている場合にのみ追加
-                if (currentCount < requiredCount)
-                {
-                    myNetwork.Add(nowNode);
-                }
-                //要件を満たしていなければひとつ前のネットワークに戻る。
-                else
-                {
-                    backFlag = true;
-                }
-            }
-            //Debug.Log(string.Join(", ", closedList));
-            //Debug.Log(string.Join(", ", myNetwork));
-        }
-
-        // ネットワークに隣接ノードを追加するメソッド（重複を防ぐ）
-        public void AddAdjacentNodes(List<GameObject> adjacentNodes)
-        {
-            foreach (var node in adjacentNodes)
-            {
-                if (!myNetwork.Contains(node) && !closedList.Contains(node))
-                {
-                    myNetwork.Add(node);
-                    closedList.Add(node);
-                }
-
+                return false;
             }
         }
 
-        //パターンマッチングのロジックを修正
-        public bool ContainsAllRequiredNodes(Dictionary<int, int> requiredNodesDict)
-        {
-            Dictionary<int, int> requiredCounts = new Dictionary<int, int>(requiredNodesDict);
-            //Debug.Log(string.Join(", ", requiredCounts));
-
-            //現在のネットワーク内のノードの出現回数をカウント
-            foreach (var node in myNetwork)
-            {
-                int nodeValue = node.GetComponent<BlockInfo>().GetNumber();
-                if (requiredCounts.ContainsKey(nodeValue))
-                {
-                    requiredCounts[nodeValue]--;
-                    if (requiredCounts[nodeValue] == 0)
-                        requiredCounts.Remove(nodeValue);
-                }
-            }
-
-            return requiredCounts.Count == 0; //必要なノードがすべて含まれていればtrue
-        }
+        return requiredCounts.Count == 0; //必要なノードがすべて含まれていればtrue
     }
-
-    public void AddStartExpandNetworks(Dictionary<int, int> requiredNodesDict, HashSet<GameObject> neiborSet)
+    public void AddStartExpandNetworks(HashSet<GameObject> neiborSet)
     {
         ExpandNetwork currentNetwork = null;
         foreach (var startNode in neiborSet)
         {
             if(currentNetwork == null)
             {
-                currentNetwork = new ExpandNetwork(null, startNode, requiredNodesDict);
+                currentNetwork = new ExpandNetwork(null, startNode, freezeCondition);
             }
             else
             {
-                currentNetwork = new ExpandNetwork(currentNetwork, startNode, requiredNodesDict);
+                currentNetwork = new ExpandNetwork(currentNetwork, startNode, freezeCondition);
             }
         }
         //Debug.Log(string.Join(", ",currentNetwork.myNetwork));
         //ネットワークを拡張していく処理
-        startExpandNetworks.Enqueue(new (currentNetwork,requiredNodesDict));
+        startExpandNetworks.Enqueue(currentNetwork);
     }
 
     //ネットワークを拡張しながらサブグラフを探索する再帰的メソッド
-    private void ExpandAndSearch(ExpandNetwork currentNetwork, Dictionary<int, int> requiredNodesDict)
+    private void ExpandAndSearch(ExpandNetwork currentNetwork)
     {
-        if (wasCriteriaMet) return; //もし現在のフレームで条件を達成済みならreturnする 1フレームあたりに一つの衝突パターンからの検知しか行わないので1フレーム内で発見済みならそれ以上探さなくてよい 単一の衝突から探索する条件を満たすサブネットワークが複数存在する場合があるが、見つけるのは一つでいいということ。
-        Debug.Log(string.Join(", ", currentNetwork.myNetwork));
+        //if (wasCriteriaMet) return; //もし現在のフレームで条件を達成済みならreturnする 1フレームあたりに一つの衝突パターンからの検知しか行わないので1フレーム内で発見済みならそれ以上探さなくてよい 単一の衝突から探索する条件を満たすサブネットワークが複数存在する場合があるが、見つけるのは一つでいいということ。
+        //Debug.Log(string.Join(", ", currentNetwork.myNetwork));
         //Debug.Log(string.Join(", ", currentNetwork));
-        if (currentNetwork.ContainsAllRequiredNodes(requiredNodesDict))
+
+        if (ContainsAllRequiredNodes(currentNetwork.myNetwork, freezeCondition))
         {
-            wasCriteriaMet = true;
+            //wasCriteriaMet = true;
             Debug.Log(string.Join(", ", currentNetwork.myNetwork));
 
             CompleteConditions(currentNetwork.myNetwork);
-            //foreach(var node in currentNetwork.myNetwork)
-            //{
-            //    node.gameObject.GetComponent<SpriteRenderer>().color = Color.white;
-            //}
+            startExpandNetworks = new Queue<ExpandNetwork>(); //探索が完了したらもうネットワーク内に条件を満たすものが存在しないと考えられるので、キューをリセットしておく。
+            CheckConditionAllNetwork();
 
             return;
         }
@@ -382,13 +286,13 @@ public class NetWork : MonoBehaviour
             foreach (var adjacentNode in adjacentNodes)
             {
                 if (adjacentNode.gameObject.GetComponent<BlockInfo>().enabled == false) continue; //ネットワークから切り離されてblockinfoがなくなったブロックに対してもadjacentNodesに含まれる可能性があるのではじいておく。
-                ExpandNetwork newNetwork = new ExpandNetwork(currentNetwork, adjacentNode, requiredNodesDict);
+                ExpandNetwork newNetwork = new ExpandNetwork(currentNetwork, adjacentNode, freezeCondition);
                 if (newNetwork.BackFlag)
                 {
                     newNetwork = newNetwork.Beforenetwork;
                 }
                 
-                ExpandAndSearch(newNetwork, requiredNodesDict);
+                ExpandAndSearch(newNetwork);
             }
         }
     }
