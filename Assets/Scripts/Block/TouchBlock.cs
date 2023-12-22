@@ -46,7 +46,14 @@ public class TouchBlock : MonoBehaviour
                     case TouchPhase.Began:
                         if (!isDragging)
                         {
-                            if (EventSystem.current.IsPointerOverGameObject(0)) return;
+                            Vector3 upCondition_view = new Vector3(0, 0.3f, touchPosition.z - Camera.main.transform.position.z);
+                            Vector3 upCondition = Camera.main.ViewportToWorldPoint(upCondition_view);
+
+                            Debug.Log($"tatchpos.y : {touchPosition.y}");
+                            Debug.Log($"upCondition : {upCondition.y}");
+                            
+                            //if (EventSystem.current.IsPointerOverGameObject(0)) return;
+                            if (touchPosition.y < upCondition.y) return;
                             if (singleGenerateManager.GetSingleGameObject() == null) return;
                             draggedObject = singleGenerateManager.GetSingleGameObject().transform;
                             draggedObject.position = new Vector3(touchPosition.x, primeNumberGeneratingPoint.transform.position.y, touchPosition.z); //ブロックx座標をタッチしている座標に
