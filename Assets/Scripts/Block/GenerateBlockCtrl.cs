@@ -21,8 +21,7 @@ public class GenerateBlockCtrl : MonoBehaviour
         text.text = primeNumberData.primeNumber.ToString();
         blockField = GameObject.Find("BlockField");
         beforeField = blockField.transform.Find("BeforeField").gameObject;
-        if(GameObject.Find("GameManager") != null) gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-        else gameManager = GameObject.Find("_GameManager").GetComponent<GameManager>();
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
     //ブロックを生成する関数の引数を制御する関数。
     public void GenerateBlock()

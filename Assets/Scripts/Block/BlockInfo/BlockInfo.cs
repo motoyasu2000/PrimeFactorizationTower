@@ -146,7 +146,7 @@ public abstract class BlockInfo : MonoBehaviour
         Color myColor = GetComponent<SpriteRenderer>().color;
         GetComponent<SpriteRenderer>().material.SetColor("_GlowColor", myColor);
         GetComponent<SpriteRenderer>().material.SetColor("_Color", myColor);
-        Debug.Log($"{GetComponent<SpriteRenderer>().material.GetColor("_GlowColor")}");
+        //Debug.Log($"{GetComponent<SpriteRenderer>().material.GetColor("_GlowColor")}");
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -158,9 +158,8 @@ public abstract class BlockInfo : MonoBehaviour
         if (collision.gameObject.CompareTag("PrimeNumberBlock") && collision.gameObject.GetComponent<BlockInfo>() != null && IsUpOrRight(gameObject, collision.gameObject))
         {
             netWork.AttachNode(gameObject, collision.gameObject);
-            netWork.CreateSubNetwork(new HashSet<int> { 2, 3, 5 , 7});　//※※こっちは集合で指定してるけど
-            netWork.AddStartExpandNetworks(new Dictionary<int, int>() { { 2,1},{ 3,1},{ 5,1}, {7,1 } },new HashSet<GameObject> {gameObject, collision.gameObject}); //※※こっちは辞書で指定してるのが気持ち悪いので後で治す！
-            Debug.Log($"myself:{gameObject.name} ------ other:{collision.gameObject.name}");
+            netWork.AddStartExpandNetworks(new HashSet<GameObject> {gameObject, collision.gameObject}); //※※こっちは辞書で指定してるのが気持ち悪いので後で治す！
+            //Debug.Log($"myself:{gameObject.name} ------ other:{collision.gameObject.name}");
         }
     }
     private void OnCollisionExit2D(Collision2D collision)

@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
     }
 
     DifficultyLevel myDifficultyLevel = DifficultyLevel.Normal; //難易度型の変数を定義、とりあえずNormalで初期化 適切なタイミングで難易度調整ができるように切り替える必要がある。
+    public DifficultyLevel MyDifficultyLevel => myDifficultyLevel;
 
     int[] primeNumberPool = new int[9]
     {
@@ -24,6 +25,8 @@ public class GameManager : MonoBehaviour
     List<int> normalPool = new List<int>();
     List<int> difficultPool = new List<int>();
     List<int> insanePool = new List<int>();
+
+    public List<int> NormalPool => normalPool;
 
     [SerializeField] TextMeshProUGUI upNumberText; //画面上部の合成数のテキスト
     [SerializeField] TextMeshProUGUI nextUpNumberText;
@@ -52,21 +55,21 @@ public class GameManager : MonoBehaviour
     ScoreManager scoreManager;
     GameModeManager gameModeManager;
 
-    bool isFirstAwake = true;
-
-
     private void Awake()
     {
-        DontDestroyOnLoad(gameObject);
         for (int i = 0; i < primeNumberPool.Length; i++)
         {
             if (primeNumberPool[i] >= 2 && primeNumberPool[i] <= 7) normalPool.Add(primeNumberPool[i]);
             if (primeNumberPool[i] >= 2 && primeNumberPool[i] <= 13) difficultPool.Add(primeNumberPool[i]);
             if (primeNumberPool[i] >= 2 && primeNumberPool[i] <= 23) insanePool.Add(primeNumberPool[i]);
         }
-        
-
+        afterField = blockField.transform.Find("AfterField").gameObject;
+        upNumberqueue.Enqueue(GenerateUpNumber());
+        soundManager = transform.Find("SoundManager").GetComponent<SoundManager>();
+        scoreManager = transform.Find("ScoreManager").GetComponent<ScoreManager>();
+        gameModeManager = transform.Find("GameModeManager").GetComponent<GameModeManager>();
     }
+
     void Start()
     {
 
@@ -75,22 +78,6 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (SceneManager.GetActiveScene().name != "PlayScene") return;
-        if (upNumberText == null)
-        {
-            upNumberText = GameObject.Find("NowUpNumber").GetComponent<TextMeshProUGUI>();
-            nextUpNumberText = GameObject.Find("NextUpNumber").GetComponent<TextMeshProUGUI>();
-            remainingNumberText = GameObject.Find("RemainingNumberText").GetComponent<TextMeshProUGUI>();
-            MainText = GameObject.Find("MainText").GetComponent<TextMeshProUGUI>();
-            scoreText = GameObject.Find("ScoreText").GetComponent<TextMeshProUGUI>();
-            blockField = GameObject.Find("BlockField");
-            completedField = GameObject.Find("CompletedField");
-            afterField = blockField.transform.Find("AfterField").gameObject;
-            upNumberqueue.Enqueue(GenerateUpNumber());
-            soundManager = transform.Find("SoundManager").GetComponent<SoundManager>();
-            scoreManager = transform.Find("ScoreManager").GetComponent<ScoreManager>();
-            gameModeManager = transform.Find("GameModeManager").GetComponent<GameModeManager>();
-        }
         if (string.IsNullOrWhiteSpace(upNumberText.text))//文字列が空であれば
         {
             upNumberqueue.Enqueue(GenerateUpNumber());
@@ -135,7 +122,7 @@ public class GameManager : MonoBehaviour
         {
             if (isGroundAll)
             {
-                scoreText.text = ((int)(scoreManager.CalculateAllVerticesHeight() * 1000)).ToString();
+                scoreText.text = ((int)(scoreManager.CalculateAllVerticesHeight()*1000)).ToString();
             }
         }
 
