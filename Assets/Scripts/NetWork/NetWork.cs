@@ -168,6 +168,16 @@ public class NetWork : MonoBehaviour
         ChangeColorNodes(nodes);
     }
 
+    IEnumerator ChangeDragMax(List<GameObject> nodes, float second)
+    {
+        yield return new WaitForSeconds(second);
+        foreach (var node in nodes)
+        {
+            node.GetComponent<Rigidbody2D>().isKinematic = true;
+        }
+        yield break;
+    }
+
     //ğŒ‚ğ–‚½‚µ‚½‚Æ‚«‚Ìˆ—
     private void CompleteConditions(List<GameObject> nodes)
     {
@@ -178,6 +188,7 @@ public class NetWork : MonoBehaviour
                 mainTextManager.TmpPrintMainText("Criteria Met");
                 soundManager.PlayAudio(soundManager.VOICE_CRITERIAMAT);
 
+                StartCoroutine(ChangeDragMax(nodes, 1.5f));
                 StartCoroutine(soundManager.PlayAudio(soundManager.VOICE_FREEZE,1.5f));
                 StartCoroutine(mainTextManager.TmpPrintMainText("Freeze",1.5f));
                 freezeCondition = _conditionGenerator.GenerateCondition();
