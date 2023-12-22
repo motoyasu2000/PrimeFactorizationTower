@@ -25,7 +25,7 @@ public class GameModeManager : MonoBehaviour
 
     DifficultyLevel myDifficultyLevel = DifficultyLevel.Normal; //難易度型の変数を定義、とりあえずNormalで初期化 適切なタイミングで難易度調整ができるように切り替える必要がある。
     public DifficultyLevel MyDifficultyLevel => myDifficultyLevel;
-    GameMode nowGameMode;
+    GameMode nowGameMode = GameMode.PileUp; //初期値は積み上げモード
     public GameMode NowGameMode => nowGameMode;
 
     int[] primeNumberPool = new int[9]
@@ -48,17 +48,17 @@ public class GameModeManager : MonoBehaviour
             if (primeNumberPool[i] >= 2 && primeNumberPool[i] <= 13) difficultPool.Add(primeNumberPool[i]);
             if (primeNumberPool[i] >= 2 && primeNumberPool[i] <= 23) insanePool.Add(primeNumberPool[i]);
         }
-        SetGameMode(GameMode.PileUp); //一旦実行時に積み上げモードにしておく。
         instance = this; //単一のstaticインスタンスの生成。
     }
 
-    public void SetGameMode(GameMode newGameMode)
+    public static void SetGameMode(GameMode newGameMode)
     {
-        nowGameMode = newGameMode;
+        instance.nowGameMode = newGameMode;
+        Debug.Log($"ModeSet : {newGameMode}");
     }
 
-    void ChangeDifficultyLevel(DifficultyLevel newDifficultyLevel)
+    public static void ChangeDifficultyLevel(DifficultyLevel newDifficultyLevel)
     {
-        myDifficultyLevel = newDifficultyLevel;
+        instance.myDifficultyLevel = newDifficultyLevel;
     }
 }
