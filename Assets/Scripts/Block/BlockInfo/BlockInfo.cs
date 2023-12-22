@@ -43,6 +43,7 @@ public abstract class BlockInfo : MonoBehaviour
     public void ChangeDynamic()
     {
         rb2D.bodyType = RigidbodyType2D.Dynamic;
+        rb2D.drag = 2;
     }
 
     //•\¦‚³‚ê‚é”’l‚Ìİ’è

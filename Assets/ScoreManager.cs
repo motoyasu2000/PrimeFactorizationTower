@@ -50,6 +50,6 @@ public class ScoreManager : MonoBehaviour
             max = Mathf.Max(max, worldPoint.y);
             //Debug.Log(worldPoint.y);
         }
-        return max;
+        return max-0.5f; //Œ³‚Ì‚‚³•ª‚Ì500‚ğˆø‚­
     }
 }
