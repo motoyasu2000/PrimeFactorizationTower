@@ -49,8 +49,8 @@ public class TouchBlock : MonoBehaviour
                             Vector3 upCondition_view = new Vector3(0, 0.3f, touchPosition.z - Camera.main.transform.position.z);
                             Vector3 upCondition = Camera.main.ViewportToWorldPoint(upCondition_view);
 
-                            Debug.Log($"tatchpos.y : {touchPosition.y}");
-                            Debug.Log($"upCondition : {upCondition.y}");
+                            //Debug.Log($"tatchpos.y : {touchPosition.y}");
+                            //Debug.Log($"upCondition : {upCondition.y}");
                             
                             //if (EventSystem.current.IsPointerOverGameObject(0)) return;
                             if (touchPosition.y < upCondition.y) return;
