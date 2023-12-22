@@ -49,5 +49,6 @@ public class ButtonManager : MonoBehaviour
     public void MovePlayScene()
     {
         SceneManager.LoadScene("PlayScene");
+        GameModeManager.SetGameMode(GameModeManager.GameMode.PileUp);
     }
 }
