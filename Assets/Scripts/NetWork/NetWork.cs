@@ -13,6 +13,7 @@ public class NetWork : MonoBehaviour
     [SerializeField] GameModeManager gameModeManager;
     [SerializeField] SoundManager soundManager;
     [SerializeField] MainTextManager mainTextManager;
+
     ConditionGenerator conditionGenerator;
     public ConditionGenerator _conditionGenerator => conditionGenerator;
     [SerializeField]Dictionary<int, int> freezeCondition;

@@ -7,6 +7,7 @@ public class ConditionGenerator : MonoBehaviour
 {
     GameManager gameManager;
     DifficultyLevel MyDifficultyLevel => gameManager.MyDifficultyLevel;
+    [SerializeField] ConditionNumberManager conditionNumberManager;
 
     void Start()
     {
@@ -22,6 +23,8 @@ public class ConditionGenerator : MonoBehaviour
     public Dictionary<int,int> GenerateCondition()
     {
         Dictionary<int,int> returnDict = new Dictionary<int,int>();
+
+        int resultCompositNumber = 1;
         int randomIndex;
         int randomPrimeNumber;
 
@@ -33,9 +36,11 @@ public class ConditionGenerator : MonoBehaviour
             {
                 randomIndex = Random.Range(0, gameManager.NormalPool.Count);
                 randomPrimeNumber = gameManager.NormalPool[randomIndex];
+                resultCompositNumber *= randomPrimeNumber;
                 if (!returnDict.TryAdd(randomPrimeNumber,1)) returnDict[randomPrimeNumber] += 1;
             }
         }
+        conditionNumberManager.PrintConditionNumber(resultCompositNumber.ToString());
         Debug.Log("Keys : " + string.Join(",", returnDict.Keys));
         Debug.Log("Values : " + string.Join(",", returnDict.Values));
         return returnDict;
