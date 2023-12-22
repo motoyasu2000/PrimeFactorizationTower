@@ -38,7 +38,7 @@ public class GameManager : MonoBehaviour
         afterField = blockField.transform.Find("AfterField").gameObject;
         soundManager = transform.Find("SoundManager").GetComponent<SoundManager>();
         scoreManager = transform.Find("ScoreManager").GetComponent<ScoreManager>();
-        gameModeManager = GameObject.Find("GameModeManager").GetComponent<GameModeManager>();
+        gameModeManager = GameModeManager.GameModemanagerInstance;
         upNumberqueue.Enqueue(GenerateUpNumber());
     }
 

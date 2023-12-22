@@ -4,6 +4,13 @@ using UnityEngine;
 
 public class GameModeManager : MonoBehaviour
 {
+    //シングルトンのインスタンス
+    private static GameModeManager instance;
+
+    public static GameModeManager GameModemanagerInstance => instance;
+
+
+
     //難易度を表す列挙型の定義
     public enum DifficultyLevel
     {
@@ -42,6 +49,7 @@ public class GameModeManager : MonoBehaviour
             if (primeNumberPool[i] >= 2 && primeNumberPool[i] <= 23) insanePool.Add(primeNumberPool[i]);
         }
         SetGameMode(GameMode.PileUp); //一旦実行時に積み上げモードにしておく。
+        instance = this; //単一のstaticインスタンスの生成。
     }
 
     public void SetGameMode(GameMode newGameMode)
