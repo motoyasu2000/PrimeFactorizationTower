@@ -6,7 +6,7 @@ public class SingletonGenerator : MonoBehaviour
 {
     private void Awake()
     {
-        if (GameModeManager.GameModemanagerInstance == null && FindObjectOfType<GameModeManager>() == null)
+        if (GameModeManager.GameModemanagerInstance == null)
         {
             GameObject gameModeManager = new GameObject("GameModeManager");
             gameModeManager.AddComponent<GameModeManager>();
