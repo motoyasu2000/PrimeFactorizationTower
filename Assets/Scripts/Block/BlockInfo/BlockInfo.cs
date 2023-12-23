@@ -25,7 +25,6 @@ public abstract class BlockInfo : MonoBehaviour
     {
         primeNumberText = transform.Find("PrimeNumberText").GetComponent<TextMeshPro>();
         SetMyNumber();
-        SetSelfPrefab();
         SetText();
         SetShader();
     }
@@ -37,12 +36,11 @@ public abstract class BlockInfo : MonoBehaviour
         netWork = GameObject.Find("NetWork").GetComponent<NetWork>();
     }
 
-    public abstract void SetSelfPrefab(); //自分自身のプレファブが何であるかは継承先のスクリプトで決定すべき
-
     //クリックするとkinematicからdynamicに変化するようにする。
     public void ChangeDynamic()
     {
         rb2D.bodyType = RigidbodyType2D.Dynamic;
+        rb2D.drag = 2;
     }
 
     //表示される数値の設定
@@ -146,7 +144,7 @@ public abstract class BlockInfo : MonoBehaviour
         Color myColor = GetComponent<SpriteRenderer>().color;
         GetComponent<SpriteRenderer>().material.SetColor("_GlowColor", myColor);
         GetComponent<SpriteRenderer>().material.SetColor("_Color", myColor);
-        //Debug.Log($"{GetComponent<SpriteRenderer>().material.GetColor("_GlowColor")}");
+        Debug.Log($"{GetComponent<SpriteRenderer>().material.GetColor("_GlowColor")}");
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

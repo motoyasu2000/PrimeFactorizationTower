@@ -117,14 +117,25 @@ public class GameManager : MonoBehaviour
         int randomPrimeNumber;
         int returnUpNumber = 1;
 
-        if (gameModeManager.MyDifficultyLevel == GameModeManager.DifficultyLevel.Normal)
+        switch (GameModeManager.GameModemanagerInstance.MyDifficultyLevel)
         {
-            for (int i = 0; i < 2 + (int)(Random.value * nowPhase / 2); i++)
-            {
-                randomIndex = Random.Range(0, gameModeManager.NormalPool.Count);
-                randomPrimeNumber = gameModeManager.NormalPool[randomIndex];
-                returnUpNumber *= randomPrimeNumber;
-            }
+            case GameModeManager.DifficultyLevel.Normal:
+                for (int i = 0; i < 2 + (int)(Random.value * nowPhase / 2); i++)
+                {
+                    randomIndex = Random.Range(0, gameModeManager.NormalPool.Count);
+                    randomPrimeNumber = gameModeManager.NormalPool[randomIndex];
+                    returnUpNumber *= randomPrimeNumber;
+                }
+                break;
+
+            case GameModeManager.DifficultyLevel.difficult:
+                for (int i = 0; i < 2 + (int)(Random.value * nowPhase / 2); i++)
+                {
+                    randomIndex = Random.Range(0, gameModeManager.DifficultPool.Count);
+                    randomPrimeNumber = gameModeManager.DifficultPool[randomIndex];
+                    returnUpNumber *= randomPrimeNumber;
+                }
+                break;
         }
 
         nowPhase++;

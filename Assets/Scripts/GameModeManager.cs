@@ -23,7 +23,7 @@ public class GameModeManager : MonoBehaviour
         PileUp, //積み上げモード
     }
 
-    DifficultyLevel myDifficultyLevel = DifficultyLevel.Normal; //難易度型の変数を定義、とりあえずNormalで初期化 適切なタイミングで難易度調整ができるように切り替える必要がある。
+    DifficultyLevel myDifficultyLevel = DifficultyLevel.difficult; //難易度型の変数を定義、とりあえずNormalで初期化 適切なタイミングで難易度調整ができるように切り替える必要がある。
     public DifficultyLevel MyDifficultyLevel => myDifficultyLevel;
     GameMode nowGameMode = GameMode.PileUp; //初期値は積み上げモード
     public GameMode NowGameMode => nowGameMode;
@@ -48,7 +48,11 @@ public class GameModeManager : MonoBehaviour
             if (primeNumberPool[i] >= 2 && primeNumberPool[i] <= 13) difficultPool.Add(primeNumberPool[i]);
             if (primeNumberPool[i] >= 2 && primeNumberPool[i] <= 23) insanePool.Add(primeNumberPool[i]);
         }
-        instance = this; //単一のstaticインスタンスの生成。
+        if (instance == null)
+        {
+            instance = this; //単一のstaticインスタンスの生成。
+            DontDestroyOnLoad(this.gameObject); //シーンの切り替え時に破棄されないようにする
+        } 
     }
 
     public static void SetGameMode(GameMode newGameMode)
@@ -60,5 +64,6 @@ public class GameModeManager : MonoBehaviour
     public static void ChangeDifficultyLevel(DifficultyLevel newDifficultyLevel)
     {
         instance.myDifficultyLevel = newDifficultyLevel;
+        Debug.Log($"現在変更された難易度 : {newDifficultyLevel}");
     }
 }

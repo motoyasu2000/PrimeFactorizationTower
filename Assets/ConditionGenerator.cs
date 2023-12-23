@@ -5,13 +5,11 @@ using UnityEngine;
 public class ConditionGenerator : MonoBehaviour
 {
     GameManager gameManager;
-    GameModeManager gameModeManager;
     [SerializeField] ConditionNumberManager conditionNumberManager;
 
     void Start()
     {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-        gameModeManager = GameObject.Find("GameModeManager").GetComponent<GameModeManager>();
     }
     public Dictionary<int,int> GenerateCondition()
     {
@@ -23,15 +21,27 @@ public class ConditionGenerator : MonoBehaviour
 
         int rand = Random.Range(3, 4);
 
-        if (gameModeManager.MyDifficultyLevel == GameModeManager.DifficultyLevel.Normal)
+        switch (GameModeManager.GameModemanagerInstance.MyDifficultyLevel)
         {
-            for (int i = 0; i<rand; i++)
-            {
-                randomIndex = Random.Range(0, gameModeManager.NormalPool.Count);
-                randomPrimeNumber = gameModeManager.NormalPool[randomIndex];
-                resultCompositNumber *= randomPrimeNumber;
-                if (!returnDict.TryAdd(randomPrimeNumber,1)) returnDict[randomPrimeNumber] += 1;
-            }
+            case GameModeManager.DifficultyLevel.Normal:
+                for (int i = 0; i < rand; i++)
+                {
+                    randomIndex = Random.Range(0, GameModeManager.GameModemanagerInstance.NormalPool.Count);
+                    randomPrimeNumber = GameModeManager.GameModemanagerInstance.NormalPool[randomIndex];
+                    resultCompositNumber *= randomPrimeNumber;
+                    if (!returnDict.TryAdd(randomPrimeNumber, 1)) returnDict[randomPrimeNumber] += 1;
+                }
+                break;
+
+            case GameModeManager.DifficultyLevel.difficult:
+                for (int i = 0; i < rand; i++)
+                {
+                    randomIndex = Random.Range(0, GameModeManager.GameModemanagerInstance.DifficultPool.Count);
+                    randomPrimeNumber = GameModeManager.GameModemanagerInstance.DifficultPool[randomIndex];
+                    resultCompositNumber *= randomPrimeNumber;
+                    if (!returnDict.TryAdd(randomPrimeNumber, 1)) returnDict[randomPrimeNumber] += 1;
+                }
+                break;
         }
         conditionNumberManager.PrintConditionNumber(resultCompositNumber.ToString());
         Debug.Log("Keys : " + string.Join(",", returnDict.Keys));

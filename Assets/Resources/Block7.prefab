@@ -14,11 +14,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6526292304093931351, guid: 65b6fe0cae63e7346a7200419f8991ea, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.5
+      value: 0.33
       objectReference: {fileID: 0}
     - target: {fileID: 6526292304093931351, guid: 65b6fe0cae63e7346a7200419f8991ea, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.5
+      value: 0.33
       objectReference: {fileID: 0}
     - target: {fileID: 6526292304093931351, guid: 65b6fe0cae63e7346a7200419f8991ea, type: 3}
       propertyPath: m_LocalScale.z
@@ -46,11 +46,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8997849181804842525, guid: 65b6fe0cae63e7346a7200419f8991ea, type: 3}
       propertyPath: m_LocalScale.x
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8997849181804842525, guid: 65b6fe0cae63e7346a7200419f8991ea, type: 3}
       propertyPath: m_LocalScale.y
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8997849181804842525, guid: 65b6fe0cae63e7346a7200419f8991ea, type: 3}
       propertyPath: m_LocalPosition.x
@@ -104,7 +104,7 @@ PrefabInstance:
       addedObject: {fileID: -8386780975456851305}
     - targetCorrespondingSourceObject: {fileID: 398697902959395074, guid: 65b6fe0cae63e7346a7200419f8991ea, type: 3}
       insertIndex: -1
-      addedObject: {fileID: -298668288877966832}
+      addedObject: {fileID: -4146883946919506847}
   m_SourcePrefab: {fileID: 100100000, guid: 65b6fe0cae63e7346a7200419f8991ea, type: 3}
 --- !u!1 &8916167901171248615 stripped
 GameObject:
@@ -131,7 +131,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 94ee4d857f7a8274c866b8132afd0aad, type: 2}
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -152,12 +152,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 3625043607559282579, guid: 19fb86013d8c24d6cb8410c0aadf30fa, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 19757575b86a4c34c8ed28edd293e9cc, type: 3}
   m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.8828125, y: 1}
+  m_Size: {x: 0.2, y: 0.2}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -177,7 +177,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   neighborEdge: []
   isGround: 0
---- !u!60 &-298668288877966832
+--- !u!60 &-4146883946919506847
 PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -213,16 +213,37 @@ PolygonCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 0.5}
-    newSize: {x: 0.8828125, y: 1}
+    oldSize: {x: 0.5, y: 1}
+    newSize: {x: 0.2, y: 0.2}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 0, y: 0.25}
-      - {x: -0.5, y: 0}
-      - {x: 0, y: -0.25}
-      - {x: 0.5, y: 0}
+    - - {x: 0.16796875, y: -0.1640625}
+      - {x: 0.1953125, y: -0.1171875}
+      - {x: 0.25, y: -0.01953125}
+      - {x: 0.25, y: 0.01953125}
+      - {x: 0.2265625, y: 0.0625}
+      - {x: 0.1796875, y: 0.14453125}
+      - {x: 0.05859375, y: 0.35546875}
+      - {x: 0.0078125, y: 0.44140625}
+      - {x: 0, y: 0.44140625}
+      - {x: -0.015625, y: 0.4296875}
+      - {x: -0.078125, y: 0.3203125}
+      - {x: -0.16796875, y: 0.1640625}
+      - {x: -0.23046875, y: 0.0546875}
+      - {x: -0.25, y: 0.01953125}
+      - {x: -0.25, y: -0.01953125}
+      - {x: -0.23046875, y: -0.0546875}
+      - {x: -0.19921875, y: -0.109375}
+      - {x: -0.125, y: -0.23828125}
+      - {x: -0.078125, y: -0.3203125}
+      - {x: -0.06640625, y: -0.33984375}
+      - {x: -0.046875, y: -0.375}
+      - {x: -0.03515625, y: -0.39453125}
+      - {x: -0.015625, y: -0.4296875}
+      - {x: 0, y: -0.44140625}
+      - {x: 0.01171875, y: -0.4375}
   m_UseDelaunayMesh: 0

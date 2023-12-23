@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Block2Info : BlockInfo
+public class Block13Info : BlockInfo
 {
     public override void SetMyNumber()
     {
-        myNumber = 2;
+        myNumber = 13;
     }
 }
