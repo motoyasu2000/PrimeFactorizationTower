@@ -13,9 +13,4 @@ public class SingletonGenerator : MonoBehaviour
             gameModeManager.AddComponent<GameModeManager>();
         }
     }
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
