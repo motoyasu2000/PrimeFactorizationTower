@@ -60,5 +60,6 @@ public class GameModeManager : MonoBehaviour
     public static void ChangeDifficultyLevel(DifficultyLevel newDifficultyLevel)
     {
         instance.myDifficultyLevel = newDifficultyLevel;
+        Debug.Log($"åªç›ïœçXÇ≥ÇÍÇΩìÔà’ìx : {newDifficultyLevel}");
     }
 }

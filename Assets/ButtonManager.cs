@@ -26,12 +26,6 @@ public class ButtonManager : MonoBehaviour
         menus[3] = credit;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void DisplayMenu(GameObject menu)
     {
         menu.SetActive(true);
@@ -50,5 +44,10 @@ public class ButtonManager : MonoBehaviour
     {
         SceneManager.LoadScene("PlayScene");
         GameModeManager.SetGameMode(GameModeManager.GameMode.PileUp);
+    }
+
+    public void ChangeDifficultyLevel(int diffLevel)
+    {
+        GameModeManager.ChangeDifficultyLevel((GameModeManager.DifficultyLevel)diffLevel);
     }
 }
