@@ -48,7 +48,11 @@ public class GameModeManager : MonoBehaviour
             if (primeNumberPool[i] >= 2 && primeNumberPool[i] <= 13) difficultPool.Add(primeNumberPool[i]);
             if (primeNumberPool[i] >= 2 && primeNumberPool[i] <= 23) insanePool.Add(primeNumberPool[i]);
         }
-        instance = this; //単一のstaticインスタンスの生成。
+        if (instance == null)
+        {
+            instance = this; //単一のstaticインスタンスの生成。
+            DontDestroyOnLoad(this.gameObject); //シーンの切り替え時に破棄されないようにする
+        } 
     }
 
     public static void SetGameMode(GameMode newGameMode)
