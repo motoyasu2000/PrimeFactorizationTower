@@ -173,6 +173,7 @@ public class NetWork : MonoBehaviour
         yield return new WaitForSeconds(second);
         foreach (var node in nodes)
         {
+            node.GetComponent<Rigidbody2D>().velocity = Vector3.zero;
             node.GetComponent<Rigidbody2D>().isKinematic = true;
         }
         yield break;
