@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6526292304093931351}
   - component: {fileID: 4124707381341075405}
   - component: {fileID: 3602577082659433843}
+  - component: {fileID: 1897098754494926476}
   m_Layer: 7
   m_Name: PrimeNumberText
   m_TagString: Untagged
@@ -173,6 +174,18 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 4124707381341075405}
   m_maskType: 0
+--- !u!114 &1897098754494926476
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 107428611385969796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0de7f60dd166d9439d90fb7bd73cf73, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &398697902959395074
 GameObject:
   m_ObjectHideFlags: 0
@@ -274,7 +287,7 @@ LineRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -72
   m_Positions:
   - {x: 0, y: 0, z: 0}
   - {x: 0, y: 3, z: 0}
