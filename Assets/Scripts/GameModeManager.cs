@@ -23,7 +23,7 @@ public class GameModeManager : MonoBehaviour
         PileUp, //積み上げモード
     }
 
-    DifficultyLevel myDifficultyLevel = DifficultyLevel.Normal; //難易度型の変数を定義、とりあえずNormalで初期化 適切なタイミングで難易度調整ができるように切り替える必要がある。
+    DifficultyLevel myDifficultyLevel = DifficultyLevel.difficult; //難易度型の変数を定義、とりあえずNormalで初期化 適切なタイミングで難易度調整ができるように切り替える必要がある。
     public DifficultyLevel MyDifficultyLevel => myDifficultyLevel;
     GameMode nowGameMode = GameMode.PileUp; //初期値は積み上げモード
     public GameMode NowGameMode => nowGameMode;
