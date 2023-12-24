@@ -139,7 +139,8 @@ public class GameManager : MonoBehaviour
         }
 
         nowPhase++;
-        return returnUpNumber;
+        //return returnUpNumber;
+        return 1024;
     }
 
     void RemoveUpNumber()
