@@ -36,7 +36,7 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         afterField = blockField.transform.Find("AfterField").gameObject;
-        soundManager = transform.Find("SoundManager").GetComponent<SoundManager>();
+        soundManager = SoundManager.SoundManagerInstance;
         scoreManager = transform.Find("ScoreManager").GetComponent<ScoreManager>();
         gameModeManager = GameModeManager.GameModemanagerInstance;
         upNumberqueue.Enqueue(GenerateUpNumber());
