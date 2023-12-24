@@ -303,10 +303,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d6aa88e012a7364fbfdc8a4c597a778, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  voice_done: {fileID: 5769405931302276482}
-  voice_criteriaMet: {fileID: 3158514933474869051}
-  voice_freeze: {fileID: 7331330030647808469}
-  se_done: {fileID: 7046038475765489718}
+  volume_BGM: 0
+  volume_SE: 0
+  volume_Voice: 0
 --- !u!1 &3232064707966291862
 GameObject:
   m_ObjectHideFlags: 0
@@ -672,7 +671,7 @@ GameObject:
   - component: {fileID: 66418916344781503}
   - component: {fileID: 8907169207518280365}
   m_Layer: 0
-  m_Name: BGM0
+  m_Name: Play
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
