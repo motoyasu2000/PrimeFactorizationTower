@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class SoundManager : MonoBehaviour
 {
+    private static SoundManager instance;
+    public static SoundManager SoundManagerInstance => instance;
+
     Transform transVoices;
     Transform transSEs;
 
@@ -16,7 +19,7 @@ public class SoundManager : MonoBehaviour
     public AudioSource VOICE_CRITERIAMAT => voice_criteriaMet;
     public AudioSource VOICE_FREEZE => voice_freeze;
     public AudioSource SE_DONE => se_done;
-    void Start()
+    void Awake()
     {
         transVoices = transform.Find("Voices");
         transSEs = transform.Find("SEs");
@@ -24,12 +27,12 @@ public class SoundManager : MonoBehaviour
         voice_criteriaMet = transVoices.Find("CriteriaMet").GetComponent<AudioSource>();
         voice_freeze = transVoices.Find("Freeze").GetComponent<AudioSource>();
         se_done = transSEs.Find("Done").GetComponent<AudioSource>();
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        if(instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(instance);
+        }
     }
     public void PlayAudio(AudioSource audioSource)
     {

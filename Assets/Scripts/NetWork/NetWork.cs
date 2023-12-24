@@ -28,7 +28,7 @@ public class NetWork : MonoBehaviour
     private void Start()
     {
         gameModeManager = GameObject.Find("GameModeManager").GetComponent<GameModeManager>();
-        soundManager = GameObject.Find("SoundManager").GetComponent<SoundManager>();
+        soundManager = SoundManager.SoundManagerInstance;
         conditionGenerator = transform.Find("ConditionGenerator").GetComponent<ConditionGenerator>();
 
         freezeCondition = _conditionGenerator.GenerateCondition();
