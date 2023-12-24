@@ -1,17 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SingleGenerateManager : MonoBehaviour
 {
+    [SerializeField] ScoreManager scoreManager;
     GameObject singleGameObject;
     float spinSpeed = 20f;
     float rotateCounter = 0;
     bool rotateFlag = false;
-
+    Camera mainCamera;
+    CameraCtrl mainCameraCtrl;
+    Vector3 defo; //初期位置
+    private void Start()
+    {
+        mainCamera = Camera.main;
+        mainCameraCtrl = mainCamera.GetComponent<CameraCtrl>();
+        defo = transform.position;
+    }
     private void Update()
     {
         RotateUntil(45);
+        MoveSingleGameObjectPoint();
     }
     public void SetSingleGameObject(GameObject setObject)
     {
@@ -67,5 +78,12 @@ public class SingleGenerateManager : MonoBehaviour
     public GameObject GetSingleGameObject()
     {
         return singleGameObject;
+    }
+
+    //ブロックの生成地点をゲームの実行中に変更するメソッド
+    void MoveSingleGameObjectPoint()
+    {
+        if(scoreManager.MaxHeight < mainCameraCtrl.StartHeight) return;
+        transform.position = new Vector3(defo.x,scoreManager.MaxHeight + 5, defo.z); //最も高いぶろっぐより５つ上にブロックを生成
     }
 }
