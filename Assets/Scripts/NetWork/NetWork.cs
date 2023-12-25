@@ -1,9 +1,6 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 public class NetWork : MonoBehaviour
 {
@@ -23,6 +20,8 @@ public class NetWork : MonoBehaviour
     public Dictionary<int, int> FreezeCondition => freezeCondition;
     Queue<ExpandNetwork> startExpandNetworks = new Queue<ExpandNetwork>(); //ネットワークの拡張を開始する最初のサブネットワークをリストとして保存しておく。非同期の処理を一つずつ実行するため、タプルの２つ目の要素は条件の辞書
     bool wasCriteriaMet = false;
+    bool isRespawnKillChecking = false; //条件を変更した瞬間にすでに条件を達成していることをリスポーンキルと呼ぶことにする。
+    int CheckNumParFrame = 3; //位置フレーム当たりにキューから取り出す数
 
 
     private void Start()
@@ -44,18 +43,22 @@ public class NetWork : MonoBehaviour
 
     private void Update()
     {
-        if (startExpandNetworks.Count == 0) return;
-        //foreach(var currentNetwork in startExpandNetworks)
-        //{
-        //    ExpandAndSearch(currentNetwork.Item1, currentNetwork.Item2);
-        //}
-        var item = startExpandNetworks.Dequeue();
-        foreach(var block in item.myNetwork)
+        //checkNumParFrame分だけキューに入っていて条件を満たすものがないかネットワーク内でチェックを行う。
+        for (int i = 0; i < CheckNumParFrame; i++)
         {
-            if (block.GetComponent<BlockInfo>().enabled == false) return; //もうネットワークから切り離されて処理を行う予定でないブロックもこの中に含まれてしまっており、そのようなものは条件を満たさない。
+            if (startExpandNetworks.Count == 0)
+            {
+                isRespawnKillChecking = false;
+                return;
+            }
+            var item = startExpandNetworks.Dequeue();
+            foreach (var block in item.myNetwork)
+            {
+                if (block.GetComponent<BlockInfo>().enabled == false) return; //もうネットワークから切り離されて処理を行う予定でないブロックもこの中に含まれてしまっており、そのようなものは条件を満たさない。
+            }
+            wasCriteriaMet = false;
+            ExpandAndSearch(item);
         }
-        wasCriteriaMet = false;
-        ExpandAndSearch(item);
 
     }
 
@@ -168,13 +171,15 @@ public class NetWork : MonoBehaviour
         ChangeColorNodes(nodes);
     }
 
-    IEnumerator ChangeDragMax(List<GameObject> nodes, float second)
+    IEnumerator StopRigidbodys(List<GameObject> nodes, float second)
     {
         yield return new WaitForSeconds(second);
         foreach (var node in nodes)
         {
-            node.GetComponent<Rigidbody2D>().velocity = Vector3.zero;
-            node.GetComponent<Rigidbody2D>().isKinematic = true;
+            Rigidbody2D rb2d = node.GetComponent<Rigidbody2D>();
+            rb2d.velocity = Vector3.zero;
+            rb2d.angularVelocity = 0;
+            rb2d.isKinematic = true;
         }
         yield break;
     }
@@ -189,7 +194,7 @@ public class NetWork : MonoBehaviour
                 mainTextManager.TmpPrintMainText("Criteria Met");
                 soundManager.PlayAudio(soundManager.VOICE_CRITERIAMAT);
 
-                StartCoroutine(ChangeDragMax(nodes, 1.5f));
+                StartCoroutine(StopRigidbodys(nodes, 1.5f));
                 StartCoroutine(soundManager.PlayAudio(soundManager.VOICE_FREEZE,1.5f));
                 StartCoroutine(mainTextManager.TmpPrintMainText("Freeze",1.5f));
                 freezeCondition = _conditionGenerator.GenerateCondition();
@@ -198,9 +203,8 @@ public class NetWork : MonoBehaviour
     }
 
     //ネットワーク全体に条件にマッチするものがないかを探索するためのメソッド
-    IEnumerator CheckConditionAllNetwork()
+    void CheckConditionAllNetwork()
     {
-        yield return new WaitForSeconds(0.3f);
         int minNodeNum = int.MaxValue; //条件に存在するノードの数字の内、ネットワーク内に最小個数である数字の個数を格納する変数
         int minNode = -1; //最小個数の素数
         //条件に存在する素数を全探索し、最小個数のものを探す
@@ -219,7 +223,6 @@ public class NetWork : MonoBehaviour
         {
             startExpandNetworks.Enqueue(new ExpandNetwork(null, node, freezeCondition));
         }
-        yield break;
     }
 
     //パターンマッチングのロジック
@@ -275,12 +278,21 @@ public class NetWork : MonoBehaviour
 
         if (ContainsAllRequiredNodes(currentNetwork.myNetwork, freezeCondition))
         {
+            if (isRespawnKillChecking) //リスキルチェック中に条件を達成→リスキルされることが確定→条件を再設定して再び調査。
+            {
+                freezeCondition = _conditionGenerator.GenerateCondition();
+                isRespawnKillChecking = true;
+                CheckConditionAllNetwork();
+                //Debug.Log("リスキル");
+                return;
+            }
             //wasCriteriaMet = true;
             Debug.Log(string.Join(", ", currentNetwork.myNetwork));
 
             CompleteConditions(currentNetwork.myNetwork);
             startExpandNetworks = new Queue<ExpandNetwork>(); //探索が完了したらもうネットワーク内に条件を満たすものが存在しないと考えられるので、キューをリセットしておく。
-            StartCoroutine(CheckConditionAllNetwork());
+            isRespawnKillChecking = true;
+            CheckConditionAllNetwork();
 
             return;
         }

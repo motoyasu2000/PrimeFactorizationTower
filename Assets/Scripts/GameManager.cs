@@ -148,8 +148,8 @@ public class GameManager : MonoBehaviour
         }
 
         nowPhase++;
-        return returnUpNumber;
-        //return 1024;
+        //return returnUpNumber;
+        return 16 * 27 * 125 * 343;
     }
 
     void RemoveUpNumber()
