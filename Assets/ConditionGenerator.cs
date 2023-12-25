@@ -19,11 +19,13 @@ public class ConditionGenerator : MonoBehaviour
         int randomIndex;
         int randomPrimeNumber;
 
-        int rand = Random.Range(3, 4);
+        int rand;
 
         switch (GameModeManager.GameModemanagerInstance.MyDifficultyLevel)
         {
             case GameModeManager.DifficultyLevel.Normal:
+
+                rand = Random.Range(3, 5);
                 for (int i = 0; i < rand; i++)
                 {
                     randomIndex = Random.Range(0, GameModeManager.GameModemanagerInstance.NormalPool.Count);
@@ -33,11 +35,23 @@ public class ConditionGenerator : MonoBehaviour
                 }
                 break;
 
-            case GameModeManager.DifficultyLevel.difficult:
+            case GameModeManager.DifficultyLevel.Difficult:
+                rand = Random.Range(2, 4);
                 for (int i = 0; i < rand; i++)
                 {
                     randomIndex = Random.Range(0, GameModeManager.GameModemanagerInstance.DifficultPool.Count);
                     randomPrimeNumber = GameModeManager.GameModemanagerInstance.DifficultPool[randomIndex];
+                    resultCompositNumber *= randomPrimeNumber;
+                    if (!returnDict.TryAdd(randomPrimeNumber, 1)) returnDict[randomPrimeNumber] += 1;
+                }
+                break;
+
+            case GameModeManager.DifficultyLevel.Insane:
+                rand = 2;
+                for (int i = 0; i < rand; i++)
+                {
+                    randomIndex = Random.Range(0, GameModeManager.GameModemanagerInstance.InsanePool.Count);
+                    randomPrimeNumber = GameModeManager.GameModemanagerInstance.InsanePool[randomIndex];
                     resultCompositNumber *= randomPrimeNumber;
                     if (!returnDict.TryAdd(randomPrimeNumber, 1)) returnDict[randomPrimeNumber] += 1;
                 }

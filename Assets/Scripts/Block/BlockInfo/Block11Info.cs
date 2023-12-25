@@ -8,4 +8,9 @@ public class Block11Info : BlockInfo
     {
         myNumber = 11;
     }
+
+    public override void SetText()
+    {
+        primeNumberText.text = "";
+    }
 }
