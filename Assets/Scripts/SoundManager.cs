@@ -58,6 +58,8 @@ public class SoundManager : MonoBehaviour
             instance = this;
             DontDestroyOnLoad(instance);
         }
+
+        LoadSoundData();
     }
     private void Update()
     {
@@ -91,12 +93,30 @@ public class SoundManager : MonoBehaviour
 
     public void SaveSoundData()
     {
-        StreamWriter writer;
         SoundManager dSoundmanagerInstance = instance;
         string jsonstr = JsonUtility.ToJson(dSoundmanagerInstance);
-        writer = new StreamWriter(Application.dataPath + "/Savedata/System/SoundSetting.json", false);
+        StreamWriter writer = new StreamWriter(Application.dataPath + "/Savedata/System/SoundSetting.json", false);
         writer.Write(jsonstr);
         writer.Flush();
         writer.Close();
     }
+
+    public void LoadSoundData()
+    {
+        StreamReader reader = new StreamReader(Application.dataPath + "/Savedata/System/SoundSetting.json");
+        string datastr = reader.ReadToEnd();
+        reader.Close();
+        var obj = JsonUtility.FromJson<JsonLoadSoundManager>(datastr); //Monobehaviorを継承したクラスではJsonファイルを読み込むことができないため、他のクラスを生成し読み込む
+        instance.volume_BGM = obj.volume_BGM;
+        instance.volume_SE = obj.volume_SE;
+        instance.volume_Voice = obj.volume_Voice;
+    }
+}
+
+//Jsonからインスタンスを生成するためのクラス
+class JsonLoadSoundManager
+{
+    public float volume_BGM;
+    public float volume_SE;
+    public float volume_Voice;
 }
