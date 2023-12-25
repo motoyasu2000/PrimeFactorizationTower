@@ -44,7 +44,7 @@ public abstract class BlockInfo : MonoBehaviour
     }
 
     //•\¦‚³‚ê‚é”’l‚Ìİ’è
-    public void SetText()
+    public virtual void SetText()
     {
         primeNumberText.text = myNumber.ToString();
     }
