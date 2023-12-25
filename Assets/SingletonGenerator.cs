@@ -12,5 +12,9 @@ public class SingletonGenerator : MonoBehaviour
             GameObject gameModeManager = new GameObject("GameModeManager");
             gameModeManager.AddComponent<GameModeManager>();
         }
+        if(SoundManager.SoundManagerInstance == null)
+        {
+            Instantiate(Resources.Load("SoundManager")); //サウンドマネージャーは子要素もあるのでゲームオブジェクトをアタッチするだけでは足りない。
+        }
     }
 }
