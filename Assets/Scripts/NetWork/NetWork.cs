@@ -158,7 +158,7 @@ public class NetWork : MonoBehaviour
     }
 
     //サブネットワークを物理的に結合し色を変更し、仮想的なネットワークから切り離すメソッド
-    private void FriezeNodes(List<GameObject> nodes)
+    private void FreezeNodes(List<GameObject> nodes)
     {
         for(int i=1; i<nodes.Count; i++)
         {
@@ -185,7 +185,7 @@ public class NetWork : MonoBehaviour
         switch (gameModeManager.NowGameMode)
         {
             case GameModeManager.GameMode.PileUp:
-                FriezeNodes(nodes);
+                FreezeNodes(nodes);
                 mainTextManager.TmpPrintMainText("Criteria Met");
                 soundManager.PlayAudio(soundManager.VOICE_CRITERIAMAT);
 
@@ -198,8 +198,9 @@ public class NetWork : MonoBehaviour
     }
 
     //ネットワーク全体に条件にマッチするものがないかを探索するためのメソッド
-    void CheckConditionAllNetwork()
+    IEnumerator CheckConditionAllNetwork()
     {
+        yield return new WaitForSeconds(0.3f);
         int minNodeNum = int.MaxValue; //条件に存在するノードの数字の内、ネットワーク内に最小個数である数字の個数を格納する変数
         int minNode = -1; //最小個数の素数
         //条件に存在する素数を全探索し、最小個数のものを探す
@@ -218,6 +219,7 @@ public class NetWork : MonoBehaviour
         {
             startExpandNetworks.Enqueue(new ExpandNetwork(null, node, freezeCondition));
         }
+        yield break;
     }
 
     //パターンマッチングのロジック
@@ -278,7 +280,7 @@ public class NetWork : MonoBehaviour
 
             CompleteConditions(currentNetwork.myNetwork);
             startExpandNetworks = new Queue<ExpandNetwork>(); //探索が完了したらもうネットワーク内に条件を満たすものが存在しないと考えられるので、キューをリセットしておく。
-            CheckConditionAllNetwork();
+            StartCoroutine(CheckConditionAllNetwork());
 
             return;
         }
