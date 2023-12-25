@@ -43,11 +43,11 @@ public class ButtonManager : MonoBehaviour
     public void MovePlayScene()
     {
         SceneManager.LoadScene("PlayScene");
-        GameModeManager.SetGameMode(GameModeManager.GameMode.PileUp);
+        GameModeManager.GameModemanagerInstance.SetGameMode(GameModeManager.GameMode.PileUp);
     }
 
     public void ChangeDifficultyLevel(int diffLevel)
     {
-        GameModeManager.ChangeDifficultyLevel((GameModeManager.DifficultyLevel)diffLevel);
+        GameModeManager.GameModemanagerInstance.ChangeDifficultyLevel((GameModeManager.DifficultyLevel)diffLevel);
     }
 }
