@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
+using static GameModeManager;
 
 public class GameModeManager : MonoBehaviour
 {
@@ -23,7 +25,7 @@ public class GameModeManager : MonoBehaviour
         PileUp, //積み上げモード
     }
 
-    DifficultyLevel myDifficultyLevel = DifficultyLevel.difficult; //難易度型の変数を定義、とりあえずNormalで初期化 適切なタイミングで難易度調整ができるように切り替える必要がある。
+    public DifficultyLevel myDifficultyLevel = DifficultyLevel.difficult; //難易度型の変数を定義、とりあえずNormalで初期化 適切なタイミングで難易度調整ができるように切り替える必要がある。
     public DifficultyLevel MyDifficultyLevel => myDifficultyLevel;
     GameMode nowGameMode = GameMode.PileUp; //初期値は積み上げモード
     public GameMode NowGameMode => nowGameMode;
@@ -52,18 +54,44 @@ public class GameModeManager : MonoBehaviour
         {
             instance = this; //単一のstaticインスタンスの生成。
             DontDestroyOnLoad(this.gameObject); //シーンの切り替え時に破棄されないようにする
-        } 
+        }
+        LoadDifficultyLevelData();
     }
 
-    public static void SetGameMode(GameMode newGameMode)
+    public void SetGameMode(GameMode newGameMode)
     {
         instance.nowGameMode = newGameMode;
         Debug.Log($"ModeSet : {newGameMode}");
     }
 
-    public static void ChangeDifficultyLevel(DifficultyLevel newDifficultyLevel)
+    public void ChangeDifficultyLevel(DifficultyLevel newDifficultyLevel)
     {
         instance.myDifficultyLevel = newDifficultyLevel;
+        SaveDifficultyLevelData();
         Debug.Log($"現在変更された難易度 : {newDifficultyLevel}");
     }
+
+    public void SaveDifficultyLevelData()
+    {
+        GameModeManager dGameModeManagerInstance = instance;
+        string jsonstr = JsonUtility.ToJson(dGameModeManagerInstance);
+        StreamWriter writer = new StreamWriter(Application.dataPath + "/Savedata/System/DifficultyLevel.json", false);
+        writer.Write(jsonstr);
+        writer.Flush();
+        writer.Close();
+    }
+    public void LoadDifficultyLevelData()
+    {
+        StreamReader reader = new StreamReader(Application.dataPath + "/Savedata/System/SoundSetting.json");
+        string datastr = reader.ReadToEnd();
+        reader.Close();
+        var obj = JsonUtility.FromJson<JsonLoadGameModeManager>(datastr); //Monobehaviorを継承したクラスではJsonファイルを読み込むことができないため、他のクラスを生成し読み込む
+        instance.myDifficultyLevel = obj.myDifficultyLevel;
+    }
+}
+
+//Jsonからインスタンスを生成するためのクラス
+class JsonLoadGameModeManager
+{
+    public DifficultyLevel myDifficultyLevel;
 }
