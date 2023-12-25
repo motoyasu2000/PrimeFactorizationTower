@@ -35,7 +35,7 @@ public class ConditionGenerator : MonoBehaviour
                 }
                 break;
 
-            case GameModeManager.DifficultyLevel.difficult:
+            case GameModeManager.DifficultyLevel.Difficult:
                 rand = Random.Range(2, 4);
                 for (int i = 0; i < rand; i++)
                 {

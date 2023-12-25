@@ -128,7 +128,7 @@ public class GameManager : MonoBehaviour
                 }
                 break;
                     
-            case GameModeManager.DifficultyLevel.difficult:
+            case GameModeManager.DifficultyLevel.Difficult:
                 for (int i = 0; i < 2 + (int)(Random.value * nowPhase / 2) && i <= 5; i++)
                 {
                     randomIndex = Random.Range(0, gameModeManager.DifficultPool.Count);
