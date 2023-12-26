@@ -103,6 +103,7 @@ public class SoundManager : MonoBehaviour
 
     public void LoadSoundData()
     {
+        if (!File.Exists("/Savedata/System/SoundSetting.json")) { return; }
         StreamReader reader = new StreamReader(Application.dataPath + "/Savedata/System/SoundSetting.json");
         string datastr = reader.ReadToEnd();
         reader.Close();

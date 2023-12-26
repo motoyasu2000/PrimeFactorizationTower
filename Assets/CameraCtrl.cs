@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CameraCtrl : MonoBehaviour
 {
-    [SerializeField] ScoreManager scoreManager;
+    ScoreManager scoreManager;
     Vector3 defo; //初期のカメラの座標
     float startHeight = 6; //カメラの移動を開始する高さ
     public float StartHeight => startHeight;
@@ -13,6 +13,7 @@ public class CameraCtrl : MonoBehaviour
     void Start()
     {
         defo = transform.position;
+        scoreManager = ScoreManager.ScoreManagerInstance;
     }
 
     // Update is called once per frame
