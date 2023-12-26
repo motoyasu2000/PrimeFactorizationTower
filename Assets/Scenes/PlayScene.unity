@@ -364,8 +364,7 @@ Transform:
   m_LocalPosition: {x: 0.20958513, y: -1.0948322, z: -0.026190119}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 346268947}
+  m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &95438822
@@ -1206,51 +1205,6 @@ Transform:
   - {fileID: 1141480}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &346268946
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 346268947}
-  - component: {fileID: 346268948}
-  m_Layer: 0
-  m_Name: ScoreManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &346268947
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 346268946}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.20958513, y: -5.6951675, z: 0.026190119}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 76913988}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &346268948
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 346268946}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9989c5e2cf797df41a60d4ab97be9b69, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  blockField: {fileID: 1999789152}
 --- !u!1 &365571289
 GameObject:
   m_ObjectHideFlags: 0
@@ -1803,7 +1757,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 542fb12de7343bd47b66c7c06a529351, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scoreManager: {fileID: 346268948}
 --- !u!1 &521845587
 GameObject:
   m_ObjectHideFlags: 0
@@ -5042,7 +4995,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a429728ee9c053840a87ef664aba5dde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scoreManager: {fileID: 346268948}
+  scoreManager: {fileID: 0}
 --- !u!1 &1927106484
 GameObject:
   m_ObjectHideFlags: 0

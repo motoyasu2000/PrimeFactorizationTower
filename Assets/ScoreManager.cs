@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -9,12 +11,28 @@ public class ScoreManager : MonoBehaviour
     GameObject afterField;
     GameObject completedField;
     float maxHeight = 0;
+    public int[] pileUpScores = new int[10];
+
+    private static ScoreManager instance;
+    public static ScoreManager ScoreManagerInstance => instance;
     public float MaxHeight => maxHeight;
     void Awake()
     {
-        blockField = GameObject.Find("BlockField");
-        afterField = blockField.transform.Find("AfterField").gameObject;
-        completedField = blockField.transform.Find("CompletedField").gameObject;
+        //blockField = GameObject.Find("BlockField");
+        //afterField = blockField.transform.Find("AfterField").gameObject;
+        //completedField = blockField.transform.Find("CompletedField").gameObject;
+        //maxHeight = 0;
+
+        //↑このゲームオブジェクトはシーン移行時に破棄されないので実行されない！
+
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(instance);
+        }
+
+        LoadScoreData();
+        SceneManager.sceneLoaded += InitializeFields;
     }
 
     // Update is called once per frame
@@ -27,15 +45,21 @@ public class ScoreManager : MonoBehaviour
     public float CalculateAllVerticesHeight()
     {
         List<Vector3> allVertices = new List<Vector3>();
-        foreach(Transform block in afterField.transform)
+        if (afterField != null)
         {
-            maxHeight = Mathf.Max(maxHeight, CaluculateGameObjectHeight(block.gameObject)); //現在見ているゲームオブジェクトの最も高い頂点とmaxの比較
-            //Debug.Log(block.gameObject.name);
+            foreach (Transform block in afterField.transform)
+            {
+                maxHeight = Mathf.Max(maxHeight, CaluculateGameObjectHeight(block.gameObject)); //現在見ているゲームオブジェクトの最も高い頂点とmaxの比較
+                                                                                                //Debug.Log(block.gameObject.name);
+            }
         }
-        foreach(Transform block in completedField.transform)
+        if (completedField != null)
         {
-            maxHeight = Mathf.Max(maxHeight, CaluculateGameObjectHeight(block.gameObject)); //現在見ているゲームオブジェクトの最も高い頂点とmaxの比較
-            //Debug.Log(block.gameObject.name);
+            foreach (Transform block in completedField.transform)
+            {
+                maxHeight = Mathf.Max(maxHeight, CaluculateGameObjectHeight(block.gameObject)); //現在見ているゲームオブジェクトの最も高い頂点とmaxの比較
+                                                                                                //Debug.Log(block.gameObject.name);
+            }
         }
         return maxHeight;
     }
@@ -52,5 +76,38 @@ public class ScoreManager : MonoBehaviour
             //Debug.Log(worldPoint.y);
         }
         return max-0.5f; //元の高さ分の500を引く
+    }
+
+    void InitializeFields(Scene scene, LoadSceneMode mode)
+    {
+        blockField = GameObject.Find("BlockField");
+        afterField = blockField.transform.Find("AfterField").gameObject;
+        completedField = blockField.transform.Find("CompletedField").gameObject;
+        maxHeight = 0;
+    }
+
+    public void SaveScoreData()
+    {
+        ScoreManager dScoreManagerInstance = instance;
+        string jsonstr = JsonUtility.ToJson(dScoreManagerInstance);
+        StreamWriter writer = new StreamWriter(Application.dataPath + "/Savedata/Score/PileUp.json", false);
+        writer.Write(jsonstr);
+        writer.Flush();
+        writer.Close();
+    }
+
+    public void LoadScoreData()
+    {
+        if (!File.Exists(Application.dataPath + "/Savedata/Score/PileUp.json")) { return; }
+        StreamReader reader = new StreamReader(Application.dataPath + "/Savedata/Score/PileUp.json");
+        string datastr = reader.ReadToEnd();
+        reader.Close();
+        var obj = JsonUtility.FromJson<JsonLoadSoundManager>(datastr); //Monobehaviorを継承したクラスではJsonファイルを読み込むことができないため、他のクラスを生成し読み込む
+        instance.pileUpScores = obj.pileUpScores;
+    }
+
+    class JsonLoadSoundManager
+    {
+        public int[] pileUpScores;
     }
 }
