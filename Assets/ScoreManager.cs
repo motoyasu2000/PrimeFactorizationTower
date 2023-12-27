@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -10,8 +11,9 @@ public class ScoreManager : MonoBehaviour
     [SerializeField] GameObject blockField;
     GameObject afterField;
     GameObject completedField;
+    TextMeshProUGUI maxScore;
     float maxHeight = 0;
-    public int[] pileUpScores = new int[10];
+    public int[] pileUpScores = new int[11];
 
     private static ScoreManager instance;
     public static ScoreManager ScoreManagerInstance => instance;
@@ -80,10 +82,12 @@ public class ScoreManager : MonoBehaviour
 
     void InitializeFields(Scene scene, LoadSceneMode mode)
     {
-        blockField = GameObject.Find("BlockField");
-        afterField = blockField.transform.Find("AfterField").gameObject;
-        completedField = blockField.transform.Find("CompletedField").gameObject;
-        maxHeight = 0;
+        instance.blockField = GameObject.Find("BlockField");
+        instance.afterField = blockField.transform.Find("AfterField").gameObject;
+        instance.completedField = blockField.transform.Find("CompletedField").gameObject;
+        instance.maxScore = GameObject.Find("MaxScore").GetComponent<TextMeshProUGUI>();
+        instance.maxHeight = 0;
+        instance.maxScore.text = instance.pileUpScores[0].ToString();
     }
 
     public void SaveScoreData()

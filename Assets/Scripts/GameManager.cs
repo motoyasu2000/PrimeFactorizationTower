@@ -149,7 +149,7 @@ public class GameManager : MonoBehaviour
         }
 
         nowPhase++;
-        //return returnUpNumber;
+        return returnUpNumber;
         return 16 * 27 * 125 * 343;
     }
 
@@ -175,7 +175,7 @@ public class GameManager : MonoBehaviour
 
     public static void GameOver()
     {
-        ScoreManager.ScoreManagerInstance.pileUpScores[9] = (int)(ScoreManager.ScoreManagerInstance.CalculateAllVerticesHeight() * 1000);
+        ScoreManager.ScoreManagerInstance.pileUpScores[10] = (int)(ScoreManager.ScoreManagerInstance.CalculateAllVerticesHeight() * 1000);
         Array.Sort(ScoreManager.ScoreManagerInstance.pileUpScores);
         Array.Reverse(ScoreManager.ScoreManagerInstance.pileUpScores);
         ScoreManager.ScoreManagerInstance.SaveScoreData();
