@@ -91,12 +91,6 @@ public class ScoreManager : MonoBehaviour
 
     void InitializeFields()
     {
-        instance.blockField = GameObject.Find("BlockField");
-        instance.afterField = blockField.transform.Find("AfterField").gameObject;
-        instance.completedField = blockField.transform.Find("CompletedField").gameObject;
-        instance.maxScore = GameObject.Find("MaxScore").GetComponent<TextMeshProUGUI>();
-        instance.maxHeight = 0;
-
         foreach (GameModeManager.DifficultyLevel level in Enum.GetValues(typeof(GameModeManager.DifficultyLevel)))
         {
             if (!instance.pileUpScores.ContainsKey(level))
@@ -104,6 +98,13 @@ public class ScoreManager : MonoBehaviour
                 instance.pileUpScores[level] = new int[11];
             }
         }
+
+        if (SceneManager.GetActiveScene() == SceneManager.GetSceneByName("TitleScene")) return;
+        instance.blockField = GameObject.Find("BlockField");
+        instance.afterField = blockField.transform.Find("AfterField").gameObject;
+        instance.completedField = blockField.transform.Find("CompletedField").gameObject;
+        instance.maxScore = GameObject.Find("MaxScore").GetComponent<TextMeshProUGUI>();
+        instance.maxHeight = 0;
 
         instance.maxScore.text = instance.pileUpScores[GameModeManager.GameModemanagerInstance.MyDifficultyLevel][0].ToString();
 
