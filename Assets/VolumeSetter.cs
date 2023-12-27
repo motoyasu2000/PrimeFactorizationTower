@@ -22,18 +22,18 @@ public class VolumeSetter : MonoBehaviour
     {
         SoundManager.SoundManagerInstance.volume_BGM = GetComponent<Slider>().value;
         Debug.Log(gameObject);
-        SoundManager.SoundManagerInstance.SaveSoundData();
+        SoundManager.SaveSoundData();
     }
     public void SetVolumeSE()
     {
         SoundManager.SoundManagerInstance.volume_SE = GetComponent<Slider>().value;
         Debug.Log(gameObject);
-        SoundManager.SoundManagerInstance.SaveSoundData();
+        SoundManager.SaveSoundData();
     }
     public void SetVolumeVoice()
     {
         SoundManager.SoundManagerInstance.volume_Voice = GetComponent<Slider>().value;
         Debug.Log(gameObject);
-        SoundManager.SoundManagerInstance.SaveSoundData();
+        SoundManager.SaveSoundData();
     }
 }

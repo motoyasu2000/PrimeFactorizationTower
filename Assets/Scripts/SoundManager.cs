@@ -91,7 +91,7 @@ public class SoundManager : MonoBehaviour
         }
     }
 
-    public void SaveSoundData()
+    public static void SaveSoundData()
     {
         SoundManager dSoundmanagerInstance = instance;
         string jsonstr = JsonUtility.ToJson(dSoundmanagerInstance);
@@ -101,8 +101,9 @@ public class SoundManager : MonoBehaviour
         writer.Close();
     }
 
-    public void LoadSoundData()
+    public static void LoadSoundData()
     {
+        if (!File.Exists("/Savedata/System/SoundSetting.json")) { return; }
         StreamReader reader = new StreamReader(Application.dataPath + "/Savedata/System/SoundSetting.json");
         string datastr = reader.ReadToEnd();
         reader.Close();

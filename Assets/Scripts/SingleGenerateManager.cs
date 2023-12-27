@@ -18,6 +18,7 @@ public class SingleGenerateManager : MonoBehaviour
         mainCamera = Camera.main;
         mainCameraCtrl = mainCamera.GetComponent<CameraCtrl>();
         defo = transform.position;
+        scoreManager = ScoreManager.ScoreManagerInstance;
     }
     private void Update()
     {

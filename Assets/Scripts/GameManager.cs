@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
+using System;
 
 public class GameManager : MonoBehaviour
 {
@@ -37,7 +38,7 @@ public class GameManager : MonoBehaviour
     {
         afterField = blockField.transform.Find("AfterField").gameObject;
         soundManager = SoundManager.SoundManagerInstance;
-        scoreManager = transform.Find("ScoreManager").GetComponent<ScoreManager>();
+        scoreManager = ScoreManager.ScoreManagerInstance;
         gameModeManager = GameModeManager.GameModemanagerInstance;
         upNumberqueue.Enqueue(GenerateUpNumber());
     }
@@ -120,27 +121,27 @@ public class GameManager : MonoBehaviour
         switch (GameModeManager.GameModemanagerInstance.MyDifficultyLevel)
         {
             case GameModeManager.DifficultyLevel.Normal:
-                for (int i = 0; i < 2 + (int)(Random.value * nowPhase / 2) && i <= 5; i++)
+                for (int i = 0; i < 2 + (int)(UnityEngine.Random.value * nowPhase / 2) && i <= 5; i++)
                 {
-                    randomIndex = Random.Range(0, gameModeManager.NormalPool.Count);
+                    randomIndex = UnityEngine.Random.Range(0, gameModeManager.NormalPool.Count);
                     randomPrimeNumber = gameModeManager.NormalPool[randomIndex];
                     returnUpNumber *= randomPrimeNumber;
                 }
                 break;
                     
             case GameModeManager.DifficultyLevel.Difficult:
-                for (int i = 0; i < 2 + (int)(Random.value * nowPhase / 2) && i <= 5; i++)
+                for (int i = 0; i < 2 + (int)(UnityEngine.Random.value * nowPhase / 2) && i <= 5; i++)
                 {
-                    randomIndex = Random.Range(0, gameModeManager.DifficultPool.Count);
+                    randomIndex = UnityEngine.Random.Range(0, gameModeManager.DifficultPool.Count);
                     randomPrimeNumber = gameModeManager.DifficultPool[randomIndex];
                     returnUpNumber *= randomPrimeNumber;
                 }
                 break;
 
             case GameModeManager.DifficultyLevel.Insane:
-                for (int i = 0; i < 2 + (int)(Random.value * nowPhase / 2) && i <= 5; i++)
+                for (int i = 0; i < 2 + (int)(UnityEngine.Random.value * nowPhase / 2) && i <= 5; i++)
                 {
-                    randomIndex = Random.Range(0, gameModeManager.InsanePool.Count);
+                    randomIndex = UnityEngine.Random.Range(0, gameModeManager.InsanePool.Count);
                     randomPrimeNumber = gameModeManager.InsanePool[randomIndex];
                     returnUpNumber *= randomPrimeNumber;
                 }
@@ -148,7 +149,7 @@ public class GameManager : MonoBehaviour
         }
 
         nowPhase++;
-        //return returnUpNumber;
+        return returnUpNumber;
         return 16 * 27 * 125 * 343;
     }
 
@@ -174,6 +175,12 @@ public class GameManager : MonoBehaviour
 
     public static void GameOver()
     {
+        GameModeManager.DifficultyLevel nowLevel = GameModeManager.GameModemanagerInstance.myDifficultyLevel;
+        if (ScoreManager.ScoreManagerInstance.pileUpScores[nowLevel] == null) ScoreManager.ScoreManagerInstance.pileUpScores[nowLevel] = new int[11];
+        ScoreManager.ScoreManagerInstance.pileUpScores[nowLevel][10] = (int)(ScoreManager.ScoreManagerInstance.CalculateAllVerticesHeight() * 1000);
+        Array.Sort(ScoreManager.ScoreManagerInstance.pileUpScores[nowLevel]);
+        Array.Reverse(ScoreManager.ScoreManagerInstance.pileUpScores[nowLevel]);
+        ScoreManager.ScoreManagerInstance.SaveScoreData();
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
