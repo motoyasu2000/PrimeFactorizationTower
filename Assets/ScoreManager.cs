@@ -13,7 +13,7 @@ public class ScoreManager : MonoBehaviour
     GameObject completedField;
     TextMeshProUGUI maxScore;
     float maxHeight = 0;
-    public int[] pileUpScores = new int[11];
+    public Dictionary<GameModeManager.DifficultyLevel, int[]> pileUpScores = new Dictionary<GameModeManager.DifficultyLevel,int[]>();
 
     private static ScoreManager instance;
     public static ScoreManager ScoreManagerInstance => instance;
@@ -26,7 +26,6 @@ public class ScoreManager : MonoBehaviour
         //maxHeight = 0;
 
         //↑このゲームオブジェクトはシーン移行時に破棄されないので実行されない！
-
         if (instance == null)
         {
             instance = this;
@@ -34,7 +33,12 @@ public class ScoreManager : MonoBehaviour
         }
 
         LoadScoreData();
-        SceneManager.sceneLoaded += InitializeFields;
+        
+    }
+    private void Start()
+    {
+        SceneManager.sceneLoaded += SceneLoadProcess;
+        InitializeFields();
     }
 
     // Update is called once per frame
@@ -80,38 +84,95 @@ public class ScoreManager : MonoBehaviour
         return max-0.5f; //元の高さ分の500を引く
     }
 
-    void InitializeFields(Scene scene, LoadSceneMode mode)
+    void SceneLoadProcess(Scene scene, LoadSceneMode mode)
+    {
+        InitializeFields();
+    }
+
+    void InitializeFields()
     {
         instance.blockField = GameObject.Find("BlockField");
         instance.afterField = blockField.transform.Find("AfterField").gameObject;
         instance.completedField = blockField.transform.Find("CompletedField").gameObject;
         instance.maxScore = GameObject.Find("MaxScore").GetComponent<TextMeshProUGUI>();
         instance.maxHeight = 0;
-        instance.maxScore.text = instance.pileUpScores[0].ToString();
+
+        foreach (GameModeManager.DifficultyLevel level in Enum.GetValues(typeof(GameModeManager.DifficultyLevel)))
+        {
+            if (!instance.pileUpScores.ContainsKey(level))
+            {
+                instance.pileUpScores[level] = new int[11];
+            }
+        }
+
+        instance.maxScore.text = instance.pileUpScores[GameModeManager.GameModemanagerInstance.MyDifficultyLevel][0].ToString();
+
+
     }
 
     public void SaveScoreData()
     {
-        ScoreManager dScoreManagerInstance = instance;
-        string jsonstr = JsonUtility.ToJson(dScoreManagerInstance);
+        SerializableScore score = new SerializableScore();
+        score.SetScore(instance.pileUpScores);
+        string jsonstr = JsonUtility.ToJson(score);
         StreamWriter writer = new StreamWriter(Application.dataPath + "/Savedata/Score/PileUp.json", false);
         writer.Write(jsonstr);
         writer.Flush();
         writer.Close();
     }
 
-    public void LoadScoreData()
+    public static void LoadScoreData()
     {
         if (!File.Exists(Application.dataPath + "/Savedata/Score/PileUp.json")) { return; }
         StreamReader reader = new StreamReader(Application.dataPath + "/Savedata/Score/PileUp.json");
         string datastr = reader.ReadToEnd();
         reader.Close();
-        var obj = JsonUtility.FromJson<JsonLoadSoundManager>(datastr); //Monobehaviorを継承したクラスではJsonファイルを読み込むことができないため、他のクラスを生成し読み込む
-        instance.pileUpScores = obj.pileUpScores;
+        var obj = JsonUtility.FromJson<SerializableScore>(datastr); //Monobehaviorを継承したクラスではJsonファイルを読み込むことができないため、他のクラスを生成し読み込む
+        instance.pileUpScores = obj.GetScore();
     }
 
-    class JsonLoadSoundManager
+    //他次元配列や辞書はシリアライズできないので、複雑な構造でもシリアライズを行うために、シリアライズ可能な配列を持ったクラスを用意しておく。
+    [Serializable]
+    public class Top10Score
     {
-        public int[] pileUpScores;
+        public int[] scores;
+
+        public Top10Score()
+        {
+            scores = new int[11];
+        }
+    }
+
+    [Serializable]
+    class SerializableScore
+    {
+        //シリアライズ可能なリストを使用 ※他次元配列や辞書はシリアライズできない
+        [SerializeField] private List<Top10Score> pileUpScores_Serializable = new List<Top10Score>();
+
+        public SerializableScore()
+        {
+            foreach (GameModeManager.DifficultyLevel level in Enum.GetValues(typeof(GameModeManager.DifficultyLevel)))
+            {
+                pileUpScores_Serializable.Add(new Top10Score());
+            }
+        }
+
+        public void SetScore(Dictionary<GameModeManager.DifficultyLevel, int[]> pileUpScores)
+        {
+            foreach (var scorePair in pileUpScores)
+            {
+                pileUpScores_Serializable[(int)scorePair.Key].scores = scorePair.Value;
+            }
+        }
+
+        public Dictionary<GameModeManager.DifficultyLevel, int[]> GetScore()
+        {
+            var result = new Dictionary<GameModeManager.DifficultyLevel, int[]>();
+            foreach (GameModeManager.DifficultyLevel level in Enum.GetValues(typeof(GameModeManager.DifficultyLevel)))
+            {
+                result[level] = pileUpScores_Serializable[(int)level].scores;
+            }
+            return result;
+        }
     }
 }
