@@ -10,7 +10,8 @@ public class SingletonGenerator : MonoBehaviour
         if (GameModeManager.GameModemanagerInstance == null)
         {
             GameObject gameModeManager = new GameObject("GameModeManager");
-            gameModeManager.AddComponent<GameModeManager>();
+            GameModeManager gameModeManagerScript = gameModeManager.AddComponent<GameModeManager>();
+            gameModeManagerScript.enabled = true;
         }
         if(SoundManager.SoundManagerInstance == null)
         {
@@ -19,7 +20,8 @@ public class SingletonGenerator : MonoBehaviour
         if(ScoreManager.ScoreManagerInstance == null)
         {
             GameObject scoreManager = new GameObject("ScoreManager");
-            scoreManager.AddComponent<ScoreManager>();
+            ScoreManager scoreManagerScript =  scoreManager.AddComponent<ScoreManager>();
+            scoreManagerScript.enabled = true;
         }
     }
 }

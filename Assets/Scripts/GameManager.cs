@@ -175,9 +175,11 @@ public class GameManager : MonoBehaviour
 
     public static void GameOver()
     {
-        ScoreManager.ScoreManagerInstance.pileUpScores[10] = (int)(ScoreManager.ScoreManagerInstance.CalculateAllVerticesHeight() * 1000);
-        Array.Sort(ScoreManager.ScoreManagerInstance.pileUpScores);
-        Array.Reverse(ScoreManager.ScoreManagerInstance.pileUpScores);
+        GameModeManager.DifficultyLevel nowLevel = GameModeManager.GameModemanagerInstance.myDifficultyLevel;
+        if (ScoreManager.ScoreManagerInstance.pileUpScores[nowLevel] == null) ScoreManager.ScoreManagerInstance.pileUpScores[nowLevel] = new int[11];
+        ScoreManager.ScoreManagerInstance.pileUpScores[nowLevel][10] = (int)(ScoreManager.ScoreManagerInstance.CalculateAllVerticesHeight() * 1000);
+        Array.Sort(ScoreManager.ScoreManagerInstance.pileUpScores[nowLevel]);
+        Array.Reverse(ScoreManager.ScoreManagerInstance.pileUpScores[nowLevel]);
         ScoreManager.ScoreManagerInstance.SaveScoreData();
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
