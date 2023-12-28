@@ -22,7 +22,7 @@ public class BloomManager : MonoBehaviour
     {
         if (isLightUpStart)
         {
-            bloom.intensity.value += 0.2f;
+            bloom.intensity.value += 0.5f;
         }
     }
 }
