@@ -75,6 +75,7 @@ public class SoundManager : MonoBehaviour
         PlayAudio(audioSource);
     }
 
+    //スライダーから設定したボリュームを実際の音量に反映
     void SoundSetting()
     {
         foreach(var SE in SEs)
@@ -103,7 +104,7 @@ public class SoundManager : MonoBehaviour
 
     public static void LoadSoundData()
     {
-        if (!File.Exists("/Savedata/System/SoundSetting.json")) { return; }
+        if (!File.Exists(Application.dataPath + "/Savedata/System/SoundSetting.json")) { return; }
         StreamReader reader = new StreamReader(Application.dataPath + "/Savedata/System/SoundSetting.json");
         string datastr = reader.ReadToEnd();
         reader.Close();
