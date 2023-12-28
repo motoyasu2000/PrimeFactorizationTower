@@ -11,9 +11,14 @@ public class SoundManager : MonoBehaviour
     private static SoundManager instance;
     public static SoundManager SoundManagerInstance => instance;
 
-    public float volume_BGM;
-    public float volume_SE;
-    public float volume_Voice;
+    //保存を行う変数たち、スライダーの値によって変更する
+    [SerializeField] float volume_BGM;
+    [SerializeField] float volume_SE;
+    [SerializeField] float volume_Voice;
+
+    public float Volume_BGM => volume_BGM;
+    public float Volume_SE => volume_SE;
+    public float Volume_Voice => volume_Voice;
 
     Transform transVoices;
     Transform transSEs;
@@ -64,6 +69,19 @@ public class SoundManager : MonoBehaviour
     private void Update()
     {
         instance.SoundSetting();
+    }
+
+    public void SetVolumeBGM(float newVolume)
+    {
+        volume_BGM = newVolume;
+    }
+    public void SetVolumeSE(float newVolume)
+    {
+        volume_SE = newVolume;
+    }
+    public void SetVolumeVoice(float newVolume)
+    {
+        volume_Voice = newVolume;
     }
     public void PlayAudio(AudioSource audioSource)
     {
