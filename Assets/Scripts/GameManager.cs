@@ -118,7 +118,7 @@ public class GameManager : MonoBehaviour
         int randomPrimeNumber;
         int returnUpNumber = 1;
 
-        switch (GameModeManager.GameModemanagerInstance.MyDifficultyLevel)
+        switch (GameModeManager.GameModemanagerInstance.NowDifficultyLevel)
         {
             case GameModeManager.DifficultyLevel.Normal:
                 for (int i = 0; i < 2 + (int)(UnityEngine.Random.value * nowPhase / 2) && i <= 5; i++)
@@ -174,12 +174,8 @@ public class GameManager : MonoBehaviour
     }
 
     public static void GameOver()
-    {
-        GameModeManager.DifficultyLevel nowLevel = GameModeManager.GameModemanagerInstance.myDifficultyLevel;
-        if (ScoreManager.ScoreManagerInstance.pileUpScores[nowLevel] == null) ScoreManager.ScoreManagerInstance.pileUpScores[nowLevel] = new int[11];
-        ScoreManager.ScoreManagerInstance.pileUpScores[nowLevel][10] = (int)(ScoreManager.ScoreManagerInstance.CalculateAllVerticesHeight() * 1000);
-        Array.Sort(ScoreManager.ScoreManagerInstance.pileUpScores[nowLevel]);
-        Array.Reverse(ScoreManager.ScoreManagerInstance.pileUpScores[nowLevel]);
+    {;
+        ScoreManager.ScoreManagerInstance.InsertPileUpScoreAndSort((int)(ScoreManager.ScoreManagerInstance.CalculateAllVerticesHeight() * 1000));
         ScoreManager.ScoreManagerInstance.SaveScoreData();
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }

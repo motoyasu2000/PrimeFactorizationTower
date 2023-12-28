@@ -21,7 +21,7 @@ public class ConditionGenerator : MonoBehaviour
 
         int rand;
 
-        switch (GameModeManager.GameModemanagerInstance.MyDifficultyLevel)
+        switch (GameModeManager.GameModemanagerInstance.NowDifficultyLevel)
         {
             case GameModeManager.DifficultyLevel.Normal:
 
