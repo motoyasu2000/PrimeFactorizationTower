@@ -6,34 +6,44 @@ using UnityEngine.UI;
 public class VolumeSetter : MonoBehaviour
 {
     Slider[] sliders = new Slider[3];
+    float[] preSliderValue = new float[3];
     private void Awake()
     {
-        sliders[0] = GameObject.Find("BGM_Volume").GetComponent<Slider>();
-        sliders[1] = GameObject.Find("SE_Volume").GetComponent<Slider>();
-        sliders[2] = GameObject.Find("Voice_Volume").GetComponent<Slider>();
+        sliders[0] = GameObject.Find("BGM_Volume").transform.GetChild(0).GetComponent<Slider>();
+        sliders[1] = GameObject.Find("SE_Volume").transform.GetChild(0).GetComponent<Slider>();
+        sliders[2] = GameObject.Find("Voice_Volume").transform.GetChild(0).GetComponent<Slider>();
 
         if (sliders[0] != null) sliders[0].value = SoundManager.SoundManagerInstance.volume_BGM;
         if (sliders[0] != null) sliders[1].value = SoundManager.SoundManagerInstance.volume_SE;
         if (sliders[0] != null) sliders[2].value = SoundManager.SoundManagerInstance.volume_Voice;
 
-        Debug.Log(sliders[0].name + " " +sliders[1].name + " " + sliders[2].name);
+        Debug.Log(sliders[0].value + " " +sliders[1].value + " " + sliders[2].value);
+    }
+    private void Update()
+    {
+        SetVolumeBGM();
+        SetVolumeSE();
+        SetVolumeVoice();
     }
     public void SetVolumeBGM()
     {
-        SoundManager.SoundManagerInstance.volume_BGM = GetComponent<Slider>().value;
+        preSliderValue[0] = sliders[0].value;
+        SoundManager.SoundManagerInstance.volume_BGM = sliders[0].value;
         Debug.Log(gameObject);
-        SoundManager.SaveSoundData();
+        if (preSliderValue[0] != sliders[0].value) SoundManager.SaveSoundData(); //スライダーの値が変更されたらセーブを行う
     }
     public void SetVolumeSE()
     {
-        SoundManager.SoundManagerInstance.volume_SE = GetComponent<Slider>().value;
+        preSliderValue[0] = sliders[0].value;
+        SoundManager.SoundManagerInstance.volume_SE = sliders[1].value;
         Debug.Log(gameObject);
-        SoundManager.SaveSoundData();
+        if (preSliderValue[1] != sliders[1].value) SoundManager.SaveSoundData(); //スライダーの値が変更されたらセーブを行う
     }
     public void SetVolumeVoice()
     {
-        SoundManager.SoundManagerInstance.volume_Voice = GetComponent<Slider>().value;
+        preSliderValue[0] = sliders[0].value;
+        SoundManager.SoundManagerInstance.volume_Voice = sliders[2].value;
         Debug.Log(gameObject);
-        SoundManager.SaveSoundData();
+        if (preSliderValue[2] != sliders[2].value) SoundManager.SaveSoundData(); //スライダーの値が変更されたらセーブを行う
     }
 }
