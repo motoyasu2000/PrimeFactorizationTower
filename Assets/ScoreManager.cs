@@ -8,12 +8,13 @@ using UnityEngine.SceneManagement;
 
 public class ScoreManager : MonoBehaviour
 {
-    [SerializeField] GameObject blockField;
+    GameObject blockField;
     GameObject afterField;
     GameObject completedField;
     TextMeshProUGUI maxScore;
     float maxHeight = 0;
-    public Dictionary<GameModeManager.DifficultyLevel, int[]> pileUpScores = new Dictionary<GameModeManager.DifficultyLevel,int[]>();
+    Dictionary<GameModeManager.DifficultyLevel, int[]> pileUpScores = new Dictionary<GameModeManager.DifficultyLevel,int[]>();
+    public Dictionary<GameModeManager.DifficultyLevel, int[]> PileUpScores => pileUpScores;
 
     private static ScoreManager instance;
     public static ScoreManager ScoreManagerInstance => instance;
@@ -106,11 +107,18 @@ public class ScoreManager : MonoBehaviour
         instance.maxScore = GameObject.Find("MaxScore").GetComponent<TextMeshProUGUI>();
         instance.maxHeight = 0;
 
-        instance.maxScore.text = instance.pileUpScores[GameModeManager.GameModemanagerInstance.MyDifficultyLevel][0].ToString();
+        instance.maxScore.text = instance.pileUpScores[GameModeManager.GameModemanagerInstance.NowDifficultyLevel][0].ToString();
 
 
     }
 
+    public void InsertPileUpScoreAndSort(int newScore)
+    {
+        GameModeManager.DifficultyLevel nowLevel = GameModeManager.GameModemanagerInstance.NowDifficultyLevel;
+        ScoreManagerInstance.pileUpScores[nowLevel][10] = newScore;
+        Array.Sort(ScoreManagerInstance.pileUpScores[nowLevel]);
+        Array.Reverse(ScoreManagerInstance.pileUpScores[nowLevel]);
+    }
     public void SaveScoreData()
     {
         SerializableScore score = new SerializableScore();
