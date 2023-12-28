@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class ButtonManager : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class ButtonManager : MonoBehaviour
     [SerializeField] GameObject multiPlay;
     [SerializeField] GameObject setting;
     [SerializeField] GameObject credit;
+    Button[] difficultyLevelButtons = new Button[3];
     GameObject[] menus = new GameObject[4];
 
     [SerializeField] Scene playScene;
@@ -19,6 +21,8 @@ public class ButtonManager : MonoBehaviour
         multiPlay = GameObject.Find("MultiPlay");
         setting = GameObject.Find("Setting");
         credit = GameObject.Find("Credit");
+
+        InitializeDifficultyLevelButton();
 
         menus[0] = singlePlay;
         menus[1] = multiPlay;
@@ -49,5 +53,34 @@ public class ButtonManager : MonoBehaviour
     public void ChangeDifficultyLevel(int diffLevel)
     {
         GameModeManager.GameModemanagerInstance.ChangeDifficultyLevel((GameModeManager.DifficultyLevel)diffLevel);
+        for(int i=0; i<3; i++)
+        {
+            if(i == diffLevel)
+            {
+                ChangeButtonColor_Selected(difficultyLevelButtons[i]);
+            }
+            else
+            {
+                ChangeButtonColor_Unselected(difficultyLevelButtons[i]);
+            }
+        }
+    }
+
+    public void ChangeButtonColor_Selected(Button button)
+    {
+        button.GetComponent<Image>().color = Color.green;
+    }
+    public void ChangeButtonColor_Unselected(Button button)
+    {
+        button.GetComponent<Image>().color = new Color(150f / 255f, 150f / 255f, 150f / 255f, 1);
+    }
+
+    void InitializeDifficultyLevelButton()
+    {
+        if (setting == null) return; //ê›íËâÊñ Ç≈Ç»Ç¢èÍçáÅAèàóùÇçsÇÌÇ»Ç¢ÅB
+        difficultyLevelButtons[0] = GameObject.Find("NormalButton").GetComponent<Button>();
+        difficultyLevelButtons[1] = GameObject.Find("DifficultButton").GetComponent<Button>();
+        difficultyLevelButtons[2] = GameObject.Find("InsaneButton").GetComponent<Button>();
+        ChangeDifficultyLevel((int)GameModeManager.GameModemanagerInstance.NowDifficultyLevel);
     }
 }
