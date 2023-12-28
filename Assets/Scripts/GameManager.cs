@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
 using System;
+using UnityEngine.Rendering;
 
 public class GameManager : MonoBehaviour
 {
@@ -33,6 +34,10 @@ public class GameManager : MonoBehaviour
     SoundManager soundManager;
     ScoreManager scoreManager;
     GameModeManager gameModeManager;
+    BloomManager bloomManager;
+
+    bool isGameOver = false;
+    float gameOverTimer = 0;
 
     private void Awake()
     {
@@ -40,6 +45,7 @@ public class GameManager : MonoBehaviour
         soundManager = SoundManager.SoundManagerInstance;
         scoreManager = ScoreManager.ScoreManagerInstance;
         gameModeManager = GameModeManager.GameModemanagerInstance;
+        bloomManager = GameObject.Find("GlobalVolume").GetComponent<BloomManager>();
         upNumberqueue.Enqueue(GenerateUpNumber());
     }
 
@@ -104,6 +110,15 @@ public class GameManager : MonoBehaviour
         {
             RemoveUpNumber(); //ã‚Ì”Žš‚ÌÁ‹Ž
             soundManager.PlayAudio(soundManager.SE_DONE); //done‚ÌÄ¶
+        }
+
+        if (isGameOver)
+        {
+            gameOverTimer += Time.deltaTime;
+            if (gameOverTimer > 1.2f)
+            {
+                PostGameOver();
+            }
         }
     }
 
@@ -173,13 +188,18 @@ public class GameManager : MonoBehaviour
 
     }
 
-    public static void GameOver()
+    public void GameOver()
     {
         ScoreManager.ScoreManagerInstance.InsertPileUpScoreAndSort((int)(ScoreManager.ScoreManagerInstance.CalculateAllVerticesHeight() * 1000));
         ScoreManager.ScoreManagerInstance.SaveScoreData();
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        isGameOver = true;
+        bloomManager.isLightUpStart = true;
     }
 
+    public void PostGameOver()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
 
 
 }
