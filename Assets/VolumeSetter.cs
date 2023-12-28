@@ -14,8 +14,8 @@ public class VolumeSetter : MonoBehaviour
         sliders[2] = GameObject.Find("Voice_Volume").transform.GetChild(0).GetComponent<Slider>();
 
         if (sliders[0] != null) sliders[0].value = SoundManager.SoundManagerInstance.Volume_BGM;
-        if (sliders[0] != null) sliders[1].value = SoundManager.SoundManagerInstance.Volume_SE;
-        if (sliders[0] != null) sliders[2].value = SoundManager.SoundManagerInstance.Volume_Voice;
+        if (sliders[1] != null) sliders[1].value = SoundManager.SoundManagerInstance.Volume_SE;
+        if (sliders[2] != null) sliders[2].value = SoundManager.SoundManagerInstance.Volume_Voice;
 
         Debug.Log(sliders[0].value + " " +sliders[1].value + " " + sliders[2].value);
     }

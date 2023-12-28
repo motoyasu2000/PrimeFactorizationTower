@@ -174,7 +174,7 @@ public class GameManager : MonoBehaviour
     }
 
     public static void GameOver()
-    {;
+    {
         ScoreManager.ScoreManagerInstance.InsertPileUpScoreAndSort((int)(ScoreManager.ScoreManagerInstance.CalculateAllVerticesHeight() * 1000));
         ScoreManager.ScoreManagerInstance.SaveScoreData();
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
