@@ -8,10 +8,11 @@ public class ButtonManager : MonoBehaviour
 {
     [SerializeField] GameObject singlePlay;
     [SerializeField] GameObject multiPlay;
+    [SerializeField] GameObject history;
     [SerializeField] GameObject setting;
     [SerializeField] GameObject credit;
     Button[] difficultyLevelButtons = new Button[3];
-    GameObject[] menus = new GameObject[4];
+    GameObject[] menus = new GameObject[5];
 
     [SerializeField] Scene playScene;
 
@@ -19,6 +20,7 @@ public class ButtonManager : MonoBehaviour
     {
         singlePlay = GameObject.Find("SinglePlay");
         multiPlay = GameObject.Find("MultiPlay");
+        history = GameObject.Find("History");
         setting = GameObject.Find("Setting");
         credit = GameObject.Find("Credit");
 
@@ -26,8 +28,9 @@ public class ButtonManager : MonoBehaviour
 
         menus[0] = singlePlay;
         menus[1] = multiPlay;
-        menus[2] = setting;
-        menus[3] = credit;
+        menus[2] = history;
+        menus[3] = setting;
+        menus[4] = credit;
     }
 
     public void DisplayMenu(GameObject menu)
