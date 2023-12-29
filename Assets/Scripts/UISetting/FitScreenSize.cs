@@ -8,7 +8,7 @@ public class FitScreenSize : MonoBehaviour
     float width;
     float canvasHeight;
 
-    private void Awake()
+    private void Start()
     {
         rectTransform = GetComponent<RectTransform>();
         width = rectTransform.rect.width;

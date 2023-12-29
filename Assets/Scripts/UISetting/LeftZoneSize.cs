@@ -33,7 +33,7 @@ public class LeftZoneSize : MonoBehaviour
         myTransform.pivot = new Vector2(0, 0.5f);
 
         //RightZoneSizeのUIの幅を計算し、サイズを設定
-        float widthForLeftZone = leftEdgeOfUpNumber;
+        float widthForLeftZone = leftEdgeOfUpNumber / CanvasManager.NowScaleFactor;
         myTransform.sizeDelta = new Vector2(widthForLeftZone, upNumbertransform.sizeDelta.y);
     }
 }
