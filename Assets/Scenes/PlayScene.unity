@@ -185,7 +185,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &12573318
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4388,6 +4388,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73e905b39f4ea0c4084c1f8dec0a46f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameManager: {fileID: 76913987}
+  gameOverReason: {fileID: 1454565553}
+  Scores_NonUpdateRecord: {fileID: 120366664}
+  Scores_UpdateRecord: {fileID: 12573317}
 --- !u!1 &1152692520
 GameObject:
   m_ObjectHideFlags: 0
