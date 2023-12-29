@@ -33,7 +33,7 @@ public class RightZoneSize : MonoBehaviour
 
         //要素upNmbuerの右端の位置を取得
         float rightEdgeOfUpNumber_local = upNumbertransform.anchoredPosition.x - upNumbertransform.rect.width / 2;
-        float rightEdgeOfUpNumber = upNumbertransform.TransformPoint(new Vector3(rightEdgeOfUpNumber_local, 0, 0)).x;
+        float rightEdgeOfUpNumber = upNumbertransform.TransformPoint(new Vector3(rightEdgeOfUpNumber_local, 0, 0)).x / CanvasManager.NowScaleFactor;
 
 
         //ピボットを右端に設定
