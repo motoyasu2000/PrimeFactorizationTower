@@ -121,6 +121,7 @@ public class GameManager : MonoBehaviour
             if (gameOverTimer > 1.2f)
             {
                 PostGameOver();
+                gameOverTimer = float.MinValue;
             }
         }
     }
@@ -197,12 +198,14 @@ public class GameManager : MonoBehaviour
         ScoreManager.ScoreManagerInstance.SaveScoreData();
         isGameOver = true;
         bloomManager.isLightUpStart = true;
-        SoundManager.SoundManagerInstance.FadeOutVolume();
+        soundManager.FadeOutVolume();
     }
 
     public void PostGameOver()
     {
         gameOverMenu.SetActive(true);
+        soundManager.StopAudio(soundManager.BGM_PLAY);
+        SoundManager.LoadSoundData();
     }
 
 

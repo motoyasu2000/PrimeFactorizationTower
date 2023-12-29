@@ -95,6 +95,11 @@ public class SoundManager : MonoBehaviour
         PlayAudio(audioSource);
     }
 
+    public void StopAudio(AudioSource audioSource)
+    {
+        audioSource.Stop();
+    }
+
     //スライダーから設定したボリュームを実際の音量に反映
     void SoundSetting()
     {
