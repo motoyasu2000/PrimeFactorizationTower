@@ -273,7 +273,6 @@ MonoBehaviour:
   multiPlay: {fileID: 0}
   setting: {fileID: 0}
   credit: {fileID: 0}
-  difficultyLevels: []
   playScene:
     m_Handle: 0
 --- !u!1 &66564006
@@ -1235,6 +1234,54 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 465877587}
   m_CullTransparentMesh: 1
+--- !u!1 &469534258
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 469534259}
+  - component: {fileID: 469534260}
+  m_Layer: 5
+  m_Name: VolumeSetter
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &469534259
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 469534258}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 810897568}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &469534260
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 469534258}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e1b4ac9a5627f64ca414e2a4a938a97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &478117754
 GameObject:
   m_ObjectHideFlags: 0
@@ -1385,7 +1432,6 @@ MonoBehaviour:
   multiPlay: {fileID: 0}
   setting: {fileID: 0}
   credit: {fileID: 0}
-  difficultyLevels: []
   playScene:
     m_Handle: 0
 --- !u!1 &486783814
@@ -1538,7 +1584,6 @@ MonoBehaviour:
   multiPlay: {fileID: 0}
   setting: {fileID: 0}
   credit: {fileID: 0}
-  difficultyLevels: []
   playScene:
     m_Handle: 0
 --- !u!1 &546207360
@@ -1597,7 +1642,6 @@ MonoBehaviour:
   multiPlay: {fileID: 0}
   setting: {fileID: 0}
   credit: {fileID: 0}
-  difficultyLevels: []
   playScene:
     m_Handle: 0
 --- !u!114 &546207363
@@ -1727,7 +1771,7 @@ RectTransform:
   m_Father: {fileID: 408285814}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -1954,7 +1998,7 @@ RectTransform:
   m_Father: {fileID: 1392401151}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -2190,7 +2234,6 @@ GameObject:
   m_Component:
   - component: {fileID: 800098914}
   - component: {fileID: 800098916}
-  - component: {fileID: 800098915}
   m_Layer: 5
   m_Name: Slider
   m_TagString: Untagged
@@ -2220,18 +2263,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &800098915
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 800098913}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8e1b4ac9a5627f64ca414e2a4a938a97, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &800098916
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2283,7 +2314,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 800098915}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: VolumeSetter, Assembly-CSharp
         m_MethodName: SetVolumeBGM
         m_Mode: 1
@@ -2328,6 +2359,7 @@ RectTransform:
   - {fileID: 1545962513}
   - {fileID: 125779805}
   - {fileID: 1319940685}
+  - {fileID: 469534259}
   m_Father: {fileID: 193395271}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -2453,7 +2485,6 @@ MonoBehaviour:
   multiPlay: {fileID: 0}
   setting: {fileID: 0}
   credit: {fileID: 0}
-  difficultyLevels: []
   playScene:
     m_Handle: 0
 --- !u!114 &869510321
@@ -2796,7 +2827,6 @@ MonoBehaviour:
   multiPlay: {fileID: 0}
   setting: {fileID: 0}
   credit: {fileID: 0}
-  difficultyLevels: []
   playScene:
     m_Handle: 0
 --- !u!1 &966932826
@@ -3371,7 +3401,6 @@ MonoBehaviour:
   multiPlay: {fileID: 0}
   setting: {fileID: 0}
   credit: {fileID: 0}
-  difficultyLevels: []
   playScene:
     m_Handle: 0
 --- !u!1 &1050556404
@@ -3795,7 +3824,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1189074904
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4319,7 +4348,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1338451808}
   - component: {fileID: 1338451810}
-  - component: {fileID: 1338451809}
   m_Layer: 5
   m_Name: Slider
   m_TagString: Untagged
@@ -4349,18 +4377,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1338451809
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1338451807}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8e1b4ac9a5627f64ca414e2a4a938a97, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1338451810
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4412,7 +4428,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1338451809}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: VolumeSetter, Assembly-CSharp
         m_MethodName: SetVolumeBGM
         m_Mode: 1
@@ -4703,7 +4719,7 @@ RectTransform:
   m_Father: {fileID: 296854227}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -4778,7 +4794,7 @@ RectTransform:
   m_Father: {fileID: 2105604276}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -4965,7 +4981,7 @@ RectTransform:
   m_Father: {fileID: 227130998}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -5390,7 +5406,6 @@ MonoBehaviour:
   multiPlay: {fileID: 0}
   setting: {fileID: 0}
   credit: {fileID: 0}
-  difficultyLevels: []
   playScene:
     m_Handle: 0
 --- !u!1 &1608707947
@@ -5449,7 +5464,6 @@ MonoBehaviour:
   multiPlay: {fileID: 0}
   setting: {fileID: 0}
   credit: {fileID: 0}
-  difficultyLevels: []
   playScene:
     m_Handle: 0
 --- !u!114 &1608707950
@@ -5715,7 +5729,7 @@ RectTransform:
   m_Father: {fileID: 1476825945}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -5907,7 +5921,6 @@ MonoBehaviour:
   multiPlay: {fileID: 0}
   setting: {fileID: 0}
   credit: {fileID: 0}
-  difficultyLevels: []
   playScene:
     m_Handle: 0
 --- !u!1 &1797024992
@@ -6309,7 +6322,6 @@ MonoBehaviour:
   multiPlay: {fileID: 0}
   setting: {fileID: 0}
   credit: {fileID: 0}
-  difficultyLevels: []
   playScene:
     m_Handle: 0
 --- !u!114 &1889161860
@@ -7058,7 +7070,6 @@ MonoBehaviour:
   multiPlay: {fileID: 0}
   setting: {fileID: 0}
   credit: {fileID: 0}
-  difficultyLevels: []
   playScene:
     m_Handle: 0
 --- !u!1 &2025239654
@@ -7280,7 +7291,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2043185676}
   - component: {fileID: 2043185678}
-  - component: {fileID: 2043185677}
   m_Layer: 5
   m_Name: Slider
   m_TagString: Untagged
@@ -7310,18 +7320,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &2043185677
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2043185675}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8e1b4ac9a5627f64ca414e2a4a938a97, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &2043185678
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7373,7 +7371,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2043185677}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: VolumeSetter, Assembly-CSharp
         m_MethodName: SetVolumeBGM
         m_Mode: 1

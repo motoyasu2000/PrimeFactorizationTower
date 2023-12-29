@@ -81,17 +81,17 @@ public class GameModeManager : MonoBehaviour
     }
     public void LoadDifficultyLevelData()
     {
-        if (!File.Exists(Application.dataPath + "/Savedata/System/SoundSetting.json")) { return; }
-        StreamReader reader = new StreamReader(Application.dataPath + "/Savedata/System/SoundSetting.json");
+        if (!File.Exists(Application.dataPath + "/Savedata/System/DifficultyLevel.json")) { return; }
+        StreamReader reader = new StreamReader(Application.dataPath + "/Savedata/System/DifficultyLevel.json");
         string datastr = reader.ReadToEnd();
         reader.Close();
         var obj = JsonUtility.FromJson<JsonLoadGameModeManager>(datastr); //Monobehaviorを継承したクラスではJsonファイルを読み込むことができないため、他のクラスを生成し読み込む
-        instance.nowDifficultyLevel = obj.myDifficultyLevel;
+        instance.nowDifficultyLevel = obj.nowDifficultyLevel;
     }
 }
 
 //Jsonからインスタンスを生成するためのクラス
 class JsonLoadGameModeManager
 {
-    public DifficultyLevel myDifficultyLevel;
+    public DifficultyLevel nowDifficultyLevel;
 }
