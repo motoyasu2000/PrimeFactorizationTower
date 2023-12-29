@@ -44,6 +44,17 @@ public class ButtonManager : MonoBehaviour
         }
     }
 
+    public void RestartScene()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        SoundManager.LoadSoundData();
+    }
+
+    public void MoveTitleScene()
+    {
+        SceneManager.LoadScene("TitleScene");
+    }
+
     public void MovePlayScene()
     {
         SceneManager.LoadScene("PlayScene");
