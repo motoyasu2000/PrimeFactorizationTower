@@ -17,8 +17,11 @@ public class GameManager : MonoBehaviour
 
     int nowPhase = 1; //現在のphase
     int nowUpNumber = 1;
-
     int allBlockNumber = 1;
+    int compositeNumber_GO; //ゲームオーバー時の合成数
+    int primeNumber_GO; //ゲームオーバー時の素数
+    public int CompositeNumber_GO => compositeNumber_GO;
+    public int PrimeNumber_GO => primeNumber_GO;
 
     [SerializeField] GameObject blockField;
     GameObject afterField;
@@ -39,6 +42,8 @@ public class GameManager : MonoBehaviour
 
     bool isGameOver = false;
     float gameOverTimer = 0;
+
+    
 
     private void Awake()
     {
@@ -82,6 +87,10 @@ public class GameManager : MonoBehaviour
             if (nowUpNumber % allBlockNumber != 0)
             {
                 if (isGameOver) break;
+                compositeNumber_GO = nowUpNumber * afterField.transform.GetChild(afterField.transform.childCount - 1).GetComponent<BlockInfo>().GetNumber() / allBlockNumber;
+                primeNumber_GO = afterField.transform.GetChild(afterField.transform.childCount - 1).GetComponent<BlockInfo>().GetNumber();
+                Debug.Log(compositeNumber_GO);
+                Debug.Log(primeNumber_GO);
                 GameOver();
             }
         }
@@ -189,7 +198,6 @@ public class GameManager : MonoBehaviour
         upNumberText.text = ""; //テキストの初期化
         allBlockNumber = 1; //素数の積の初期化
         completeNumberFlag = false; //これがtrueの間はblockが生成されないようになっているので、removeの瞬間に直してあげるひつようがある。
-
     }
 
     public void GameOver()
