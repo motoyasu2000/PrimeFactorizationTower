@@ -6,10 +6,14 @@ public class CanvasManager : MonoBehaviour
 {
     const int originWidth = 750;
     int nowWidth;
+    static int nowScaleFactor;
+    public static int NowScaleFactor => nowScaleFactor;
     void Awake()
     {
         nowWidth = Screen.width;
-        GetComponent<Canvas>().scaleFactor = nowWidth / originWidth;
+        nowScaleFactor = nowWidth / originWidth;
+        GetComponent<Canvas>().scaleFactor = nowScaleFactor;
+        GetComponent<Canvas>().scaleFactor = nowScaleFactor;
     }
 
     // Update is called once per frame
