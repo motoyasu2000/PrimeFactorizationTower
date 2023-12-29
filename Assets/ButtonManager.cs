@@ -46,18 +46,17 @@ public class ButtonManager : MonoBehaviour
 
     public void RestartScene()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        SoundManager.LoadSoundData();
+        SceneLoadHelper.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public void MoveTitleScene()
     {
-        SceneManager.LoadScene("TitleScene");
+        SceneLoadHelper.LoadScene("TitleScene");
     }
 
     public void MovePlayScene()
     {
-        SceneManager.LoadScene("PlayScene");
+        SceneLoadHelper.LoadScene("PlayScene");
         GameModeManager.GameModemanagerInstance.SetGameMode(GameModeManager.GameMode.PileUp);
     }
 
