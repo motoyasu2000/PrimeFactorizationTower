@@ -18,10 +18,14 @@ public class GameManager : MonoBehaviour
     int nowPhase = 1; //現在のphase
     int nowUpNumber = 1;
     int allBlockNumber = 1;
-    int compositeNumber_GO; //ゲームオーバー時の合成数
+    int compositeNumber_GO; //ゲームオーバー時の合成数6y
     int primeNumber_GO; //ゲームオーバー時の素数
     public int CompositeNumber_GO => compositeNumber_GO;
     public int PrimeNumber_GO => primeNumber_GO;
+    int oldMaxScore = -1;
+    int newScore = -1;
+    public int OldMaxScore => oldMaxScore;
+    public int NewScore => newScore;
 
     [SerializeField] GameObject blockField;
     GameObject afterField;
@@ -87,6 +91,7 @@ public class GameManager : MonoBehaviour
             if (nowUpNumber % allBlockNumber != 0)
             {
                 if (isGameOver) break;
+                //最後のゲームオーバー理由の出力の際に、元の合成数とその時選択してしまった素数の情報が必要なので、変数に入れておく。
                 compositeNumber_GO = nowUpNumber * afterField.transform.GetChild(afterField.transform.childCount - 1).GetComponent<BlockInfo>().GetNumber() / allBlockNumber;
                 primeNumber_GO = afterField.transform.GetChild(afterField.transform.childCount - 1).GetComponent<BlockInfo>().GetNumber();
                 Debug.Log(compositeNumber_GO);
@@ -108,7 +113,8 @@ public class GameManager : MonoBehaviour
         {
             if (isGroundAll)
             {
-                scoreText.text = ((int)(scoreManager.CalculateAllVerticesHeight()*1000)).ToString();
+                newScore = (int)(scoreManager.CalculateAllVerticesHeight() * 1000);
+                scoreText.text = newScore.ToString();
             }
         }
 
@@ -202,8 +208,11 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
-        ScoreManager.ScoreManagerInstance.InsertPileUpScoreAndSort((int)(ScoreManager.ScoreManagerInstance.CalculateAllVerticesHeight() * 1000));
-        ScoreManager.ScoreManagerInstance.SaveScoreData();
+        //ソート前に過去の最高スコアの情報を取得しておく(のちにこのゲームで最高スコアを更新したかを確認するため)
+        oldMaxScore = scoreManager.PileUpScores[gameModeManager.NowDifficultyLevel][0];
+
+        scoreManager.InsertPileUpScoreAndSort(newScore);
+        scoreManager.SaveScoreData();
         isGameOver = true;
         bloomManager.isLightUpStart = true;
         soundManager.FadeOutVolume();
