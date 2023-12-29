@@ -39,6 +39,8 @@ public class SoundManager : MonoBehaviour
     public AudioSource VOICE_FREEZE => voice_freeze;
     public AudioSource SE_DONE => se_done;
     public AudioSource BGM_PLAY => bgm_play;
+
+    bool isGameOver = false;
     void Awake()
     {
         transVoices = transform.Find("Voices");
@@ -108,6 +110,17 @@ public class SoundManager : MonoBehaviour
         {
             Voice.volume = volume_Voice;
         }
+    }
+
+    public void CheckFlagGameOver()
+    {
+        instance.isGameOver = true;
+    }
+
+    public void FadeOutVolume()
+    {
+        GameObject gameObject = new GameObject("FadeoutVolumer");
+        gameObject.AddComponent<FadeOutVolumer>();
     }
 
     public static void SaveSoundData()

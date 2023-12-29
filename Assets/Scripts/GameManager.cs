@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI remainingNumberText;
     [SerializeField] TextMeshProUGUI MainText;
     [SerializeField] TextMeshProUGUI scoreText;
+    GameObject gameOverMenu;
 
     int nowPhase = 1; //åªç›ÇÃphase
     int nowUpNumber = 1;
@@ -47,6 +48,7 @@ public class GameManager : MonoBehaviour
         gameModeManager = GameModeManager.GameModemanagerInstance;
         bloomManager = GameObject.Find("GlobalVolume").GetComponent<BloomManager>();
         upNumberqueue.Enqueue(GenerateUpNumber());
+        gameOverMenu = GameObject.Find("Canvas").transform.Find("GameOverMenu").gameObject;
     }
 
     // Update is called once per frame
@@ -79,6 +81,7 @@ public class GameManager : MonoBehaviour
 
             if (nowUpNumber % allBlockNumber != 0)
             {
+                if (isGameOver) break;
                 GameOver();
             }
         }
@@ -194,11 +197,12 @@ public class GameManager : MonoBehaviour
         ScoreManager.ScoreManagerInstance.SaveScoreData();
         isGameOver = true;
         bloomManager.isLightUpStart = true;
+        SoundManager.SoundManagerInstance.FadeOutVolume();
     }
 
     public void PostGameOver()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        gameOverMenu.SetActive(true);
     }
 
 
