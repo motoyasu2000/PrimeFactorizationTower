@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
 using System;
+using UnityEngine.Rendering;
 
 public class GameManager : MonoBehaviour
 {
@@ -12,11 +13,19 @@ public class GameManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI remainingNumberText;
     [SerializeField] TextMeshProUGUI MainText;
     [SerializeField] TextMeshProUGUI scoreText;
+    GameObject gameOverMenu;
 
     int nowPhase = 1; //現在のphase
     int nowUpNumber = 1;
-
     int allBlockNumber = 1;
+    int compositeNumber_GO; //ゲームオーバー時の合成数6y
+    int primeNumber_GO; //ゲームオーバー時の素数
+    public int CompositeNumber_GO => compositeNumber_GO;
+    public int PrimeNumber_GO => primeNumber_GO;
+    int oldMaxScore = -1;
+    int newScore = -1;
+    public int OldMaxScore => oldMaxScore;
+    public int NewScore => newScore;
 
     [SerializeField] GameObject blockField;
     GameObject afterField;
@@ -33,6 +42,12 @@ public class GameManager : MonoBehaviour
     SoundManager soundManager;
     ScoreManager scoreManager;
     GameModeManager gameModeManager;
+    BloomManager bloomManager;
+
+    bool isGameOver = false;
+    float gameOverTimer = 0;
+
+    
 
     private void Awake()
     {
@@ -40,7 +55,9 @@ public class GameManager : MonoBehaviour
         soundManager = SoundManager.SoundManagerInstance;
         scoreManager = ScoreManager.ScoreManagerInstance;
         gameModeManager = GameModeManager.GameModemanagerInstance;
+        bloomManager = GameObject.Find("GlobalVolume").GetComponent<BloomManager>();
         upNumberqueue.Enqueue(GenerateUpNumber());
+        gameOverMenu = GameObject.Find("Canvas").transform.Find("GameOverMenu").gameObject;
     }
 
     // Update is called once per frame
@@ -73,6 +90,12 @@ public class GameManager : MonoBehaviour
 
             if (nowUpNumber % allBlockNumber != 0)
             {
+                if (isGameOver) break;
+                //最後のゲームオーバー理由の出力の際に、元の合成数とその時選択してしまった素数の情報が必要なので、変数に入れておく。
+                compositeNumber_GO = nowUpNumber * afterField.transform.GetChild(afterField.transform.childCount - 1).GetComponent<BlockInfo>().GetNumber() / allBlockNumber;
+                primeNumber_GO = afterField.transform.GetChild(afterField.transform.childCount - 1).GetComponent<BlockInfo>().GetNumber();
+                Debug.Log(compositeNumber_GO);
+                Debug.Log(primeNumber_GO);
                 GameOver();
             }
         }
@@ -90,7 +113,8 @@ public class GameManager : MonoBehaviour
         {
             if (isGroundAll)
             {
-                scoreText.text = ((int)(scoreManager.CalculateAllVerticesHeight()*1000)).ToString();
+                newScore = (int)(scoreManager.CalculateAllVerticesHeight() * 1000);
+                scoreText.text = newScore.ToString();
             }
         }
 
@@ -104,6 +128,16 @@ public class GameManager : MonoBehaviour
         {
             RemoveUpNumber(); //上の数字の消去
             soundManager.PlayAudio(soundManager.SE_DONE); //doneの再生
+        }
+
+        if (isGameOver)
+        {
+            gameOverTimer += Time.deltaTime;
+            if (gameOverTimer > 1.2f)
+            {
+                PostGameOver();
+                gameOverTimer = float.MinValue;
+            }
         }
     }
 
@@ -170,16 +204,26 @@ public class GameManager : MonoBehaviour
         upNumberText.text = ""; //テキストの初期化
         allBlockNumber = 1; //素数の積の初期化
         completeNumberFlag = false; //これがtrueの間はblockが生成されないようになっているので、removeの瞬間に直してあげるひつようがある。
-
     }
 
-    public static void GameOver()
-    {;
-        ScoreManager.ScoreManagerInstance.InsertPileUpScoreAndSort((int)(ScoreManager.ScoreManagerInstance.CalculateAllVerticesHeight() * 1000));
-        ScoreManager.ScoreManagerInstance.SaveScoreData();
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    public void GameOver()
+    {
+        //ソート前に過去の最高スコアの情報を取得しておく(のちにこのゲームで最高スコアを更新したかを確認するため)
+        oldMaxScore = scoreManager.PileUpScores[gameModeManager.NowDifficultyLevel][0];
+
+        scoreManager.InsertPileUpScoreAndSort(newScore);
+        scoreManager.SaveScoreData();
+        isGameOver = true;
+        bloomManager.isLightUpStart = true;
+        soundManager.FadeOutVolume();
     }
 
+    public void PostGameOver()
+    {
+        gameOverMenu.SetActive(true);
+        soundManager.StopAudio(soundManager.BGM_PLAY);
+        SoundManager.LoadSoundData();
+    }
 
 
 }

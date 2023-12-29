@@ -44,9 +44,19 @@ public class ButtonManager : MonoBehaviour
         }
     }
 
+    public void RestartScene()
+    {
+        SceneLoadHelper.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void MoveTitleScene()
+    {
+        SceneLoadHelper.LoadScene("TitleScene");
+    }
+
     public void MovePlayScene()
     {
-        SceneManager.LoadScene("PlayScene");
+        SceneLoadHelper.LoadScene("PlayScene");
         GameModeManager.GameModemanagerInstance.SetGameMode(GameModeManager.GameMode.PileUp);
     }
 
