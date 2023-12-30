@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class TouchBlock : MonoBehaviour
 {
@@ -18,6 +19,10 @@ public class TouchBlock : MonoBehaviour
     GameObject afterField;
 
     NetWork netWork;
+
+    GameObject canvas;
+    EventSystem eventSystem;
+    GraphicRaycaster graphicRaycaster;
     private void Start()
     {
         blockInfo = GetComponent<BlockInfo>();
@@ -27,6 +32,9 @@ public class TouchBlock : MonoBehaviour
         blockField = GameObject.Find("BlockField");
         afterField = blockField.transform.Find("AfterField").gameObject;
         netWork = GameObject.Find("NetWork").GetComponent<NetWork>();
+        canvas = GameObject.Find("Canvas");
+        eventSystem = FindObjectOfType<EventSystem>();
+        graphicRaycaster = canvas.GetComponent<GraphicRaycaster>();
     }
 
     void Update()
@@ -51,8 +59,28 @@ public class TouchBlock : MonoBehaviour
 
                             //Debug.Log($"tatchpos.y : {touchPosition.y}");
                             //Debug.Log($"upCondition : {upCondition.y}");
-                            
-                            //if (EventSystem.current.IsPointerOverGameObject(0)) return;
+
+                            /////////////////////////////////////EventSystem.current.currentSelectedGameObjectはボタンやスライダーなどのクリック可能なUIのみ取得可能////////////////////////////////////////////////
+                            //if (EventSystem.current.IsPointerOverGameObject(0))
+                            //{
+                            //    GameObject uppestUI = EventSystem.current.currentSelectedGameObject;
+                            //    Debug.Log(uppestUI);
+                            //    if(uppestUI != null && !uppestUI.CompareTag("UnderClickable")) return;
+                            //}
+                            /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+                            PointerEventData pointerEventData = new PointerEventData(eventSystem);
+                            pointerEventData.position = touch.position; //スクリーン座標で指定することに注意
+                            List<RaycastResult> results = new List<RaycastResult>();
+                            graphicRaycaster.Raycast(pointerEventData, results);
+
+                            foreach(RaycastResult result in results)
+                            {
+                                GameObject hitGameObject = result.gameObject;
+                                Debug.Log(hitGameObject);
+                                if (hitGameObject != null && !hitGameObject.CompareTag("UnderClickable")) return;
+                            }
+
                             if (touchPosition.y < upCondition.y) return;
                             if (singleGenerateManager.GetSingleGameObject() == null) return;
                             draggedObject = singleGenerateManager.GetSingleGameObject().transform;
