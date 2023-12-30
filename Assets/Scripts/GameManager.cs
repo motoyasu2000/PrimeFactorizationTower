@@ -10,7 +10,6 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI upNumberText; //画面上部の合成数のテキスト
     [SerializeField] TextMeshProUGUI nextUpNumberText;
-    [SerializeField] TextMeshProUGUI remainingNumberText;
     [SerializeField] TextMeshProUGUI MainText;
     [SerializeField] TextMeshProUGUI scoreText;
     GameObject gameOverMenu;
@@ -70,7 +69,6 @@ public class GameManager : MonoBehaviour
             nowUpNumber = upNumberqueue.Dequeue();
             upNumberText.text = nowUpNumber.ToString();
             nextUpNumberText.text = upNumberqueue.Peek().ToString();
-            remainingNumberText.text = nowUpNumber.ToString(); //残りの数値を更新するタイミングで残りナンバーを更新する必要がある。
         }
 
         isGroundAll_past = isGroundAll;
@@ -86,7 +84,7 @@ public class GameManager : MonoBehaviour
             }
 
             allBlockNumber *= blockInfo.GetNumber();//もしblockの素数が上の合成数の素因数じゃなかったら
-            remainingNumberText.text = (nowUpNumber / allBlockNumber).ToString(); //残りの数字を計算して描画。ただしafterFieldが空になるとこの中の処理が行われなくなるので
+            upNumberText.text = (nowUpNumber / allBlockNumber).ToString(); //残りの数字を計算して描画。ただしafterFieldが空になるとこの中の処理が行われなくなるので
                                                                                   //UpNumberの更新のたびに、この値も更新してあげる必要がある。
 
             if (nowUpNumber % allBlockNumber != 0)
