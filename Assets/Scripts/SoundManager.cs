@@ -140,7 +140,13 @@ public class SoundManager : MonoBehaviour
 
     public static void LoadSoundData()
     {
-        if (!File.Exists(Application.dataPath + "/Savedata/System/SoundSetting.json")) { return; }
+        if (!File.Exists(Application.dataPath + "/Savedata/System/SoundSetting.json"))
+        {
+            instance.volume_BGM = 0.5f;
+            instance.volume_SE = 0.5f;
+            instance.volume_Voice = 0.5f;
+            return;
+        }
         StreamReader reader = new StreamReader(Application.dataPath + "/Savedata/System/SoundSetting.json");
         string datastr = reader.ReadToEnd();
         reader.Close();
