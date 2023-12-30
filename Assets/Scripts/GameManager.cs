@@ -10,7 +10,6 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI upNumberText; //画面上部の合成数のテキスト
     [SerializeField] TextMeshProUGUI nextUpNumberText;
-    [SerializeField] TextMeshProUGUI remainingNumberText;
     [SerializeField] TextMeshProUGUI MainText;
     [SerializeField] TextMeshProUGUI scoreText;
     GameObject gameOverMenu;
@@ -45,6 +44,7 @@ public class GameManager : MonoBehaviour
     BloomManager bloomManager;
 
     bool isGameOver = false;
+    public bool IsGameOver => isGameOver;
     float gameOverTimer = 0;
 
     
@@ -69,7 +69,6 @@ public class GameManager : MonoBehaviour
             nowUpNumber = upNumberqueue.Dequeue();
             upNumberText.text = nowUpNumber.ToString();
             nextUpNumberText.text = upNumberqueue.Peek().ToString();
-            remainingNumberText.text = nowUpNumber.ToString(); //残りの数値を更新するタイミングで残りナンバーを更新する必要がある。
         }
 
         isGroundAll_past = isGroundAll;
@@ -85,7 +84,7 @@ public class GameManager : MonoBehaviour
             }
 
             allBlockNumber *= blockInfo.GetNumber();//もしblockの素数が上の合成数の素因数じゃなかったら
-            remainingNumberText.text = (nowUpNumber / allBlockNumber).ToString(); //残りの数字を計算して描画。ただしafterFieldが空になるとこの中の処理が行われなくなるので
+            upNumberText.text = (nowUpNumber / allBlockNumber).ToString(); //残りの数字を計算して描画。ただしafterFieldが空になるとこの中の処理が行われなくなるので
                                                                                   //UpNumberの更新のたびに、この値も更新してあげる必要がある。
 
             if (nowUpNumber % allBlockNumber != 0)
@@ -155,29 +154,29 @@ public class GameManager : MonoBehaviour
         switch (GameModeManager.GameModemanagerInstance.NowDifficultyLevel)
         {
             case GameModeManager.DifficultyLevel.Normal:
-                for (int i = 0; i < 2 + (int)(UnityEngine.Random.value * nowPhase / 2) && i <= 5; i++)
+                for (int i = 0; i <UnityEngine.Random.Range(2,5); i++)
                 {
                     randomIndex = UnityEngine.Random.Range(0, gameModeManager.NormalPool.Count);
                     randomPrimeNumber = gameModeManager.NormalPool[randomIndex];
-                    returnUpNumber *= randomPrimeNumber;
+                    if (returnUpNumber * randomPrimeNumber < 10000) returnUpNumber *= randomPrimeNumber;
                 }
                 break;
                     
             case GameModeManager.DifficultyLevel.Difficult:
-                for (int i = 0; i < 2 + (int)(UnityEngine.Random.value * nowPhase / 2) && i <= 5; i++)
+                for (int i = 0; i < UnityEngine.Random.Range(3, 6); i++)
                 {
                     randomIndex = UnityEngine.Random.Range(0, gameModeManager.DifficultPool.Count);
                     randomPrimeNumber = gameModeManager.DifficultPool[randomIndex];
-                    returnUpNumber *= randomPrimeNumber;
+                    if (returnUpNumber * randomPrimeNumber < 10000) returnUpNumber *= randomPrimeNumber;
                 }
                 break;
 
             case GameModeManager.DifficultyLevel.Insane:
-                for (int i = 0; i < 2 + (int)(UnityEngine.Random.value * nowPhase / 2) && i <= 5; i++)
+                for (int i = 0; i < UnityEngine.Random.Range(3, 7); i++)
                 {
                     randomIndex = UnityEngine.Random.Range(0, gameModeManager.InsanePool.Count);
                     randomPrimeNumber = gameModeManager.InsanePool[randomIndex];
-                    returnUpNumber *= randomPrimeNumber;
+                    if(returnUpNumber * randomPrimeNumber < 100000) returnUpNumber *= randomPrimeNumber;
                 }
                 break;
         }
@@ -208,6 +207,7 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
+        if (isGameOver) return;
         //ソート前に過去の最高スコアの情報を取得しておく(のちにこのゲームで最高スコアを更新したかを確認するため)
         oldMaxScore = scoreManager.PileUpScores[gameModeManager.NowDifficultyLevel][0];
 
