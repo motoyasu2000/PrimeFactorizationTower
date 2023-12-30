@@ -28,21 +28,21 @@ public class VolumeSetter : MonoBehaviour
     public void SetVolumeBGM()
     {
         SoundManager.SoundManagerInstance.SetVolumeBGM(sliders[0].value);
-        Debug.Log(gameObject);
+        //Debug.Log(gameObject);
         if (preSliderValue[0] != sliders[0].value) SoundManager.SaveSoundData(); //スライダーの値が変更されたらセーブを行う
         preSliderValue[0] = sliders[0].value;
     }
     public void SetVolumeSE()
     {
         SoundManager.SoundManagerInstance.SetVolumeSE(sliders[1].value);
-        Debug.Log(gameObject);
+        //Debug.Log(gameObject);
         if (preSliderValue[1] != sliders[1].value) SoundManager.SaveSoundData(); //スライダーの値が変更されたらセーブを行う
         preSliderValue[1] = sliders[1].value;
     }
     public void SetVolumeVoice()
     {
         SoundManager.SoundManagerInstance.SetVolumeVoice(sliders[2].value);
-        Debug.Log(gameObject);
+        //Debug.Log(gameObject);
         if (preSliderValue[2] != sliders[2].value) SoundManager.SaveSoundData(); //スライダーの値が変更されたらセーブを行う
         preSliderValue[2] = sliders[2].value;
     }
