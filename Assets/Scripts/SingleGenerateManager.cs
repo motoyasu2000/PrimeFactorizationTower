@@ -85,6 +85,6 @@ public class SingleGenerateManager : MonoBehaviour
     void MoveSingleGameObjectPoint()
     {
         if(scoreManager.MaxHeight < mainCameraCtrl.StartHeight) return;
-        transform.position = new Vector3(defo.x,scoreManager.MaxHeight + 5, defo.z); //最も高いぶろっぐより５つ上にブロックを生成
+        transform.position = new Vector3(defo.x,scoreManager.MaxHeight + 3, defo.z); //最も高いぶろっぐより3つ上にブロックを生成
     }
 }
