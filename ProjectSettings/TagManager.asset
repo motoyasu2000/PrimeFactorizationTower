@@ -7,6 +7,8 @@ TagManager:
   - PrimeNumberOrigin
   - PrimeNumberBlock
   - Ground
+  - UppestUI
+  - UnderClickable
   layers:
   - Default
   - TransparentFX
