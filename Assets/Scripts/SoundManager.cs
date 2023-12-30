@@ -28,6 +28,7 @@ public class SoundManager : MonoBehaviour
     AudioSource voice_criteriaMet;
     AudioSource voice_freeze;
     AudioSource se_done;
+    AudioSource se_freeze;
     AudioSource bgm_play;
 
     List<AudioSource> Voices = new List<AudioSource>();
@@ -38,6 +39,7 @@ public class SoundManager : MonoBehaviour
     public AudioSource VOICE_CRITERIAMAT => voice_criteriaMet;
     public AudioSource VOICE_FREEZE => voice_freeze;
     public AudioSource SE_DONE => se_done;
+    public AudioSource SE_FREEZE => se_freeze;
     public AudioSource BGM_PLAY => bgm_play;
 
     bool isGameOver = false;
@@ -50,6 +52,7 @@ public class SoundManager : MonoBehaviour
         voice_criteriaMet = transVoices.Find("CriteriaMet").GetComponent<AudioSource>();
         voice_freeze = transVoices.Find("Freeze").GetComponent<AudioSource>();
         se_done = transSEs.Find("Done").GetComponent<AudioSource>();
+        se_freeze = transSEs.Find("Freeze").GetComponent<AudioSource>();
         bgm_play = transBGMs.Find("Play").GetComponent <AudioSource>();
 
         Voices.Add(voice_done);
@@ -57,6 +60,7 @@ public class SoundManager : MonoBehaviour
         Voices.Add(voice_freeze);
 
         SEs.Add(se_done);
+        SEs.Add(se_freeze);
 
         BGMs.Add(bgm_play);
 

@@ -10,6 +10,7 @@ public class NetWork : MonoBehaviour
     [SerializeField] GameModeManager gameModeManager;
     [SerializeField] SoundManager soundManager;
     [SerializeField] MainTextManager mainTextManager;
+    GameObject freezeEffect;
 
     ConditionGenerator conditionGenerator;
     public ConditionGenerator _conditionGenerator => conditionGenerator;
@@ -29,6 +30,8 @@ public class NetWork : MonoBehaviour
         gameModeManager = GameObject.Find("GameModeManager").GetComponent<GameModeManager>();
         soundManager = SoundManager.SoundManagerInstance;
         conditionGenerator = transform.Find("ConditionGenerator").GetComponent<ConditionGenerator>();
+
+        freezeEffect = (GameObject)Resources.Load("FreezeEffect");
 
         freezeCondition = _conditionGenerator.GenerateCondition();
         foreach(var key in freezeCondition.Keys)
@@ -180,6 +183,7 @@ public class NetWork : MonoBehaviour
             rb2d.velocity = Vector3.zero;
             rb2d.angularVelocity = 0;
             rb2d.isKinematic = true;
+            node.GetComponent<SpriteRenderer>().color = new Color(23f / 255f, 1f, 1f);
         }
         yield break;
     }
@@ -190,16 +194,36 @@ public class NetWork : MonoBehaviour
         switch (gameModeManager.NowGameMode)
         {
             case GameModeManager.GameMode.PileUp:
+                Vector3 nodesCenter = CaluculateCenter(nodes);
                 FreezeNodes(nodes);
                 mainTextManager.TmpPrintMainText("Criteria Met");
                 soundManager.PlayAudio(soundManager.VOICE_CRITERIAMAT);
 
                 StartCoroutine(StopRigidbodys(nodes, 1.5f));
                 StartCoroutine(soundManager.PlayAudio(soundManager.VOICE_FREEZE,1.5f));
+                StartCoroutine(soundManager.PlayAudio(soundManager.SE_FREEZE, 1.5f));
                 StartCoroutine(mainTextManager.TmpPrintMainText("Freeze",1.5f));
+                StartCoroutine(InstantiateEffect(freezeEffect, nodesCenter, 1.5f));
                 freezeCondition = _conditionGenerator.GenerateCondition();
                 break;
         }
+    }
+
+    private Vector3 CaluculateCenter(List<GameObject> gameObjects)
+    {
+        Vector3 center = Vector3.zero;
+        foreach (var gameObject in gameObjects)
+        {
+            center += gameObject.transform.position;
+        }
+        center /= gameObjects.Count;
+        return center;
+    }
+
+    private IEnumerator InstantiateEffect(GameObject effect, Vector3 position, float second)
+    {
+        yield return new WaitForSeconds (second);
+        Instantiate(effect, position, Quaternion.identity);
     }
 
     //ネットワーク全体に条件にマッチするものがないかを探索するためのメソッド
