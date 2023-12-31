@@ -6,10 +6,9 @@ public class ToggleExplainMenu : MonoBehaviour
 {
     int toggleCounter = 0;
     int overCount = -1;
-    void Start()
+    void Awake()
     {
         overCount = transform.childCount;
-        Toggle();
     }
 
     //このメソッドが呼ばれると、ひとつ前のメニューを非表示にして、現在のメニューを表示する。
@@ -27,5 +26,10 @@ public class ToggleExplainMenu : MonoBehaviour
             transform.GetChild(toggleCounter).gameObject.SetActive(true);
             toggleCounter++;
         }
+    }
+
+    private void OnEnable()
+    {
+        Toggle();
     }
 }
