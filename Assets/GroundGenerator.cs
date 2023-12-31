@@ -13,7 +13,7 @@ public class GroundGenerator : MonoBehaviour
         {
             GameObject newGround = Instantiate(groundToken, new Vector3(i, 0, 0), Quaternion.identity); //ê∂ê¨
             newGround.transform.localScale = new Vector3(1, Random.Range(0.5f, 1.5f), 1); //ïœå`
-            newGround.transform.Rotate(new Vector3(0, 0, Random.Range(-10f, 10f)));
+            newGround.transform.Rotate(new Vector3(0, 0, Random.Range(-20f, 20f)));
             newGround.transform.parent = transform;
         }
     }
