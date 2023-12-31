@@ -96,7 +96,7 @@ public class ButtonManager : MonoBehaviour
     //最初にどの難易度ボタンが光っているか
     void InitializeDifficultyLevelButton()
     {
-        if (setting == null && history ==null) return; //設定画面でない場合、処理を行わない。
+        if (setting == null && history ==null) return; //設定画面かランキング画面でない場合、処理を行わない。
         difficultyLevelButtons[0] = GameObject.Find("NormalButton").GetComponent<Button>();
         difficultyLevelButtons[1] = GameObject.Find("DifficultButton").GetComponent<Button>();
         difficultyLevelButtons[2] = GameObject.Find("InsaneButton").GetComponent<Button>();
