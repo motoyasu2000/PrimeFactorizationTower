@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System.IO;
 using UnityEngine.SceneManagement;
 using System;
 using UnityEngine.Rendering;
@@ -13,6 +14,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI MainText;
     [SerializeField] TextMeshProUGUI scoreText;
     GameObject gameOverMenu;
+    GameObject explainPileUp;
 
     int nowPhase = 1; //現在のphase
     int nowUpNumber = 1;
@@ -47,8 +49,6 @@ public class GameManager : MonoBehaviour
     public bool IsGameOver => isGameOver;
     float gameOverTimer = 0;
 
-    
-
     private void Awake()
     {
         afterField = blockField.transform.Find("AfterField").gameObject;
@@ -58,6 +58,12 @@ public class GameManager : MonoBehaviour
         bloomManager = GameObject.Find("GlobalVolume").GetComponent<BloomManager>();
         upNumberqueue.Enqueue(GenerateUpNumber());
         gameOverMenu = GameObject.Find("Canvas").transform.Find("GameOverMenu").gameObject;
+        explainPileUp = GameObject.Find("Canvas").transform.Find("ExplainPileUp").gameObject;
+    }
+
+    private void Start()
+    {
+        if (!File.Exists(Application.dataPath + "/Savedata/Score/PileUp.json")) explainPileUp.gameObject.SetActive(true); //セーブデータがなければ説明を行う。
     }
 
     // Update is called once per frame
