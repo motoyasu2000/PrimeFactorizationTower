@@ -30,6 +30,7 @@ public class SoundManager : MonoBehaviour
     AudioSource se_done;
     AudioSource se_freeze;
     AudioSource bgm_play;
+    AudioSource bgm_title;
 
     List<AudioSource> Voices = new List<AudioSource>();
     List<AudioSource> SEs = new List<AudioSource>();
@@ -41,6 +42,7 @@ public class SoundManager : MonoBehaviour
     public AudioSource SE_DONE => se_done;
     public AudioSource SE_FREEZE => se_freeze;
     public AudioSource BGM_PLAY => bgm_play;
+    public AudioSource BGM_TITLE => bgm_title;
 
     bool isGameOver = false;
     void Awake()
@@ -54,6 +56,7 @@ public class SoundManager : MonoBehaviour
         se_done = transSEs.Find("Done").GetComponent<AudioSource>();
         se_freeze = transSEs.Find("Freeze").GetComponent<AudioSource>();
         bgm_play = transBGMs.Find("Play").GetComponent <AudioSource>();
+        bgm_title = transBGMs.Find("Title").GetComponent<AudioSource>();
 
         Voices.Add(voice_done);
         Voices.Add(voice_criteriaMet);
@@ -63,13 +66,14 @@ public class SoundManager : MonoBehaviour
         SEs.Add(se_freeze);
 
         BGMs.Add(bgm_play);
+        BGMs.Add(bgm_title);
 
         if(instance == null)
         {
             instance = this;
             DontDestroyOnLoad(instance);
         }
-
+        PlayAudio(bgm_title);
         LoadSoundData();
     }
     private void Update()
@@ -91,7 +95,16 @@ public class SoundManager : MonoBehaviour
     }
     public void PlayAudio(AudioSource audioSource)
     {
+        //Ç‡ÇµêVÇµÇ≠BGMÇó¨Ç∑ñΩóﬂÇ™ì¸Ç¡ÇƒÇ´ÇΩÇÁBGMÇé~ÇﬂÇÈÅB
+        if (instance.BGMs.Contains(audioSource))
+        {
+            foreach(var BGM in BGMs)
+            {
+                BGM.Stop();
+            }
+        }
         audioSource.Play();
+        
     }
     public IEnumerator PlayAudio(AudioSource audioSource, float seconds)
     {
