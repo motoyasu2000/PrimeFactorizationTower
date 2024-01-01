@@ -63,7 +63,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        if (!File.Exists(Application.dataPath + "/Savedata/Score/PileUp.json")) explainPileUp.gameObject.SetActive(true); //セーブデータがなければ説明を行う。
+        if (!File.Exists(Application.persistentDataPath + "/PileUp.json")) explainPileUp.gameObject.SetActive(true); //セーブデータがなければ説明を行う。
     }
 
     // Update is called once per frame

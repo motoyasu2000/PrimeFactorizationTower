@@ -149,7 +149,7 @@ public class SoundManager : MonoBehaviour
     {
         SoundManager dSoundmanagerInstance = instance;
         string jsonstr = JsonUtility.ToJson(dSoundmanagerInstance);
-        StreamWriter writer = new StreamWriter(Application.dataPath + "/Savedata/System/SoundSetting.json", false);
+        StreamWriter writer = new StreamWriter(Application.persistentDataPath + "/SoundSetting.json", false);
         writer.Write(jsonstr);
         writer.Flush();
         writer.Close();
@@ -157,14 +157,14 @@ public class SoundManager : MonoBehaviour
 
     public static void LoadSoundData()
     {
-        if (!File.Exists(Application.dataPath + "/Savedata/System/SoundSetting.json"))
+        if (!File.Exists(Application.persistentDataPath + "/SoundSetting.json"))
         {
             instance.volume_BGM = 0.5f;
             instance.volume_SE = 0.5f;
             instance.volume_Voice = 0.5f;
             return;
         }
-        StreamReader reader = new StreamReader(Application.dataPath + "/Savedata/System/SoundSetting.json");
+        StreamReader reader = new StreamReader(Application.persistentDataPath + "/SoundSetting.json");
         string datastr = reader.ReadToEnd();
         reader.Close();
         var obj = JsonUtility.FromJson<JsonLoadSoundManager>(datastr); //Monobehaviorを継承したクラスではJsonファイルを読み込むことができないため、他のクラスを生成し読み込む
