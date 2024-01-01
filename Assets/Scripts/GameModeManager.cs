@@ -74,15 +74,15 @@ public class GameModeManager : MonoBehaviour
     {
         GameModeManager dGameModeManagerInstance = instance;
         string jsonstr = JsonUtility.ToJson(dGameModeManagerInstance);
-        StreamWriter writer = new StreamWriter(Application.dataPath + "/Savedata/System/DifficultyLevel.json", false);
+        StreamWriter writer = new StreamWriter(Application.persistentDataPath + "/DifficultyLevel.json", false);
         writer.Write(jsonstr);
         writer.Flush();
         writer.Close();
     }
     public void LoadDifficultyLevelData()
     {
-        if (!File.Exists(Application.dataPath + "/Savedata/System/DifficultyLevel.json")) { return; }
-        StreamReader reader = new StreamReader(Application.dataPath + "/Savedata/System/DifficultyLevel.json");
+        if (!File.Exists(Application.persistentDataPath + "/DifficultyLevel.json")) { return; }
+        StreamReader reader = new StreamReader(Application.persistentDataPath + "/DifficultyLevel.json");
         string datastr = reader.ReadToEnd();
         reader.Close();
         var obj = JsonUtility.FromJson<JsonLoadGameModeManager>(datastr); //Monobehaviorを継承したクラスではJsonファイルを読み込むことができないため、他のクラスを生成し読み込む
