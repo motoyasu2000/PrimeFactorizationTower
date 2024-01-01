@@ -124,7 +124,7 @@ public class ScoreManager : MonoBehaviour
         SerializableScore score = new SerializableScore();
         score.SetScore(instance.pileUpScores);
         string jsonstr = JsonUtility.ToJson(score);
-        StreamWriter writer = new StreamWriter(Application.dataPath + "/Savedata/Score/PileUp.json", false);
+        StreamWriter writer = new StreamWriter(Application.persistentDataPath + "/PileUp.json", false);
         writer.Write(jsonstr);
         writer.Flush();
         writer.Close();
@@ -132,8 +132,8 @@ public class ScoreManager : MonoBehaviour
 
     public static void LoadScoreData()
     {
-        if (!File.Exists(Application.dataPath + "/Savedata/Score/PileUp.json")) { return; }
-        StreamReader reader = new StreamReader(Application.dataPath + "/Savedata/Score/PileUp.json");
+        if (!File.Exists(Application.persistentDataPath + "/PileUp.json")) { return; }
+        StreamReader reader = new StreamReader(Application.persistentDataPath + "/PileUp.json");
         string datastr = reader.ReadToEnd();
         reader.Close();
         var obj = JsonUtility.FromJson<SerializableScore>(datastr); //Monobehaviorを継承したクラスではJsonファイルを読み込むことができないため、他のクラスを生成し読み込む
