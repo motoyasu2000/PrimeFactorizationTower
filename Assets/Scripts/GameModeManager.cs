@@ -33,6 +33,7 @@ public class GameModeManager : MonoBehaviour
     {
         2,3,5,7,11,13,17,19,23
     };
+    public int[] PrimeNumberPool => primeNumberPool;
 
     List<int> normalPool = new List<int>();
     List<int> difficultPool = new List<int>();
