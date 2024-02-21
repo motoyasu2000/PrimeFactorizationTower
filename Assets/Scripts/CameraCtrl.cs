@@ -19,9 +19,9 @@ public class CameraCtrl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (scoreManager.MaxHeight < startHeight) return;
-        Camera.main.orthographicSize = scoreManager.MaxHeight - startHeight + 10; //scoreManager.MaxHeight - startHeightは変化量、10は初期値
-        newCameraHeight = defo.y + (scoreManager.MaxHeight - startHeight) * 0.3f; //画面の下30％部分を固定してカメラを拡大 //本来startHeightが存在しなかった場合を考え、startheightがあった場合にどのように逆算できるかを考えるとmaxheightにも0.3が掛けられている理由がわかる。
+        if (scoreManager.NowScore < startHeight) return;
+        Camera.main.orthographicSize = scoreManager.NowScore - startHeight + 10; //scoreManager.MaxHeight - startHeightは変化量、10は初期値
+        newCameraHeight = defo.y + (scoreManager.NowScore - startHeight) * 0.3f; //画面の下30％部分を固定してカメラを拡大 //本来startHeightが存在しなかった場合を考え、startheightがあった場合にどのように逆算できるかを考えるとmaxheightにも0.3が掛けられている理由がわかる。
         Camera.main.transform.position = new Vector3(defo.x,newCameraHeight, defo.z);
     }
 }
