@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class GenerateBlockCtrl : MonoBehaviour
+public class BlockGenerator : MonoBehaviour
 {
-    [SerializeField] PrimeNumberData primeNumberData;
+    int primeNumber;
     [SerializeField] GameObject primeNumberGeneratingPoint;
     GameObject blockField;
     GameObject beforeField;
@@ -18,7 +18,7 @@ public class GenerateBlockCtrl : MonoBehaviour
     {
         singleGenerateManager = primeNumberGeneratingPoint.GetComponent<SingleGenerateManager>();
         text = transform.Find("Text").GetComponent<TextMeshProUGUI>();
-        text.text = primeNumberData.primeNumber.ToString();
+        text.text = primeNumber.ToString();
         blockField = GameObject.Find("BlockField");
         beforeField = blockField.transform.Find("BeforeField").gameObject;
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
@@ -27,7 +27,7 @@ public class GenerateBlockCtrl : MonoBehaviour
     public void GenerateBlock()
     {
         if (gameManager.GetCompleteNumberFlag()) return; //素数が揃えられている状態であればリターン
-        HundleGenerateBlock(primeNumberData.primeNumber);
+        HundleGenerateBlock(primeNumber);
     }
 
     //引数で与えられた数値に合わせてブロックを生成する関数。
@@ -42,5 +42,10 @@ public class GenerateBlockCtrl : MonoBehaviour
     {
         //Debug.Log("Block" + primeNumber.ToString());
         return (GameObject)Resources.Load("Block" + primeNumber.ToString());
+    }
+
+    public void SetPrimeNumber(int newPrimeNumber)
+    {
+        primeNumber = newPrimeNumber;
     }
 }
