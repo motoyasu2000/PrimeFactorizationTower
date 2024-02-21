@@ -118,7 +118,7 @@ public class GameManager : MonoBehaviour
         {
             if (isGroundAll)
             {
-                newScore = (int)(scoreManager.CalculateAllVerticesHeight() * 1000);
+                newScore = (int)(scoreManager.CalculateAllGameObjectsMaxHeight() * 1000);
                 scoreText.text = newScore.ToString();
             }
         }

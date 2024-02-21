@@ -1,62 +1,54 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+//スコア管理を担当するクラス。
+//ゲーム中のスコア計算、保存・読み込み、シーン間でのスコアデータの保持を行う。
+
 public class ScoreManager : MonoBehaviour
 {
+    const float groundHeight = 0.5f; //元の地面の高さ
+    float nowScore = 0; //現在進行中のゲームのスコアが入る変数
+    public float NowScore => nowScore;
     GameObject blockField;
     GameObject afterField;
     GameObject completedField;
     TextMeshProUGUI maxScore;
-    float maxHeight = 0;
     Dictionary<GameModeManager.DifficultyLevel, int[]> pileUpScores = new Dictionary<GameModeManager.DifficultyLevel,int[]>();
     public Dictionary<GameModeManager.DifficultyLevel, int[]> PileUpScores => pileUpScores;
-
     private static ScoreManager instance;
     public static ScoreManager ScoreManagerInstance => instance;
-    public float MaxHeight => maxHeight;
+
+    //シングルトンパターンを使用して、ScoreManagerのインスタンスを管理。
     void Awake()
     {
-        //blockField = GameObject.Find("BlockField");
-        //afterField = blockField.transform.Find("AfterField").gameObject;
-        //completedField = blockField.transform.Find("CompletedField").gameObject;
-        //maxHeight = 0;
-
-        //↑このゲームオブジェクトはシーン移行時に破棄されないので実行されない！
         if (instance == null)
         {
             instance = this;
             DontDestroyOnLoad(instance);
         }
-
         LoadScoreData();
-        
     }
+
+    //シーンロードのコールバックを設定し、初期化処理を行う。
     private void Start()
     {
         SceneManager.sceneLoaded += SceneLoadProcess;
         InitializeFields();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    //全ゲームオブジェクトの頂点から最も高い頂点のy座標を返すメソッド
-    public float CalculateAllVerticesHeight()
+    //全ゲームオブジェクトの頂点から最も高い頂点のy座標を返すメソッド(GameObjectのpivotではなく、頂点レベルで高さを計算する。)
+    public float CalculateAllGameObjectsMaxHeight()
     {
         List<Vector3> allVertices = new List<Vector3>();
         if (afterField != null)
         {
             foreach (Transform block in afterField.transform)
             {
-                maxHeight = Mathf.Max(maxHeight, CaluculateGameObjectHeight(block.gameObject)); //現在見ているゲームオブジェクトの最も高い頂点とmaxの比較
+                nowScore = Mathf.Max(nowScore, CalculateGameObjectMaxHeight(block.gameObject)); //現在見ているゲームオブジェクトの最も高い頂点とmaxの比較
                                                                                                 //Debug.Log(block.gameObject.name);
             }
         }
@@ -64,15 +56,15 @@ public class ScoreManager : MonoBehaviour
         {
             foreach (Transform block in completedField.transform)
             {
-                maxHeight = Mathf.Max(maxHeight, CaluculateGameObjectHeight(block.gameObject)); //現在見ているゲームオブジェクトの最も高い頂点とmaxの比較
+                nowScore = Mathf.Max(nowScore, CalculateGameObjectMaxHeight(block.gameObject)); //現在見ているゲームオブジェクトの最も高い頂点とmaxの比較
                                                                                                 //Debug.Log(block.gameObject.name);
             }
         }
-        return maxHeight;
+        return nowScore;
     }
 
-    //与えられたゲームオブジェクトの全頂点の内、最も高い頂点を返すメソッド
-    float CaluculateGameObjectHeight(GameObject block)
+    //指定されたゲームオブジェクトの全頂点の中で、最も高い頂点のy座標を計算し、返す
+    float CalculateGameObjectMaxHeight(GameObject block)
     {
         Vector2[] vertices = block.GetComponent<SpriteRenderer>().sprite.vertices;
         float max = 0;
@@ -82,16 +74,19 @@ public class ScoreManager : MonoBehaviour
             max = Mathf.Max(max, worldPoint.y);
             //Debug.Log(worldPoint.y);
         }
-        return max-0.5f; //元の高さ分の500を引く
+        return max-groundHeight; //初めの高さを0にするために元の高さ分引く
     }
 
+    //シーンのロード時に実行されるメソッド
     void SceneLoadProcess(Scene scene, LoadSceneMode mode)
     {
         InitializeFields();
     }
 
+    //シーンロード時に呼ばれる初期化メソッド
     void InitializeFields()
     {
+        //列挙型DifficultyLevelで定義されているのに、辞書のキー内に存在しない難易度があったら、その難易度のキーを追加する。
         foreach (GameModeManager.DifficultyLevel level in Enum.GetValues(typeof(GameModeManager.DifficultyLevel)))
         {
             if (!instance.pileUpScores.ContainsKey(level))
@@ -100,18 +95,18 @@ public class ScoreManager : MonoBehaviour
             }
         }
 
-        if (SceneManager.GetActiveScene() == SceneManager.GetSceneByName("TitleScene")) return;
+        //ゲームシーンにあるゲームオブジェクト名を使って変数を作っているので 現在GameScene以外ならこの後の処理を行わない。
+        if (SceneManager.GetActiveScene() != SceneManager.GetSceneByName("GameScene")) return;
         instance.blockField = GameObject.Find("BlockField");
         instance.afterField = blockField.transform.Find("AfterField").gameObject;
         instance.completedField = blockField.transform.Find("CompletedField").gameObject;
         instance.maxScore = GameObject.Find("MaxScore").GetComponent<TextMeshProUGUI>();
-        instance.maxHeight = 0;
-
+        instance.nowScore = 0;
+        //表示する最高スコアの更新
         instance.maxScore.text = instance.pileUpScores[GameModeManager.GameModemanagerInstance.NowDifficultyLevel][0].ToString();
-
-
     }
 
+    //新しいスコアをスコアを管理する辞書に追加し、ソートを行う。
     public void InsertPileUpScoreAndSort(int newScore)
     {
         GameModeManager.DifficultyLevel nowLevel = GameModeManager.GameModemanagerInstance.NowDifficultyLevel;
@@ -119,6 +114,8 @@ public class ScoreManager : MonoBehaviour
         Array.Sort(ScoreManagerInstance.pileUpScores[nowLevel]);
         Array.Reverse(ScoreManagerInstance.pileUpScores[nowLevel]);
     }
+
+    //現在のスコアをjson形式で保存
     public void SaveScoreData()
     {
         SerializableScore score = new SerializableScore();
@@ -130,6 +127,7 @@ public class ScoreManager : MonoBehaviour
         writer.Close();
     }
 
+    //json形式で保存されたデータを読み込む
     public static void LoadScoreData()
     {
         if (!File.Exists(Application.persistentDataPath + "/PileUp.json")) { return; }
@@ -139,6 +137,12 @@ public class ScoreManager : MonoBehaviour
         var obj = JsonUtility.FromJson<SerializableScore>(datastr); //Monobehaviorを継承したクラスではJsonファイルを読み込むことができないため、他のクラスを生成し読み込む
         instance.pileUpScores = obj.GetScore();
     }
+
+
+    
+    //////////////////////////////////////////
+    //以下、シリアライズを行うための一時的なクラス//
+    //////////////////////////////////////////
 
     //他次元配列や辞書はシリアライズできないので、複雑な構造でもシリアライズを行うために、シリアライズ可能な配列を持ったクラスを用意しておく。
     [Serializable]
