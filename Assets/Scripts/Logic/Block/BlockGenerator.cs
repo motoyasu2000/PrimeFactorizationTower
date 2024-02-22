@@ -47,7 +47,7 @@ public class BlockGenerator : MonoBehaviour
         generateObject.name = $"Block{primeNumber}_{IDCounter}";
         IDCounter++;
 
-        singleGenerateManager.SetSingleGameObject(generateObject);//生成したゲームオブジェクトの情報を生成できるゲームオブジェクトは常に単一であるように管理するメソッドに入れる。
+        singleGenerateManager.SetSingleGameObject(generateObject);//生成したゲームオブジェクトの情報を、生成できるゲームオブジェクトが常に単一であるように管理するメソッドに入れる。
     }
     GameObject GetPrimeNumberBlock(int primeNumber)
     {
