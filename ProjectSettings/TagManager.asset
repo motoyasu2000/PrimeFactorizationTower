@@ -9,6 +9,7 @@ TagManager:
   - Ground
   - UppestUI
   - UnderClickable
+  - Button
   layers:
   - Default
   - TransparentFX
