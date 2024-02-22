@@ -618,7 +618,7 @@ GameObject:
   - component: {fileID: 59473828}
   m_Layer: 5
   m_Name: 5
-  m_TagString: Untagged
+  m_TagString: Button
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -749,7 +749,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d65aa3e539948446b8f49874bcc6510, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  primeNumberData: {fileID: 11400000, guid: d122cb67836416f41b522f0e5b32ac2d, type: 2}
   primeNumberGeneratingPoint: {fileID: 1824872617}
 --- !u!1 &60715992
 GameObject:
@@ -1361,6 +1360,7 @@ GameObject:
   - component: {fileID: 180665421}
   - component: {fileID: 180665423}
   - component: {fileID: 180665422}
+  - component: {fileID: 180665424}
   m_Layer: 5
   m_Name: ButtonArea
   m_TagString: Untagged
@@ -1434,6 +1434,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 180665420}
   m_CullTransparentMesh: 1
+--- !u!114 &180665424
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 180665420}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a693f92d91708040aa429dc4d90a786, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &189060414
 GameObject:
   m_ObjectHideFlags: 0
@@ -3444,7 +3456,7 @@ GameObject:
   - component: {fileID: 521845592}
   m_Layer: 5
   m_Name: 19
-  m_TagString: Untagged
+  m_TagString: Button
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3575,7 +3587,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d65aa3e539948446b8f49874bcc6510, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  primeNumberData: {fileID: 11400000, guid: 6b2c8eb5cb8ff6942ba0221940ac7d2f, type: 2}
   primeNumberGeneratingPoint: {fileID: 1824872617}
 --- !u!1 &524596403
 GameObject:
@@ -5573,7 +5584,7 @@ GameObject:
   - component: {fileID: 847521791}
   m_Layer: 5
   m_Name: 13
-  m_TagString: Untagged
+  m_TagString: Button
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5704,7 +5715,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d65aa3e539948446b8f49874bcc6510, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  primeNumberData: {fileID: 11400000, guid: 50947e2dc0fd1fb44a5fc6e8adc31697, type: 2}
   primeNumberGeneratingPoint: {fileID: 1824872617}
 --- !u!1 &857513106
 GameObject:
@@ -6493,7 +6503,7 @@ GameObject:
   - component: {fileID: 1000729524}
   m_Layer: 5
   m_Name: 23
-  m_TagString: Untagged
+  m_TagString: Button
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6624,7 +6634,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d65aa3e539948446b8f49874bcc6510, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  primeNumberData: {fileID: 11400000, guid: 4296c3fee6528044aa830ce7d5469dba, type: 2}
   primeNumberGeneratingPoint: {fileID: 1824872617}
 --- !u!1 &1016421719
 GameObject:
@@ -7856,7 +7865,7 @@ GameObject:
   - component: {fileID: 1166758169}
   m_Layer: 5
   m_Name: 11
-  m_TagString: Untagged
+  m_TagString: Button
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7987,7 +7996,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d65aa3e539948446b8f49874bcc6510, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  primeNumberData: {fileID: 11400000, guid: 7ede2c3950c4a414ea83f8fe0eb14950, type: 2}
   primeNumberGeneratingPoint: {fileID: 1824872617}
 --- !u!1 &1167394995
 GameObject:
@@ -9570,7 +9578,7 @@ GameObject:
   - component: {fileID: 1389993982}
   m_Layer: 5
   m_Name: 3
-  m_TagString: Untagged
+  m_TagString: Button
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9701,7 +9709,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d65aa3e539948446b8f49874bcc6510, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  primeNumberData: {fileID: 11400000, guid: b7c5f7d79f14ca84baba081cd6c5ac02, type: 2}
   primeNumberGeneratingPoint: {fileID: 1824872617}
 --- !u!1 &1405683007
 GameObject:
@@ -10699,7 +10706,7 @@ GameObject:
   - component: {fileID: 1484774863}
   m_Layer: 5
   m_Name: 7
-  m_TagString: Untagged
+  m_TagString: Button
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -10830,7 +10837,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d65aa3e539948446b8f49874bcc6510, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  primeNumberData: {fileID: 11400000, guid: 45829c0a2a896e049b0f845d11492b87, type: 2}
   primeNumberGeneratingPoint: {fileID: 1824872617}
 --- !u!1 &1499236725
 GameObject:
@@ -11132,7 +11138,7 @@ GameObject:
   - component: {fileID: 1499541007}
   m_Layer: 5
   m_Name: 17
-  m_TagString: Untagged
+  m_TagString: Button
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -11263,7 +11269,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d65aa3e539948446b8f49874bcc6510, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  primeNumberData: {fileID: 11400000, guid: 1ab34f5d1157ff14a97186f2fc6ffa80, type: 2}
   primeNumberGeneratingPoint: {fileID: 1824872617}
 --- !u!1 &1531248106
 GameObject:
@@ -14190,7 +14195,7 @@ GameObject:
   - component: {fileID: 2066446444}
   m_Layer: 5
   m_Name: 2
-  m_TagString: Untagged
+  m_TagString: Button
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -14321,7 +14326,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d65aa3e539948446b8f49874bcc6510, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  primeNumberData: {fileID: 11400000, guid: 7df89f5e2032eeb4eaa11293a185a9a9, type: 2}
   primeNumberGeneratingPoint: {fileID: 1824872617}
 --- !u!1 &2066465803
 GameObject:
