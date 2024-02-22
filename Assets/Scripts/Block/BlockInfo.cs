@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public abstract class BlockInfo : MonoBehaviour
+public class BlockInfo : MonoBehaviour
 {
     protected int ID = -1;
     protected int myNumber; //自分の持つ数字。合成数とかの計算はこれを利用する
@@ -22,7 +22,6 @@ public abstract class BlockInfo : MonoBehaviour
     private void Awake()
     {
         primeNumberText = transform.Find("PrimeNumberText").GetComponent<TextMeshPro>();
-        SetMyNumber();
         SetText();
         SetShader();
     }
@@ -42,13 +41,17 @@ public abstract class BlockInfo : MonoBehaviour
     }
 
     //表示される数値の設定
-    public virtual void SetText()
+    public void SetText()
     {
         primeNumberText.text = myNumber.ToString();
     }
 
-    //自分自身の番号を設定するクラス。継承先に記述。
-    public abstract void SetMyNumber();
+    //自分自身の番号を設定するクラス。ブロックを生成するボタンによって指定される。
+
+    public void SetMyNumber(int newMyNumber)
+    {
+        myNumber = newMyNumber;
+    }
 
     public int GetNumber()
     {
