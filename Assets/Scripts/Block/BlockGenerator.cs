@@ -14,6 +14,7 @@ public class BlockGenerator : MonoBehaviour
     protected GameManager gameManager;
     static int IDCounter = 0;
 
+
     private void Start()
     {
         singleGenerateManager = primeNumberGeneratingPoint.GetComponent<SingleGenerateManager>();
@@ -30,13 +31,23 @@ public class BlockGenerator : MonoBehaviour
         HundleGenerateBlock(primeNumber);
     }
 
-    //引数で与えられた数値に合わせてブロックを生成する関数。
+    //引数で与えられた数値に合わせてブロックを生成する関数。そのブロックの情報(IDや素数など)も追加する。
     void HundleGenerateBlock(int primeNumber)
     {
+        //ゲームオブジェクトの生成とその情報をもつインスタンスの取得
         GameObject generateObject = Instantiate(GetPrimeNumberBlock(primeNumber), primeNumberGeneratingPoint.transform.position, GetPrimeNumberBlock(primeNumber).transform.rotation, beforeField.transform);
-        generateObject.GetComponent<BlockInfo>().SetID(IDCounter);
-        generateObject.name = $"Block{primeNumber}_{IDCounter++}";
-        singleGenerateManager.SetSingleGameObject(generateObject);
+        BlockInfo blockInfo = generateObject.GetComponent<BlockInfo>();
+
+        //ブロックの持つ素数の設定とテキストの切り替え
+        blockInfo.SetMyNumber(primeNumber);
+        blockInfo.SetText();
+
+        //IDの設定
+        blockInfo.SetID(IDCounter);
+        generateObject.name = $"Block{primeNumber}_{IDCounter}";
+        IDCounter++;
+
+        singleGenerateManager.SetSingleGameObject(generateObject);//生成したゲームオブジェクトの情報を生成できるゲームオブジェクトは常に単一であるように管理するメソッドに入れる。
     }
     GameObject GetPrimeNumberBlock(int primeNumber)
     {

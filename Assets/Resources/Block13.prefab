@@ -61,9 +61,6 @@ PrefabInstance:
       addedObject: {fileID: -1835968047971376336}
     - targetCorrespondingSourceObject: {fileID: 398697902959395074, guid: 65b6fe0cae63e7346a7200419f8991ea, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 408614872560595489}
-    - targetCorrespondingSourceObject: {fileID: 398697902959395074, guid: 65b6fe0cae63e7346a7200419f8991ea, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 3790540501342042455}
   m_SourcePrefab: {fileID: 100100000, guid: 65b6fe0cae63e7346a7200419f8991ea, type: 3}
 --- !u!1 &2249460052120984068 stripped
@@ -123,20 +120,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &408614872560595489
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2249460052120984068}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6d4a387f0336d1a47a48473f3c65f1aa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  neighborEdge: []
-  isGround: 0
 --- !u!60 &3790540501342042455
 PolygonCollider2D:
   m_ObjectHideFlags: 0
