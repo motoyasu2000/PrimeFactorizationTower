@@ -87,6 +87,7 @@ public class TouchBlock : MonoBehaviour
         return touchPosition;
     }
 
+    //UI上で無ければブロックの生成先を指定できるようにする。その後ドラッグで調整可能
     void HandleTouchBegan(Touch touch)
     {
         //UI上をタッチしていないかのチェック、UIの上をタッチしている間はブロックを移動するべきではない。
@@ -116,7 +117,7 @@ public class TouchBlock : MonoBehaviour
         draggedObject.position = new Vector3(touchPosition.x, primeNumberGeneratingPoint.transform.position.y, touchPosition.z);
     }
 
-    //指を話したときの処理、ブロックを落下させ、素数を持ったブロックとして機能するようにする。
+    //指を話したときの処理、ブロックを落下させ、素数を持ったブロックとして機能するようにする。また、離したブロックをネットワークにノードとして追加する
     void HandleTouchEnded(Touch touch)
     {
         isDragging = false;
