@@ -4,63 +4,69 @@ using UnityEngine;
 
 public class ConditionGenerator : MonoBehaviour
 {
-    GameManager gameManager;
+    GameModeManager gameModeManager;
     [SerializeField] ConditionNumberManager conditionNumberManager;
 
     void Start()
     {
-        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        gameModeManager = GameModeManager.GameModemanagerInstance;
     }
+
+    //条件を生成するメソッド(難易度ごと)
     public Dictionary<int,int> GenerateCondition()
     {
-        //キーが素数、バリューがその素数の数の辞書の生成
+        //キーが素数、バリューがその素数の数の辞書の生成(難易度ごと)
         Dictionary<int,int> returnDict = new Dictionary<int,int>();
-
-        int resultCompositNumber = 1;
-        int randomIndex;
-        int randomPrimeNumber;
-
-        int rand;
-
         switch (GameModeManager.GameModemanagerInstance.NowDifficultyLevel)
         {
             case GameModeManager.DifficultyLevel.Normal:
-
-                rand = Random.Range(3, 5);
-                for (int i = 0; i < rand; i++)
-                {
-                    randomIndex = Random.Range(0, GameModeManager.GameModemanagerInstance.NormalPool.Count);
-                    randomPrimeNumber = GameModeManager.GameModemanagerInstance.NormalPool[randomIndex];
-                    resultCompositNumber *= randomPrimeNumber;
-                    if (!returnDict.TryAdd(randomPrimeNumber, 1)) returnDict[randomPrimeNumber] += 1;
-                }
+                returnDict = GenerateConditionForDifficultyLevel(gameModeManager.NormalPool,3,5);
                 break;
 
             case GameModeManager.DifficultyLevel.Difficult:
-                rand = Random.Range(2, 4);
-                for (int i = 0; i < rand; i++)
-                {
-                    randomIndex = Random.Range(0, GameModeManager.GameModemanagerInstance.DifficultPool.Count);
-                    randomPrimeNumber = GameModeManager.GameModemanagerInstance.DifficultPool[randomIndex];
-                    resultCompositNumber *= randomPrimeNumber;
-                    if (!returnDict.TryAdd(randomPrimeNumber, 1)) returnDict[randomPrimeNumber] += 1;
-                }
+                returnDict = GenerateConditionForDifficultyLevel(gameModeManager.DifficultPool, 2, 5);
                 break;
 
             case GameModeManager.DifficultyLevel.Insane:
-                rand = 2;
-                for (int i = 0; i < rand; i++)
-                {
-                    randomIndex = Random.Range(0, GameModeManager.GameModemanagerInstance.InsanePool.Count);
-                    randomPrimeNumber = GameModeManager.GameModemanagerInstance.InsanePool[randomIndex];
-                    resultCompositNumber *= randomPrimeNumber;
-                    if (!returnDict.TryAdd(randomPrimeNumber, 1)) returnDict[randomPrimeNumber] += 1;
-                }
+                returnDict = GenerateConditionForDifficultyLevel(gameModeManager.NormalPool, 2, 4);
                 break;
         }
-        conditionNumberManager.PrintConditionNumber(resultCompositNumber.ToString());
+        
+        //合成数の計算と表示
+        int compositeNumber = DictToCompositeNumber(returnDict);
+        conditionNumberManager.PrintConditionNumber(compositeNumber.ToString());
+
+        //デバッグ
         Debug.Log("Keys : " + string.Join(",", returnDict.Keys));
         Debug.Log("Values : " + string.Join(",", returnDict.Values));
+
         return returnDict;
+    }
+
+    //素数プール、乱数の最小値最大値を指定して、キーが素数、バリューがその素数の数の辞書を作るメソッド
+    Dictionary<int, int> GenerateConditionForDifficultyLevel(List<int> primePool, int minRand, int maxRand)
+    {
+        Dictionary<int, int> returnDict = new Dictionary<int, int>();
+        int randomIndex;
+        int randomPrimeNumber;
+        int rand = Random.Range(minRand, maxRand);
+
+        for (int i = 0; i < rand; i++)
+        {
+            randomIndex = Random.Range(0, primePool.Count);
+            randomPrimeNumber = primePool[randomIndex];
+            if (!returnDict.TryAdd(randomPrimeNumber, 1)) returnDict[randomPrimeNumber] += 1;
+        }
+        return returnDict;
+    }
+
+    //キーが素数、バリューがその素数の数の辞書から合成数を計算するメソッド
+    int DictToCompositeNumber(Dictionary<int, int> returnDict)
+    {
+        int compositeNumber = 1;
+        foreach(var pair in returnDict){
+            compositeNumber *= pair.Value*pair.Key;
+        }
+        return compositeNumber;
     }
 }
