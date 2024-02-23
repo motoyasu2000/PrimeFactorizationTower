@@ -1986,11 +1986,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5c3beefb177a2445aea59d029f5e05e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canvas: {fileID: 0}
-  explainPileUp: {fileID: 0}
-  settingMenu: {fileID: 0}
-  restartMenu: {fileID: 0}
-  backMenu: {fileID: 0}
 --- !u!114 &224696303
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2567,10 +2562,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e85b677aa2ab3241946197584ac195a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allNodes: []
-  gameModeManager: {fileID: 0}
-  soundManager: {fileID: 0}
-  mainTextManager: {fileID: 966644801}
 --- !u!4 &259954749
 Transform:
   m_ObjectHideFlags: 0
@@ -3697,13 +3688,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 120f8d989d94c9d4c926ba0b95d650cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  singlePlay: {fileID: 0}
   multiPlay: {fileID: 0}
-  history: {fileID: 0}
-  setting: {fileID: 0}
-  credit: {fileID: 0}
-  playScene:
-    m_Handle: 0
 --- !u!114 &553923933
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4202,11 +4187,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5c3beefb177a2445aea59d029f5e05e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canvas: {fileID: 0}
-  explainPileUp: {fileID: 0}
-  settingMenu: {fileID: 0}
-  restartMenu: {fileID: 0}
-  backMenu: {fileID: 0}
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0
@@ -4471,11 +4451,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5c3beefb177a2445aea59d029f5e05e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canvas: {fileID: 0}
-  explainPileUp: {fileID: 0}
-  settingMenu: {fileID: 0}
-  restartMenu: {fileID: 0}
-  backMenu: {fileID: 0}
 --- !u!1 &652976873
 GameObject:
   m_ObjectHideFlags: 0
@@ -4698,11 +4673,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5c3beefb177a2445aea59d029f5e05e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canvas: {fileID: 0}
-  explainPileUp: {fileID: 0}
-  settingMenu: {fileID: 0}
-  restartMenu: {fileID: 0}
-  backMenu: {fileID: 0}
 --- !u!1 &675944552
 GameObject:
   m_ObjectHideFlags: 0
@@ -6176,7 +6146,7 @@ GameObject:
   - component: {fileID: 966644798}
   - component: {fileID: 966644801}
   m_Layer: 5
-  m_Name: MainText
+  m_Name: EffectText
   m_TagString: UnderClickable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7187,11 +7157,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5c3beefb177a2445aea59d029f5e05e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canvas: {fileID: 0}
-  explainPileUp: {fileID: 0}
-  settingMenu: {fileID: 0}
-  restartMenu: {fileID: 0}
-  backMenu: {fileID: 0}
 --- !u!1 &1103740598
 GameObject:
   m_ObjectHideFlags: 0
@@ -7244,13 +7209,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 120f8d989d94c9d4c926ba0b95d650cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  singlePlay: {fileID: 0}
   multiPlay: {fileID: 0}
-  history: {fileID: 0}
-  setting: {fileID: 0}
-  credit: {fileID: 0}
-  playScene:
-    m_Handle: 0
 --- !u!114 &1103740601
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11118,11 +11077,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5c3beefb177a2445aea59d029f5e05e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canvas: {fileID: 0}
-  explainPileUp: {fileID: 0}
-  settingMenu: {fileID: 0}
-  restartMenu: {fileID: 0}
-  backMenu: {fileID: 0}
 --- !u!1 &1499541002
 GameObject:
   m_ObjectHideFlags: 0
@@ -12225,11 +12179,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5c3beefb177a2445aea59d029f5e05e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canvas: {fileID: 0}
-  explainPileUp: {fileID: 0}
-  settingMenu: {fileID: 0}
-  restartMenu: {fileID: 0}
-  backMenu: {fileID: 0}
 --- !u!114 &1703781093
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13075,11 +13024,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5c3beefb177a2445aea59d029f5e05e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canvas: {fileID: 0}
-  explainPileUp: {fileID: 0}
-  settingMenu: {fileID: 0}
-  restartMenu: {fileID: 0}
-  backMenu: {fileID: 0}
 --- !u!114 &1919160908
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15008,11 +14952,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5c3beefb177a2445aea59d029f5e05e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canvas: {fileID: 0}
-  explainPileUp: {fileID: 0}
-  settingMenu: {fileID: 0}
-  restartMenu: {fileID: 0}
-  backMenu: {fileID: 0}
 --- !u!114 &2101109016
 MonoBehaviour:
   m_ObjectHideFlags: 0
