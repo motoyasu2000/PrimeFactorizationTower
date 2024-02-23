@@ -4,8 +4,8 @@ using UnityEngine;
 
 namespace UI
 {
-
-    public class ToggleExplainMenu : MonoBehaviour
+    //チュートリアルのテキストをトグルするクラス
+    public class ToggleExplainText : MonoBehaviour
     {
         int toggleCounter = 0; //toggleした回数を数える変数
         int overCount = -1; //toggleCounterの値がいくつでtoggle数をオーバーするか

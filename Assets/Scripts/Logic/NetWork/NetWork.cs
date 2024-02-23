@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UI;
-public class NetWork : MonoBehaviour
+public class Network : MonoBehaviour
 {
     static int[] primeNumbers = { 2, 3, 5, 7, 11, 13, 17, 19, 23 }; //素数配列
     List<GameObject> allNodes = new List<GameObject>(); //全ノードのリストト
@@ -72,13 +72,13 @@ public class NetWork : MonoBehaviour
     {
         allNodes.Add(node);
         BlockInfo info = node.GetComponent<BlockInfo>();
-        if (System.Array.Exists(primeNumbers, element => element == info.GetNumber()))
+        if (System.Array.Exists(primeNumbers, element => element == info.GetPrimeNumber()))
         {
-            if (!nodesDict.ContainsKey(info.GetNumber()))
+            if (!nodesDict.ContainsKey(info.GetPrimeNumber()))
             {
-                nodesDict.Add(info.GetNumber(), new List<GameObject>());
+                nodesDict.Add(info.GetPrimeNumber(), new List<GameObject>());
             }
-            nodesDict[info.GetNumber()].Add(node);
+            nodesDict[info.GetPrimeNumber()].Add(node);
             //foreach(var value in nodesDict.Values)
             //{
             //    Debug.Log(string.Join(",", value));
@@ -141,7 +141,7 @@ public class NetWork : MonoBehaviour
         //ネットワークからそのノードを削除
         allNodes.Remove(originNode);
         //ネットワーク辞書からもそのノードを削除
-        nodesDict[originNode.GetComponent<BlockInfo>().GetNumber()].Remove(originNode);
+        nodesDict[originNode.GetComponent<BlockInfo>().GetPrimeNumber()].Remove(originNode);
         //ブロックの情報も失わせる。
         originNode.GetComponent<BlockInfo>().enabled = false;
     }
@@ -265,7 +265,7 @@ public class NetWork : MonoBehaviour
         //現在のネットワーク内のノードの出現回数をカウント
         foreach (var node in myNetwork)
         {
-            int nodeValue = node.GetComponent<BlockInfo>().GetNumber();
+            int nodeValue = node.GetComponent<BlockInfo>().GetPrimeNumber();
             if (requiredCounts.ContainsKey(nodeValue))
             {
                 requiredCounts[nodeValue]--;

@@ -5,18 +5,19 @@ using TMPro;
 
 public class BlockInfo : MonoBehaviour
 {
-    protected int ID = -1;
-    protected int myNumber; //自分の持つ数字。合成数とかの計算はこれを利用する
-    [SerializeField]protected List<GameObject> neighborEdge = new List<GameObject>(); //隣接するゲームオブジェクトを格納
+    //ブロックの基本情報
+    int ID = -1;
+    int myPrimeNumber; //自分の持つ数字。合成数とかの計算はこれを利用する
+    TextMeshPro primeNumberText;
+    Rigidbody2D rb2D;
+    Collider2D myCollider;
 
-    protected GameObject selfPrefab; //自分自身のプレファブを格納する変数(継承先クラスから見た自分自身)
-    public GameObject SelfPrefab => selfPrefab;
-    protected TextMeshPro primeNumberText;
-    [SerializeField]bool isGround = false;
-    protected Rigidbody2D rb2D;
-    protected Collider2D myCollider;
+    //ゲーム内で動的に変化する情報
+    bool isGround = false;
 
-    NetWork netWork;
+    //ネットワーク情報
+    List<GameObject> neighborEdge = new List<GameObject>(); //隣接するゲームオブジェクトを格納
+    Network network;
 
     //初期化コード
     private void Awake()
@@ -30,7 +31,7 @@ public class BlockInfo : MonoBehaviour
         rb2D = GetComponent<Rigidbody2D>();
 
         myCollider = GetComponent<Collider2D>();
-        netWork = GameObject.Find("NetWork").GetComponent<NetWork>();
+        network = GameObject.Find("Network").GetComponent<Network>();
     }
 
     //クリックするとkinematicからdynamicに変化するようにする。
@@ -43,19 +44,18 @@ public class BlockInfo : MonoBehaviour
     //表示される数値の設定
     public void SetText()
     {
-        primeNumberText.text = myNumber.ToString();
+        primeNumberText.text = myPrimeNumber.ToString();
     }
 
     //自分自身の番号を設定するクラス。ブロックを生成するボタンによって指定される。
-
-    public void SetMyNumber(int newMyNumber)
+    public void SetPrimeNumber(int newMyPrimeNumber)
     {
-        myNumber = newMyNumber;
+        myPrimeNumber = newMyPrimeNumber;
     }
 
-    public int GetNumber()
+    public int GetPrimeNumber()
     {
-        return myNumber;
+        return myPrimeNumber;
     }
 
     public bool CheckIsGround()
@@ -111,7 +111,7 @@ public class BlockInfo : MonoBehaviour
     //サブグラフに使うメソッド、patternにマッチしないエッジを消去する。
     public void DeleteMissNeighberBlock(HashSet<int> subNetPattern)
     {
-        neighborEdge.RemoveAll(item => item!=null && !subNetPattern.Contains(item.GetComponent<BlockInfo>().GetNumber()));
+        neighborEdge.RemoveAll(item => item!=null && !subNetPattern.Contains(item.GetComponent<BlockInfo>().GetPrimeNumber()));
     }
 
     private bool IsUpOrRight(GameObject myself, GameObject other)
@@ -153,27 +153,22 @@ public class BlockInfo : MonoBehaviour
         if(collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("PrimeNumberBlock")){
             isGround = true;
         }
-        //もし二つのブロック(ノード)が接触したなら、その二つのノード間にエッジを設定、そしてサブグラフの抽出、そして探索
+        //もし二つのブロック(ノード)が接触したなら、その二つのノード間にエッジを設定、サブグラフの探索
         if (collision.gameObject.CompareTag("PrimeNumberBlock") && collision.gameObject.GetComponent<BlockInfo>() != null && IsUpOrRight(gameObject, collision.gameObject))
         {
-            netWork.AttachNode(gameObject, collision.gameObject);
-            netWork.AddStartExpandNetworks(new HashSet<GameObject> {gameObject, collision.gameObject}); //※※こっちは辞書で指定してるのが気持ち悪いので後で治す！
+            network.AttachNode(gameObject, collision.gameObject);
+            network.AddStartExpandNetworks(new HashSet<GameObject> {gameObject, collision.gameObject});
             //Debug.Log($"myself:{gameObject.name} ------ other:{collision.gameObject.name}");
         }
     }
     private void OnCollisionExit2D(Collision2D collision)
     {
-        //もし二つのブロック(ノード)が離れたなら、その二つのノード間にエッジを消去
+        //もし二つのブロック(ノード)が離れたなら、その二つのノード間のエッジを消去
         if (collision.gameObject.CompareTag("PrimeNumberBlock"))
         {
-            netWork.DetachNode(gameObject, collision.gameObject);
+            network.DetachNode(gameObject, collision.gameObject);
             //Debug.Log($"DetachNode: {gameObject.name} ------ {collision.gameObject.name}");
         }
-    }
-
-
-    private void Update()
-    {
     }
 
 }

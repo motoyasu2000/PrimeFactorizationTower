@@ -89,7 +89,7 @@ public class GameManager : MonoBehaviour
                 isGroundAll = false; //isGroundAllはfalse
             }
 
-            allBlockNumber *= blockInfo.GetNumber();//もしblockの素数が上の合成数の素因数じゃなかったら
+            allBlockNumber *= blockInfo.GetPrimeNumber();//もしblockの素数が上の合成数の素因数じゃなかったら
             upNumberText.text = (nowUpNumber / allBlockNumber).ToString(); //残りの数字を計算して描画。ただしafterFieldが空になるとこの中の処理が行われなくなるので
                                                                                   //UpNumberの更新のたびに、この値も更新してあげる必要がある。
 
@@ -97,8 +97,8 @@ public class GameManager : MonoBehaviour
             {
                 if (isGameOver) break;
                 //最後のゲームオーバー理由の出力の際に、元の合成数とその時選択してしまった素数の情報が必要なので、変数に入れておく。
-                compositeNumber_GO = nowUpNumber * afterField.transform.GetChild(afterField.transform.childCount - 1).GetComponent<BlockInfo>().GetNumber() / allBlockNumber;
-                primeNumber_GO = afterField.transform.GetChild(afterField.transform.childCount - 1).GetComponent<BlockInfo>().GetNumber();
+                compositeNumber_GO = nowUpNumber * afterField.transform.GetChild(afterField.transform.childCount - 1).GetComponent<BlockInfo>().GetPrimeNumber() / allBlockNumber;
+                primeNumber_GO = afterField.transform.GetChild(afterField.transform.childCount - 1).GetComponent<BlockInfo>().GetPrimeNumber();
                 Debug.Log(compositeNumber_GO);
                 Debug.Log(primeNumber_GO);
                 GameOver();

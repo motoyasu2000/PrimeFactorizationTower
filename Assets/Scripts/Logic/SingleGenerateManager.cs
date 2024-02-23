@@ -43,7 +43,7 @@ public class SingleGenerateManager : MonoBehaviour
         else
         {
             //元のゲームオブジェクトの数値と後から来たゲームオブジェクトの数値が一致しているなら元のゲームオブジェクトを回転
-            if (singleGameObject.GetComponent<BlockInfo>().GetNumber() == setObject.GetComponent<BlockInfo>().GetNumber())
+            if (singleGameObject.GetComponent<BlockInfo>().GetPrimeNumber() == setObject.GetComponent<BlockInfo>().GetPrimeNumber())
             {
                 //Debug.Log("回転");
                 Destroy(setObject);
