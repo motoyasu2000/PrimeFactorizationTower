@@ -26,11 +26,11 @@ public class ExpandNetwork
         }
         if (beforeNetwork != null) beforeNetwork.closedList.Add(nowNode); //一個前のネットワークに今追加したノードをクローズドリストに追加する。
                                                                           // ノードが要件を満たしているか確認
-        int nodeValue = nowNode.GetComponent<BlockInfo>().GetNumber();
+        int nodeValue = nowNode.GetComponent<BlockInfo>().GetPrimeNumber();
         if (freezeCondition.ContainsKey(nodeValue))
         {
             int requiredCount = freezeCondition[nodeValue];
-            int currentCount = myNetwork.Count(node => node.GetComponent<BlockInfo>().GetNumber() == nodeValue);
+            int currentCount = myNetwork.Count(node => node.GetComponent<BlockInfo>().GetPrimeNumber() == nodeValue);
 
             // ノードが要件を満たしている場合にのみ追加
             if (currentCount < requiredCount)

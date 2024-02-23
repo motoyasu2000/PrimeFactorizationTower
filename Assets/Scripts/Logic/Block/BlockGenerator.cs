@@ -39,7 +39,7 @@ public class BlockGenerator : MonoBehaviour
         BlockInfo blockInfo = generateObject.GetComponent<BlockInfo>();
 
         //ブロックの持つ素数の設定とテキストの切り替え
-        blockInfo.SetMyNumber(primeNumber);
+        blockInfo.SetPrimeNumber(primeNumber);
         blockInfo.SetText();
 
         //IDの設定

@@ -2544,7 +2544,7 @@ GameObject:
   - component: {fileID: 259954749}
   - component: {fileID: 259954748}
   m_Layer: 0
-  m_Name: NetWork
+  m_Name: Network
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2562,6 +2562,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e85b677aa2ab3241946197584ac195a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  allNodes: []
+  gameModeManager: {fileID: 0}
+  soundManager: {fileID: 0}
+  effectTextManager: {fileID: 0}
+  freezeEffect: {fileID: 0}
+  conditionGenerator: {fileID: 0}
+  wasCriteriaMet: 0
+  isRespawnKillChecking: 0
+  CheckNumParFrame: 3
 --- !u!4 &259954749
 Transform:
   m_ObjectHideFlags: 0
