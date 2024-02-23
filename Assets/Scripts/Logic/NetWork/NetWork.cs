@@ -2,14 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UI;
 public class NetWork : MonoBehaviour
 {
     static int[] primeNumbers = { 2, 3, 5, 7, 11, 13, 17, 19, 23 }; //素数配列
-    [SerializeField] List<GameObject> allNodes = new List<GameObject>(); //全ノードのリストト
-    [SerializeField] Dictionary<int, List<GameObject>> nodesDict = new Dictionary<int, List<GameObject>>();
-    [SerializeField] GameModeManager gameModeManager;
-    [SerializeField] SoundManager soundManager;
-    [SerializeField] MainTextManager mainTextManager;
+    List<GameObject> allNodes = new List<GameObject>(); //全ノードのリストト
+    Dictionary<int, List<GameObject>> nodesDict = new Dictionary<int, List<GameObject>>();
+    GameModeManager gameModeManager;
+    SoundManager soundManager;
+    EffectTextManager effectTextManager;
     GameObject freezeEffect;
 
     ConditionGenerator conditionGenerator;
@@ -30,6 +31,7 @@ public class NetWork : MonoBehaviour
         gameModeManager = GameObject.Find("GameModeManager").GetComponent<GameModeManager>();
         soundManager = SoundManager.SoundManagerInstance;
         conditionGenerator = transform.Find("ConditionGenerator").GetComponent<ConditionGenerator>();
+        effectTextManager = GameObject.Find("EffectText").GetComponent<EffectTextManager>();
 
         freezeEffect = (GameObject)Resources.Load("FreezeEffect");
 
@@ -194,19 +196,24 @@ public class NetWork : MonoBehaviour
         switch (gameModeManager.NowGameMode)
         {
             case GameModeManager.GameMode.PileUp:
-                Vector3 nodesCenter = CaluculateCenter(nodes);
                 FreezeNodes(nodes);
-                mainTextManager.TmpPrintMainText("Criteria Met");
+                effectTextManager.PrintEffectText("Criteria Met");
                 soundManager.PlayAudio(soundManager.VOICE_CRITERIAMAT);
-
-                StartCoroutine(StopRigidbodys(nodes, 1.5f));
-                StartCoroutine(soundManager.PlayAudio(soundManager.VOICE_FREEZE,1.5f));
-                StartCoroutine(soundManager.PlayAudio(soundManager.SE_FREEZE, 1.5f));
-                StartCoroutine(mainTextManager.TmpPrintMainText("Freeze",1.5f));
-                StartCoroutine(InstantiateEffect(freezeEffect, nodesCenter, 1.5f));
-                freezeCondition = _conditionGenerator.GenerateCondition();
+                DelayProcessFreeze(nodes, 1.5f);
                 break;
         }
+    }
+
+    //条件達成時に、時間差でフリーズの処理を行う。
+    private void DelayProcessFreeze(List<GameObject> nodes, float delayTime)
+    {
+        Vector3 nodesCenter = CaluculateCenter(nodes);
+        StartCoroutine(StopRigidbodys(nodes, delayTime));
+        StartCoroutine(soundManager.PlayAudio(soundManager.VOICE_FREEZE, delayTime));
+        StartCoroutine(soundManager.PlayAudio(soundManager.SE_FREEZE, delayTime));
+        StartCoroutine(effectTextManager.PrintEffectText("Freeze", delayTime));
+        StartCoroutine(InstantiateEffect(freezeEffect, nodesCenter, delayTime));
+        freezeCondition = _conditionGenerator.GenerateCondition();
     }
 
     private Vector3 CaluculateCenter(List<GameObject> gameObjects)

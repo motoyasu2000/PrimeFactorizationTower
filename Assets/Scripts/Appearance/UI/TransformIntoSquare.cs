@@ -1,33 +1,27 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TransformIntoSquare : MonoBehaviour
+namespace UI
 {
-    public RectTransform myRectTransform;
-
-    //Startで画像を挿入するため、ここはAwake
-    private void Awake()
+    //画面上部中央に表示される、生成可能なブロックの条件を記載した数値を正方形のブロック状に表示させる関数。色々な画面幅に動的に対応するため。
+    public class TransformIntoSquare : MonoBehaviour
     {
+        public RectTransform myRectTransform;
+        private void Update()
+        {
+            AdjustSize();
+        }
+        private void AdjustSize()
+        {
 
-    }
-    private void Update()
-    {
-        AdjustSize();
-    }
+            float height = myRectTransform.rect.height;
+            myRectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, height);
 
-    private void AdjustSize()
-    {
-
-        float height = myRectTransform.rect.height;
-        myRectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, height);
-
-    }
-
-    private void OnEnable()
-    {
-        myRectTransform = GetComponent<RectTransform>();
-        AdjustSize();
+        }
+        private void OnEnable()
+        {
+            myRectTransform = GetComponent<RectTransform>();
+            AdjustSize();
+        }
     }
 }
-
-

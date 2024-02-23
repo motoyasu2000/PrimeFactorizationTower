@@ -3,33 +3,40 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class MainTextManager : MonoBehaviour
+namespace UI
 {
-    TextMeshProUGUI mainText;
-    private void Start()
+    //文字を表示させるクラス。現状だと条件達成やfreezeの表示
+    public class EffectTextManager : MonoBehaviour
     {
-        mainText = GetComponent<TextMeshProUGUI>();
-    }
-    public void TmpPrintMainText(string str)
-    {
-        mainText.gameObject.SetActive(true);
-        mainText.text = str;
-        StartCoroutine(HiddenMainText());
-    }
+        TextMeshProUGUI effectText;
+        private void Start()
+        {
+            effectText = GetComponent<TextMeshProUGUI>();
+        }
 
-    public IEnumerator TmpPrintMainText(string str, float seconds)
-    {
-        yield return new WaitForSeconds(seconds);
-        mainText.gameObject.SetActive(true);
-        mainText.text = str;
-        StartCoroutine(HiddenMainText());
-        yield return null;
-    }
+        //引数で受けった文字列をeffectTextに表示させる。
+        public void PrintEffectText(string str)
+        {
+            effectText.gameObject.SetActive(true);
+            effectText.text = str;
+            StartCoroutine(HiddenEffectText());
+        }
 
-    IEnumerator HiddenMainText()
-    {
-        yield return new WaitForSeconds(1.2f);
-        mainText.gameObject.SetActive(false);
-        yield return null;
+        //第一引数で受け取ったテキストを第二引数で受け取った時間後にeffectTextに表示させる
+        public IEnumerator PrintEffectText(string str, float seconds)
+        {
+            yield return new WaitForSeconds(seconds);
+            effectText.gameObject.SetActive(true);
+            effectText.text = str;
+            StartCoroutine(HiddenEffectText());
+            yield return null;
+        }
+        //1.2秒経過後にeffectTextを非表示にする
+        IEnumerator HiddenEffectText()
+        {
+            yield return new WaitForSeconds(1.2f);
+            effectText.gameObject.SetActive(false);
+            yield return null;
+        }
     }
 }

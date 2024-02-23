@@ -13,6 +13,7 @@ public class ConditionGenerator : MonoBehaviour
     }
     public Dictionary<int,int> GenerateCondition()
     {
+        //キーが素数、バリューがその素数の数の辞書の生成
         Dictionary<int,int> returnDict = new Dictionary<int,int>();
 
         int resultCompositNumber = 1;
