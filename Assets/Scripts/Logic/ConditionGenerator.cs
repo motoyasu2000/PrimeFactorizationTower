@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
+using Random = UnityEngine.Random;
 
 public class ConditionGenerator : MonoBehaviour
 {
@@ -49,9 +51,9 @@ public class ConditionGenerator : MonoBehaviour
         Dictionary<int, int> returnDict = new Dictionary<int, int>();
         int randomIndex;
         int randomPrimeNumber;
-        int rand = Random.Range(minRand, maxRand);
+        int numberOfPrimeNumber = Random.Range(minRand, maxRand);
 
-        for (int i = 0; i < rand; i++)
+        for (int i = 0; i < numberOfPrimeNumber; i++)
         {
             randomIndex = Random.Range(0, primePool.Count);
             randomPrimeNumber = primePool[randomIndex];
@@ -65,7 +67,7 @@ public class ConditionGenerator : MonoBehaviour
     {
         int compositeNumber = 1;
         foreach(var pair in returnDict){
-            compositeNumber *= pair.Value*pair.Key;
+            compositeNumber *= (int)Math.Pow(pair.Key, pair.Value);
         }
         return compositeNumber;
     }

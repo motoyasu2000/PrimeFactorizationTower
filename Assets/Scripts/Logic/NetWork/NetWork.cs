@@ -14,7 +14,7 @@ public class Network : MonoBehaviour
     const int CheckNumParFrame = 3; //1フレーム当たりにキューから取り出す数
     Queue<ExpandNetwork> startExpandNetworks = new Queue<ExpandNetwork>(); //ネットワークの拡張を開始する最初のサブネットワークをリストとして保存しておく。非同期の処理を一つずつ実行するため、タプルの２つ目の要素は条件の辞書
 
-    //サブグラフの生成
+    //条件の生成
     bool nowCriteriaMetChecking = false; //条件を達成した後、生成した合成数を現在のネットワークが既に満たしているかをどうかを表す変数
     ConditionGenerator conditionGenerator;
     Dictionary<int, int> freezeCondition;
