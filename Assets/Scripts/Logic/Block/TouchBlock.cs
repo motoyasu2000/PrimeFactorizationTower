@@ -48,7 +48,7 @@ public class TouchBlock : MonoBehaviour
             {
                 touchPosition = GetTouchWorldPosition(touch);
 
-                // タッチの状態に応じて処理
+                //タッチの状態に応じて処理
                 switch (touch.phase)
                 {
                     //タッチした瞬間であれば
@@ -89,13 +89,11 @@ public class TouchBlock : MonoBehaviour
 
     void HandleTouchBegan(Touch touch)
     {
-        Vector3 upCondition_view = new Vector3(0, 0.3f, touchPosition.z - Camera.main.transform.position.z);
-        Vector3 upCondition = Camera.main.ViewportToWorldPoint(upCondition_view);
+        //UI上をタッチしていないかのチェック、UIの上をタッチしている間はブロックを移動するべきではない。
         PointerEventData pointerEventData = new PointerEventData(eventSystem);
         pointerEventData.position = touch.position; //スクリーン座標で指定することに注意
         List<RaycastResult> results = new List<RaycastResult>();
         graphicRaycaster.Raycast(pointerEventData, results);
-
         foreach (RaycastResult result in results)
         {
             GameObject hitGameObject = result.gameObject;
@@ -103,18 +101,22 @@ public class TouchBlock : MonoBehaviour
             if (hitGameObject != null && !hitGameObject.CompareTag("UnderClickable")) return;
         }
 
-        if (touchPosition.y < upCondition.y) return;
+        //ブロックが上部に存在しない場合もブロックを移動する処理は行わない。
         if (singleGenerateManager.GetSingleGameObject() == null) return;
+
+        //タッチした位置にブロックを移動する(x軸方向の移動のみ)
         draggedObject = singleGenerateManager.GetSingleGameObject().transform;
         draggedObject.position = new Vector3(touchPosition.x, primeNumberGeneratingPoint.transform.position.y, touchPosition.z); //ブロックx座標をタッチしている座標に
         isDragging = true;
     }
 
+    //指を触れている間はその指のx座標にブロックを動かす。
     void HandleTouchMoved(Touch touch)
     {
-        draggedObject.position = new Vector3(touchPosition.x, primeNumberGeneratingPoint.transform.position.y, touchPosition.z); //ブロックx座標をタッチしている座標に
+        draggedObject.position = new Vector3(touchPosition.x, primeNumberGeneratingPoint.transform.position.y, touchPosition.z);
     }
 
+    //指を話したときの処理、ブロックを落下させ、素数を持ったブロックとして機能するようにする。
     void HandleTouchEnded(Touch touch)
     {
         isDragging = false;
