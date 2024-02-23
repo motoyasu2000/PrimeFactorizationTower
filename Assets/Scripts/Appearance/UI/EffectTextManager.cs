@@ -9,6 +9,7 @@ namespace UI
     public class EffectTextManager : MonoBehaviour
     {
         TextMeshProUGUI effectText;
+        const float displayTime = 1.2f;//テキストを表示してから非表示にするまでの時間。
         private void Start()
         {
             effectText = GetComponent<TextMeshProUGUI>();
@@ -34,7 +35,7 @@ namespace UI
         //1.2秒経過後にeffectTextを非表示にする
         IEnumerator HiddenEffectText()
         {
-            yield return new WaitForSeconds(1.2f);
+            yield return new WaitForSeconds(displayTime);
             effectText.gameObject.SetActive(false);
             yield return null;
         }

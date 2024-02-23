@@ -19,19 +19,14 @@ public class BlockInfo : MonoBehaviour
     List<GameObject> neighborEdge = new List<GameObject>(); //隣接するゲームオブジェクトを格納
     Network network;
 
-    //初期化コード
     private void Awake()
     {
         primeNumberText = transform.Find("PrimeNumberText").GetComponent<TextMeshPro>();
-        SetText();
-        SetShader();
-    }
-    private void Start()
-    {
         rb2D = GetComponent<Rigidbody2D>();
-
         myCollider = GetComponent<Collider2D>();
         network = GameObject.Find("Network").GetComponent<Network>();
+        SetText();
+        SetShader();
     }
 
     //クリックするとkinematicからdynamicに変化するようにする。
