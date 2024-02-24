@@ -5,22 +5,21 @@ using UnityEngine;
 
 public class ConditionNumberManager : MonoBehaviour
 {
-    TextMeshProUGUI conditionText;
+    TextMeshProUGUI conditionNumberText; //左上の条件テキスト
     private void Start()
     {
-        conditionText = GetComponent<TextMeshProUGUI>();
+        conditionNumberText = GetComponent<TextMeshProUGUI>();
     }
     public void PrintConditionNumber(string str)
     {
-        conditionText.gameObject.SetActive(true);
-        conditionText.text = str;
+        conditionNumberText.gameObject.SetActive(true);
+        conditionNumberText.text = str;
     }
 
     public IEnumerator PrintConditionNumber(string str, float seconds)
     {
         yield return new WaitForSeconds(seconds);
-        conditionText.gameObject.SetActive(true);
-        conditionText.text = str;
+        PrintConditionNumber(str);
         yield return null;
     }
 }
