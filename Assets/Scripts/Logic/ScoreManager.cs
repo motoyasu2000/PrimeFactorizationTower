@@ -40,8 +40,14 @@ public class ScoreManager : MonoBehaviour
         InitializeFields();
     }
 
+    public int CalculatePileUpScore()
+    {
+        float height = CalculateAllGameObjectsMaxHeight();
+        return (int)(height * 1000);
+    }
+
     //全ゲームオブジェクトの頂点から最も高い頂点のy座標を返すメソッド(GameObjectのpivotではなく、頂点レベルで高さを計算する。)
-    public float CalculateAllGameObjectsMaxHeight()
+    float CalculateAllGameObjectsMaxHeight()
     {
         List<Vector3> allVertices = new List<Vector3>();
         if (afterField != null)

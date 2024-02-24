@@ -823,12 +823,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fed7bd96bb7197146a019baae5399ee2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  upNumberText: {fileID: 189060418}
-  nextUpNumberText: {fileID: 191076254}
-  MainText: {fileID: 966644798}
-  scoreText: {fileID: 2031048846}
-  blockField: {fileID: 1999789152}
-  completedField: {fileID: 1158517000}
 --- !u!4 &76913988
 Transform:
   m_ObjectHideFlags: 0
@@ -1459,7 +1453,7 @@ GameObject:
   - component: {fileID: 189060419}
   - component: {fileID: 189060418}
   m_Layer: 5
-  m_Name: NowUpNumber
+  m_Name: NowUpCompositeNumberText
   m_TagString: UnderClickable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1636,7 +1630,7 @@ GameObject:
   - component: {fileID: 191076255}
   - component: {fileID: 191076254}
   m_Layer: 5
-  m_Name: NextUpNumber
+  m_Name: NextUpCompositeNumberText
   m_TagString: UnderClickable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2562,15 +2556,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e85b677aa2ab3241946197584ac195a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allNodes: []
-  gameModeManager: {fileID: 0}
-  soundManager: {fileID: 0}
-  effectTextManager: {fileID: 0}
-  freezeEffect: {fileID: 0}
-  conditionGenerator: {fileID: 0}
-  wasCriteriaMet: 0
-  isRespawnKillChecking: 0
-  CheckNumParFrame: 3
 --- !u!4 &259954749
 Transform:
   m_ObjectHideFlags: 0
@@ -5069,12 +5054,12 @@ GameObject:
   - component: {fileID: 777901195}
   - component: {fileID: 777901194}
   m_Layer: 5
-  m_Name: NextUpNumber_Field
+  m_Name: NextUpCompositeNumber_Field
   m_TagString: UnderClickable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &777901193
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6301,7 +6286,7 @@ GameObject:
   - component: {fileID: 992427679}
   - component: {fileID: 992427678}
   m_Layer: 5
-  m_Name: MaxScore
+  m_Name: MaxScoreText
   m_TagString: UnderClickable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12295,12 +12280,12 @@ GameObject:
   - component: {fileID: 1718298444}
   - component: {fileID: 1718298443}
   m_Layer: 5
-  m_Name: NowUpNumber_Field
+  m_Name: NowUpCompositeNumber_Field
   m_TagString: UnderClickable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1718298442
 RectTransform:
   m_ObjectHideFlags: 0
@@ -13804,7 +13789,7 @@ GameObject:
   - component: {fileID: 2031048847}
   - component: {fileID: 2031048846}
   m_Layer: 5
-  m_Name: NowScore
+  m_Name: NowScoreText
   m_TagString: UnderClickable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
