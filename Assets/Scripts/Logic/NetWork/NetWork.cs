@@ -134,11 +134,8 @@ public class Network : MonoBehaviour
         {
             DetachNode(neighborNode, originNode);
         }
-        //ネットワークからそのノードを削除
         wholeNetwork.Remove(originNode);
-        //ネットワーク辞書からもそのノードを削除
         nodesDict[originNode.GetComponent<BlockInfo>().GetPrimeNumber()].Remove(originNode);
-        //ブロックの情報も失わせる。
         originNode.GetComponent<BlockInfo>().enabled = false;
     }
 
