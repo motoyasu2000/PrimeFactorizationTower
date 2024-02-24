@@ -46,7 +46,7 @@ public class ConditionGenerator : MonoBehaviour
     }
 
     //素数プール、乱数の最小値最大値を指定して、キーが素数、バリューがその素数の数の辞書を作るメソッド
-    Dictionary<int, int> GenerateConditionForDifficultyLevel(List<int> primePool, int minRand, int maxRand)
+    Dictionary<int, int> GenerateConditionForDifficultyLevel(List<int> primeNumberPool, int minRand, int maxRand)
     {
         Dictionary<int, int> returnDict = new Dictionary<int, int>();
         int randomIndex;
@@ -55,8 +55,8 @@ public class ConditionGenerator : MonoBehaviour
 
         for (int i = 0; i < numberOfPrimeNumber; i++)
         {
-            randomIndex = Random.Range(0, primePool.Count);
-            randomPrimeNumber = primePool[randomIndex];
+            randomIndex = Random.Range(0, primeNumberPool.Count);
+            randomPrimeNumber = primeNumberPool[randomIndex];
             if (!returnDict.TryAdd(randomPrimeNumber, 1)) returnDict[randomPrimeNumber] += 1;
         }
         return returnDict;
