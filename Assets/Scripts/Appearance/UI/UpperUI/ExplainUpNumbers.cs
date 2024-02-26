@@ -1,11 +1,11 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
 namespace UI
 {
-    //ƒ`ƒ…[ƒgƒŠƒAƒ‹‚Å‚ÌUI‚Ìà–¾‚ÌÛ‚ÉA¡à–¾‚µ‚Ä‚¢‚éUI‚ª‚ğ“_–Å‚³‚¹‚éŠÖ”B‚±‚ê‚É‚æ‚è¡‚Ç‚±‚Ìà–¾‚ğ‚µ‚Ä‚¢‚é‚Ì‚©‚ª‚í‚©‚è‚â‚·‚­‚È‚éB
+    //ãƒãƒ¥ãƒ¼ãƒˆãƒªã‚¢ãƒ«ã§ã®UIã®èª¬æ˜ã®éš›ã«ã€ä»Šèª¬æ˜ã—ã¦ã„ã‚‹UIãŒã‚’ç‚¹æ»…ã•ã›ã‚‹é–¢æ•°ã€‚ã“ã‚Œã«ã‚ˆã‚Šä»Šã©ã“ã®èª¬æ˜ã‚’ã—ã¦ã„ã‚‹ã®ã‹ãŒã‚ã‹ã‚Šã‚„ã™ããªã‚‹ã€‚
     public class ExplainUpNumbers : MonoBehaviour
     {
         GameObject nowUpNumber;
@@ -26,7 +26,7 @@ namespace UI
             nextUpNumberText = nextUpNumber.GetComponent<TextMeshProUGUI>();
             conditionNumberText = conditionNumber.GetComponent<TextMeshProUGUI>();
 
-            //¡à–¾‚µ‚Ä‚¢‚éƒeƒLƒXƒg‚ÌƒQ[ƒ€ƒIƒuƒWƒFƒNƒg–¼‚É‡‚í‚¹‚Ä‚Ç‚ÌUI‚ğ“_–Å‚³‚¹‚é‚Ì‚©‚ğ‘I‘ğ‚·‚éB
+            //ä»Šèª¬æ˜ã—ã¦ã„ã‚‹ãƒ†ã‚­ã‚¹ãƒˆã®ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåã«åˆã‚ã›ã¦ã©ã®UIã‚’ç‚¹æ»…ã•ã›ã‚‹ã®ã‹ã‚’é¸æŠã™ã‚‹ã€‚
             if (gameObject.name == "ExplainNowUpNumber") nowText = nowUpNumberText;
             if (gameObject.name == "ExplainNextUpNumber") nowText = nextUpNumberText;
             if (gameObject.name == "ExplainConditionNumber") nowText = conditionNumberText;

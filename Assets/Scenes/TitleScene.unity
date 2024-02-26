@@ -479,13 +479,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 120f8d989d94c9d4c926ba0b95d650cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  singlePlay: {fileID: 0}
-  multiPlay: {fileID: 0}
-  history: {fileID: 0}
-  setting: {fileID: 0}
-  credit: {fileID: 0}
-  playScene:
-    m_Handle: 0
 --- !u!1 &35861463
 GameObject:
   m_ObjectHideFlags: 0
@@ -2512,13 +2505,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 120f8d989d94c9d4c926ba0b95d650cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  singlePlay: {fileID: 0}
-  multiPlay: {fileID: 0}
-  history: {fileID: 0}
-  setting: {fileID: 0}
-  credit: {fileID: 0}
-  playScene:
-    m_Handle: 0
 --- !u!1 &486783814
 GameObject:
   m_ObjectHideFlags: 0
@@ -2665,13 +2651,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 120f8d989d94c9d4c926ba0b95d650cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  singlePlay: {fileID: 0}
-  multiPlay: {fileID: 0}
-  history: {fileID: 0}
-  setting: {fileID: 0}
-  credit: {fileID: 0}
-  playScene:
-    m_Handle: 0
 --- !u!1 &536098207
 GameObject:
   m_ObjectHideFlags: 0
@@ -2858,13 +2837,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 120f8d989d94c9d4c926ba0b95d650cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  singlePlay: {fileID: 0}
-  multiPlay: {fileID: 0}
-  history: {fileID: 0}
-  setting: {fileID: 0}
-  credit: {fileID: 0}
-  playScene:
-    m_Handle: 0
 --- !u!114 &546207363
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3992,13 +3964,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 120f8d989d94c9d4c926ba0b95d650cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  singlePlay: {fileID: 0}
-  multiPlay: {fileID: 0}
-  history: {fileID: 0}
-  setting: {fileID: 0}
-  credit: {fileID: 0}
-  playScene:
-    m_Handle: 0
 --- !u!114 &869510321
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4412,13 +4377,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 120f8d989d94c9d4c926ba0b95d650cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  singlePlay: {fileID: 0}
-  multiPlay: {fileID: 0}
-  history: {fileID: 0}
-  setting: {fileID: 0}
-  credit: {fileID: 0}
-  playScene:
-    m_Handle: 0
 --- !u!1 &921044968
 GameObject:
   m_ObjectHideFlags: 0
@@ -5684,13 +5642,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 120f8d989d94c9d4c926ba0b95d650cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  singlePlay: {fileID: 0}
-  multiPlay: {fileID: 0}
-  history: {fileID: 0}
-  setting: {fileID: 0}
-  credit: {fileID: 0}
-  playScene:
-    m_Handle: 0
 --- !u!1 &1050556404
 GameObject:
   m_ObjectHideFlags: 0
@@ -7089,13 +7040,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 120f8d989d94c9d4c926ba0b95d650cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  singlePlay: {fileID: 0}
-  multiPlay: {fileID: 0}
-  history: {fileID: 0}
-  setting: {fileID: 0}
-  credit: {fileID: 0}
-  playScene:
-    m_Handle: 0
 --- !u!114 &1218296114
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7848,13 +7792,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 120f8d989d94c9d4c926ba0b95d650cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  singlePlay: {fileID: 0}
-  multiPlay: {fileID: 0}
-  history: {fileID: 0}
-  setting: {fileID: 0}
-  credit: {fileID: 0}
-  playScene:
-    m_Handle: 0
 --- !u!114 &1327534474
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8033,13 +7970,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 120f8d989d94c9d4c926ba0b95d650cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  singlePlay: {fileID: 0}
-  multiPlay: {fileID: 0}
-  history: {fileID: 0}
-  setting: {fileID: 0}
-  credit: {fileID: 0}
-  playScene:
-    m_Handle: 0
 --- !u!114 &1328380623
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9228,13 +9158,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 120f8d989d94c9d4c926ba0b95d650cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  singlePlay: {fileID: 0}
-  multiPlay: {fileID: 0}
-  history: {fileID: 0}
-  setting: {fileID: 0}
-  credit: {fileID: 0}
-  playScene:
-    m_Handle: 0
 --- !u!114 &1516414521
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9996,13 +9919,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 120f8d989d94c9d4c926ba0b95d650cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  singlePlay: {fileID: 0}
-  multiPlay: {fileID: 0}
-  history: {fileID: 0}
-  setting: {fileID: 0}
-  credit: {fileID: 0}
-  playScene:
-    m_Handle: 0
 --- !u!1 &1597744212
 GameObject:
   m_ObjectHideFlags: 0
@@ -10055,13 +9971,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 120f8d989d94c9d4c926ba0b95d650cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  singlePlay: {fileID: 0}
-  multiPlay: {fileID: 0}
-  history: {fileID: 0}
-  setting: {fileID: 0}
-  credit: {fileID: 0}
-  playScene:
-    m_Handle: 0
 --- !u!114 &1597744215
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10285,13 +10194,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 120f8d989d94c9d4c926ba0b95d650cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  singlePlay: {fileID: 0}
-  multiPlay: {fileID: 0}
-  history: {fileID: 0}
-  setting: {fileID: 0}
-  credit: {fileID: 0}
-  playScene:
-    m_Handle: 0
 --- !u!114 &1608707950
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10877,13 +10779,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 120f8d989d94c9d4c926ba0b95d650cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  singlePlay: {fileID: 0}
-  multiPlay: {fileID: 0}
-  history: {fileID: 0}
-  setting: {fileID: 0}
-  credit: {fileID: 0}
-  playScene:
-    m_Handle: 0
 --- !u!1 &1797024992
 GameObject:
   m_ObjectHideFlags: 0
@@ -11758,13 +11653,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 120f8d989d94c9d4c926ba0b95d650cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  singlePlay: {fileID: 0}
-  multiPlay: {fileID: 0}
-  history: {fileID: 0}
-  setting: {fileID: 0}
-  credit: {fileID: 0}
-  playScene:
-    m_Handle: 0
 --- !u!114 &1889161860
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12272,13 +12160,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 120f8d989d94c9d4c926ba0b95d650cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  singlePlay: {fileID: 0}
-  multiPlay: {fileID: 0}
-  history: {fileID: 0}
-  setting: {fileID: 0}
-  credit: {fileID: 0}
-  playScene:
-    m_Handle: 0
 --- !u!114 &1918422353
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13149,13 +13030,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 120f8d989d94c9d4c926ba0b95d650cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  singlePlay: {fileID: 0}
-  multiPlay: {fileID: 0}
-  history: {fileID: 0}
-  setting: {fileID: 0}
-  credit: {fileID: 0}
-  playScene:
-    m_Handle: 0
 --- !u!1 &2002807212
 GameObject:
   m_ObjectHideFlags: 0

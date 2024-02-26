@@ -1,32 +1,33 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+//ãƒ–ãƒ­ãƒƒã‚¯ã‚’ã‚¿ãƒƒãƒ—ã‚„ã‚¹ãƒ©ã‚¤ãƒ‰ã«ã‚ˆã£ã¦æ“ä½œã§ãã‚‹ã‚ˆã†ã«ã™ã‚‹é–¢æ•°ã€‚ãƒ¦ãƒ¼ã‚¶ãƒ¼ã¨ã®ã‚¤ãƒ³ã‚¿ãƒ©ã‚¯ã‚·ãƒ§ãƒ³éƒ¨åˆ†ã€‚
 public class TouchBlock : MonoBehaviour
 {
-    //“ü—ÍŠÇ—
-    bool isDragging = false; //ƒhƒ‰ƒbƒO‚µ‚Ä‚¢‚é‚©‚Ç‚¤‚©
-    Vector3 touchPosition; //Œ»İƒ^ƒbƒ`‚µ‚Ä‚¢‚éˆÊ’u
-    Transform draggedObject = null; //Œ»İ‘I‘ğ‚µ‚Ä‚¢‚éƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚ğŠi”[‚·‚é•Ï”@Update“à‚ÅRaycast‚ğ–ˆ•bs‚Á‚Ä‚¢‚é‚Ì‚ÅA
-                                    //‘I‘ğ‚·‚éƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚ª•ÏX‚³‚ê‚È‚¢‚æ‚¤‚Éƒhƒ‰ƒbƒO’†‚ÌƒIƒuƒWƒFƒNƒg‚Ì‚İ‚ğæ“¾‚·‚é‚æ‚¤‚É‚µ‚Ä‚¢‚éB
-    //ƒuƒƒbƒN‚Ìˆ—
+    //å…¥åŠ›ç®¡ç†
+    bool isDragging = false; //ãƒ‰ãƒ©ãƒƒã‚°ã—ã¦ã„ã‚‹ã‹ã©ã†ã‹
+    Vector3 touchPosition; //ç¾åœ¨ã‚¿ãƒƒãƒã—ã¦ã„ã‚‹ä½ç½®
+    Transform draggedObject = null; //ç¾åœ¨é¸æŠã—ã¦ã„ã‚‹ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’æ ¼ç´ã™ã‚‹å¤‰æ•°ã€€Updateå†…ã§Raycastã‚’æ¯ç§’è¡Œã£ã¦ã„ã‚‹ã®ã§ã€
+                                    //é¸æŠã™ã‚‹ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒå¤‰æ›´ã•ã‚Œãªã„ã‚ˆã†ã«ãƒ‰ãƒ©ãƒƒã‚°ä¸­ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ã¿ã‚’å–å¾—ã™ã‚‹ã‚ˆã†ã«ã—ã¦ã„ã‚‹ã€‚
+                                    //ãƒ–ãƒ­ãƒƒã‚¯ã®å‡¦ç†
     BlockInfo blockInfo;
     Network network;
     GraphicRaycaster graphicRaycaster;
-    SingleGenerateManager singleGenerateManager; //ƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚ª’Pˆê‚Å‚ ‚é‚±‚Æ‚ğ•ÛØ‚·‚é‚½‚ß‚ÌƒNƒ‰ƒX
-    GameObject primeNumberGeneratingPoint; //ƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚ğ¶¬‚·‚éêŠ‚ğ¦‚·ƒQ[ƒ€ƒIƒuƒWƒFƒNƒg  
+    SingleGenerateManager singleGenerateManager; //ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒå˜ä¸€ã§ã‚ã‚‹ã“ã¨ã‚’ä¿è¨¼ã™ã‚‹ãŸã‚ã®ã‚¯ãƒ©ã‚¹
+    GameObject primeNumberGeneratingPoint; //ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç”Ÿæˆã™ã‚‹å ´æ‰€ã‚’ç¤ºã™ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ  
     GameObject blockField;
     GameObject afterField;
 
-    //UI•”•ª
+    //UIéƒ¨åˆ†
     GameObject canvas;
     EventSystem eventSystem;
 
     private void Start()
     {
-        //‰Šú‰»
+        //åˆæœŸåŒ–
         blockInfo = GetComponent<BlockInfo>();
         primeNumberGeneratingPoint = GameObject.Find("PrimeNumberGeneratingPoint");
         singleGenerateManager = primeNumberGeneratingPoint.GetComponent<SingleGenerateManager>();
@@ -40,46 +41,37 @@ public class TouchBlock : MonoBehaviour
 
     void Update()
     {
-        //Input.touches‚ÍƒtƒŒ[ƒ€‚²‚Æ‚Ì‘S‚Ä‚Ìƒ^ƒbƒ`‚ğæ“¾‚·‚é(‰æ–Ê‚É“¯‚ÉG‚ê‚½‘S‚Ä‚ÌwA‚PƒtƒŒ[ƒ€‚Å‚Ì’´‚‘¬touch)
+        //Input.touchesã¯ãƒ•ãƒ¬ãƒ¼ãƒ ã”ã¨ã®å…¨ã¦ã®ã‚¿ãƒƒãƒã‚’å–å¾—ã™ã‚‹(ç”»é¢ã«åŒæ™‚ã«è§¦ã‚ŒãŸå…¨ã¦ã®æŒ‡ã€ï¼‘ãƒ•ãƒ¬ãƒ¼ãƒ ã§ã®è¶…é«˜é€Ÿtouch)
         foreach (Touch touch in Input.touches)
         {
-            //¡‰ñ‚Í•¡”ƒ^ƒbƒ`‚ğó‚¯“ü‚ê‚¸Aˆê‚Â‚Ìw‚Ì“ü—Í‚Ì‚İ‚ğó‚¯“ü‚ê‚é
+            //ä»Šå›ã¯è¤‡æ•°ã‚¿ãƒƒãƒã‚’å—ã‘å…¥ã‚Œãšã€ä¸€ã¤ã®æŒ‡ã®å…¥åŠ›ã®ã¿ã‚’å—ã‘å…¥ã‚Œã‚‹
             if (touch.fingerId == 0)
             {
                 touchPosition = GetTouchWorldPosition(touch);
 
-                //ƒ^ƒbƒ`‚Ìó‘Ô‚É‰‚¶‚Äˆ—
+                //ã‚¿ãƒƒãƒã®çŠ¶æ…‹ã«å¿œã˜ã¦å‡¦ç†
                 switch (touch.phase)
                 {
-                    //ƒ^ƒbƒ`‚µ‚½uŠÔ‚Å‚ ‚ê‚Î
+                    //ã‚¿ãƒƒãƒã—ãŸç¬é–“ã§ã‚ã‚Œã°
                     case TouchPhase.Began:
-                        if (!isDragging)
-                        {
-                            HandleTouchBegan(touch);
-                        }
+                        if (!isDragging) HandleTouchBegan(touch);
                         break;
 
-                    //ƒ^ƒbƒ`‚µ‚Ä‚¢‚éŠÔ‚Å‚ ‚ê‚Î
+                    //ã‚¿ãƒƒãƒã—ã¦ã„ã‚‹é–“ã§ã‚ã‚Œã°
                     case TouchPhase.Moved:
-                        if (isDragging)
-                        {
-                            HandleTouchMoved(touch);
-                        }
+                        if (isDragging) HandleTouchMoved(touch);
                         break;
 
-                    //ƒ^ƒbƒ`‚ğI‚í‚ç‚¹‚½‚È‚ç(w‚ğ—£‚·)
+                    //ã‚¿ãƒƒãƒã‚’çµ‚ã‚ã‚‰ã›ãŸãªã‚‰(æŒ‡ã‚’é›¢ã™)
                     case TouchPhase.Ended:
-                        if (isDragging)
-                        {
-                            HandleTouchEnded(touch);
-                        }
+                        if (isDragging) HandleTouchEnded(touch);
                         break;
                 }
             }
         }
     }
 
-    //ƒ^ƒbƒ`‚µ‚½ƒXƒNƒŠ[ƒ“À•W‚ğƒ[ƒ‹ƒhÀ•W‚É•ÏŠ·‚µ‚Ä•Ô‚·ŠÖ”
+    //ã‚¿ãƒƒãƒã—ãŸã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ã‚’ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™ã«å¤‰æ›ã—ã¦è¿”ã™é–¢æ•°
     Vector3 GetTouchWorldPosition(Touch touch)
     {
         Vector3 touchPosition = Camera.main.ScreenToWorldPoint(touch.position);
@@ -87,12 +79,12 @@ public class TouchBlock : MonoBehaviour
         return touchPosition;
     }
 
-    //UIã‚Å–³‚¯‚ê‚ÎƒuƒƒbƒN‚Ì¶¬æ‚ğw’è‚Å‚«‚é‚æ‚¤‚É‚·‚éB‚»‚ÌŒãƒhƒ‰ƒbƒO‚Å’²®‰Â”\
+    //UIä¸Šã§ç„¡ã‘ã‚Œã°ãƒ–ãƒ­ãƒƒã‚¯ã®ç”Ÿæˆå…ˆã‚’æŒ‡å®šã§ãã‚‹ã‚ˆã†ã«ã™ã‚‹ã€‚ãã®å¾Œãƒ‰ãƒ©ãƒƒã‚°ã§èª¿æ•´å¯èƒ½
     void HandleTouchBegan(Touch touch)
     {
-        //UIã‚ğƒ^ƒbƒ`‚µ‚Ä‚¢‚È‚¢‚©‚Ìƒ`ƒFƒbƒNAUI‚Ìã‚ğƒ^ƒbƒ`‚µ‚Ä‚¢‚éŠÔ‚ÍƒuƒƒbƒN‚ğˆÚ“®‚·‚é‚×‚«‚Å‚Í‚È‚¢B
+        //UIä¸Šã‚’ã‚¿ãƒƒãƒã—ã¦ã„ãªã„ã‹ã®ãƒã‚§ãƒƒã‚¯ã€UIã®ä¸Šã‚’ã‚¿ãƒƒãƒã—ã¦ã„ã‚‹é–“ã¯ãƒ–ãƒ­ãƒƒã‚¯ã‚’ç§»å‹•ã™ã‚‹ã¹ãã§ã¯ãªã„ã€‚
         PointerEventData pointerEventData = new PointerEventData(eventSystem);
-        pointerEventData.position = touch.position; //ƒXƒNƒŠ[ƒ“À•W‚Åw’è‚·‚é‚±‚Æ‚É’ˆÓ
+        pointerEventData.position = touch.position; //ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ã§æŒ‡å®šã™ã‚‹ã“ã¨ã«æ³¨æ„
         List<RaycastResult> results = new List<RaycastResult>();
         graphicRaycaster.Raycast(pointerEventData, results);
         foreach (RaycastResult result in results)
@@ -102,32 +94,32 @@ public class TouchBlock : MonoBehaviour
             if (hitGameObject != null && !hitGameObject.CompareTag("UnderClickable")) return;
         }
 
-        //ƒuƒƒbƒN‚ªã•”‚É‘¶İ‚µ‚È‚¢ê‡‚àƒuƒƒbƒN‚ğˆÚ“®‚·‚éˆ—‚Ís‚í‚È‚¢B
+        //ãƒ–ãƒ­ãƒƒã‚¯ãŒä¸Šéƒ¨ã«å­˜åœ¨ã—ãªã„å ´åˆã‚‚ãƒ–ãƒ­ãƒƒã‚¯ã‚’ç§»å‹•ã™ã‚‹å‡¦ç†ã¯è¡Œã‚ãªã„ã€‚
         if (singleGenerateManager.GetSingleGameObject() == null) return;
 
-        //ƒ^ƒbƒ`‚µ‚½ˆÊ’u‚ÉƒuƒƒbƒN‚ğˆÚ“®‚·‚é(x²•ûŒü‚ÌˆÚ“®‚Ì‚İ)
+        //ã‚¿ãƒƒãƒã—ãŸä½ç½®ã«ãƒ–ãƒ­ãƒƒã‚¯ã‚’ç§»å‹•ã™ã‚‹(xè»¸æ–¹å‘ã®ç§»å‹•ã®ã¿)
         draggedObject = singleGenerateManager.GetSingleGameObject().transform;
-        draggedObject.position = new Vector3(touchPosition.x, primeNumberGeneratingPoint.transform.position.y, touchPosition.z); //ƒuƒƒbƒNxÀ•W‚ğƒ^ƒbƒ`‚µ‚Ä‚¢‚éÀ•W‚É
+        draggedObject.position = new Vector3(touchPosition.x, primeNumberGeneratingPoint.transform.position.y, touchPosition.z); //ãƒ–ãƒ­ãƒƒã‚¯xåº§æ¨™ã‚’ã‚¿ãƒƒãƒã—ã¦ã„ã‚‹åº§æ¨™ã«
         isDragging = true;
     }
 
-    //w‚ğG‚ê‚Ä‚¢‚éŠÔ‚Í‚»‚Ìw‚ÌxÀ•W‚ÉƒuƒƒbƒN‚ğ“®‚©‚·B
+    //æŒ‡ã‚’è§¦ã‚Œã¦ã„ã‚‹é–“ã¯ãã®æŒ‡ã®xåº§æ¨™ã«ãƒ–ãƒ­ãƒƒã‚¯ã‚’å‹•ã‹ã™ã€‚
     void HandleTouchMoved(Touch touch)
     {
         draggedObject.position = new Vector3(touchPosition.x, primeNumberGeneratingPoint.transform.position.y, touchPosition.z);
     }
 
-    //w‚ğ˜b‚µ‚½‚Æ‚«‚Ìˆ—AƒuƒƒbƒN‚ğ—‰º‚³‚¹A‘f”‚ğ‚Á‚½ƒuƒƒbƒN‚Æ‚µ‚Ä‹@”\‚·‚é‚æ‚¤‚É‚·‚éB‚Ü‚½A—£‚µ‚½ƒuƒƒbƒN‚ğƒlƒbƒgƒ[ƒN‚Éƒm[ƒh‚Æ‚µ‚Ä’Ç‰Á‚·‚é
+    //æŒ‡ã‚’è©±ã—ãŸã¨ãã®å‡¦ç†ã€ãƒ–ãƒ­ãƒƒã‚¯ã‚’è½ä¸‹ã•ã›ã€ç´ æ•°ã‚’æŒã£ãŸãƒ–ãƒ­ãƒƒã‚¯ã¨ã—ã¦æ©Ÿèƒ½ã™ã‚‹ã‚ˆã†ã«ã™ã‚‹ã€‚ã¾ãŸã€é›¢ã—ãŸãƒ–ãƒ­ãƒƒã‚¯ã‚’ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯ã«ãƒãƒ¼ãƒ‰ã¨ã—ã¦è¿½åŠ ã™ã‚‹
     void HandleTouchEnded(Touch touch)
     {
         isDragging = false;
         draggedObject = null;
-        singleGenerateManager.SetSingleGameObject(null); //‚±‚ÌƒuƒƒbƒN‚ªsingleGameObject‚É“ü‚Á‚½‚Ü‚Ü‚É‚µ‚Ä‚¢‚é‚ÆAƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚½uŠÔ‚ÉDestroy‚ªŒÄ‚Î‚ê‚Ä‚µ‚Ü‚¤B
+        singleGenerateManager.SetSingleGameObject(null); //ã“ã®ãƒ–ãƒ­ãƒƒã‚¯ãŒsingleGameObjectã«å…¥ã£ãŸã¾ã¾ã«ã—ã¦ã„ã‚‹ã¨ã€ãƒœã‚¿ãƒ³ãŒæŠ¼ã•ã‚ŒãŸç¬é–“ã«DestroyãŒå‘¼ã°ã‚Œã¦ã—ã¾ã†ã€‚
         this.enabled = false;
         this.tag = "PrimeNumberBlock";
-        gameObject.layer = LayerMask.NameToLayer("PrimeNumberBlock"); //ƒŒƒCƒ„[‚ğ•ÏX‚·‚é‚±‚Æ‚É‚æ‚èA‰‚ß‚Ä‘¼‚ÌƒuƒƒbƒN‚ÆÕ“Ë‚·‚é‚æ‚¤‚É‚È‚éB
-        blockInfo.ChangeDynamic(); //d—Í‚Ì‰e‹¿‚ğó‚¯‚é‚æ‚¤‚É‚·‚éB
-        blockInfo.EnableCollider(); //ƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚Ì—‰º’n“_‚ğ‹Šo‰»‚·‚éü‚Ì•`‰æ‚ÌÛ‚Éˆê“I‚ÉƒRƒ‰ƒCƒ_[‚ğ”ñŠˆ«‰»‚·‚é‚Ì‚ÅA‚±‚±‚ÅƒRƒ‰ƒCƒ_[‚ğ•œŠˆ‚³‚¹‚éB
+        gameObject.layer = LayerMask.NameToLayer("PrimeNumberBlock"); //ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚’å¤‰æ›´ã™ã‚‹ã“ã¨ã«ã‚ˆã‚Šã€åˆã‚ã¦ä»–ã®ãƒ–ãƒ­ãƒƒã‚¯ã¨è¡çªã™ã‚‹ã‚ˆã†ã«ãªã‚‹ã€‚
+        blockInfo.ChangeDynamic(); //é‡åŠ›ã®å½±éŸ¿ã‚’å—ã‘ã‚‹ã‚ˆã†ã«ã™ã‚‹ã€‚
+        blockInfo.EnableCollider(); //ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®è½ä¸‹åœ°ç‚¹ã‚’è¦–è¦šåŒ–ã™ã‚‹ç·šã®æç”»ã®éš›ã«ä¸€æ™‚çš„ã«ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã‚’éæ´»æ€§åŒ–ã™ã‚‹ã®ã§ã€ã“ã“ã§ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã‚’å¾©æ´»ã•ã›ã‚‹ã€‚
         gameObject.transform.parent = afterField.transform;
         network.AddNode(gameObject);
     }

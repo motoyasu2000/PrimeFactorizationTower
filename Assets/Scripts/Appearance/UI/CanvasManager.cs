@@ -1,8 +1,8 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//‰¡•750‚ğŠî€‚Æ‚µAŒ»İ‚Ì‰æ–Ê•‚Å‚ÍA‚Ç‚Ì‚­‚ç‚¢UI‚ğŠg’£‚·‚é‚Ì‚©‚ğŒvZ‚·‚éƒNƒ‰ƒX
+//æ¨ªå¹…750ã‚’åŸºæº–ã¨ã—ã€ç¾åœ¨ã®ç”»é¢å¹…ã§ã¯ã€ã©ã®ãã‚‰ã„UIã‚’æ‹¡å¼µã™ã‚‹ã®ã‹ã‚’è¨ˆç®—ã™ã‚‹ã‚¯ãƒ©ã‚¹
 namespace UI
 {
     public class CanvasManager : MonoBehaviour

@@ -1,44 +1,39 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace UI
 {
+    //ç”»é¢ä¸Šéƒ¨å³å´ã«è¡¨ç¤ºã•ã‚Œã‚‹æ¡ä»¶ã®ã‚µã‚¤ã‚ºã‚„ä½ç½®ã‚’é©åˆ‡ã«ä¿®æ­£ã™ã‚‹ãŸã‚ã®ã‚¯ãƒ©ã‚¹
     public class RightZoneSize : MonoBehaviour
     {
         RectTransform myTransform;
-        [SerializeField] RectTransform upNumbertransform;
-        RectTransform parentTransform;
-
-        // Update is called once per frame
+        RectTransform nowUpNumberTransform;
+        void Start()
+        {
+            myTransform = GetComponent<RectTransform>();
+            nowUpNumberTransform = GameObject.Find("NowUpCompositeNumber_Field").GetComponent<RectTransform>();
+        }
         void Update()
         {
             Resize();
         }
-        private void OnEnable()
-        {
-            Resize();
-        }
-
         void Resize()
         {
-            myTransform = GetComponent<RectTransform>();
-            parentTransform = transform.parent.gameObject.GetComponent<RectTransform>();
-
-            //ƒAƒ“ƒJ[ƒ|ƒCƒ“ƒg‚ğ‰E‚Éİ’è
+            //ã‚¢ãƒ³ã‚«ãƒ¼ãƒã‚¤ãƒ³ãƒˆã‚’å³ã«è¨­å®š
             myTransform.anchorMin = new Vector2(1, 0f);
             myTransform.anchorMax = new Vector2(1, 1f);
 
-            //—v‘fupNmbuer‚Ì‰E’[‚ÌˆÊ’u‚ğæ“¾
-            float rightEdgeOfUpNumber_local = upNumbertransform.anchoredPosition.x - upNumbertransform.rect.width / 2;
-            float rightEdgeOfUpNumber = upNumbertransform.TransformPoint(new Vector3(rightEdgeOfUpNumber_local, 0, 0)).x / CanvasManager.NowScaleFactor;
+            //è¦ç´ upNmbuerã®å³ç«¯ã®ä½ç½®ã‚’å–å¾—
+            float rightEdgeOfUpNumber_local = nowUpNumberTransform.anchoredPosition.x - nowUpNumberTransform.rect.width / 2;
+            float rightEdgeOfUpNumber = nowUpNumberTransform.TransformPoint(new Vector3(rightEdgeOfUpNumber_local, 0, 0)).x / CanvasManager.NowScaleFactor;
 
-            //ƒsƒ{ƒbƒg‚ğ‰E’[‚Éİ’è
+            //ãƒ”ãƒœãƒƒãƒˆã‚’å³ç«¯ã«è¨­å®š
             myTransform.pivot = new Vector2(1, 0.5f);
 
-            //RightZoneSize‚ÌUI‚Ì•‚ğŒvZ‚µAƒTƒCƒY‚ğİ’è
+            //RightZoneSizeã®UIã®å¹…ã‚’è¨ˆç®—ã—ã€ã‚µã‚¤ã‚ºã‚’è¨­å®š
             float widthForRightZone = rightEdgeOfUpNumber;
-            myTransform.sizeDelta = new Vector2(widthForRightZone, upNumbertransform.sizeDelta.y);
+            myTransform.sizeDelta = new Vector2(widthForRightZone, nowUpNumberTransform.sizeDelta.y);
         }
     }
 }

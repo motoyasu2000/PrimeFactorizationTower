@@ -1,21 +1,21 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
 ////////////////////////////////////////////
-//¦ÀŒ±—p‚ÌƒNƒ‰ƒX@¡‰ñ‚ÌƒQ[ƒ€‚É‚Í—˜—p‚µ‚È‚¢B///
+//â€»å®Ÿé¨“ç”¨ã®ã‚¯ãƒ©ã‚¹ã€€ä»Šå›ã®ã‚²ãƒ¼ãƒ ã«ã¯åˆ©ç”¨ã—ãªã„ã€‚///
 ////////////////////////////////////////////
-namespace UI
+
+//RectTransformã®ä»•æ§˜ã«ã¤ã„ã¦èª¿æŸ»ã™ã‚‹ã‚¯ãƒ©ã‚¹(å‹‰å¼·ç”¨)
+public class UIDetailsDisplay : MonoBehaviour
 {
-    public class UIDetailsDisplay : MonoBehaviour
+    public RectTransform targetUIElement;
+    public TextMeshProUGUI detailsText;
+    void Update()
     {
-        public RectTransform targetUIElement;
-        public TextMeshProUGUI detailsText;
-        void Update()
-        {
-            Vector2 size = targetUIElement.rect.size;
-            Vector2 anchorSize = targetUIElement.sizeDelta;
-            detailsText.text = "UI Size: " + size.ToString() + "\nAnchor Size: " + anchorSize.ToString();
-        }
+        Vector2 size = targetUIElement.rect.size;
+        Vector2 anchorSize = targetUIElement.sizeDelta;
+        detailsText.text = "UI Size: " + size.ToString() + "\nAnchor Size: " + anchorSize.ToString();
     }
 }
+

@@ -1,18 +1,21 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+//ãƒ–ãƒ­ãƒƒã‚¯ã®ç”ŸæˆãŒå˜ä¸€ã§ã‚ã‚‹ã“ã¨ã‚’ä¿è¨¼ã™ã‚‹ã‚¯ãƒ©ã‚¹
+//è¤‡æ•°ã®ãƒ–ãƒ­ãƒƒã‚¯ãŒåŒæ™‚ã«ç”Ÿæˆã•ã‚Œãªã„ã‚ˆã†ã€ç•°ãªã‚‹ãƒ–ãƒ­ãƒƒã‚¯ã‚’ç”Ÿæˆä»•æ§˜ã¨ã—ãŸã¨ãã€åˆã‚ã«ã‚ã£ãŸãƒ–ãƒ­ãƒƒã‚¯ã®æ–¹ãŒå‰Šé™¤ã•ã‚Œã€ä¸Šæ›¸ãã•ã‚Œã‚‹ã‚ˆã†ã«ã™ã‚‹ã€‚
+//æ—¢ã«ã‚ã‚‹ãƒ–ãƒ­ãƒƒã‚¯ã¨åŒã˜ãƒœã‚¿ãƒ³ã‚’æŠ¼ã—ãŸå ´åˆã«ã¯ã€åˆã‚ã«ã‚ã£ãŸãƒ–ãƒ­ãƒƒã‚¯ãŒæ™‚è¨ˆå›ã‚Šã«å›è»¢ã™ã‚‹ã€‚(ã“ã“ã¯å¾Œã«ä»–ã®ã‚¯ãƒ©ã‚¹ã§ç®¡ç†ã§ãã‚‹ã‚ˆã†ã«ã™ã‚‹ã€‚)
 public class SingleGenerateManager : MonoBehaviour
 {
-    [SerializeField] ScoreManager scoreManager;
+    ScoreManager scoreManager;
     GameObject singleGameObject;
     float spinSpeed = 20f;
     float rotateCounter = 0;
     bool rotateFlag = false;
     Camera mainCamera;
     CameraCtrl mainCameraCtrl;
-    Vector3 defo; //‰ŠúˆÊ’u
+    Vector3 defo; //åˆæœŸä½ç½®
     private void Start()
     {
         mainCamera = Camera.main;
@@ -27,29 +30,29 @@ public class SingleGenerateManager : MonoBehaviour
     }
     public void SetSingleGameObject(GameObject setObject)
     {
-        //ˆø”‚ªnull‚È‚çsingleGameObject‚ğnull‚É‚µ‚Äˆ—‚ğI—¹
+        //å¼•æ•°ãŒnullãªã‚‰singleGameObjectã‚’nullã«ã—ã¦å‡¦ç†ã‚’çµ‚äº†
         if(setObject == null)
         {
             singleGameObject = null;
             return;
         }
 
-        //singleGameObject‚ª‚à‚Æ‚à‚Ænull‚È‚ç•’Ê‚É‘ã“ü
+        //singleGameObjectãŒã‚‚ã¨ã‚‚ã¨nullãªã‚‰æ™®é€šã«ä»£å…¥
         if(singleGameObject == null)
         {
             singleGameObject = setObject;
         }
-        //singleGameObject‚É‰½‚©‚ª“ü‚Á‚Ä‚¢‚éó‘Ô‚ÅŒÄ‚Î‚ê‚½ê‡‚É‚Í
+        //singleGameObjectã«ä½•ã‹ãŒå…¥ã£ã¦ã„ã‚‹çŠ¶æ…‹ã§å‘¼ã°ã‚ŒãŸå ´åˆã«ã¯
         else
         {
-            //Œ³‚ÌƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚Ì”’l‚ÆŒã‚©‚ç—ˆ‚½ƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚Ì”’l‚ªˆê’v‚µ‚Ä‚¢‚é‚È‚çŒ³‚ÌƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚ğ‰ñ“]
+            //å…ƒã®ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®æ•°å€¤ã¨å¾Œã‹ã‚‰æ¥ãŸã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®æ•°å€¤ãŒä¸€è‡´ã—ã¦ã„ã‚‹ãªã‚‰å…ƒã®ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å›è»¢
             if (singleGameObject.GetComponent<BlockInfo>().GetPrimeNumber() == setObject.GetComponent<BlockInfo>().GetPrimeNumber())
             {
-                //Debug.Log("‰ñ“]");
+                //Debug.Log("å›è»¢");
                 Destroy(setObject);
                 rotateFlag = true;
             }
-            //ˆê’v‚µ‚Ä‚¢‚È‚¢‚È‚çŒÃ‚¢•û‚ÌƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚ğÁ‚µ‚ÄXV
+            //ä¸€è‡´ã—ã¦ã„ãªã„ãªã‚‰å¤ã„æ–¹ã®ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’æ¶ˆã—ã¦æ›´æ–°
             else
             {
                 //Debug.Log($"oldnum: {singleGameObject.GetComponent<BlockInfo>().GetNumber()}  newnum: {setObject.GetComponent<BlockInfo>().GetNumber()}");
@@ -61,16 +64,16 @@ public class SingleGenerateManager : MonoBehaviour
 
     void RotateUntil(float dMaxAngle)
     {
-        //null‚©flag‚ªfalse‚È‚çreturn
+        //nullã‹flagãŒfalseãªã‚‰return
         if (singleGameObject == null || !rotateFlag) return;
         singleGameObject.transform.Rotate(0, 0, -spinSpeed);
         rotateCounter += spinSpeed;
         if(rotateCounter >= dMaxAngle)
         {
             
-            //—]•ª‚É‰ñ“]‚µ‚½‚ç‚à‚Ç‚éB
+            //ä½™åˆ†ã«å›è»¢ã—ãŸã‚‰ã‚‚ã©ã‚‹ã€‚
             singleGameObject.transform.Rotate(0, 0, rotateCounter - dMaxAngle);
-            //‰ñ“]ó‘Ô‚Ì‰Šú‰»
+            //å›è»¢çŠ¶æ…‹ã®åˆæœŸåŒ–
             rotateCounter = 0;
             rotateFlag = false;
         }
@@ -81,10 +84,10 @@ public class SingleGenerateManager : MonoBehaviour
         return singleGameObject;
     }
 
-    //ƒuƒƒbƒN‚Ì¶¬’n“_‚ğƒQ[ƒ€‚ÌÀs’†‚É•ÏX‚·‚éƒƒ\ƒbƒh
+    //ãƒ–ãƒ­ãƒƒã‚¯ã®ç”Ÿæˆåœ°ç‚¹ã‚’ã‚²ãƒ¼ãƒ ã®å®Ÿè¡Œä¸­ã«å¤‰æ›´ã™ã‚‹ãƒ¡ã‚½ãƒƒãƒ‰
     void MoveSingleGameObjectPoint()
     {
         if(scoreManager.NowScore < mainCameraCtrl.StartHeight) return;
-        transform.position = new Vector3(defo.x,scoreManager.NowScore + 3, defo.z); //Å‚à‚‚¢‚Ô‚ë‚Á‚®‚æ‚è3‚Âã‚ÉƒuƒƒbƒN‚ğ¶¬
+        transform.position = new Vector3(defo.x,scoreManager.NowScore + 3, defo.z); //æœ€ã‚‚é«˜ã„ã¶ã‚ã£ãã‚ˆã‚Š3ã¤ä¸Šã«ãƒ–ãƒ­ãƒƒã‚¯ã‚’ç”Ÿæˆ
     }
 }

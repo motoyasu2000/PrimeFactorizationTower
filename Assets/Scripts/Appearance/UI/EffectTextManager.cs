@@ -1,21 +1,21 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
 namespace UI
 {
-    //•¶š‚ğ•\¦‚³‚¹‚éƒNƒ‰ƒXBŒ»ó‚¾‚ÆğŒ’B¬‚âfreeze‚Ì•\¦
+    //æ–‡å­—ã‚’è¡¨ç¤ºã•ã›ã‚‹ã‚¯ãƒ©ã‚¹ã€‚ç¾çŠ¶ã ã¨æ¡ä»¶é”æˆã‚„freezeã®è¡¨ç¤º
     public class EffectTextManager : MonoBehaviour
     {
         TextMeshProUGUI effectText;
-        const float displayTime = 1.2f;//ƒeƒLƒXƒg‚ğ•\¦‚µ‚Ä‚©‚ç”ñ•\¦‚É‚·‚é‚Ü‚Å‚ÌŠÔB
+        const float displayTime = 1.2f;//ãƒ†ã‚­ã‚¹ãƒˆã‚’è¡¨ç¤ºã—ã¦ã‹ã‚‰éè¡¨ç¤ºã«ã™ã‚‹ã¾ã§ã®æ™‚é–“ã€‚
         private void Start()
         {
             effectText = GetComponent<TextMeshProUGUI>();
         }
 
-        //ˆø”‚Åó‚¯‚Á‚½•¶š—ñ‚ğeffectText‚É•\¦‚³‚¹‚éB
+        //å¼•æ•°ã§å—ã‘ã£ãŸæ–‡å­—åˆ—ã‚’effectTextã«è¡¨ç¤ºã•ã›ã‚‹ã€‚
         public void PrintEffectText(string str)
         {
             effectText.gameObject.SetActive(true);
@@ -23,7 +23,7 @@ namespace UI
             StartCoroutine(HiddenEffectText());
         }
 
-        //‘æˆêˆø”‚Åó‚¯æ‚Á‚½ƒeƒLƒXƒg‚ğ‘æ“ñˆø”‚Åó‚¯æ‚Á‚½ŠÔŒã‚ÉeffectText‚É•\¦‚³‚¹‚é
+        //ç¬¬ä¸€å¼•æ•°ã§å—ã‘å–ã£ãŸãƒ†ã‚­ã‚¹ãƒˆã‚’ç¬¬äºŒå¼•æ•°ã§å—ã‘å–ã£ãŸæ™‚é–“å¾Œã«effectTextã«è¡¨ç¤ºã•ã›ã‚‹
         public IEnumerator PrintEffectText(string str, float seconds)
         {
             yield return new WaitForSeconds(seconds);
@@ -32,7 +32,7 @@ namespace UI
             StartCoroutine(HiddenEffectText());
             yield return null;
         }
-        //1.2•bŒo‰ßŒã‚ÉeffectText‚ğ”ñ•\¦‚É‚·‚é
+        //1.2ç§’çµŒéå¾Œã«effectTextã‚’éè¡¨ç¤ºã«ã™ã‚‹
         IEnumerator HiddenEffectText()
         {
             yield return new WaitForSeconds(displayTime);

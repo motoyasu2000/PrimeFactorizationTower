@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
@@ -9,6 +9,7 @@ using UnityEngine.Rendering;
 using static Unity.Collections.AllocatorManager;
 using Random = UnityEngine.Random;
 
+//ã‚²ãƒ¼ãƒ ã‚’ç®¡ç†ã™ã‚‹ã‚¯ãƒ©ã‚¹ã€‚ç”»é¢ä¸Šéƒ¨ã®åˆæˆæ•°ã®è¨ˆç®—ã‚„è¡¨ç¤ºã€ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼ã®ç®¡ç†ãªã©ã‚’è¡Œã†ã€‚
 public class GameManager : MonoBehaviour
 {
     //UI
@@ -16,44 +17,44 @@ public class GameManager : MonoBehaviour
     TextMeshProUGUI nextUpCompositeNumberText;
     TextMeshProUGUI nowScoreText;
     GameObject gameOverMenu;
-    GameObject explainPileUp; //ƒ`ƒ…[ƒgƒŠƒAƒ‹‚ÌƒeƒLƒXƒg
+    GameObject explainPileUp; //ãƒãƒ¥ãƒ¼ãƒˆãƒªã‚¢ãƒ«æ™‚ã®ãƒ†ã‚­ã‚¹ãƒˆ
 
-    //ƒXƒRƒA‚ÌŠÇ—
+    //ã‚¹ã‚³ã‚¢ã®ç®¡ç†
     int oldMaxScore = -1;
     int newScore = -1;
-    bool isGroundAll = false; //‘S‚Ä‚ÌƒuƒƒbƒN‚ª’n–Ê‚Éİ’u‚µ‚Ä‚¢‚é‚©‚ğƒ`ƒFƒbƒN‚·‚é•Ï”Bfalse‚Å‚ ‚ê‚ÎA‚‚³‚ğŒvZ‚µ‚È‚¢B
-    bool isGroundAll_past = false; //1ƒtƒŒ[ƒ€‘O‚ÌisGroundAll
+    bool isGroundAll = false; //å…¨ã¦ã®ãƒ–ãƒ­ãƒƒã‚¯ãŒåœ°é¢ã«è¨­ç½®ã—ã¦ã„ã‚‹ã‹ã‚’ãƒã‚§ãƒƒã‚¯ã™ã‚‹å¤‰æ•°ã€‚falseã§ã‚ã‚Œã°ã€é«˜ã•ã‚’è¨ˆç®—ã—ãªã„ã€‚
+    bool isGroundAll_past = false; //1ãƒ•ãƒ¬ãƒ¼ãƒ å‰ã®isGroundAll
     ScoreManager scoreManager;
     public bool IsGroundAll => isGroundAll;
     public bool IsGroundAll_past => isGroundAll_past;
     public int OldMaxScore => oldMaxScore;
     public int NewScore => newScore;
 
-    //‰æ–Ê’†‰›‚Ì‡¬”‚ÌŠÇ—‚âA‘fˆö”•ª‰ğ‚ª‚Å‚«‚Ä‚¢‚é‚©‚Ìƒ`ƒFƒbƒN
+    //ç”»é¢ä¸­å¤®ã®åˆæˆæ•°ã®ç®¡ç†ã‚„ã€ç´ å› æ•°åˆ†è§£ãŒã§ãã¦ã„ã‚‹ã‹ã®ãƒã‚§ãƒƒã‚¯
     int nowUpCompositeNumber = 1;
     int nowPrimeNumberProduct = 1;
     bool completeCompositeNumberFlag = false;
     Queue<int> upCompositeNumberqueue = new Queue<int>();
     SoundManager soundManager;
 
-    //ƒQ[ƒ€ƒI[ƒo[ˆ—
-    int compositeNumber_GO; //ƒQ[ƒ€ƒI[ƒo[‚Ì‡¬”
-    int primeNumber_GO; //ƒQ[ƒ€ƒI[ƒo[‚Ì‘f”
-    BloomManager bloomManager; //ƒQ[ƒ€ƒI[ƒo[‚Ì‰‰o—p
+    //ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼å‡¦ç†
+    int compositeNumber_GO; //ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼æ™‚ã®åˆæˆæ•°
+    int primeNumber_GO; //ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼æ™‚ã®ç´ æ•°
+    BloomManager bloomManager; //ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼æ™‚ã®æ¼”å‡ºç”¨
     public int CompositeNumber_GO => compositeNumber_GO;
     public int PrimeNumber_GO => primeNumber_GO;
 
-    //ƒuƒƒbƒN‚ÌeƒIƒuƒWƒFƒNƒgŒó•â
-    GameObject blockField; //‰º“ñ‚Â‚Ì—l‚ÈƒuƒƒbƒN‚ÌeƒIƒuƒWƒFƒNƒg‚ğ‚Ü‚Æ‚ß‚éeƒIƒuƒWƒFƒNƒg
-    GameObject afterField; //ƒuƒƒbƒN‚ğ—‰º‚³‚¹‚½uŠÔA‚»‚ÌƒuƒƒbƒN‚ÍA‚±‚ÌƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚Ìq—v‘f‚Æ‚È‚é
-    GameObject completedField; //afterField“à‚ÌƒuƒƒbƒN‚ÌÏ‚ª‰æ–Êã•”‚Ì‡¬”‚Æˆê’v‚µ‚½‚çA‚»‚ê‚ç‚ÌƒuƒƒbƒN‚Í‚±‚ÌƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚Ìq—v‘f‚É‚È‚é
+    //ãƒ–ãƒ­ãƒƒã‚¯ã®è¦ªã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆå€™è£œ
+    GameObject blockField; //ä¸‹äºŒã¤ã®æ§˜ãªãƒ–ãƒ­ãƒƒã‚¯ã®è¦ªã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ã¾ã¨ã‚ã‚‹è¦ªã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+    GameObject afterField; //ãƒ–ãƒ­ãƒƒã‚¯ã‚’è½ä¸‹ã•ã›ãŸç¬é–“ã€ãã®ãƒ–ãƒ­ãƒƒã‚¯ã¯ã€ã“ã®ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å­è¦ç´ ã¨ãªã‚‹
+    GameObject completedField; //afterFieldå†…ã®ãƒ–ãƒ­ãƒƒã‚¯ã®ç©ãŒç”»é¢ä¸Šéƒ¨ã®åˆæˆæ•°ã¨ä¸€è‡´ã—ãŸã‚‰ã€ãã‚Œã‚‰ã®ãƒ–ãƒ­ãƒƒã‚¯ã¯ã“ã®ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å­è¦ç´ ã«ãªã‚‹
 
-    //‚»‚Ì‘¼
-    GameModeManager gameModeManager; //“ïˆÕ“x‚²‚Æ‚É¶¬‚·‚é‡¬”‚ªˆÙ‚È‚é‚Ì‚ÅAŒ»İ‚Ì“ïˆÕ“x‚Ìî•ñ‚ğ‚ÂGamemodemanager‚Ìî•ñ‚ª•K—v
-                                     //‚Ü‚½AƒXƒRƒA‚ğ•Û‘¶‚·‚éÛA‚Ç‚Ì“ïˆÕ“x‚ÌƒXƒRƒA‚ğXV‚·‚é‚©‚Ìî•ñ‚à•K—v‚È‚Ì‚ÅA‚»‚±‚Å‚àg‚¤B
-    int nowPhase = 0; //Œ»İ‚¢‚­‚Â‚Ì‡¬”‚ğ‘fˆö”•ª‰ğ‚µI‚¦‚½‚©@‚±‚ê‚ª‘‚¦‚é‚Æã‚É•\¦‚³‚ê‚é‡¬”‚Ì’l‚ª‘å‚«‚­‚È‚é‚È‚Ç‚·‚éB
+    //ãã®ä»–
+    GameModeManager gameModeManager; //é›£æ˜“åº¦ã”ã¨ã«ç”Ÿæˆã™ã‚‹åˆæˆæ•°ãŒç•°ãªã‚‹ã®ã§ã€ç¾åœ¨ã®é›£æ˜“åº¦ã®æƒ…å ±ã‚’æŒã¤Gamemodemanagerã®æƒ…å ±ãŒå¿…è¦
+                                     //ã¾ãŸã€ã‚¹ã‚³ã‚¢ã‚’ä¿å­˜ã™ã‚‹éš›ã€ã©ã®é›£æ˜“åº¦ã®ã‚¹ã‚³ã‚¢ã‚’æ›´æ–°ã™ã‚‹ã‹ã®æƒ…å ±ã‚‚å¿…è¦ãªã®ã§ã€ãã“ã§ã‚‚ä½¿ã†ã€‚
+    int nowPhase = 0; //ç¾åœ¨ã„ãã¤ã®åˆæˆæ•°ã‚’ç´ å› æ•°åˆ†è§£ã—çµ‚ãˆãŸã‹ã€€ã“ã‚ŒãŒå¢—ãˆã‚‹ã¨ä¸Šã«è¡¨ç¤ºã•ã‚Œã‚‹åˆæˆæ•°ã®å€¤ãŒå¤§ãããªã‚‹ãªã©ã™ã‚‹ã€‚
 
-    //‰Šú‰»ˆ—
+    //åˆæœŸåŒ–å‡¦ç†
     private void Awake()
     {
         nowUpCompositeNumberText = GameObject.Find("NowUpCompositeNumberText").GetComponent<TextMeshProUGUI>();
@@ -73,7 +74,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        if (!File.Exists(Application.persistentDataPath + "/PileUp.json")) explainPileUp.gameObject.SetActive(true); //ƒZ[ƒuƒf[ƒ^‚ª‚È‚¯‚ê‚Îà–¾‚ğs‚¤B
+        if (!File.Exists(Application.persistentDataPath + "/PileUp.json")) explainPileUp.gameObject.SetActive(true); //ã‚»ãƒ¼ãƒ–ãƒ‡ãƒ¼ã‚¿ãŒãªã‘ã‚Œã°èª¬æ˜ã‚’è¡Œã†ã€‚
     }
 
     void Update()
@@ -85,13 +86,13 @@ public class GameManager : MonoBehaviour
     }
 
 
-    //‰æ–Êã•”‚É•\¦‚³‚ê‚é‡¬”‚âAƒlƒNƒXƒg‚Ì‡¬”‚Ìİ’è‚ğs‚¤
+    //ç”»é¢ä¸Šéƒ¨ã«è¡¨ç¤ºã•ã‚Œã‚‹åˆæˆæ•°ã‚„ã€ãƒã‚¯ã‚¹ãƒˆã®åˆæˆæ•°ã®è¨­å®šã‚’è¡Œã†
     void UpCompositeNumberSetting()
     {
-        //‰æ–Êã•”‚Ì‡¬”‚ª‚ª‹ó‚Å‚ ‚ê‚ÎA‚Â‚Ü‚è‘fˆö”•ª‰ğ‚ªŠ®—¹‚µ‚½‚È‚ç‚Î
+        //ç”»é¢ä¸Šéƒ¨ã®åˆæˆæ•°ãŒãŒç©ºã§ã‚ã‚Œã°ã€ã¤ã¾ã‚Šç´ å› æ•°åˆ†è§£ãŒå®Œäº†ã—ãŸãªã‚‰ã°
         if (string.IsNullOrWhiteSpace(nowUpCompositeNumberText.text))
         {
-            completeCompositeNumberFlag = false; //‚±‚ê‚ªtrue‚ÌŠÔ‚Íblock‚ª¶¬‚³‚ê‚È‚¢‚æ‚¤‚É‚È‚Á‚Ä‚¢‚é‚Ì‚ÅA‰æ–Êã•”‚Ì‡¬”‚ªXV‚³‚ê‚½uŠÔ‚Éfalse‚É‚µ‚Ä‚ ‚°‚éB
+            completeCompositeNumberFlag = false; //ã“ã‚ŒãŒtrueã®é–“ã¯blockãŒç”Ÿæˆã•ã‚Œãªã„ã‚ˆã†ã«ãªã£ã¦ã„ã‚‹ã®ã§ã€ç”»é¢ä¸Šéƒ¨ã®åˆæˆæ•°ãŒæ›´æ–°ã•ã‚ŒãŸç¬é–“ã«falseã«ã—ã¦ã‚ã’ã‚‹ã€‚
             upCompositeNumberqueue.Enqueue(GenerateCompositeNumber());
             nowUpCompositeNumber = upCompositeNumberqueue.Dequeue();
             nowUpCompositeNumberText.text = nowUpCompositeNumber.ToString();
@@ -99,7 +100,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    //Œ»İ‚Ì“ïˆÕ“x‚ª‚Ç‚Ì—l‚É‚È‚Á‚Ä‚¢‚½‚Æ‚µ‚Ä‚àA‚»‚Ì“ïˆÕ“x‚É‡‚Á‚½‡¬”‚ğ¶¬‚·‚é
+    //ç¾åœ¨ã®é›£æ˜“åº¦ãŒã©ã®æ§˜ã«ãªã£ã¦ã„ãŸã¨ã—ã¦ã‚‚ã€ãã®é›£æ˜“åº¦ã«åˆã£ãŸåˆæˆæ•°ã‚’ç”Ÿæˆã™ã‚‹
     int GenerateCompositeNumber()
     {
         int upCompositeNumber = -1;
@@ -124,7 +125,7 @@ public class GameManager : MonoBehaviour
         return 16 * 27 * 125 * 343;
     }
 
-    //w’è‚µ‚½‘f”ƒv[ƒ‹‚©‚ç‡¬”‚ğ¶¬‚·‚éB‡¬”‚ÌãŒÀ’l‚âA‘f”‚Ì”‚à—”‚ÌãŒÀ’l‚ğ‘‚­‚±‚Æ‚Åw’è‚·‚é‚±‚Æ‚ª‚Å‚«‚éB
+    //æŒ‡å®šã—ãŸç´ æ•°ãƒ—ãƒ¼ãƒ«ã‹ã‚‰åˆæˆæ•°ã‚’ç”Ÿæˆã™ã‚‹ã€‚åˆæˆæ•°ã®ä¸Šé™å€¤ã‚„ã€ç´ æ•°ã®æ•°ã‚‚ä¹±æ•°ã®ä¸Šé™å€¤ã‚’æ›¸ãã“ã¨ã§æŒ‡å®šã™ã‚‹ã“ã¨ãŒã§ãã‚‹ã€‚
     int GenerateCompositeNumberForDifficultyLevel(List<int> primeNumberPool, int maxCompositeNumber ,int minRand, int maxRand)
     {
         int randomIndex;
@@ -142,13 +143,13 @@ public class GameManager : MonoBehaviour
         return upCompositeNumber;
     }
 
-    //‘S‚Ä‚ÌƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚ª’n–Ê‚Éİ’u‚µ‚Ä‚¢‚é‚©‚Ìƒ`ƒFƒbƒN
+    //å…¨ã¦ã®ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒåœ°é¢ã«è¨­ç½®ã—ã¦ã„ã‚‹ã‹ã®ãƒã‚§ãƒƒã‚¯
     void CheckAllBlocksOnGround()
     {
-        isGroundAll_past = isGroundAll; //1ƒtƒŒ[ƒ€‘O‚ÌisGroundAll‚Ì•Û‘¶
-        isGroundAll = true; //‰Šú‚Ítrue‚É‚µ‚Ä‚¨‚­
+        isGroundAll_past = isGroundAll; //1ãƒ•ãƒ¬ãƒ¼ãƒ å‰ã®isGroundAllã®ä¿å­˜
+        isGroundAll = true; //åˆæœŸã¯trueã«ã—ã¦ãŠã
 
-        //afterFieldAcompletedField“à‚ÌƒuƒƒbƒN‚ª‘S‚Ä’n–Ê‚Éİ’u‚µ‚Ä‚¢‚é‚©@İ’u‚µ‚Ä‚¢‚È‚¯‚ê‚ÎisGroundAll‚ªfalse‚Æ‚È‚é
+        //afterFieldã€completedFieldå†…ã®ãƒ–ãƒ­ãƒƒã‚¯ãŒå…¨ã¦åœ°é¢ã«è¨­ç½®ã—ã¦ã„ã‚‹ã‹ã€€è¨­ç½®ã—ã¦ã„ãªã‘ã‚Œã°isGroundAllãŒfalseã¨ãªã‚‹
         CheckSingleFieldBlocksOnGround(afterField.transform);
         CheckSingleFieldBlocksOnGround(completedField.transform);
     }
@@ -158,50 +159,50 @@ public class GameManager : MonoBehaviour
         foreach (Transform block in fieldTransform)
         {
             BlockInfo blockInfo = block.GetComponent<BlockInfo>();
-            if (!blockInfo.CheckIsGround()) //ˆê‚Â‚Å‚à’n–Ê‚ÉÚ’n‚µ‚Ä‚È‚¯‚ê‚Î
+            if (!blockInfo.CheckIsGround()) //ä¸€ã¤ã§ã‚‚åœ°é¢ã«æ¥åœ°ã—ã¦ãªã‘ã‚Œã°
             {
-                isGroundAll = false; //isGroundAll‚Ífalse
+                isGroundAll = false; //isGroundAllã¯false
             }
         }
     }
 
-    //‘f”ƒuƒƒbƒN‚ÌÏ‚ªA‰æ–Êã•”‚Ì‡¬”‚Ìˆö”‚É‚È‚Á‚Ä‚¢‚é‚©‚Ìƒ`ƒFƒbƒN
+    //ç´ æ•°ãƒ–ãƒ­ãƒƒã‚¯ã®ç©ãŒã€ç”»é¢ä¸Šéƒ¨ã®åˆæˆæ•°ã®å› æ•°ã«ãªã£ã¦ã„ã‚‹ã‹ã®ãƒã‚§ãƒƒã‚¯
     void CheckPrimeNumberProduct()
     {
-        //AfterField“à‚Ì‡¬”‚ğŒvZ‚µA‘fˆö”•ª‰ğ‚ªŠÔˆá‚Á‚Ä‚¢‚È‚¢‚©‚Ìƒ`ƒFƒbƒN@ŠÔˆá‚Á‚Ä‚¢‚ê‚ÎƒQ[ƒ€ƒI[ƒo[
+        //AfterFieldå†…ã®åˆæˆæ•°ã‚’è¨ˆç®—ã—ã€ç´ å› æ•°åˆ†è§£ãŒé–“é•ã£ã¦ã„ãªã„ã‹ã®ãƒã‚§ãƒƒã‚¯ã€€é–“é•ã£ã¦ã„ã‚Œã°ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼
         CalculateNowPrimeNumberProduct();
         if (nowUpCompositeNumber % nowPrimeNumberProduct != 0)
         {
             GameOver();
         }
 
-        //‚à‚µƒuƒƒbƒN‚Ì”’l‚ÌÏ‚ªAã•”‚Ì‡¬”‚Æˆê’v‚µ‚Ä‚¢‚½‚È‚ç
+        //ã‚‚ã—ãƒ–ãƒ­ãƒƒã‚¯ã®æ•°å€¤ã®ç©ãŒã€ä¸Šéƒ¨ã®åˆæˆæ•°ã¨ä¸€è‡´ã—ã¦ã„ãŸãªã‚‰
         if (nowPrimeNumberProduct == nowUpCompositeNumber)
         {
             completeCompositeNumberFlag = true;
-            RemoveUpCompositeNumber(); //ã‚Ì”š‚ÌÁ‹
-            soundManager.PlayAudio(soundManager.SE_DONE); //done‚ÌÄ¶
+            RemoveUpCompositeNumber(); //ä¸Šã®æ•°å­—ã®æ¶ˆå»
+            soundManager.PlayAudio(soundManager.SE_DONE); //doneã®å†ç”Ÿ
         }
     }
 
-    //afterField“à‚ÌƒuƒƒbƒN‚ÌÏ‚ğŒvZAnowPrimeNumberProduct‚ğXVAƒeƒLƒXƒg‚Ì•`‰æ
+    //afterFieldå†…ã®ãƒ–ãƒ­ãƒƒã‚¯ã®ç©ã‚’è¨ˆç®—ã€nowPrimeNumberProductã‚’æ›´æ–°ã€ãƒ†ã‚­ã‚¹ãƒˆã®æç”»
     void CalculateNowPrimeNumberProduct()
     {
-        nowPrimeNumberProduct = 1; //‰Šú‚Í1‚É‚µ‚Ä‚¨‚­
-        foreach (Transform block in afterField.transform) //afterField“à‚Ì‘S‚Ä‚ÌƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚Ìƒ`ƒFƒbƒN
+        nowPrimeNumberProduct = 1; //åˆæœŸã¯1ã«ã—ã¦ãŠã
+        foreach (Transform block in afterField.transform) //afterFieldå†…ã®å…¨ã¦ã®ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ãƒã‚§ãƒƒã‚¯
         {
             BlockInfo blockInfo = block.GetComponent<BlockInfo>();
 
             nowPrimeNumberProduct *= blockInfo.GetPrimeNumber();
-            nowUpCompositeNumberText.text = (nowUpCompositeNumber / nowPrimeNumberProduct).ToString(); //c‚è‚Ì”š‚ğŒvZ‚µ‚Ä•`‰æB‚½‚¾‚µafterField‚ª‹ó‚É‚È‚é‚Æ‚±‚Ì’†‚Ìˆ—‚ªs‚í‚ê‚È‚­‚È‚é‚Ì‚Å
-                                                                                                       //UpCompositeNumber‚ÌXV‚Ì‚½‚Ñ‚ÉA‚±‚Ì’l‚àXV‚µ‚Ä‚ ‚°‚é•K—v‚ª‚ ‚éB
+            nowUpCompositeNumberText.text = (nowUpCompositeNumber / nowPrimeNumberProduct).ToString(); //æ®‹ã‚Šã®æ•°å­—ã‚’è¨ˆç®—ã—ã¦æç”»ã€‚ãŸã ã—afterFieldãŒç©ºã«ãªã‚‹ã¨ã“ã®ä¸­ã®å‡¦ç†ãŒè¡Œã‚ã‚Œãªããªã‚‹ã®ã§
+                                                                                                       //UpCompositeNumberã®æ›´æ–°ã®ãŸã³ã«ã€ã“ã®å€¤ã‚‚æ›´æ–°ã—ã¦ã‚ã’ã‚‹å¿…è¦ãŒã‚ã‚‹ã€‚
         }
     }
 
-    //ŠeƒQ[ƒ€ƒ‚[ƒh‚Å‚ÌƒXƒRƒAŒvZ
+    //å„ã‚²ãƒ¼ãƒ ãƒ¢ãƒ¼ãƒ‰ã§ã®ã‚¹ã‚³ã‚¢è¨ˆç®—
     void CalculateScore()
     {
-        //‚à‚µÏ‚İã‚°ƒ‚[ƒh‚ÅA’n–Ê‚Éİ’u‚µ‚Ä‚¢‚é‚È‚ç‚‚³‚ğŒvZ‚·‚éB
+        //ã‚‚ã—ç©ã¿ä¸Šã’ãƒ¢ãƒ¼ãƒ‰ã§ã€åœ°é¢ã«è¨­ç½®ã—ã¦ã„ã‚‹ãªã‚‰é«˜ã•ã‚’è¨ˆç®—ã™ã‚‹ã€‚
         switch (gameModeManager.NowGameMode)
         {
             case GameModeManager.GameMode.PileUp:
@@ -214,17 +215,17 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    //‰æ–Êã•”’†‰›‚Ì‡¬”‚ğÁ‹‚µAafterField“à‚ÌƒuƒƒbƒN‚ğ‘S‚ÄcompletedField‚ÉˆÚ“®‚³‚¹‚éB
+    //ç”»é¢ä¸Šéƒ¨ä¸­å¤®ã®åˆæˆæ•°ã‚’æ¶ˆå»ã—ã€afterFieldå†…ã®ãƒ–ãƒ­ãƒƒã‚¯ã‚’å…¨ã¦completedFieldã«ç§»å‹•ã•ã›ã‚‹ã€‚
     void RemoveUpCompositeNumber()
     {
-        //‚Ü‚¸‚ÍAblockField‚©‚çˆÚ“®‚·‚éB
+        //ã¾ãšã¯ã€blockFieldã‹ã‚‰ç§»å‹•ã™ã‚‹ã€‚
         List<Transform> blocksToMove = new List<Transform>();
-        //‚·‚×‚Ä‚ÌqƒIƒuƒWƒFƒNƒg‚ğˆê“I‚ÈƒŠƒXƒg‚É’Ç‰ÁBTransform‚ğƒCƒeƒŒ[ƒg‚µ‚È‚ª‚çtransform‚ğ•ÏX‚µ‚È‚¢‚æ‚¤‚ÉAˆê’UƒŠƒXƒg‚É’Ç‰ÁB
+        //ã™ã¹ã¦ã®å­ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ä¸€æ™‚çš„ãªãƒªã‚¹ãƒˆã«è¿½åŠ ã€‚Transformã‚’ã‚¤ãƒ†ãƒ¬ãƒ¼ãƒˆã—ãªãŒã‚‰transformã‚’å¤‰æ›´ã—ãªã„ã‚ˆã†ã«ã€ä¸€æ—¦ãƒªã‚¹ãƒˆã«è¿½åŠ ã€‚
         foreach (Transform block in afterField.transform)
         {
             blocksToMove.Add(block);
         }
-        //ˆê“I‚ÈƒŠƒXƒg‚ğg—p‚µ‚ÄqƒIƒuƒWƒFƒNƒg‚Ìe‚ğ•ÏX
+        //ä¸€æ™‚çš„ãªãƒªã‚¹ãƒˆã‚’ä½¿ç”¨ã—ã¦å­ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®è¦ªã‚’å¤‰æ›´
         foreach (Transform block in blocksToMove)
         {
             block.SetParent(completedField.transform);
@@ -235,27 +236,27 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
-        //ÅŒã‚ÌƒQ[ƒ€ƒI[ƒo[——R‚Ìo—Í‚ÌÛ‚ÉAŒ³‚Ì‡¬”‚Æ‚»‚Ì‘I‘ğ‚µ‚Ä‚µ‚Ü‚Á‚½‘f”‚Ìî•ñ‚ª•K—v‚È‚Ì‚ÅA•Ï”‚É“ü‚ê‚Ä‚¨‚­B
+        //æœ€å¾Œã®ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼ç†ç”±ã®å‡ºåŠ›ã®éš›ã«ã€å…ƒã®åˆæˆæ•°ã¨ãã®æ™‚é¸æŠã—ã¦ã—ã¾ã£ãŸç´ æ•°ã®æƒ…å ±ãŒå¿…è¦ãªã®ã§ã€å¤‰æ•°ã«å…¥ã‚Œã¦ãŠãã€‚
         compositeNumber_GO = nowUpCompositeNumber * afterField.transform.GetChild(afterField.transform.childCount - 1).GetComponent<BlockInfo>().GetPrimeNumber() / nowPrimeNumberProduct;
         primeNumber_GO = afterField.transform.GetChild(afterField.transform.childCount - 1).GetComponent<BlockInfo>().GetPrimeNumber();
 
-        //ƒXƒRƒA‚ÌXV‚ÆƒQ[ƒ€ƒI[ƒo[‚Ì‰‰oAŒãˆ—‚ÌŒÄ‚Ño‚µBS
-        oldMaxScore = scoreManager.PileUpScores[gameModeManager.NowDifficultyLevel][0]; //ƒ\[ƒg‘O‚É‰ß‹‚ÌÅ‚ƒXƒRƒA‚Ìî•ñ‚ğæ“¾‚µ‚Ä‚¨‚­(‚Ì‚¿‚É‚±‚ÌƒQ[ƒ€‚ÅÅ‚ƒXƒRƒA‚ğXV‚µ‚½‚©‚ğŠm”F‚·‚é‚½‚ß)
+        //ã‚¹ã‚³ã‚¢ã®æ›´æ–°ã¨ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼æ™‚ã®æ¼”å‡ºã€å¾Œå‡¦ç†ã®å‘¼ã³å‡ºã—ã€‚S
+        oldMaxScore = scoreManager.PileUpScores[gameModeManager.NowDifficultyLevel][0]; //ã‚½ãƒ¼ãƒˆå‰ã«éå»ã®æœ€é«˜ã‚¹ã‚³ã‚¢ã®æƒ…å ±ã‚’å–å¾—ã—ã¦ãŠã(ã®ã¡ã«ã“ã®ã‚²ãƒ¼ãƒ ã§æœ€é«˜ã‚¹ã‚³ã‚¢ã‚’æ›´æ–°ã—ãŸã‹ã‚’ç¢ºèªã™ã‚‹ãŸã‚)
         scoreManager.InsertPileUpScoreAndSort(newScore);
         scoreManager.SaveScoreData();
-        bloomManager.isLightUpStart = true;
+        bloomManager.LightUpStart();
         soundManager.FadeOutVolume();
         StartCoroutine(PostGameOver(1.2f));
     }
 
 
-    //ƒQ[ƒ€ƒI[ƒo[ŒãAˆê’èŠÔŒã‚ÉƒQ[ƒ€ƒI[ƒo[ƒƒjƒ…[‚ğ•\¦‚µAbgm‚ÌƒXƒgƒbƒv
+    //ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼å¾Œã€ä¸€å®šæ™‚é–“å¾Œã«ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚’è¡¨ç¤ºã—ã€bgmã®ã‚¹ãƒˆãƒƒãƒ—
     IEnumerator PostGameOver(float time)
     {
         yield return new WaitForSeconds(time);
         gameOverMenu.SetActive(true);
         soundManager.StopAudio(soundManager.BGM_PLAY);
-        SoundManager.LoadSoundData();
+        SoundManager.LoadSoundSettingData();
     }
 
     public bool GetCompleteNumberFlag()

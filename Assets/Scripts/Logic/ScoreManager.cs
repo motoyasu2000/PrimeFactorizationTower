@@ -1,28 +1,30 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.IO;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-//ƒXƒRƒAŠÇ—‚ğ’S“–‚·‚éƒNƒ‰ƒXB
-//ƒQ[ƒ€’†‚ÌƒXƒRƒAŒvZA•Û‘¶E“Ç‚İ‚İAƒV[ƒ“ŠÔ‚Å‚ÌƒXƒRƒAƒf[ƒ^‚Ì•Û‚ğs‚¤B
+//ã‚¹ã‚³ã‚¢ç®¡ç†ã‚’æ‹…å½“ã™ã‚‹ã‚¯ãƒ©ã‚¹ã€‚
+//ã‚²ãƒ¼ãƒ ä¸­ã®ã‚¹ã‚³ã‚¢è¨ˆç®—ã€ä¿å­˜ãƒ»èª­ã¿è¾¼ã¿ã€ã‚·ãƒ¼ãƒ³é–“ã§ã®ã‚¹ã‚³ã‚¢ãƒ‡ãƒ¼ã‚¿ã®ä¿æŒã‚’è¡Œã†ã€‚
 
 public class ScoreManager : MonoBehaviour
 {
-    const float groundHeight = 0.5f; //Œ³‚Ì’n–Ê‚Ì‚‚³
-    float nowScore = 0; //Œ»İis’†‚ÌƒQ[ƒ€‚ÌƒXƒRƒA‚ª“ü‚é•Ï”
-    public float NowScore => nowScore;
+    const float groundHeight = 0.5f; //å…ƒã®åœ°é¢ã®é«˜ã•
+    float nowScore = 0; //ç¾åœ¨é€²è¡Œä¸­ã®ã‚²ãƒ¼ãƒ ã®ã‚¹ã‚³ã‚¢ãŒå…¥ã‚‹å¤‰æ•°
     GameObject blockField;
     GameObject afterField;
     GameObject completedField;
     TextMeshProUGUI maxScore;
     Dictionary<GameModeManager.DifficultyLevel, int[]> pileUpScores = new Dictionary<GameModeManager.DifficultyLevel,int[]>();
+    public float NowScore => nowScore;
     public Dictionary<GameModeManager.DifficultyLevel, int[]> PileUpScores => pileUpScores;
+
+    //ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹
     private static ScoreManager instance;
     public static ScoreManager ScoreManagerInstance => instance;
 
-    //ƒVƒ“ƒOƒ‹ƒgƒ“ƒpƒ^[ƒ“‚ğg—p‚µ‚ÄAScoreManager‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ğŠÇ—B
+    //ã‚·ãƒ³ã‚°ãƒ«ãƒˆãƒ³ãƒ‘ã‚¿ãƒ¼ãƒ³ã‚’ä½¿ç”¨ã—ã¦ã€ScoreManagerã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’ç®¡ç†ã€‚
     void Awake()
     {
         if (instance == null)
@@ -33,7 +35,7 @@ public class ScoreManager : MonoBehaviour
         LoadScoreData();
     }
 
-    //ƒV[ƒ“ƒ[ƒh‚ÌƒR[ƒ‹ƒoƒbƒN‚ğİ’è‚µA‰Šú‰»ˆ—‚ğs‚¤B
+    //ã‚·ãƒ¼ãƒ³ãƒ­ãƒ¼ãƒ‰ã®ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã‚’è¨­å®šã—ã€åˆæœŸåŒ–å‡¦ç†ã‚’è¡Œã†ã€‚
     private void Start()
     {
         SceneManager.sceneLoaded += SceneLoadProcess;
@@ -46,7 +48,7 @@ public class ScoreManager : MonoBehaviour
         return (int)(height * 1000);
     }
 
-    //‘SƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚Ì’¸“_‚©‚çÅ‚à‚‚¢’¸“_‚ÌyÀ•W‚ğ•Ô‚·ƒƒ\ƒbƒh(GameObject‚Ìpivot‚Å‚Í‚È‚­A’¸“_ƒŒƒxƒ‹‚Å‚‚³‚ğŒvZ‚·‚éB)
+    //å…¨ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®é ‚ç‚¹ã‹ã‚‰æœ€ã‚‚é«˜ã„é ‚ç‚¹ã®yåº§æ¨™ã‚’è¿”ã™ãƒ¡ã‚½ãƒƒãƒ‰(GameObjectã®pivotã§ã¯ãªãã€é ‚ç‚¹ãƒ¬ãƒ™ãƒ«ã§é«˜ã•ã‚’è¨ˆç®—ã™ã‚‹ã€‚)
     float CalculateAllGameObjectsMaxHeight()
     {
         List<Vector3> allVertices = new List<Vector3>();
@@ -54,22 +56,20 @@ public class ScoreManager : MonoBehaviour
         {
             foreach (Transform block in afterField.transform)
             {
-                nowScore = Mathf.Max(nowScore, CalculateGameObjectMaxHeight(block.gameObject)); //Œ»İŒ©‚Ä‚¢‚éƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚ÌÅ‚à‚‚¢’¸“_‚Æmax‚Ì”äŠr
-                                                                                                //Debug.Log(block.gameObject.name);
+                nowScore = Mathf.Max(nowScore, CalculateGameObjectMaxHeight(block.gameObject)); //ç¾åœ¨è¦‹ã¦ã„ã‚‹ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®æœ€ã‚‚é«˜ã„é ‚ç‚¹ã¨maxã®æ¯”è¼ƒ                                                                          //Debug.Log(block.gameObject.name);
             }
         }
         if (completedField != null)
         {
             foreach (Transform block in completedField.transform)
             {
-                nowScore = Mathf.Max(nowScore, CalculateGameObjectMaxHeight(block.gameObject)); //Œ»İŒ©‚Ä‚¢‚éƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚ÌÅ‚à‚‚¢’¸“_‚Æmax‚Ì”äŠr
-                                                                                                //Debug.Log(block.gameObject.name);
+                nowScore = Mathf.Max(nowScore, CalculateGameObjectMaxHeight(block.gameObject)); //ç¾åœ¨è¦‹ã¦ã„ã‚‹ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®æœ€ã‚‚é«˜ã„é ‚ç‚¹ã¨maxã®æ¯”è¼ƒ
             }
         }
         return nowScore;
     }
 
-    //w’è‚³‚ê‚½ƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚Ì‘S’¸“_‚Ì’†‚ÅAÅ‚à‚‚¢’¸“_‚ÌyÀ•W‚ğŒvZ‚µA•Ô‚·
+    //æŒ‡å®šã•ã‚ŒãŸã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å…¨é ‚ç‚¹ã®ä¸­ã§ã€æœ€ã‚‚é«˜ã„é ‚ç‚¹ã®yåº§æ¨™ã‚’è¨ˆç®—ã—ã€è¿”ã™
     float CalculateGameObjectMaxHeight(GameObject block)
     {
         Vector2[] vertices = block.GetComponent<SpriteRenderer>().sprite.vertices;
@@ -80,19 +80,19 @@ public class ScoreManager : MonoBehaviour
             max = Mathf.Max(max, worldPoint.y);
             //Debug.Log(worldPoint.y);
         }
-        return max-groundHeight; //‰‚ß‚Ì‚‚³‚ğ0‚É‚·‚é‚½‚ß‚ÉŒ³‚Ì‚‚³•ªˆø‚­
+        return max-groundHeight; //åˆã‚ã®é«˜ã•ã‚’0ã«ã™ã‚‹ãŸã‚ã«å…ƒã®é«˜ã•åˆ†å¼•ã
     }
 
-    //ƒV[ƒ“‚Ìƒ[ƒh‚ÉÀs‚³‚ê‚éƒƒ\ƒbƒh
+    //ã‚·ãƒ¼ãƒ³ã®ãƒ­ãƒ¼ãƒ‰æ™‚ã«å®Ÿè¡Œã•ã‚Œã‚‹ãƒ¡ã‚½ãƒƒãƒ‰
     void SceneLoadProcess(Scene scene, LoadSceneMode mode)
     {
         InitializeFields();
     }
 
-    //ƒV[ƒ“ƒ[ƒh‚ÉŒÄ‚Î‚ê‚é‰Šú‰»ƒƒ\ƒbƒh
+    //ã‚·ãƒ¼ãƒ³ãƒ­ãƒ¼ãƒ‰æ™‚ã«å‘¼ã°ã‚Œã‚‹åˆæœŸåŒ–ãƒ¡ã‚½ãƒƒãƒ‰
     void InitializeFields()
     {
-        //—ñ‹“Œ^DifficultyLevel‚Å’è‹`‚³‚ê‚Ä‚¢‚é‚Ì‚ÉA«‘‚ÌƒL[“à‚É‘¶İ‚µ‚È‚¢“ïˆÕ“x‚ª‚ ‚Á‚½‚çA‚»‚Ì“ïˆÕ“x‚ÌƒL[‚ğ’Ç‰Á‚·‚éB
+        //åˆ—æŒ™å‹DifficultyLevelã§å®šç¾©ã•ã‚Œã¦ã„ã‚‹ã®ã«ã€è¾æ›¸ã®ã‚­ãƒ¼å†…ã«å­˜åœ¨ã—ãªã„é›£æ˜“åº¦ãŒã‚ã£ãŸã‚‰ã€ãã®é›£æ˜“åº¦ã®ã‚­ãƒ¼ã‚’è¿½åŠ ã™ã‚‹ã€‚
         foreach (GameModeManager.DifficultyLevel level in Enum.GetValues(typeof(GameModeManager.DifficultyLevel)))
         {
             if (!instance.pileUpScores.ContainsKey(level))
@@ -101,18 +101,18 @@ public class ScoreManager : MonoBehaviour
             }
         }
 
-        //ƒQ[ƒ€ƒV[ƒ“‚É‚ ‚éƒQ[ƒ€ƒIƒuƒWƒFƒNƒg–¼‚ğg‚Á‚Ä•Ï”‚ğì‚Á‚Ä‚¢‚é‚Ì‚Å Œ»İGameSceneˆÈŠO‚È‚ç‚±‚ÌŒã‚Ìˆ—‚ğs‚í‚È‚¢B
+        //ã‚²ãƒ¼ãƒ ã‚·ãƒ¼ãƒ³ã«ã‚ã‚‹ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåã‚’ä½¿ã£ã¦å¤‰æ•°ã‚’ä½œã£ã¦ã„ã‚‹ã®ã§ ç¾åœ¨GameSceneä»¥å¤–ãªã‚‰ã“ã®å¾Œã®å‡¦ç†ã‚’è¡Œã‚ãªã„ã€‚
         if (SceneManager.GetActiveScene() != SceneManager.GetSceneByName("GameScene")) return;
         instance.blockField = GameObject.Find("BlockField");
         instance.afterField = blockField.transform.Find("AfterField").gameObject;
         instance.completedField = blockField.transform.Find("CompletedField").gameObject;
         instance.maxScore = GameObject.Find("MaxScore").GetComponent<TextMeshProUGUI>();
         instance.nowScore = 0;
-        //•\¦‚·‚éÅ‚ƒXƒRƒA‚ÌXV
+        //è¡¨ç¤ºã™ã‚‹æœ€é«˜ã‚¹ã‚³ã‚¢ã®æ›´æ–°
         instance.maxScore.text = instance.pileUpScores[GameModeManager.GameModemanagerInstance.NowDifficultyLevel][0].ToString();
     }
 
-    //V‚µ‚¢ƒXƒRƒA‚ğƒXƒRƒA‚ğŠÇ—‚·‚é«‘‚É’Ç‰Á‚µAƒ\[ƒg‚ğs‚¤B
+    //æ–°ã—ã„ã‚¹ã‚³ã‚¢ã‚’ã‚¹ã‚³ã‚¢ã‚’ç®¡ç†ã™ã‚‹è¾æ›¸ã«è¿½åŠ ã—ã€ã‚½ãƒ¼ãƒˆã‚’è¡Œã†ã€‚
     public void InsertPileUpScoreAndSort(int newScore)
     {
         GameModeManager.DifficultyLevel nowLevel = GameModeManager.GameModemanagerInstance.NowDifficultyLevel;
@@ -121,7 +121,7 @@ public class ScoreManager : MonoBehaviour
         Array.Reverse(ScoreManagerInstance.pileUpScores[nowLevel]);
     }
 
-    //Œ»İ‚ÌƒXƒRƒA‚ğjsonŒ`®‚Å•Û‘¶
+    //ç¾åœ¨ã®ã‚¹ã‚³ã‚¢ã‚’jsonå½¢å¼ã§ä¿å­˜
     public void SaveScoreData()
     {
         SerializableScore score = new SerializableScore();
@@ -133,24 +133,24 @@ public class ScoreManager : MonoBehaviour
         writer.Close();
     }
 
-    //jsonŒ`®‚Å•Û‘¶‚³‚ê‚½ƒf[ƒ^‚ğ“Ç‚İ‚Ş
+    //jsonå½¢å¼ã§ä¿å­˜ã•ã‚ŒãŸãƒ‡ãƒ¼ã‚¿ã‚’èª­ã¿è¾¼ã‚€
     public static void LoadScoreData()
     {
         if (!File.Exists(Application.persistentDataPath + "/PileUp.json")) { return; }
         StreamReader reader = new StreamReader(Application.persistentDataPath + "/PileUp.json");
         string datastr = reader.ReadToEnd();
         reader.Close();
-        var obj = JsonUtility.FromJson<SerializableScore>(datastr); //Monobehavior‚ğŒp³‚µ‚½ƒNƒ‰ƒX‚Å‚ÍJsonƒtƒ@ƒCƒ‹‚ğ“Ç‚İ‚Ş‚±‚Æ‚ª‚Å‚«‚È‚¢‚½‚ßA‘¼‚ÌƒNƒ‰ƒX‚ğ¶¬‚µ“Ç‚İ‚Ş
+        var obj = JsonUtility.FromJson<SerializableScore>(datastr); //Monobehaviorã‚’ç¶™æ‰¿ã—ãŸã‚¯ãƒ©ã‚¹ã§ã¯Jsonãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã¿è¾¼ã‚€ã“ã¨ãŒã§ããªã„ãŸã‚ã€ä»–ã®ã‚¯ãƒ©ã‚¹ã‚’ç”Ÿæˆã—èª­ã¿è¾¼ã‚€
         instance.pileUpScores = obj.GetScore();
     }
 
 
     
     //////////////////////////////////////////
-    //ˆÈ‰ºAƒVƒŠƒAƒ‰ƒCƒY‚ğs‚¤‚½‚ß‚Ìˆê“I‚ÈƒNƒ‰ƒX//
+    //ä»¥ä¸‹ã€ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚ºã‚’è¡Œã†ãŸã‚ã®ä¸€æ™‚çš„ãªã‚¯ãƒ©ã‚¹//
     //////////////////////////////////////////
 
-    //‘¼ŸŒ³”z—ñ‚â«‘‚ÍƒVƒŠƒAƒ‰ƒCƒY‚Å‚«‚È‚¢‚Ì‚ÅA•¡G‚È\‘¢‚Å‚àƒVƒŠƒAƒ‰ƒCƒY‚ğs‚¤‚½‚ß‚ÉAƒVƒŠƒAƒ‰ƒCƒY‰Â”\‚È”z—ñ‚ğ‚Á‚½ƒNƒ‰ƒX‚ğ—pˆÓ‚µ‚Ä‚¨‚­B
+    //ä»–æ¬¡å…ƒé…åˆ—ã‚„è¾æ›¸ã¯ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚ºã§ããªã„ã®ã§ã€è¤‡é›‘ãªæ§‹é€ ã§ã‚‚ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚ºã‚’è¡Œã†ãŸã‚ã«ã€ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚ºå¯èƒ½ãªé…åˆ—ã‚’æŒã£ãŸã‚¯ãƒ©ã‚¹ã‚’ç”¨æ„ã—ã¦ãŠãã€‚
     [Serializable]
     public class Top10Score
     {
@@ -165,7 +165,7 @@ public class ScoreManager : MonoBehaviour
     [Serializable]
     class SerializableScore
     {
-        //ƒVƒŠƒAƒ‰ƒCƒY‰Â”\‚ÈƒŠƒXƒg‚ğg—p ¦‘¼ŸŒ³”z—ñ‚â«‘‚ÍƒVƒŠƒAƒ‰ƒCƒY‚Å‚«‚È‚¢
+        //ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚ºå¯èƒ½ãªãƒªã‚¹ãƒˆã‚’ä½¿ç”¨ â€»ä»–æ¬¡å…ƒé…åˆ—ã‚„è¾æ›¸ã¯ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚ºã§ããªã„
         [SerializeField] private List<Top10Score> pileUpScores_Serializable = new List<Top10Score>();
 
         public SerializableScore()

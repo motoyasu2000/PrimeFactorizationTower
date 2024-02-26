@@ -1,12 +1,12 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//å„ã‚·ãƒ³ã‚°ãƒ«ãƒˆãƒ³ã‚’ç”Ÿæˆã™ã‚‹ãŸã‚ã®ã‚¯ãƒ©ã‚¹ã€‚ã“ã®ã‚¹ã‚¯ãƒªãƒ—ãƒˆãŒã‚¢ã‚¿ãƒƒãƒã•ã‚ŒãŸã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒã‚·ãƒ¼ãƒ³å†…ã«ã‚ã‚‹ã ã‘ã§ã€å¿…è¦ãªã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ãŒç„¡ã‘ã‚Œã°ã™ã¹ã¦ç”Ÿæˆã•ã‚Œã‚‹ã‚ˆã†ã«ã™ã‚‹ã€‚
 public class SingletonGenerator : MonoBehaviour
 {
     private void Awake()
     {
-        //‚à‚µAƒQ[ƒ€ƒ‚[ƒhƒ}ƒl[ƒWƒƒ[‚ÌstaticƒCƒ“ƒXƒ^ƒ“ƒX‚ª‘¶İ‚µ‚È‚¯‚ê‚ÎAƒQ[ƒ€ƒ‚[ƒhƒ}ƒl[ƒWƒƒ[‚ªƒAƒ^ƒbƒ`‚³‚ê‚½ƒCƒ“ƒXƒ^ƒ“ƒX‚ğ¶¬‚µA‰Šú‰»‚ğs‚¤B
         if (GameModeManager.GameModemanagerInstance == null)
         {
             GameObject gameModeManager = new GameObject("GameModeManager");
@@ -15,7 +15,7 @@ public class SingletonGenerator : MonoBehaviour
         }
         if(SoundManager.SoundManagerInstance == null)
         {
-            Instantiate(Resources.Load("SoundManager")); //ƒTƒEƒ“ƒhƒ}ƒl[ƒWƒƒ[‚Íq—v‘f‚à‚ ‚é‚Ì‚ÅƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚ğƒAƒ^ƒbƒ`‚·‚é‚¾‚¯‚Å‚Í‘«‚è‚È‚¢B
+            Instantiate(Resources.Load("SoundManager")); //ã‚µã‚¦ãƒ³ãƒ‰ãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼ã¯å­è¦ç´ ã‚‚ã‚ã‚‹ã®ã§ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ã‚¢ã‚¿ãƒƒãƒã™ã‚‹ã ã‘ã§ã¯è¶³ã‚Šãªã„ã€‚
         }
         if(ScoreManager.ScoreManagerInstance == null)
         {

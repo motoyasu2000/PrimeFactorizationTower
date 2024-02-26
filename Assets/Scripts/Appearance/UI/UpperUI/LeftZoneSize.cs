@@ -1,40 +1,38 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 namespace UI
 {
+    //ç”»é¢ä¸Šéƒ¨å·¦å´ã«è¡¨ç¤ºã•ã‚Œã‚‹æ¡ä»¶ã®ã‚µã‚¤ã‚ºã‚„ä½ç½®ã‚’é©åˆ‡ã«ä¿®æ­£ã™ã‚‹ãŸã‚ã®ã‚¯ãƒ©ã‚¹
     public class LeftZoneSize : MonoBehaviour
     {
         RectTransform myTransform;
-        [SerializeField] RectTransform upNumbertransform;
-        RectTransform parentTransform;
-        void Update()
+        RectTransform nowUpNumberTransform;
+        void Start ()
         {
-            Resize();
+            myTransform = GetComponent<RectTransform>();
+            nowUpNumberTransform = GameObject.Find("NowUpCompositeNumber_Field").GetComponent<RectTransform>();
         }
-        private void OnEnable()
+        void Update()
         {
             Resize();
         }
         void Resize()
         {
-            myTransform = GetComponent<RectTransform>();
-            parentTransform = transform.parent.gameObject.GetComponent<RectTransform>();
-
-            //ƒAƒ“ƒJ[ƒ|ƒCƒ“ƒg‚ğ¶‚Éİ’è
+            //ã‚¢ãƒ³ã‚«ãƒ¼ãƒã‚¤ãƒ³ãƒˆã‚’å·¦ã«è¨­å®š
             myTransform.anchorMin = new Vector2(0, 0f);
             myTransform.anchorMax = new Vector2(0, 1f);
 
-            //—v‘fupNmbuer‚Ì¶’[‚ÌˆÊ’u‚ğæ“¾
-            float leftEdgeOfUpNumber_local = upNumbertransform.anchoredPosition.x - upNumbertransform.rect.width / 2;
-            float leftEdgeOfUpNumber = upNumbertransform.TransformPoint(new Vector3(leftEdgeOfUpNumber_local, 0, 0)).x;
+            //è¦ç´ upNmbuerã®å·¦ç«¯ã®ä½ç½®ã‚’å–å¾—
+            float leftEdgeOfUpNumber_local = nowUpNumberTransform.anchoredPosition.x - nowUpNumberTransform.rect.width / 2;
+            float leftEdgeOfUpNumber = nowUpNumberTransform.TransformPoint(new Vector3(leftEdgeOfUpNumber_local, 0, 0)).x;
 
-            //ƒsƒ{ƒbƒg‚ğ¶’[‚Éİ’è
+            //ãƒ”ãƒœãƒƒãƒˆã‚’å·¦ç«¯ã«è¨­å®š
             myTransform.pivot = new Vector2(0, 0.5f);
 
-            //RightZoneSize‚ÌUI‚Ì•‚ğŒvZ‚µAƒTƒCƒY‚ğİ’è
+            //RightZoneSizeã®UIã®å¹…ã‚’è¨ˆç®—ã—ã€ã‚µã‚¤ã‚ºã‚’è¨­å®š
             float widthForLeftZone = leftEdgeOfUpNumber / CanvasManager.NowScaleFactor;
-            myTransform.sizeDelta = new Vector2(widthForLeftZone, upNumbertransform.sizeDelta.y);
+            myTransform.sizeDelta = new Vector2(widthForLeftZone, nowUpNumberTransform.sizeDelta.y);
         }
     }
 

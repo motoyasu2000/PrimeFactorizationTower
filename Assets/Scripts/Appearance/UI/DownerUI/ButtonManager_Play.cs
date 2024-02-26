@@ -1,10 +1,10 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace UI
 {
-    //Play�V�[���p�̃{�^���̋@�\��񋟂���N���X
+    //Playシーン用のボタンの機能を提供するクラス
     public class ButtonManager_Play : MonoBehaviour
     {
         GameObject canvas;
@@ -21,6 +21,7 @@ namespace UI
             backMenu = canvas.transform.Find("BackMenu").gameObject;
         }
 
+        //様々なメニューの表示
         public void DisplaySettingMenu(bool isDisplay)
         {
             settingMenu.SetActive(isDisplay);
@@ -34,22 +35,22 @@ namespace UI
             backMenu.SetActive(isDisplay);
         }
 
+        //シーン間の推移
         public void MoveTitleScene()
         {
             SceneLoadHelper.LoadScene("TitleScene");
         }
-
         public void MovePlayScene()
         {
             SceneLoadHelper.LoadScene("PlayScene");
         }
-
         public void ExplainHowToPlay()
         {
             settingMenu.SetActive(false);
             if (GameModeManager.GameModemanagerInstance.NowGameMode == GameModeManager.GameMode.PileUp) ExplainPileUp();
         }
 
+        //チュートリアルの表示
         private void ExplainPileUp()
         {
             explainPileUp.SetActive(true);

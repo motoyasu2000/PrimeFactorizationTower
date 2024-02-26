@@ -1,10 +1,10 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.UI;
 
 namespace UI
 {
-    //‰æ–Êã•”’†‰›‚É•\¦‚³‚ê‚éA¶¬‰Â”\‚ÈƒuƒƒbƒN‚ÌğŒ‚ğ‹LÚ‚µ‚½”’l‚ğ³•ûŒ`‚ÌƒuƒƒbƒNó‚É•\¦‚³‚¹‚éŠÖ”BFX‚È‰æ–Ê•‚Ì‚ ‚éƒXƒ}ƒz‚É“®“I‚É‘Î‰‚·‚é‚½‚ßB
-    public class TransformIntoSquare : MonoBehaviour
+    //ç”»é¢ä¸Šéƒ¨ä¸­å¤®ã«è¡¨ç¤ºã•ã‚Œã‚‹ã€ç”Ÿæˆå¯èƒ½ãªãƒ–ãƒ­ãƒƒã‚¯ã®æ¡ä»¶ã‚’è¨˜è¼‰ã—ãŸæ•°å€¤ã‚’æ­£æ–¹å½¢ã®ãƒ–ãƒ­ãƒƒã‚¯çŠ¶ã«è¡¨ç¤ºã•ã›ã‚‹é–¢æ•°ã€‚è‰²ã€…ãªç”»é¢å¹…ã®ã‚ã‚‹ã‚¹ãƒãƒ›ã«å‹•çš„ã«å¯¾å¿œã™ã‚‹ãŸã‚ã€‚
+    public class NowUpCompositeNumberIntoSquare : MonoBehaviour
     {
         public RectTransform myRectTransform;
         private void Update()

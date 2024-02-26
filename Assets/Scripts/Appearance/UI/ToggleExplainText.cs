@@ -1,26 +1,26 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace UI
 {
-    //ƒ`ƒ…[ƒgƒŠƒAƒ‹‚ÌƒeƒLƒXƒg‚ðƒgƒOƒ‹‚·‚éƒNƒ‰ƒX
+    //ãƒãƒ¥ãƒ¼ãƒˆãƒªã‚¢ãƒ«ã®ãƒ†ã‚­ã‚¹ãƒˆã‚’ãƒˆã‚°ãƒ«ã™ã‚‹ã‚¯ãƒ©ã‚¹
     public class ToggleExplainText : MonoBehaviour
     {
-        int toggleCounter = 0; //toggle‚µ‚½‰ñ”‚ð”‚¦‚é•Ï”
-        int overCount = -1; //toggleCounter‚Ì’l‚ª‚¢‚­‚Â‚Åtoggle”‚ðƒI[ƒo[‚·‚é‚©
+        int toggleCounter = 0; //toggleã—ãŸå›žæ•°ã‚’æ•°ãˆã‚‹å¤‰æ•°
+        int overCount = -1; //toggleCounterã®å€¤ãŒã„ãã¤ã§toggleæ•°ã‚’ã‚ªãƒ¼ãƒãƒ¼ã™ã‚‹ã‹
         void Awake()
         {
             overCount = transform.childCount;
         }
 
-        //‚Ð‚Æ‚Â‘O‚Ìƒƒjƒ…[‚ð”ñ•\Ž¦‚É‚µ‚ÄAŒ»Ý‚Ìƒƒjƒ…[‚ð•\Ž¦‚·‚éB
+        //ã²ã¨ã¤å‰ã®ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚’éžè¡¨ç¤ºã«ã—ã¦ã€ç¾åœ¨ã®ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚’è¡¨ç¤ºã™ã‚‹ã€‚
         public void Toggle()
         {
-            //‚Ð‚Æ‚Â‘O‚Ì‰æ–Ê‚ð”ñ•\Ž¦‚É‚·‚é
+            //ã²ã¨ã¤å‰ã®ç”»é¢ã‚’éžè¡¨ç¤ºã«ã™ã‚‹
             if (toggleCounter >= 1) transform.GetChild(toggleCounter - 1).gameObject.SetActive(false);
 
-            //‰æ–Ê‚ÌXV‚ÆtoggleCounter‚ÌXV‚ÆI—¹
+            //ç”»é¢ã®æ›´æ–°ã¨toggleCounterã®æ›´æ–°ã¨çµ‚äº†
             if (toggleCounter >= overCount)
             {
                 gameObject.SetActive(false);

@@ -1,7 +1,8 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//ブロックが地面から落下したかの判定を行うためのクラス。
 public class GameOverField : MonoBehaviour
 {
     GameManager gameManager;
