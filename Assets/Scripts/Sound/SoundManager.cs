@@ -1,17 +1,19 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
 
+//音声を管理するクラス
 [Serializable]
 public class SoundManager : MonoBehaviour
 {
+    //インスタンス
     private static SoundManager instance;
     public static SoundManager SoundManagerInstance => instance;
 
-    //�ۑ����s���ϐ������A�X���C�_�[�̒l�ɂ���ĕύX����
+    //保存を行う変数たち、スライダーの値によって変更する
     [SerializeField] float volume_BGM;
     [SerializeField] float volume_SE;
     [SerializeField] float volume_Voice;
@@ -20,10 +22,12 @@ public class SoundManager : MonoBehaviour
     public float Volume_SE => volume_SE;
     public float Volume_Voice => volume_Voice;
 
+    //音声データを持つゲームオブジェクトの親オブジェクトのtransform
     Transform transVoices;
     Transform transSEs;
     Transform transBGMs;
 
+    //音声データ
     AudioSource voice_done;
     AudioSource voice_criteriaMet;
     AudioSource voice_freeze;
@@ -31,10 +35,6 @@ public class SoundManager : MonoBehaviour
     AudioSource se_freeze;
     AudioSource bgm_play;
     AudioSource bgm_title;
-
-    List<AudioSource> Voices = new List<AudioSource>();
-    List<AudioSource> SEs = new List<AudioSource>();
-    List <AudioSource> BGMs = new List<AudioSource>();
 
     public AudioSource VOICE_DONE => voice_done;
     public AudioSource VOICE_CRITERIAMAT => voice_criteriaMet;
@@ -44,9 +44,14 @@ public class SoundManager : MonoBehaviour
     public AudioSource BGM_PLAY => bgm_play;
     public AudioSource BGM_TITLE => bgm_title;
 
-    bool isGameOver = false;
+    //音声データを声・効果音・BGMに分けたリスト
+    List<AudioSource> Voices = new List<AudioSource>();
+    List<AudioSource> SEs = new List<AudioSource>();
+    List <AudioSource> BGMs = new List<AudioSource>();
+
     void Awake()
     {
+        //音声データの初期化処理
         transVoices = transform.Find("Voices");
         transSEs = transform.Find("SEs");
         transBGMs = transform.Find("BGMs");
@@ -58,29 +63,32 @@ public class SoundManager : MonoBehaviour
         bgm_play = transBGMs.Find("Play").GetComponent <AudioSource>();
         bgm_title = transBGMs.Find("Title").GetComponent<AudioSource>();
 
+        //リストの更新処理
         Voices.Add(voice_done);
         Voices.Add(voice_criteriaMet);
         Voices.Add(voice_freeze);
-
         SEs.Add(se_done);
         SEs.Add(se_freeze);
-
         BGMs.Add(bgm_play);
         BGMs.Add(bgm_title);
 
+        //インスタンスの生成
         if(instance == null)
         {
             instance = this;
             DontDestroyOnLoad(instance);
         }
+
+        //BGMの再生と音声システムデータの読み込み
         PlayAudio(bgm_title);
-        LoadSoundData();
+        LoadSoundSettingData();
     }
     private void Update()
     {
         instance.SoundSetting();
     }
 
+    //音量を設定する関数たち
     public void SetVolumeBGM(float newVolume)
     {
         volume_BGM = newVolume;
@@ -93,9 +101,10 @@ public class SoundManager : MonoBehaviour
     {
         volume_Voice = newVolume;
     }
+
     public void PlayAudio(AudioSource audioSource)
     {
-        //�����V����BGM�𗬂����߂������Ă�����BGM���~�߂�B
+        //もし新しくBGMを流す命令が入ってきたらBGMを止める。
         if (instance.BGMs.Contains(audioSource))
         {
             foreach(var BGM in BGMs)
@@ -117,7 +126,7 @@ public class SoundManager : MonoBehaviour
         audioSource.Stop();
     }
 
-    //�X���C�_�[����ݒ肵���{�����[�������ۂ̉��ʂɔ��f
+    //スライダーから設定したボリュームを実際の音量に反映
     void SoundSetting()
     {
         foreach(var SE in SEs)
@@ -134,18 +143,15 @@ public class SoundManager : MonoBehaviour
         }
     }
 
-    public void CheckFlagGameOver()
-    {
-        instance.isGameOver = true;
-    }
-
+    //BGMがフェードアウトしていくようにするメソッドで、ゲームオーバー時に呼び出される。
     public void FadeOutVolume()
     {
         GameObject gameObject = new GameObject("FadeoutVolumer");
         gameObject.AddComponent<FadeOutVolumer>();
     }
 
-    public static void SaveSoundData()
+    //音声設定データ(BGM音量・SE音量・ボイス音量)をJson形式で保存する
+    public static void SaveSoundSettingData()
     {
         SoundManager dSoundmanagerInstance = instance;
         string jsonstr = JsonUtility.ToJson(dSoundmanagerInstance);
@@ -155,7 +161,8 @@ public class SoundManager : MonoBehaviour
         writer.Close();
     }
 
-    public static void LoadSoundData()
+    //Json形式の音声設定データ(BGM音量・SE音量・ボイス音量)をロードする
+    public static void LoadSoundSettingData()
     {
         if (!File.Exists(Application.persistentDataPath + "/SoundSetting.json"))
         {
@@ -167,14 +174,14 @@ public class SoundManager : MonoBehaviour
         StreamReader reader = new StreamReader(Application.persistentDataPath + "/SoundSetting.json");
         string datastr = reader.ReadToEnd();
         reader.Close();
-        var obj = JsonUtility.FromJson<JsonLoadSoundManager>(datastr); //Monobehavior���p�������N���X�ł�Json�t�@�C����ǂݍ��ނ��Ƃ��ł��Ȃ����߁A���̃N���X�𐶐����ǂݍ���
+        var obj = JsonUtility.FromJson<JsonLoadSoundManager>(datastr); //Monobehaviorを継承したクラスではJsonファイルを読み込むことができないため、他のクラスを生成し読み込む
         instance.volume_BGM = obj.volume_BGM;
         instance.volume_SE = obj.volume_SE;
         instance.volume_Voice = obj.volume_Voice;
     }
 }
 
-//Json����C���X�^���X�𐶐����邽�߂̃N���X
+//Jsonからインスタンスを生成するためのクラス
 class JsonLoadSoundManager
 {
     public float volume_BGM;

@@ -1,11 +1,12 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class ConditionNumberManager : MonoBehaviour
+//条件を表示するテキストを管理するためのクラス
+public class ConditionNumberTextManager : MonoBehaviour
 {
-    TextMeshProUGUI conditionNumberText; //����̏����e�L�X�g
+    TextMeshProUGUI conditionNumberText; //左上の条件テキスト
     private void Start()
     {
         conditionNumberText = GetComponent<TextMeshProUGUI>();

@@ -1,16 +1,17 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace UI
 {
+    //ç”»é¢ä¸‹éƒ¨ã«ã‚ã‚‹ãƒœã‚¿ãƒ³UIã®æ•°å€¤ã‚’è¨­å®šã™ã‚‹ã‚¯ãƒ©ã‚¹
     public class ButtonGenerator : MonoBehaviour
     {
-        BlockGenerator[] allBlockGenerators = null; //‘S‚Ä‚Ìƒ{ƒ^ƒ“‚ÌBlockGeneratorsƒCƒ“ƒXƒ^ƒ“ƒX‚ª“ü‚é”z—ñ
+        BlockGenerator[] allBlockGenerators = null; //å…¨ã¦ã®ãƒœã‚¿ãƒ³ã®BlockGeneratorsã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ãŒå…¥ã‚‹é…åˆ—
         void Awake()
         {
             allBlockGenerators = transform.GetComponentsInChildren<BlockGenerator>();
-            //‚·‚×‚Ä‚ÌBlockGeneratorƒCƒ“ƒXƒ^ƒ“ƒX‚É‘Î‚µ‚ÄA‘f”ƒv[ƒ‹‚©‚ç‘f”‚ğİ’èB
+            //ã™ã¹ã¦ã®BlockGeneratorã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã«å¯¾ã—ã¦ã€ç´ æ•°ãƒ—ãƒ¼ãƒ«ã‹ã‚‰ç´ æ•°ã‚’è¨­å®šã€‚
             for (int i = 0; i < allBlockGenerators.Length; i++)
             {
                 allBlockGenerators[i].SetPrimeNumber(GameModeManager.GameModemanagerInstance.PrimeNumberPool[i]);

@@ -1,7 +1,8 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//ブロックの落下地点がわかりやすくなるように、y軸下方向に線を伸ばすクラス。ブロックにアタッチされている。
 public class LineViewer : MonoBehaviour
 {
     LineRenderer lineRenderer;
@@ -11,12 +12,14 @@ public class LineViewer : MonoBehaviour
     {
         lineRenderer = GetComponent<LineRenderer>();
         lineRenderer.positionCount = 2;
-        //�������g�ƏՓ˂��Ē������`�悳��Ȃ��Ȃ��Ă��܂����߈�U�R���C�_�[�������Ă����A�����āA�N���b�N�����Ƃ��ɃR���C�_�[�̔���𕜊������A���̃R���|�[�l���g����������B
+        //自分自身と衝突して直線が描画されなくなってしまうため一旦コライダーを消しておく、そして、クリックしたときにコライダーの判定を復活させ、LineViewerコンポーネントも消去する。
         myCollider = GetComponent<Collider2D>(); 
         myCollider.enabled = false;
     }
+
     private void Update()
     {
+        //このスクリプトがアタッチされたゲームオブジェクトから、下方向に伸ばしたRaycastHitが衝突したポイントまで、直線を伸ばす。
         RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down);
         if (hit.collider != null)
         {

@@ -1,17 +1,18 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+//音声設定データ(BGM音量・SE音量・ボイス音量)を設定するクラス、音量を調節するバーによって操作される。
 public class VolumeSetter : MonoBehaviour
 {
     Slider[] sliders = new Slider[3];
     float[] preSliderValue = new float[3];
     private void Awake()
     {
-        sliders[0] = GameObject.Find("BGM_Volume").transform.GetChild(0).GetComponent<Slider>();
-        sliders[1] = GameObject.Find("SE_Volume").transform.GetChild(0).GetComponent<Slider>();
-        sliders[2] = GameObject.Find("Voice_Volume").transform.GetChild(0).GetComponent<Slider>();
+        sliders[0] = GameObject.Find("BGM_Volume").transform.GetChild(0).GetComponent<Slider>(); //BGM音量調整スライダー
+        sliders[1] = GameObject.Find("SE_Volume").transform.GetChild(0).GetComponent<Slider>(); //SE音量調整スライダー
+        sliders[2] = GameObject.Find("Voice_Volume").transform.GetChild(0).GetComponent<Slider>(); //ボイス音量調整スライダー
 
         if (sliders[0] != null) sliders[0].value = SoundManager.SoundManagerInstance.Volume_BGM;
         if (sliders[1] != null) sliders[1].value = SoundManager.SoundManagerInstance.Volume_SE;
@@ -25,25 +26,27 @@ public class VolumeSetter : MonoBehaviour
         SetVolumeSE();
         SetVolumeVoice();
     }
+
+    //サウンドマネージャーの音量データを調整する変数を変更して、その情報を保存するメソッドたち
     public void SetVolumeBGM()
     {
         SoundManager.SoundManagerInstance.SetVolumeBGM(sliders[0].value);
         //Debug.Log(gameObject);
-        if (preSliderValue[0] != sliders[0].value) SoundManager.SaveSoundData(); //�X���C�_�[�̒l���ύX���ꂽ��Z�[�u���s��
+        if (preSliderValue[0] != sliders[0].value) SoundManager.SaveSoundSettingData(); //スライダーの値が変更されたらセーブを行う
         preSliderValue[0] = sliders[0].value;
     }
     public void SetVolumeSE()
     {
         SoundManager.SoundManagerInstance.SetVolumeSE(sliders[1].value);
         //Debug.Log(gameObject);
-        if (preSliderValue[1] != sliders[1].value) SoundManager.SaveSoundData(); //�X���C�_�[�̒l���ύX���ꂽ��Z�[�u���s��
+        if (preSliderValue[1] != sliders[1].value) SoundManager.SaveSoundSettingData(); //スライダーの値が変更されたらセーブを行う
         preSliderValue[1] = sliders[1].value;
     }
     public void SetVolumeVoice()
     {
         SoundManager.SoundManagerInstance.SetVolumeVoice(sliders[2].value);
         //Debug.Log(gameObject);
-        if (preSliderValue[2] != sliders[2].value) SoundManager.SaveSoundData(); //�X���C�_�[�̒l���ύX���ꂽ��Z�[�u���s��
+        if (preSliderValue[2] != sliders[2].value) SoundManager.SaveSoundSettingData(); //スライダーの値が変更されたらセーブを行う
         preSliderValue[2] = sliders[2].value;
     }
 }

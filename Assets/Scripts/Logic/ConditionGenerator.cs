@@ -1,23 +1,25 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
 using Random = UnityEngine.Random;
 
+//å·¦ä¸Šã«è¡¨ç¤ºã•ã‚Œã‚‹æ¡ä»¶ã‚’ç”Ÿæˆã™ã‚‹ãŸã‚ã®ã‚¯ãƒ©ã‚¹
 public class ConditionGenerator : MonoBehaviour
 {
     GameModeManager gameModeManager;
-    [SerializeField] ConditionNumberManager conditionNumberManager;
+    ConditionNumberTextManager conditionNumberManager;
 
     void Start()
     {
         gameModeManager = GameModeManager.GameModemanagerInstance;
+        conditionNumberManager = GameObject.Find("ConditonNumber").GetComponent<ConditionNumberTextManager>();
     }
 
-    //ğŒ‚ğ¶¬‚·‚éƒƒ\ƒbƒh(“ïˆÕ“x‚²‚Æ)
+    //æ¡ä»¶ã‚’ç”Ÿæˆã™ã‚‹ãƒ¡ã‚½ãƒƒãƒ‰(é›£æ˜“åº¦ã”ã¨)
     public Dictionary<int,int> GenerateCondition()
     {
-        //ƒL[‚ª‘f”AƒoƒŠƒ…[‚ª‚»‚Ì‘f”‚Ì”‚Ì«‘‚Ì¶¬(“ïˆÕ“x‚²‚Æ)
+        //ã‚­ãƒ¼ãŒç´ æ•°ã€ãƒãƒªãƒ¥ãƒ¼ãŒãã®ç´ æ•°ã®æ•°ã®è¾æ›¸ã®ç”Ÿæˆ(é›£æ˜“åº¦ã”ã¨)
         Dictionary<int,int> returnDict = new Dictionary<int,int>();
         switch (GameModeManager.GameModemanagerInstance.NowDifficultyLevel)
         {
@@ -34,18 +36,18 @@ public class ConditionGenerator : MonoBehaviour
                 break;
         }
         
-        //‡¬”‚ÌŒvZ‚Æ•\¦
+        //åˆæˆæ•°ã®è¨ˆç®—ã¨è¡¨ç¤º
         int compositeNumber = DictToCompositeNumber(returnDict);
         conditionNumberManager.PrintConditionNumber(compositeNumber.ToString());
 
-        //ƒfƒoƒbƒO
+        //ãƒ‡ãƒãƒƒã‚°
         Debug.Log("Keys : " + string.Join(",", returnDict.Keys));
         Debug.Log("Values : " + string.Join(",", returnDict.Values));
 
         return returnDict;
     }
 
-    //‘f”ƒv[ƒ‹A—”‚ÌÅ¬’lÅ‘å’l‚ğw’è‚µ‚ÄAƒL[‚ª‘f”AƒoƒŠƒ…[‚ª‚»‚Ì‘f”‚Ì”‚Ì«‘‚ğì‚éƒƒ\ƒbƒh
+    //ç´ æ•°ãƒ—ãƒ¼ãƒ«ã€ä¹±æ•°ã®æœ€å°å€¤æœ€å¤§å€¤ã‚’æŒ‡å®šã—ã¦ã€ã‚­ãƒ¼ãŒç´ æ•°ã€ãƒãƒªãƒ¥ãƒ¼ãŒãã®ç´ æ•°ã®æ•°ã®è¾æ›¸ã‚’ä½œã‚‹ãƒ¡ã‚½ãƒƒãƒ‰
     Dictionary<int, int> GenerateConditionForDifficultyLevel(List<int> primeNumberPool, int minRand, int maxRand)
     {
         Dictionary<int, int> returnDict = new Dictionary<int, int>();
@@ -62,7 +64,7 @@ public class ConditionGenerator : MonoBehaviour
         return returnDict;
     }
 
-    //ƒL[‚ª‘f”AƒoƒŠƒ…[‚ª‚»‚Ì‘f”‚Ì”‚Ì«‘‚©‚ç‡¬”‚ğŒvZ‚·‚éƒƒ\ƒbƒh
+    //ã‚­ãƒ¼ãŒç´ æ•°ã€ãƒãƒªãƒ¥ãƒ¼ãŒãã®ç´ æ•°ã®æ•°ã®è¾æ›¸ã‹ã‚‰åˆæˆæ•°ã‚’è¨ˆç®—ã™ã‚‹ãƒ¡ã‚½ãƒƒãƒ‰
     int DictToCompositeNumber(Dictionary<int, int> returnDict)
     {
         int compositeNumber = 1;

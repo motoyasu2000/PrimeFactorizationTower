@@ -1,22 +1,21 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
+//ç´ æ•°ãƒ–ãƒ­ãƒƒã‚¯ã«é–¢ã‚ã‚‹æƒ…å ±ã‚„ã€æ“ä½œã‚’è¡Œã†ã‚¯ãƒ©ã‚¹ã€‚ç´ æ•°ãƒ–ãƒ­ãƒƒã‚¯ã«ã‚¢ã‚¿ãƒƒãƒã•ã‚Œã¦ã„ã‚‹ã€‚
 public class BlockInfo : MonoBehaviour
 {
-    //ƒuƒƒbƒN‚ÌŠî–{î•ñ
+    //ãƒ–ãƒ­ãƒƒã‚¯ã®æƒ…å ±
     int ID = -1;
-    int myPrimeNumber; //©•ª‚Ì‚Â”šB‡¬”‚Æ‚©‚ÌŒvZ‚Í‚±‚ê‚ğ—˜—p‚·‚é
+    int myPrimeNumber; //è‡ªåˆ†ã®æŒã¤æ•°å­—ã€‚åˆæˆæ•°ã¨ã‹ã®è¨ˆç®—ã¯ã“ã‚Œã‚’åˆ©ç”¨ã™ã‚‹
+    bool isGround = false;
     TextMeshPro primeNumberText;
     Rigidbody2D rb2D;
     Collider2D myCollider;
-
-    //ƒQ[ƒ€“à‚Å“®“I‚É•Ï‰»‚·‚éî•ñ
-    bool isGround = false;
-
-    //ƒlƒbƒgƒ[ƒNî•ñ
-    List<GameObject> neighborEdge = new List<GameObject>(); //—×Ú‚·‚éƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚ğŠi”[
+    
+    //ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯æƒ…å ±
+    List<GameObject> neighborEdge = new List<GameObject>(); //éš£æ¥ã™ã‚‹ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’æ ¼ç´
     Network network;
 
     private void Awake()
@@ -29,20 +28,20 @@ public class BlockInfo : MonoBehaviour
         SetShader();
     }
 
-    //ƒNƒŠƒbƒN‚·‚é‚Ækinematic‚©‚çdynamic‚É•Ï‰»‚·‚é‚æ‚¤‚É‚·‚éB
+    //ã‚¯ãƒªãƒƒã‚¯ã™ã‚‹ã¨kinematicã‹ã‚‰dynamicã«å¤‰åŒ–ã™ã‚‹ã‚ˆã†ã«ã™ã‚‹ã€‚
     public void ChangeDynamic()
     {
         rb2D.bodyType = RigidbodyType2D.Dynamic;
         rb2D.drag = 2;
     }
 
-    //•\¦‚³‚ê‚é”’l‚Ìİ’è
+    //è¡¨ç¤ºã•ã‚Œã‚‹æ•°å€¤ã®è¨­å®š
     public void SetText()
     {
         primeNumberText.text = myPrimeNumber.ToString();
     }
 
-    //©•ª©g‚Ì”Ô†‚ğİ’è‚·‚éƒNƒ‰ƒXBƒuƒƒbƒN‚ğ¶¬‚·‚éƒ{ƒ^ƒ“‚É‚æ‚Á‚Äw’è‚³‚ê‚éB
+    //è‡ªåˆ†è‡ªèº«ã®ç•ªå·ã‚’è¨­å®šã™ã‚‹ã‚¯ãƒ©ã‚¹ã€‚ãƒ–ãƒ­ãƒƒã‚¯ã‚’ç”Ÿæˆã™ã‚‹ãƒœã‚¿ãƒ³ã«ã‚ˆã£ã¦æŒ‡å®šã•ã‚Œã‚‹ã€‚
     public void SetPrimeNumber(int newMyPrimeNumber)
     {
         myPrimeNumber = newMyPrimeNumber;
@@ -82,7 +81,7 @@ public class BlockInfo : MonoBehaviour
     {
         if (!neighborEdge.Contains(block))
         {
-            //Debug.Log("‘¶İ‚µ‚È‚¢ƒGƒbƒW‚ğÁ‹‚µ‚æ‚¤‚Æ‚µ‚Ä‚¢‚Ü‚·B");
+            //Debug.Log("å­˜åœ¨ã—ãªã„ã‚¨ãƒƒã‚¸ã‚’æ¶ˆå»ã—ã‚ˆã†ã¨ã—ã¦ã„ã¾ã™ã€‚");
         }
         else
         {
@@ -95,7 +94,7 @@ public class BlockInfo : MonoBehaviour
     {
         if (neighborEdge.Contains(block))
         {
-            //Debug.Log("‘¶İ‚·‚éƒGƒbƒW‚ğ’Ç‰Á‚µ‚æ‚¤‚Æ‚µ‚Ä‚¢‚Ü‚·B");
+            //Debug.Log("ã™ã§ã«å­˜åœ¨ã™ã‚‹ã‚¨ãƒƒã‚¸ã‚’è¿½åŠ ã—ã‚ˆã†ã¨ã—ã¦ã„ã¾ã™ã€‚");
         }
         else 
         {
@@ -103,20 +102,22 @@ public class BlockInfo : MonoBehaviour
         }
     }
 
-    //ƒTƒuƒOƒ‰ƒt‚Ég‚¤ƒƒ\ƒbƒhApattern‚Éƒ}ƒbƒ`‚µ‚È‚¢ƒGƒbƒW‚ğÁ‹‚·‚éB
+    //ã‚µãƒ–ã‚°ãƒ©ãƒ•ã«ä½¿ã†ãƒ¡ã‚½ãƒƒãƒ‰ã€patternã«ãƒãƒƒãƒã—ãªã„ã‚¨ãƒƒã‚¸ã‚’æ¶ˆå»ã™ã‚‹ã€‚
     public void DeleteMissNeighberBlock(HashSet<int> subNetPattern)
     {
         neighborEdge.RemoveAll(item => item!=null && !subNetPattern.Contains(item.GetComponent<BlockInfo>().GetPrimeNumber()));
     }
 
+    //ä»–ã®ãƒ–ãƒ­ãƒƒã‚¯ã¨è¡çªã—ãŸéš›ã€è‡ªåˆ†ã®ãƒ–ãƒ­ãƒƒã‚¯ãŒç›¸æ‰‹ã®ãƒ–ãƒ­ãƒƒã‚¯ã®ä¸Šã«ã‚ã‚‹ãªã‚‰trueã‚’è¿”ã™é–¢æ•°ã€‚
+    //2ã¤ã®ãƒ–ãƒ­ãƒƒã‚¯ãŒè¡çªã—ãŸéš›ã€ã‚¨ãƒƒã‚¸ã®æƒ…å ±ã‚’ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯ã«è¿½åŠ ã™ã‚‹ãŒã€ãã‚ŒãŒ2å›å‘¼ã°ã‚Œãªã„ã‚ˆã†ã«ã€trueã«ãªã£ãŸã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ã¿ãŒãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯ã«ãƒãƒ¼ãƒ‰ã‚’è¿½åŠ ã™ã‚‹å‡¦ç†ã‚’å‘¼ã³å‡ºã™ã‚ˆã†ã«ã™ã‚‹ã€‚
     private bool IsUpOrRight(GameObject myself, GameObject other)
     {
         if(myself.transform.position == other.transform.position)
         {
-            Debug.LogError("Õ“Ë‚µ‚½“ñ‚Â‚ÌƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚Í“¯‚¶À•W‚É‚ ‚è‚Ü‚·B");
+            Debug.LogError("è¡çªã—ãŸäºŒã¤ã®ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¯åŒã˜åº§æ¨™ã«ã‚ã‚Šã¾ã™ã€‚");
         }
 
-        //‘æˆêˆø”‚Ìgameobject‚ªã‘¤‚É‚ ‚é‚È‚çtrue‚ğ•Ô‚·B‚à‚µ“¯‚¶‚Å‚ ‚ê‚ÎA‰E‘¤‚Ìê‡‚Étrue‚ğ•Ô‚·B
+        //ç¬¬ä¸€å¼•æ•°ã®gameobjectãŒä¸Šå´ã«ã‚ã‚‹ãªã‚‰trueã‚’è¿”ã™ã€‚ã‚‚ã—åŒã˜ã§ã‚ã‚Œã°ã€å³å´ã®å ´åˆã«trueã‚’è¿”ã™ã€‚
         if(myself.transform.position.y > other.transform.position.y)
         {
             return true;
@@ -145,11 +146,12 @@ public class BlockInfo : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("PrimeNumberBlock")){
+        //åœ°é¢ã¨ã®è¨­ç½®åˆ¤å®š
+        if((collision.gameObject.CompareTag("Ground")) || (collision.gameObject.CompareTag("PrimeNumberBlock"))){
             isGround = true;
         }
-        //‚à‚µ“ñ‚Â‚ÌƒuƒƒbƒN(ƒm[ƒh)‚ªÚG‚µ‚½‚È‚çA‚»‚Ì“ñ‚Â‚Ìƒm[ƒhŠÔ‚ÉƒGƒbƒW‚ğİ’èAƒTƒuƒOƒ‰ƒt‚Ì’Tõ
-        if (collision.gameObject.CompareTag("PrimeNumberBlock") && collision.gameObject.GetComponent<BlockInfo>() != null && IsUpOrRight(gameObject, collision.gameObject))
+        //ã‚‚ã—äºŒã¤ã®ãƒ–ãƒ­ãƒƒã‚¯(ãƒãƒ¼ãƒ‰)ãŒæ¥è§¦ã—ãŸãªã‚‰ã€ãã®äºŒã¤ã®ãƒãƒ¼ãƒ‰é–“ã«ã‚¨ãƒƒã‚¸ã‚’è¨­å®šã€ã‚µãƒ–ã‚°ãƒ©ãƒ•ã®æ¢ç´¢
+        if ((collision.gameObject.CompareTag("PrimeNumberBlock")) && (collision.gameObject.GetComponent<BlockInfo>() != null) && (IsUpOrRight(gameObject, collision.gameObject)))
         {
             network.AttachNode(gameObject, collision.gameObject);
             network.AddStartExpandNetworks(new HashSet<GameObject> {gameObject, collision.gameObject});
@@ -158,7 +160,7 @@ public class BlockInfo : MonoBehaviour
     }
     private void OnCollisionExit2D(Collision2D collision)
     {
-        //‚à‚µ“ñ‚Â‚ÌƒuƒƒbƒN(ƒm[ƒh)‚ª—£‚ê‚½‚È‚çA‚»‚Ì“ñ‚Â‚Ìƒm[ƒhŠÔ‚ÌƒGƒbƒW‚ğÁ‹
+        //ã‚‚ã—äºŒã¤ã®ãƒ–ãƒ­ãƒƒã‚¯(ãƒãƒ¼ãƒ‰)ãŒé›¢ã‚ŒãŸãªã‚‰ã€ãã®äºŒã¤ã®ãƒãƒ¼ãƒ‰é–“ã®ã‚¨ãƒƒã‚¸ã‚’æ¶ˆå»
         if (collision.gameObject.CompareTag("PrimeNumberBlock"))
         {
             network.DetachNode(gameObject, collision.gameObject);

@@ -1,53 +1,54 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
+//ãƒ–ãƒ­ãƒƒã‚¯ã‚’ç”Ÿæˆã™ã‚‹ã‚¯ãƒ©ã‚¹ã€‚ãƒ–ãƒ­ãƒƒã‚¯ã‚’ç”Ÿæˆã™ã‚‹ãƒœã‚¿ãƒ³ã«ã‚¢ã‚¿ãƒƒãƒã•ã‚Œã¦ã„ã‚‹ã€‚
 public class BlockGenerator : MonoBehaviour
 {
+    static int IDCounter = 0;
     int primeNumber;
-    [SerializeField] GameObject primeNumberGeneratingPoint;
+    GameObject primeNumberGeneratingPoint;
     GameObject blockField;
     GameObject beforeField;
     SingleGenerateManager singleGenerateManager;
-    TextMeshProUGUI text;
-    protected GameManager gameManager;
-    static int IDCounter = 0;
-
+    TextMeshProUGUI buttonText;
+    GameManager gameManager;
 
     private void Start()
     {
+        primeNumberGeneratingPoint = GameObject.Find("PrimeNumberGeneratingPoint");
         singleGenerateManager = primeNumberGeneratingPoint.GetComponent<SingleGenerateManager>();
-        text = transform.Find("Text").GetComponent<TextMeshProUGUI>();
-        text.text = primeNumber.ToString();
+        buttonText = transform.Find("Text").GetComponent<TextMeshProUGUI>();
+        buttonText.text = primeNumber.ToString();
         blockField = GameObject.Find("BlockField");
         beforeField = blockField.transform.Find("BeforeField").gameObject;
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
-    //ƒuƒƒbƒN‚ğ¶¬‚·‚éŠÖ”‚Ìˆø”‚ğ§Œä‚·‚éŠÖ”B
+    //ãƒ–ãƒ­ãƒƒã‚¯ã‚’ç”Ÿæˆã™ã‚‹é–¢æ•°ã®å¼•æ•°ã‚’åˆ¶å¾¡ã™ã‚‹é–¢æ•°ã€‚
     public void GenerateBlock()
     {
-        if (gameManager.GetCompleteNumberFlag()) return; //‘f”‚ª‘µ‚¦‚ç‚ê‚Ä‚¢‚éó‘Ô‚Å‚ ‚ê‚ÎƒŠƒ^[ƒ“
+        if (gameManager.GetCompleteNumberFlag()) return; //ç´ æ•°ãŒæƒãˆã‚‰ã‚Œã¦ã„ã‚‹çŠ¶æ…‹ã§ã‚ã‚Œã°ãƒªã‚¿ãƒ¼ãƒ³
         HundleGenerateBlock(primeNumber);
     }
 
-    //ˆø”‚Å—^‚¦‚ç‚ê‚½”’l‚É‡‚í‚¹‚ÄƒuƒƒbƒN‚ğ¶¬‚·‚éŠÖ”B‚»‚ÌƒuƒƒbƒN‚Ìî•ñ(ID‚â‘f”‚È‚Ç)‚à’Ç‰Á‚·‚éB
+    //å¼•æ•°ã§ä¸ãˆã‚‰ã‚ŒãŸæ•°å€¤ã«åˆã‚ã›ã¦ãƒ–ãƒ­ãƒƒã‚¯ã‚’ç”Ÿæˆã™ã‚‹é–¢æ•°ã€‚ãã®ãƒ–ãƒ­ãƒƒã‚¯ã®æƒ…å ±(IDã‚„ç´ æ•°ãªã©)ã‚‚è¿½åŠ ã™ã‚‹ã€‚
     void HundleGenerateBlock(int primeNumber)
     {
-        //ƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚Ì¶¬‚Æ‚»‚Ìî•ñ‚ğ‚à‚ÂƒCƒ“ƒXƒ^ƒ“ƒX‚Ìæ“¾
+        //ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç”Ÿæˆã¨ãã®æƒ…å ±ã‚’ã‚‚ã¤ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã®å–å¾—
         GameObject generateObject = Instantiate(GetPrimeNumberBlock(primeNumber), primeNumberGeneratingPoint.transform.position, GetPrimeNumberBlock(primeNumber).transform.rotation, beforeField.transform);
         BlockInfo blockInfo = generateObject.GetComponent<BlockInfo>();
 
-        //ƒuƒƒbƒN‚Ì‚Â‘f”‚Ìİ’è‚ÆƒeƒLƒXƒg‚ÌØ‚è‘Ö‚¦
+        //ãƒ–ãƒ­ãƒƒã‚¯ã®æŒã¤ç´ æ•°ã®è¨­å®šã¨ãƒ†ã‚­ã‚¹ãƒˆã®åˆ‡ã‚Šæ›¿ãˆ
         blockInfo.SetPrimeNumber(primeNumber);
         blockInfo.SetText();
 
-        //ID‚Ìİ’è
+        //IDã®è¨­å®š
         blockInfo.SetID(IDCounter);
         generateObject.name = $"Block{primeNumber}_{IDCounter}";
         IDCounter++;
 
-        singleGenerateManager.SetSingleGameObject(generateObject);//¶¬‚µ‚½ƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚Ìî•ñ‚ğA¶¬‚Å‚«‚éƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚ªí‚É’Pˆê‚Å‚ ‚é‚æ‚¤‚ÉŠÇ—‚·‚éƒƒ\ƒbƒh‚É“ü‚ê‚éB
+        singleGenerateManager.SetSingleGameObject(generateObject);//ç”Ÿæˆã—ãŸã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®æƒ…å ±ã‚’ã€ç”Ÿæˆã§ãã‚‹ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒå¸¸ã«å˜ä¸€ã§ã‚ã‚‹ã‚ˆã†ã«ç®¡ç†ã™ã‚‹ãƒ¡ã‚½ãƒƒãƒ‰ã«å…¥ã‚Œã‚‹ã€‚
     }
     GameObject GetPrimeNumberBlock(int primeNumber)
     {

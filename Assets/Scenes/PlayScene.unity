@@ -167,7 +167,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32a2f7fc41a7c254fa20c380322312cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  conditionNumberManager: {fileID: 95438827}
 --- !u!1 &1295746
 GameObject:
   m_ObjectHideFlags: 0
@@ -749,7 +748,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d65aa3e539948446b8f49874bcc6510, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  primeNumberGeneratingPoint: {fileID: 1824872617}
 --- !u!1 &60715992
 GameObject:
   m_ObjectHideFlags: 0
@@ -2570,7 +2568,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1141480}
-  m_Father: {fileID: 1999789153}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &365571289
 GameObject:
@@ -3572,7 +3570,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d65aa3e539948446b8f49874bcc6510, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  primeNumberGeneratingPoint: {fileID: 1824872617}
 --- !u!1 &524596403
 GameObject:
   m_ObjectHideFlags: 0
@@ -3682,7 +3679,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 120f8d989d94c9d4c926ba0b95d650cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  multiPlay: {fileID: 0}
 --- !u!114 &553923933
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5092,7 +5088,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8cdcef97dc5152045b4ac19adc698616, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  upNumbertransform: {fileID: 1718298442}
 --- !u!114 &777901195
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5679,7 +5674,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d65aa3e539948446b8f49874bcc6510, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  primeNumberGeneratingPoint: {fileID: 1824872617}
 --- !u!1 &857513106
 GameObject:
   m_ObjectHideFlags: 0
@@ -6598,7 +6592,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d65aa3e539948446b8f49874bcc6510, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  primeNumberGeneratingPoint: {fileID: 1824872617}
 --- !u!1 &1016421719
 GameObject:
   m_ObjectHideFlags: 0
@@ -6871,7 +6864,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdb5ab8edd776f2489e75afe08d2c673, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLightUpStart: 0
 --- !u!1 &1095360758
 GameObject:
   m_ObjectHideFlags: 0
@@ -7203,7 +7195,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 120f8d989d94c9d4c926ba0b95d650cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  multiPlay: {fileID: 0}
 --- !u!114 &1103740601
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7391,10 +7382,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73e905b39f4ea0c4084c1f8dec0a46f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameManager: {fileID: 76913987}
-  gameOverReason: {fileID: 1454565553}
-  Scores_NonUpdateRecord: {fileID: 120366664}
-  Scores_UpdateRecord: {fileID: 12573317}
 --- !u!1 &1138190789
 GameObject:
   m_ObjectHideFlags: 0
@@ -7949,7 +7936,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d65aa3e539948446b8f49874bcc6510, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  primeNumberGeneratingPoint: {fileID: 1824872617}
 --- !u!1 &1167394995
 GameObject:
   m_ObjectHideFlags: 0
@@ -9662,7 +9648,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d65aa3e539948446b8f49874bcc6510, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  primeNumberGeneratingPoint: {fileID: 1824872617}
 --- !u!1 &1405683007
 GameObject:
   m_ObjectHideFlags: 0
@@ -10790,7 +10775,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d65aa3e539948446b8f49874bcc6510, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  primeNumberGeneratingPoint: {fileID: 1824872617}
 --- !u!1 &1499236725
 GameObject:
   m_ObjectHideFlags: 0
@@ -11217,7 +11201,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d65aa3e539948446b8f49874bcc6510, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  primeNumberGeneratingPoint: {fileID: 1824872617}
 --- !u!1 &1531248106
 GameObject:
   m_ObjectHideFlags: 0
@@ -11612,7 +11595,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4e04eb53fc424044a31aa8165699ec2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  upNumbertransform: {fileID: 1718298442}
 --- !u!114 &1585157546
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12664,7 +12646,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a429728ee9c053840a87ef664aba5dde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scoreManager: {fileID: 0}
 --- !u!1 &1862359719
 GameObject:
   m_ObjectHideFlags: 0
@@ -13640,7 +13621,6 @@ Transform:
   - {fileID: 572052748}
   - {fileID: 139656377}
   - {fileID: 1158517001}
-  - {fileID: 259954749}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2014235531
@@ -14264,7 +14244,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d65aa3e539948446b8f49874bcc6510, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  primeNumberGeneratingPoint: {fileID: 1824872617}
 --- !u!1 &2066465803
 GameObject:
   m_ObjectHideFlags: 0
@@ -15053,6 +15032,7 @@ SceneRoots:
   - {fileID: 1302361036}
   - {fileID: 603544906}
   - {fileID: 60715994}
+  - {fileID: 259954749}
   - {fileID: 1999789153}
   - {fileID: 1089663993}
   - {fileID: 76913988}

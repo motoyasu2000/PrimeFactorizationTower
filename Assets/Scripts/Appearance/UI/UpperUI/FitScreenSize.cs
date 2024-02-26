@@ -1,10 +1,10 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace UI
 {
-    //‰æ–Êã•”‚Ì‚¨‚¯‚éƒuƒƒbƒN‚ğİ’è‚·‚é‡¬”‚ğ•\¦‚µ‚½‚èAğŒ‚Ì‡¬”‚ğ•\¦‚·‚é‚½‚ß‚ÌUI‚Ì‚‚³‚ğŒvZ‚·‚éƒNƒ‰ƒXB’[––‚Ì‰æ–Ê•‚É‡‚í‚¹‚Ä“KØ‚ÉŒvZ‚Å‚«‚é‚æ‚¤‚É‚·‚éB
+    //ç”»é¢ä¸Šéƒ¨ã®ãŠã‘ã‚‹ãƒ–ãƒ­ãƒƒã‚¯ã‚’è¨­å®šã™ã‚‹åˆæˆæ•°ã‚’è¡¨ç¤ºã—ãŸã‚Šæ¡ä»¶ã®åˆæˆæ•°ã‚’è¡¨ç¤ºã™ã‚‹ãŸã‚ã®UIã®é«˜ã•ã‚’è¨ˆç®—ã™ã‚‹ã‚¯ãƒ©ã‚¹ã€‚ç«¯æœ«ã®ç”»é¢å¹…ã«åˆã‚ã›ã¦é©åˆ‡ã«è¨ˆç®—ã§ãã‚‹ã‚ˆã†ã«ã™ã‚‹ã€‚
     public class FitScreenSize : MonoBehaviour
     {
         RectTransform rectTransform;
@@ -16,7 +16,7 @@ namespace UI
             rectTransform = GetComponent<RectTransform>();
             width = rectTransform.rect.width;
             canvasHeight = transform.parent.GetComponent<Canvas>().GetComponent<RectTransform>().rect.height;
-            rectTransform.sizeDelta = new Vector2(0, -canvasHeight + width / 4.2f); //-canvasHeight‚ªã’[‚ÌˆÊ’u‚Å‚»‚±‚©‚ç‰¡•/4.2•ª‚¾‚¯‰º‚ª‚é ‚±‚Ìˆ—‚É‚æ‚èUI‚ÌƒTƒCƒY‚ğƒXƒ}ƒz‚Ì‰æ–Ê•‚ÉŒÀ‚ç‚¸ˆê’è‚É‚·‚éB
+            rectTransform.sizeDelta = new Vector2(0, -canvasHeight + width / 4.2f); //-canvasHeightãŒä¸Šç«¯ã®ä½ç½®ã§ãã“ã‹ã‚‰æ¨ªå¹…/4.2åˆ†ã ã‘ä¸‹ãŒã‚‹ ã“ã®å‡¦ç†ã«ã‚ˆã‚ŠUIã®ã‚µã‚¤ã‚ºã‚’ã‚¹ãƒãƒ›ã®ç”»é¢å¹…ã«é™ã‚‰ãšä¸€å®šã«ã™ã‚‹ã€‚
                                                                                     //Debug.Log(canvasHeight + " " + width);
         }
     }

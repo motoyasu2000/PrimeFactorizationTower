@@ -1,27 +1,28 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//ãƒ–ãƒ­ãƒƒã‚¯ãŒç©ã¿ã‚ãŒã£ã¦ã„ãã€é«˜ããªã‚Šã™ãŽã‚‹ã¨ãƒ–ãƒ­ãƒƒã‚¯ãŒã‚«ãƒ¡ãƒ©ã«ã¨ã‚‰ãˆã‚‰ã‚Œãªããªã‚‹æã‚ŒãŒã‚ã‚‹ã€‚
+//ãã“ã§ãƒ–ãƒ­ãƒƒã‚¯ã®æœ€é«˜ç‚¹ã‹ã‚‰ã‚«ãƒ¡ãƒ©ã®é«˜ã•ã‚„ç¯„å›²ã‚’æ‹¡å¤§ã™ã‚‹å¿…è¦ãŒã‚ã‚Šã€ãã‚Œã‚’ç®¡ç†ã™ã‚‹ã‚¯ãƒ©ã‚¹ã€‚
 public class CameraCtrl : MonoBehaviour
 {
+    float startHeight = 6; //ã‚«ãƒ¡ãƒ©ã®ç§»å‹•ã‚’é–‹å§‹ã™ã‚‹é«˜ã•
+    float newCameraHeight; //æœ€æ–°ã®ã‚«ãƒ¡ãƒ©ã®é«˜ã•
+    Vector3 defo; //åˆæœŸã®ã‚«ãƒ¡ãƒ©ã®åº§æ¨™
     ScoreManager scoreManager;
-    Vector3 defo; //‰Šú‚ÌƒJƒƒ‰‚ÌÀ•W
-    float startHeight = 6; //ƒJƒƒ‰‚ÌˆÚ“®‚ðŠJŽn‚·‚é‚‚³
     public float StartHeight => startHeight;
-    float newCameraHeight;
+
     public float NewCameraHeight => newCameraHeight;
     void Start()
     {
         defo = transform.position;
         scoreManager = ScoreManager.ScoreManagerInstance;
     }
-
-    // Update is called once per frame
     void Update()
     {
         if (scoreManager.NowScore < startHeight) return;
-        Camera.main.orthographicSize = scoreManager.NowScore - startHeight + 10; //scoreManager.MaxHeight - startHeight‚Í•Ï‰»—ÊA10‚Í‰Šú’l
-        newCameraHeight = defo.y + (scoreManager.NowScore - startHeight) * 0.3f; //‰æ–Ê‚Ì‰º30“•”•ª‚ðŒÅ’è‚µ‚ÄƒJƒƒ‰‚ðŠg‘å //–{—ˆstartHeight‚ª‘¶Ý‚µ‚È‚©‚Á‚½ê‡‚ðl‚¦Astartheight‚ª‚ ‚Á‚½ê‡‚É‚Ç‚Ì‚æ‚¤‚É‹tŽZ‚Å‚«‚é‚©‚ðl‚¦‚é‚Æmaxheight‚É‚à0.3‚ªŠ|‚¯‚ç‚ê‚Ä‚¢‚é——R‚ª‚í‚©‚éB
+        Camera.main.orthographicSize = scoreManager.NowScore - startHeight + 10; //scoreManager.MaxHeight - startHeightã¯å¤‰åŒ–é‡ã€10ã¯åˆæœŸå€¤
+        newCameraHeight = defo.y + (scoreManager.NowScore - startHeight) * 0.3f; //ç”»é¢ã®ä¸‹30ï¼…éƒ¨åˆ†ã‚’å›ºå®šã—ã¦ã‚«ãƒ¡ãƒ©ã®ç¯„å›²ã‚’æ‹¡å¤§
         Camera.main.transform.position = new Vector3(defo.x,newCameraHeight, defo.z);
     }
 }

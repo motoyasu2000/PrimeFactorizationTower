@@ -1,27 +1,29 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UI;
+
+//ç©ã¿ä¸Šã’ã‚ŒãŸãƒ–ãƒ­ãƒƒã‚¯ã¯ãƒ–ãƒ­ãƒƒã‚¯ãŒãƒãƒ¼ãƒ‰ã€éš£æ¥é–¢ä¿‚ãŒã‚¨ãƒƒã‚¸ã¨ãªã‚‹ã‚°ãƒ©ãƒ•æ§‹é€ ã‚’ã—ã¦ãŠã‚Šã€‚ãã‚Œã‚’ç®¡ç†ã™ã‚‹ãŸã‚ã®ã‚¯ãƒ©ã‚¹ã€‚
 public class Network : MonoBehaviour
 {
-    //ƒlƒbƒgƒ[ƒN‚Ì\‘¢‚âŠî–{‹@”\‚Ég—p‚·‚é‚à‚Ì
-    static int[] primeNumberPool; //ƒQ[ƒ€“à‚Åˆµ‚¤‘S‚Ä‚Ì‘f”
-    List<GameObject> wholeNetwork = new List<GameObject>(); //‘Sƒm[ƒh‚ÌƒŠƒXƒgAƒlƒbƒgƒ[ƒN‘S‘Ì
+    //ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯ã®æ§‹é€ ã‚„åŸºæœ¬æ©Ÿèƒ½ã«ä½¿ç”¨ã™ã‚‹ã‚‚ã®
+    static int[] primeNumberPool; //ã‚²ãƒ¼ãƒ å†…ã§æ‰±ã†å…¨ã¦ã®ç´ æ•°
+    List<GameObject> wholeNetwork = new List<GameObject>(); //å…¨ãƒãƒ¼ãƒ‰ã®ãƒªã‚¹ãƒˆã€ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯å…¨ä½“
     Dictionary<int, List<GameObject>> nodesDict = new Dictionary<int, List<GameObject>>();
 
-    //ƒTƒuƒOƒ‰ƒt‚Ì’Tõ
-    const int CheckNumParFrame = 3; //1ƒtƒŒ[ƒ€“–‚½‚è‚ÉƒLƒ…[‚©‚çæ‚èo‚·”
-    Queue<ExpandNetwork> startExpandNetworks = new Queue<ExpandNetwork>(); //ƒlƒbƒgƒ[ƒN‚ÌŠg’£‚ğŠJn‚·‚éÅ‰‚ÌƒTƒuƒlƒbƒgƒ[ƒN‚ğƒŠƒXƒg‚Æ‚µ‚Ä•Û‘¶‚µ‚Ä‚¨‚­B”ñ“¯Šú‚Ìˆ—‚ğˆê‚Â‚¸‚ÂÀs‚·‚é‚½‚ßAƒ^ƒvƒ‹‚Ì‚Q‚Â–Ú‚Ì—v‘f‚ÍğŒ‚Ì«‘
+    //ã‚µãƒ–ã‚°ãƒ©ãƒ•ã®æ¢ç´¢
+    const int CheckNumParFrame = 3; //1ãƒ•ãƒ¬ãƒ¼ãƒ å½“ãŸã‚Šã«ã‚­ãƒ¥ãƒ¼ã‹ã‚‰å–ã‚Šå‡ºã™æ•°
+    Queue<ExpandNetwork> startExpandNetworks = new Queue<ExpandNetwork>(); //ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯ã®æ‹¡å¼µã‚’é–‹å§‹ã™ã‚‹æœ€åˆã®ã‚µãƒ–ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯ã‚’ãƒªã‚¹ãƒˆã¨ã—ã¦ä¿å­˜ã—ã¦ãŠãã€‚éåŒæœŸã®å‡¦ç†ã‚’ä¸€ã¤ãšã¤å®Ÿè¡Œã™ã‚‹ãŸã‚ã€ã‚¿ãƒ—ãƒ«ã®ï¼’ã¤ç›®ã®è¦ç´ ã¯æ¡ä»¶ã®è¾æ›¸
 
-    //ğŒ‚Ì¶¬
-    bool nowCriteriaMetChecking = false; //ğŒ‚ğ’B¬‚µ‚½ŒãA¶¬‚µ‚½‡¬”‚ğŒ»İ‚Ìƒlƒbƒgƒ[ƒN‚ªŠù‚É–‚½‚µ‚Ä‚¢‚é‚©‚ğ‚Ç‚¤‚©‚ğ•\‚·•Ï”
+    //æ¡ä»¶ã®ç”Ÿæˆ
+    bool nowCriteriaMetChecking = false; //æ¡ä»¶ã‚’é”æˆã—ãŸå¾Œã€ç”Ÿæˆã—ãŸåˆæˆæ•°ã‚’ç¾åœ¨ã®ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯ãŒæ—¢ã«æº€ãŸã—ã¦ã„ã‚‹ã‹ã‚’ã©ã†ã‹ã‚’è¡¨ã™å¤‰æ•°
     ConditionGenerator conditionGenerator;
     Dictionary<int, int> freezeCondition;
     public ConditionGenerator _conditionGenerator => conditionGenerator;
     public Dictionary<int, int> FreezeCondition => freezeCondition;
 
-    //ğŒ’B¬‚Ìˆ— ¦ƒQ[ƒ€ƒ‚[ƒh‚²‚Æ‚ÉğŒ’B¬‚Ìˆ—‚ª•Ï‚í‚é‰Â”\«‚ª‚ ‚éB
+    //æ¡ä»¶é”æˆæ™‚ã®å‡¦ç† â€»ã‚²ãƒ¼ãƒ ãƒ¢ãƒ¼ãƒ‰ã”ã¨ã«æ¡ä»¶é”æˆæ™‚ã®å‡¦ç†ãŒå¤‰ã‚ã‚‹å¯èƒ½æ€§ãŒã‚ã‚‹ã€‚
     GameModeManager gameModeManager;
     SoundManager soundManager;
     EffectTextManager effectTextManager;
@@ -29,7 +31,7 @@ public class Network : MonoBehaviour
 
     private void Start()
     {
-        //‰Šú‰»ˆ—
+        //åˆæœŸåŒ–å‡¦ç†
         primeNumberPool = GameModeManager.GameModemanagerInstance.PrimeNumberPool;
         gameModeManager = GameModeManager.GameModemanagerInstance;
         soundManager = SoundManager.SoundManagerInstance;
@@ -45,7 +47,7 @@ public class Network : MonoBehaviour
 
     private void Update()
     {
-        //checkNumParFrame‚Ì®”’l‰ñ‚¾‚¯ƒLƒ…[‚É“ü‚Á‚Ä‚¢‚ÄğŒ‚ğ–‚½‚·‚à‚Ì‚ª‚È‚¢‚©ƒlƒbƒgƒ[ƒN“à‚Åƒ`ƒFƒbƒN‚ğs‚¤B
+        //checkNumParFrameã®æ•´æ•°å€¤å›ã ã‘ã‚­ãƒ¥ãƒ¼ã«å…¥ã£ã¦ã„ã¦æ¡ä»¶ã‚’æº€ãŸã™ã‚‚ã®ãŒãªã„ã‹ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯å†…ã§ãƒã‚§ãƒƒã‚¯ã‚’è¡Œã†ã€‚
         for (int i = 0; i < CheckNumParFrame; i++)
         {
             if (startExpandNetworks.Count == 0)
@@ -56,14 +58,14 @@ public class Network : MonoBehaviour
             var item = startExpandNetworks.Dequeue();
             foreach (var block in item.myNetwork)
             {
-                if (block.GetComponent<BlockInfo>().enabled == false) return; //‚à‚¤ƒlƒbƒgƒ[ƒN‚©‚çØ‚è—£‚³‚ê‚Äˆ—‚ğs‚¤—\’è‚Å‚È‚¢ƒuƒƒbƒN‚à‚±‚Ì’†‚ÉŠÜ‚Ü‚ê‚Ä‚µ‚Ü‚Á‚Ä‚¨‚èA‚»‚Ì‚æ‚¤‚È‚à‚Ì‚ÍğŒ‚ğ–‚½‚³‚È‚¢B
+                if (block.GetComponent<BlockInfo>().enabled == false) return; //ã‚‚ã†ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯ã‹ã‚‰åˆ‡ã‚Šé›¢ã•ã‚Œã¦å‡¦ç†ã‚’è¡Œã†äºˆå®šã§ãªã„ãƒ–ãƒ­ãƒƒã‚¯ã‚‚ã“ã®ä¸­ã«å«ã¾ã‚Œã¦ã—ã¾ã£ã¦ãŠã‚Šã€ãã®ã‚ˆã†ãªã‚‚ã®ã¯æ¡ä»¶ã‚’æº€ãŸã•ãªã„ã€‚
             }
             ExpandAndSearch(item);
         }
 
     }
 
-    //ƒm[ƒh‚Ì’Ç‰ÁAwholeNetwork‚ÆnodesDict‚ÌXV‚ğs‚¤B
+    //ãƒãƒ¼ãƒ‰ã®è¿½åŠ ã€wholeNetworkã¨nodesDictã®æ›´æ–°ã‚’è¡Œã†ã€‚
     public void AddNode(GameObject node)
     {
         wholeNetwork.Add(node);
@@ -82,11 +84,11 @@ public class Network : MonoBehaviour
         }
         else
         {
-            Debug.LogError("‘f”’è‹`ŠO‚Ìƒm[ƒh‚ª’è‹`‚³‚ê‚æ‚¤‚Æ‚µ‚Ä‚¢‚Ü‚·B");
+            Debug.LogError("ç´ æ•°å®šç¾©å¤–ã®ãƒãƒ¼ãƒ‰ãŒå®šç¾©ã•ã‚Œã‚ˆã†ã¨ã—ã¦ã„ã¾ã™ã€‚");
         }
     }
 
-    //ƒGƒbƒW‚ÌXV‚ğs‚¤(íœ)
+    //ã‚¨ãƒƒã‚¸ã®æ›´æ–°ã‚’è¡Œã†(å‰Šé™¤)
     public void DetachNode(GameObject node1, GameObject node2)
     {
         BlockInfo info1 = node1.GetComponent<BlockInfo>();
@@ -95,7 +97,7 @@ public class Network : MonoBehaviour
         info2.RemoveNeighborBlock(node1);
     }
 
-    //ƒGƒbƒW‚ÌXV‚ğs‚¤(’Ç‰Á)
+    //ã‚¨ãƒƒã‚¸ã®æ›´æ–°ã‚’è¡Œã†(è¿½åŠ )
     public void AttachNode(GameObject node1, GameObject node2)
     {
         BlockInfo info1 = node1.GetComponent<BlockInfo>();
@@ -104,14 +106,14 @@ public class Network : MonoBehaviour
         info2.AddNeighborBlock(node1);
     }
 
-    //ƒlƒbƒgƒ[ƒN‚©‚ç“Á’è‚Ìƒm[ƒh‚ğDestroy‚·‚éƒƒ\ƒbƒh
+    //ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯ã‹ã‚‰ç‰¹å®šã®ãƒãƒ¼ãƒ‰ã‚’Destroyã™ã‚‹ãƒ¡ã‚½ãƒƒãƒ‰
     private void SafeDestroyNode(GameObject originNode)
     {
         SafeCutNode(originNode);
         Destroy(originNode);
     }
 
-    //ƒlƒbƒgƒ[ƒN‚©‚ç“Á’è‚ÌƒTƒuƒlƒbƒgƒ[ƒN‚ğDestroy‚·‚éƒƒ\ƒbƒh
+    //ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯ã‹ã‚‰ç‰¹å®šã®ã‚µãƒ–ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯ã‚’Destroyã™ã‚‹ãƒ¡ã‚½ãƒƒãƒ‰
     private void SafeDestroyNodes(List<GameObject> nodes)
     {
         foreach (var node in nodes)
@@ -120,16 +122,16 @@ public class Network : MonoBehaviour
         }
     }
 
-    //ƒlƒbƒgƒ[ƒN‚©‚ç“Á’è‚Ìƒm[ƒh‚ğØ‚è—£‚·ƒƒ\ƒbƒh(Destroy‚Í‚µ‚È‚¢)
+    //ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯ã‹ã‚‰ç‰¹å®šã®ãƒãƒ¼ãƒ‰ã‚’åˆ‡ã‚Šé›¢ã™ãƒ¡ã‚½ãƒƒãƒ‰(Destroyã¯ã—ãªã„)
     private void SafeCutNode(GameObject originNode)
     {
-        //Ø‚è—£‚µŒ³‚Ìƒm[ƒh‚Æ—×Ú‚·‚éƒGƒbƒW‚ğˆê“I‚È•Ï”‚ÉŠi”[(ƒRƒŒƒNƒVƒ‡ƒ“‚ªƒCƒeƒŒ[ƒVƒ‡ƒ“’†‚É•ÏX‚µ‚Ä‚Í‚È‚ç‚È‚¢‚½‚ß)
+        //åˆ‡ã‚Šé›¢ã—å…ƒã®ãƒãƒ¼ãƒ‰ã¨éš£æ¥ã™ã‚‹ã‚¨ãƒƒã‚¸ã‚’ä¸€æ™‚çš„ãªå¤‰æ•°ã«æ ¼ç´(ã‚³ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³ãŒã‚¤ãƒ†ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³ä¸­ã«å¤‰æ›´ã—ã¦ã¯ãªã‚‰ãªã„ãŸã‚)
         List<GameObject> tmpNeighborNode = new List<GameObject>();
         foreach (var neighborNode in originNode.GetComponent<BlockInfo>().GetNeighborEdge())
         {
             tmpNeighborNode.Add(neighborNode);
         }
-        //Ø‚è—£‚µŒ³‚Ìƒm[ƒh‚Æ—×Ú‚·‚éƒGƒbƒW‚ğÀÛ‚Éíœ‚·‚é
+        //åˆ‡ã‚Šé›¢ã—å…ƒã®ãƒãƒ¼ãƒ‰ã¨éš£æ¥ã™ã‚‹ã‚¨ãƒƒã‚¸ã‚’å®Ÿéš›ã«å‰Šé™¤ã™ã‚‹
         foreach (var neighborNode in tmpNeighborNode)
         {
             DetachNode(neighborNode, originNode);
@@ -139,7 +141,7 @@ public class Network : MonoBehaviour
         originNode.GetComponent<BlockInfo>().enabled = false;
     }
 
-    //ƒlƒbƒgƒ[ƒN‚©‚ç“Á’è‚ÌƒTƒuƒlƒbƒgƒ[ƒN‚ğØ‚è—£‚·ƒƒ\ƒbƒh
+    //ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯ã‹ã‚‰ç‰¹å®šã®ã‚µãƒ–ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯ã‚’åˆ‡ã‚Šé›¢ã™ãƒ¡ã‚½ãƒƒãƒ‰
     private void SafeCutNodes(List<GameObject> nodes)
     {
         foreach (var node in nodes)
@@ -148,7 +150,7 @@ public class Network : MonoBehaviour
         }
     }
 
-    //ƒTƒuƒlƒbƒgƒ[ƒN‚ÌF‚ğ•ÏX‚³‚¹‚éƒƒ\ƒbƒh
+    //ã‚µãƒ–ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯ã®è‰²ã‚’å¤‰æ›´ã•ã›ã‚‹ãƒ¡ã‚½ãƒƒãƒ‰
     private void ChangeColorNodes(List<GameObject> nodes)
     {
         foreach (var node in nodes)
@@ -158,7 +160,7 @@ public class Network : MonoBehaviour
         }
     }
 
-    //ƒTƒuƒlƒbƒgƒ[ƒN‚ğ•¨—“I‚ÉŒ‹‡‚µF‚ğ•ÏX‚µA‰¼‘z“I‚Èƒlƒbƒgƒ[ƒN‚©‚çØ‚è—£‚·ƒƒ\ƒbƒh
+    //ã‚µãƒ–ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯ã‚’ç‰©ç†çš„ã«çµåˆã—è‰²ã‚’å¤‰æ›´ã—ã€ä»®æƒ³çš„ãªãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯ã‹ã‚‰åˆ‡ã‚Šé›¢ã™ãƒ¡ã‚½ãƒƒãƒ‰
     private void FreezeNodes(List<GameObject> nodes)
     {
         for(int i=1; i<nodes.Count; i++)
@@ -169,7 +171,7 @@ public class Network : MonoBehaviour
         ChangeColorNodes(nodes);
     }
 
-    //‘æ“ñˆø”‚Åw’è‚µ‚½ŠÔŒãA‘æˆêˆø”‚Åw’è‚µ‚½ƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚ÌƒŠƒXƒg‚ÉA•¨—“I‚ÈŒvZ‚ğs‚í‚È‚­‚·‚éƒƒ\ƒbƒhB‹ó’†‚ÉŒÅ’è‚³‚ê‚éB
+    //ç¬¬äºŒå¼•æ•°ã§æŒ‡å®šã—ãŸæ™‚é–“å¾Œã€ç¬¬ä¸€å¼•æ•°ã§æŒ‡å®šã—ãŸã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ãƒªã‚¹ãƒˆã«ã€ç‰©ç†çš„ãªè¨ˆç®—ã‚’è¡Œã‚ãªãã™ã‚‹ãƒ¡ã‚½ãƒƒãƒ‰ã€‚ç©ºä¸­ã«å›ºå®šã•ã‚Œã‚‹ã€‚
     IEnumerator StopRigidbodys(List<GameObject> nodes, float second)
     {
         yield return new WaitForSeconds(second);
@@ -184,7 +186,7 @@ public class Network : MonoBehaviour
         yield break;
     }
 
-    //ğŒ‚ğ–‚½‚µ‚½‚Æ‚«‚Ìˆ—
+    //æ¡ä»¶ã‚’æº€ãŸã—ãŸã¨ãã®å‡¦ç†
     private void CompleteConditionsProcess(List<GameObject> nodes)
     {
         switch (gameModeManager.NowGameMode)
@@ -196,13 +198,13 @@ public class Network : MonoBehaviour
                 DelayProcessFreeze(nodes, 1.5f);
                 break;
         }
-        //Œãˆ—
-        startExpandNetworks = new Queue<ExpandNetwork>(); //’Tõ‚ªŠ®—¹‚µ‚½‚ç‚à‚¤ƒlƒbƒgƒ[ƒN“à‚ÉğŒ‚ğ–‚½‚·‚à‚Ì‚ª‘¶İ‚µ‚È‚¢‚Æl‚¦‚ç‚ê‚é‚Ì‚ÅAƒLƒ…[‚ğƒŠƒZƒbƒg‚µ‚Ä‚¨‚­B(‚ ‚é‚ÆƒoƒO‚ª”­¶‚·‚é)
+        //å¾Œå‡¦ç†
+        startExpandNetworks = new Queue<ExpandNetwork>(); //æ¢ç´¢ãŒå®Œäº†ã—ãŸã‚‰ã‚‚ã†ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯å†…ã«æ¡ä»¶ã‚’æº€ãŸã™ã‚‚ã®ãŒå­˜åœ¨ã—ãªã„ã¨è€ƒãˆã‚‰ã‚Œã‚‹ã®ã§ã€ã‚­ãƒ¥ãƒ¼ã‚’ãƒªã‚»ãƒƒãƒˆã—ã¦ãŠãã€‚(ã‚ã‚‹ã¨ãƒã‚°ãŒç™ºç”Ÿã™ã‚‹)
         nowCriteriaMetChecking = true;
         CheckConditionAllNetwork();
     }
 
-    //‘æ“ñˆø”‚Åw’è‚µ‚½ŠÔŒãAFreeze‚Ì•¶šAƒTƒEƒ“ƒhAƒGƒtƒFƒNƒg‚ğo—Í‚µA‘æˆêˆø”‚Åw’è‚µ‚½GameObject‚ÌƒŠƒXƒg‚ğ‹ó’†‚ÉŒÅ’è‚·‚é
+    //ç¬¬äºŒå¼•æ•°ã§æŒ‡å®šã—ãŸæ™‚é–“å¾Œã€Freezeã®æ–‡å­—ã€ã‚µã‚¦ãƒ³ãƒ‰ã€ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã‚’å‡ºåŠ›ã—ã€ç¬¬ä¸€å¼•æ•°ã§æŒ‡å®šã—ãŸGameObjectã®ãƒªã‚¹ãƒˆã‚’ç©ºä¸­ã«å›ºå®šã™ã‚‹
     private void DelayProcessFreeze(List<GameObject> nodes, float delayTime)
     {
         Vector3 nodesCenter = CaluculateCenter(nodes);
@@ -214,7 +216,7 @@ public class Network : MonoBehaviour
         freezeCondition = _conditionGenerator.GenerateCondition();
     }
 
-    //ˆø”‚Å—^‚¦‚ç‚ê‚½ƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚½‚¿‚ÌdS‚ğŒvZ‚µ‚Ä•Ô‚·ƒƒ\ƒbƒh
+    //å¼•æ•°ã§ä¸ãˆã‚‰ã‚ŒãŸã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŸã¡ã®é‡å¿ƒã‚’è¨ˆç®—ã—ã¦è¿”ã™ãƒ¡ã‚½ãƒƒãƒ‰
     private Vector3 CaluculateCenter(List<GameObject> gameObjects)
     {
         Vector3 center = Vector3.zero;
@@ -226,20 +228,20 @@ public class Network : MonoBehaviour
         return center;
     }
 
-    //‘æOˆø”‚Åw’è‚µ‚½ŠÔŒã‚ÉA‘æ“ñˆø”‚Åw’è‚µ‚½ˆÊ’u‚ÉA‘æˆêˆø”‚Åw’è‚µ‚½effect(GameObject)‚ğ¶¬‚·‚éƒƒ\ƒbƒh
+    //ç¬¬ä¸‰å¼•æ•°ã§æŒ‡å®šã—ãŸæ™‚é–“å¾Œã«ã€ç¬¬äºŒå¼•æ•°ã§æŒ‡å®šã—ãŸä½ç½®ã«ã€ç¬¬ä¸€å¼•æ•°ã§æŒ‡å®šã—ãŸeffect(GameObject)ã‚’ç”Ÿæˆã™ã‚‹ãƒ¡ã‚½ãƒƒãƒ‰
     private IEnumerator InstantiateEffect(GameObject effect, Vector3 position, float second)
     {
         yield return new WaitForSeconds (second);
         Instantiate(effect, position, Quaternion.identity);
     }
 
-    //ƒlƒbƒgƒ[ƒN‘S‘Ì‚ÉğŒ‚Éƒ}ƒbƒ`‚·‚é‚à‚Ì‚ª‚È‚¢‚©‚ğ’Tõ‚·‚é‚½‚ß‚Ìƒƒ\ƒbƒh ğŒ‚É‘¶İ‚·‚é‘f”‚Ì‚¤‚¿Aƒlƒbƒgƒ[ƒN‘S‘Ì‚ÅÅ¬ŒÂ”‚Ì‘f”‚ğ’T‚µA‚»‚Ìƒm[ƒh‚©‚ç’Tõ‚ğn‚ß‚é
+    //ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯å…¨ä½“ã«æ¡ä»¶ã«ãƒãƒƒãƒã™ã‚‹ã‚‚ã®ãŒãªã„ã‹ã‚’æ¢ç´¢ã™ã‚‹ãŸã‚ã®ãƒ¡ã‚½ãƒƒãƒ‰ æ¡ä»¶ã«å­˜åœ¨ã™ã‚‹ç´ æ•°ã®ã†ã¡ã€ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯å…¨ä½“ã§æœ€å°å€‹æ•°ã®ç´ æ•°ã‚’æ¢ã—ã€ãã®ãƒãƒ¼ãƒ‰ã‹ã‚‰æ¢ç´¢ã‚’å§‹ã‚ã‚‹
     void CheckConditionAllNetwork()
     {
-        int minNode = -1; //Å¬ŒÂ”‚Ì‘f”
-        int minNodeNum = int.MaxValue; //Å¬ŒÂ”‚Ì‘f”‚Ì”
+        int minNode = -1; //æœ€å°å€‹æ•°ã®ç´ æ•°
+        int minNodeNum = int.MaxValue; //æœ€å°å€‹æ•°ã®ç´ æ•°ã®æ•°
 
-        //ğŒ‚É‘¶İ‚·‚é‘f”‚ğ‘S’Tõ‚µAÅ¬ŒÂ”‚Ì‚à‚Ì‚ğ’T‚·
+        //æ¡ä»¶ã«å­˜åœ¨ã™ã‚‹ç´ æ•°ã‚’å…¨æ¢ç´¢ã—ã€æœ€å°å€‹æ•°ã®ã‚‚ã®ã‚’æ¢ã™
         foreach (int valueInFreezeCondition in freezeCondition.Keys)
         {
             if(minNodeNum > nodesDict[valueInFreezeCondition].Count)
@@ -248,20 +250,20 @@ public class Network : MonoBehaviour
                 minNode = valueInFreezeCondition;
             }
         }
-        //Å¬ŒÂ”‚Ì‘f”‚Í‚·‚Å‚É‹‚Ü‚Á‚Ä‚¢‚é‚Ì‚ÅA‚»‚ê‚É‘Î‚µ‚Äfor•ª‚ğ‰ñ‚µ‚ÄstartExpandNetworks
+        //æœ€å°å€‹æ•°ã®ç´ æ•°ã¯ã™ã§ã«æ±‚ã¾ã£ã¦ã„ã‚‹ã®ã§ã€ãã‚Œã«å¯¾ã—ã¦foråˆ†ã‚’å›ã—ã¦startExpandNetworks
         foreach(var node in nodesDict[minNode])
         {
             startExpandNetworks.Enqueue(new ExpandNetwork(null, node, freezeCondition));
         }
     }
 
-    //‘æ“ñˆø”‚Åw’è‚µ‚½ğŒ‚ğ–‚½‚·ƒTƒuƒOƒ‰ƒt‚ÌğŒ‚ğA‘æˆêˆø”‚Åw’è‚µ‚½ƒlƒbƒgƒ[ƒN‚ª–‚½‚µ‚Ä‚¢‚é‚©‚ğƒ`ƒFƒbƒN‚·‚éƒƒ\ƒbƒh
+    //ç¬¬äºŒå¼•æ•°ã§æŒ‡å®šã—ãŸæ¡ä»¶ã‚’æº€ãŸã™ã‚µãƒ–ã‚°ãƒ©ãƒ•ã®æ¡ä»¶ã‚’ã€ç¬¬ä¸€å¼•æ•°ã§æŒ‡å®šã—ãŸãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯ãŒæº€ãŸã—ã¦ã„ã‚‹ã‹ã‚’ãƒã‚§ãƒƒã‚¯ã™ã‚‹ãƒ¡ã‚½ãƒƒãƒ‰
     bool ContainsAllRequiredNodes(List<GameObject> myNetwork, Dictionary<int, int> requiredNodesDict)
     {
         Dictionary<int, int> requiredCounts = new Dictionary<int, int>(requiredNodesDict);
         //Debug.Log(string.Join(", ", requiredCounts));
 
-        //Œ»İ‚Ìƒlƒbƒgƒ[ƒN“à‚Ìƒm[ƒh‚ÌoŒ»‰ñ”‚ğƒJƒEƒ“ƒg
+        //ç¾åœ¨ã®ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯å†…ã®ãƒãƒ¼ãƒ‰ã®å‡ºç¾å›æ•°ã‚’ã‚«ã‚¦ãƒ³ãƒˆ
         foreach (var node in myNetwork)
         {
             int nodeValue = node.GetComponent<BlockInfo>().GetPrimeNumber();
@@ -271,17 +273,17 @@ public class Network : MonoBehaviour
                 if (requiredCounts[nodeValue] == 0)
                     requiredCounts.Remove(nodeValue);
             }
-            //‚à‚µƒTƒuƒlƒbƒgƒ[ƒN“à‚ÉŠÖŒW‚Ì‚È‚¢”’l‚ª‚ ‚ê‚Îfalse‚ğ•Ô‚·
+            //ã‚‚ã—ã‚µãƒ–ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯å†…ã«é–¢ä¿‚ã®ãªã„æ•°å€¤ãŒã‚ã‚Œã°falseã‚’è¿”ã™
             else
             {
                 return false;
             }
         }
 
-        return requiredCounts.Count == 0; //•K—v‚Èƒm[ƒh‚ª‚·‚×‚ÄŠÜ‚Ü‚ê‚Ä‚¢‚ê‚Îtrue
+        return requiredCounts.Count == 0; //å¿…è¦ãªãƒãƒ¼ãƒ‰ãŒã™ã¹ã¦å«ã¾ã‚Œã¦ã„ã‚Œã°true
     }
 
-    //ƒlƒbƒgƒ[ƒN‚©‚çƒTƒuƒOƒ‰ƒt‚ğ’Tõ‚·‚éŠg’£‘O‚ÌExpandNetwork‚ğAŠg’£‚·‚éƒlƒbƒgƒ[ƒN‚ğ“ü‚ê‚éƒLƒ…[‚É’Ç‰Á‚·‚éBUpdate“à‚ÅA‚±‚ÌƒLƒ…[‚©‚ç—v‘f‚ªæ‚èo‚³‚êA©“®‚Å’Tõ‚ªn‚Ü‚éB
+    //ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯ã‹ã‚‰ã‚µãƒ–ã‚°ãƒ©ãƒ•ã‚’æ¢ç´¢ã™ã‚‹æ‹¡å¼µå‰ã®ExpandNetworkã‚’ã€æ‹¡å¼µã™ã‚‹ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯ã‚’å…¥ã‚Œã‚‹ã‚­ãƒ¥ãƒ¼ã«è¿½åŠ ã™ã‚‹ã€‚Updateå†…ã§ã€ã“ã®ã‚­ãƒ¥ãƒ¼ã‹ã‚‰è¦ç´ ãŒå–ã‚Šå‡ºã•ã‚Œã€è‡ªå‹•ã§æ¢ç´¢ãŒå§‹ã¾ã‚‹ã€‚
     public void AddStartExpandNetworks(HashSet<GameObject> neiborSet)
     {
         ExpandNetwork currentNetwork = null;
@@ -300,19 +302,19 @@ public class Network : MonoBehaviour
         startExpandNetworks.Enqueue(currentNetwork);
     }
 
-    //ƒlƒbƒgƒ[ƒN‚ğŠg’£‚µ‚È‚ª‚çƒTƒuƒOƒ‰ƒt‚ğ’Tõ‚·‚éÄ‹A“Iƒƒ\ƒbƒh
+    //ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯ã‚’æ‹¡å¼µã—ãªãŒã‚‰ã‚µãƒ–ã‚°ãƒ©ãƒ•ã‚’æ¢ç´¢ã™ã‚‹å†å¸°çš„ãƒ¡ã‚½ãƒƒãƒ‰
     private void ExpandAndSearch(ExpandNetwork currentNetwork)
     {
-        //Šg’£‚µ‚½ƒlƒbƒgƒ[ƒN‚ªğŒ‚ğ–‚½‚µ‚Ä‚¢‚½‚ç
+        //æ‹¡å¼µã—ãŸãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯ãŒæ¡ä»¶ã‚’æº€ãŸã—ã¦ã„ãŸã‚‰
         if (ContainsAllRequiredNodes(currentNetwork.myNetwork, freezeCondition))
         {
-            //ğŒ¶¬‚ÉŠù‚ÉğŒ‚ğ’B¬‚µ‚Ä‚¢‚½ê‡¨ğŒ‚ğÄ¶¬‚µ‚ÄÄ‚Ñ’²¸B
+            //æ¡ä»¶ç”Ÿæˆæ™‚ã«æ—¢ã«æ¡ä»¶ã‚’é”æˆã—ã¦ã„ãŸå ´åˆâ†’æ¡ä»¶ã‚’å†ç”Ÿæˆã—ã¦å†ã³èª¿æŸ»ã€‚
             if (nowCriteriaMetChecking) 
             {
                 freezeCondition = _conditionGenerator.GenerateCondition();
                 nowCriteriaMetChecking = true;
                 CheckConditionAllNetwork();
-                //Debug.Log("Ä¶¬");
+                //Debug.Log("å†ç”Ÿæˆ");
                 return;
             }
             Debug.Log(string.Join(", ", currentNetwork.myNetwork));
@@ -320,34 +322,34 @@ public class Network : MonoBehaviour
             return;
         }
 
-        //Œ»İŠg’£’†‚Ìƒlƒbƒgƒ[ƒN‚É‘¶İ‚·‚éŠeƒm[ƒh‚Ì—×Úƒm[ƒh‚ğ’Tõ
+        //ç¾åœ¨æ‹¡å¼µä¸­ã®ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯ã«å­˜åœ¨ã™ã‚‹å„ãƒãƒ¼ãƒ‰ã®éš£æ¥ãƒãƒ¼ãƒ‰ã‚’æ¢ç´¢
         foreach (var node in currentNetwork.myNetwork)
         {
-            //¡Œ©‚Ä‚¢‚éƒm[ƒh‚É—×Ú‚·‚éƒm[ƒh‚ğ‘S‚ÄƒŠƒXƒg‚É’Ç‰Á
+            //ä»Šè¦‹ã¦ã„ã‚‹ãƒãƒ¼ãƒ‰ã«éš£æ¥ã™ã‚‹ãƒãƒ¼ãƒ‰ã‚’å…¨ã¦ãƒªã‚¹ãƒˆã«è¿½åŠ 
             List<GameObject> adjacentNodes = node.GetComponent<BlockInfo>().GetNeighborEdge();
 
-            //Œ»İ‚Ìƒlƒbƒgƒ[ƒN‚ÆclosedList‚ÉŠÜ‚Ü‚ê‚Ä‚¢‚È‚¢ƒm[ƒh‚Ì‚İ‚ğ‘I‘ğ
+            //ç¾åœ¨ã®ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯ã¨closedListã«å«ã¾ã‚Œã¦ã„ãªã„ãƒãƒ¼ãƒ‰ã®ã¿ã‚’é¸æŠ
             adjacentNodes = adjacentNodes.Where(n => !currentNetwork.closedList.Contains(n) && !currentNetwork.myNetwork.Contains(n)).ToList();
 
-            //—×Ú‚·‚éV‚µ‚¢ƒm[ƒh‚ª‚È‚¯‚ê‚ÎƒXƒLƒbƒv
+            //éš£æ¥ã™ã‚‹æ–°ã—ã„ãƒãƒ¼ãƒ‰ãŒãªã‘ã‚Œã°ã‚¹ã‚­ãƒƒãƒ—
             if (adjacentNodes.Count == 0)
             {
                 continue; 
             }
 
-            //¡Œ©‚Ä‚¢‚éƒm[ƒh‚É—×Ú‚·‚éƒm[ƒh‚ğ’Tõ
+            //ä»Šè¦‹ã¦ã„ã‚‹ãƒãƒ¼ãƒ‰ã«éš£æ¥ã™ã‚‹ãƒãƒ¼ãƒ‰ã‚’æ¢ç´¢
             foreach (var adjacentNode in adjacentNodes)
             {
-                if (adjacentNode.gameObject.GetComponent<BlockInfo>().enabled == false) continue; //ƒlƒbƒgƒ[ƒN‚©‚çØ‚è—£‚³‚ê‚Äblockinfo‚ª‚È‚­‚È‚Á‚½ƒuƒƒbƒN‚ªadjacentNodes‚ÉŠÜ‚Ü‚ê‚ê‚ÎAˆ—‚ğƒXƒLƒbƒv
-                ExpandNetwork newNetwork = new ExpandNetwork(currentNetwork, adjacentNode, freezeCondition); //Šg’£
+                if (adjacentNode.gameObject.GetComponent<BlockInfo>().enabled == false) continue; //ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯ã‹ã‚‰åˆ‡ã‚Šé›¢ã•ã‚Œã¦blockinfoãŒãªããªã£ãŸãƒ–ãƒ­ãƒƒã‚¯ãŒadjacentNodesã«å«ã¾ã‚Œã‚Œã°ã€å‡¦ç†ã‚’ã‚¹ã‚­ãƒƒãƒ—
+                ExpandNetwork newNetwork = new ExpandNetwork(currentNetwork, adjacentNode, freezeCondition); //æ‹¡å¼µ
 
-                //ê‡‚É‚æ‚Á‚Ä‚ÍŠg’£‘O‚É–ß‚é
+                //å ´åˆã«ã‚ˆã£ã¦ã¯æ‹¡å¼µå‰ã«æˆ»ã‚‹
                 if (newNetwork.BackFlag)
                 {
                     newNetwork = newNetwork.Beforenetwork;
                 }
                 
-                //Ä‹AŒÄ‚Ño‚µ
+                //å†å¸°å‘¼ã³å‡ºã—
                 ExpandAndSearch(newNetwork);
             }
         }

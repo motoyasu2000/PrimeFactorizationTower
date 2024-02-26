@@ -1,46 +1,44 @@
-using System.Collections.Generic;
+ï»¿using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using static GameModeManager;
 
+//ã‚²ãƒ¼ãƒ ãƒ¢ãƒ¼ãƒ‰ã‚„ã€é›£æ˜“åº¦ã‚’ç®¡ç†ã™ã‚‹ã‚¯ãƒ©ã‚¹ã€‚ã‚·ãƒ³ã‚°ãƒ«ãƒˆãƒ³ãƒ‘ã‚¿ãƒ¼ãƒ³ã‚’æ‰±ã£ã¦ã„ã‚‹ã€‚
 public class GameModeManager : MonoBehaviour
 {
-    //ƒVƒ“ƒOƒ‹ƒgƒ“‚ÌƒCƒ“ƒXƒ^ƒ“ƒX
+    //ã‚·ãƒ³ã‚°ãƒ«ãƒˆãƒ³ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹
     private static GameModeManager instance;
-
     public static GameModeManager GameModemanagerInstance => instance;
 
+    //ã‚²ãƒ¼ãƒ ãƒ¢ãƒ¼ãƒ‰é–¢ä¿‚
+    public enum GameMode
+    {
+        PileUp, //ç©ã¿ä¸Šã’ãƒ¢ãƒ¼ãƒ‰
+    }
+    GameMode nowGameMode = GameMode.PileUp; //åˆæœŸå€¤ã¯ç©ã¿ä¸Šã’ãƒ¢ãƒ¼ãƒ‰
+    public GameMode NowGameMode => nowGameMode;
 
-
-    //“ïˆÕ“x‚ğ•\‚·—ñ‹“Œ^‚Ì’è‹`
+    //é›£æ˜“åº¦é–¢ä¿‚
     public enum DifficultyLevel
     {
         Normal,
         Difficult,
         Insane
     }
-    public enum GameMode
-    {
-        PileUp, //Ï‚İã‚°ƒ‚[ƒh
-    }
-
-    [SerializeField] DifficultyLevel nowDifficultyLevel = DifficultyLevel.Difficult; //“ïˆÕ“xŒ^‚Ì•Ï”‚ğ’è‹`A‚Æ‚è‚ ‚¦‚¸Normal‚Å‰Šú‰» “KØ‚Èƒ^ƒCƒ~ƒ“ƒO‚Å“ïˆÕ“x’²®‚ª‚Å‚«‚é‚æ‚¤‚ÉØ‚è‘Ö‚¦‚é•K—v‚ª‚ ‚éB
-    public DifficultyLevel NowDifficultyLevel => nowDifficultyLevel;
-    GameMode nowGameMode = GameMode.PileUp; //‰Šú’l‚ÍÏ‚İã‚°ƒ‚[ƒh
-    public GameMode NowGameMode => nowGameMode;
 
     int[] primeNumberPool = new int[9]
     {
         2,3,5,7,11,13,17,19,23
     };
-    public int[] PrimeNumberPool => primeNumberPool;
-
     List<int> normalPool = new List<int>();
     List<int> difficultPool = new List<int>();
     List<int> insanePool = new List<int>();
+    DifficultyLevel nowDifficultyLevel = DifficultyLevel.Difficult; //é›£æ˜“åº¦å‹ã®å¤‰æ•°ã‚’å®šç¾©ã€ã¨ã‚Šã‚ãˆãšNormalã§åˆæœŸåŒ– é©åˆ‡ãªã‚¿ã‚¤ãƒŸãƒ³ã‚°ã§é›£æ˜“åº¦èª¿æ•´ãŒã§ãã‚‹ã‚ˆã†ã«åˆ‡ã‚Šæ›¿ãˆã‚‹å¿…è¦ãŒã‚ã‚‹ã€‚
+    public int[] PrimeNumberPool => primeNumberPool;
     public List<int> NormalPool => normalPool;
     public List<int> DifficultPool => difficultPool;
     public List<int> InsanePool => insanePool;
+    public DifficultyLevel NowDifficultyLevel => nowDifficultyLevel;
 
     void Awake()
     {
@@ -52,8 +50,8 @@ public class GameModeManager : MonoBehaviour
         }
         if (instance == null)
         {
-            instance = this; //’Pˆê‚ÌstaticƒCƒ“ƒXƒ^ƒ“ƒX‚Ì¶¬B
-            DontDestroyOnLoad(this.gameObject); //ƒV[ƒ“‚ÌØ‚è‘Ö‚¦‚É”jŠü‚³‚ê‚È‚¢‚æ‚¤‚É‚·‚é
+            instance = this; //å˜ä¸€ã®staticã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã®ç”Ÿæˆã€‚
+            DontDestroyOnLoad(this.gameObject); //ã‚·ãƒ¼ãƒ³ã®åˆ‡ã‚Šæ›¿ãˆæ™‚ã«ç ´æ£„ã•ã‚Œãªã„ã‚ˆã†ã«ã™ã‚‹
         }
         LoadDifficultyLevelData();
     }
@@ -68,7 +66,7 @@ public class GameModeManager : MonoBehaviour
     {
         instance.nowDifficultyLevel = newDifficultyLevel;
         SaveDifficultyLevelData();
-        Debug.Log($"Œ»İ•ÏX‚³‚ê‚½“ïˆÕ“x : {newDifficultyLevel}");
+        Debug.Log($"ç¾åœ¨å¤‰æ›´ã•ã‚ŒãŸé›£æ˜“åº¦ : {newDifficultyLevel}");
     }
 
     public void SaveDifficultyLevelData()
@@ -86,12 +84,12 @@ public class GameModeManager : MonoBehaviour
         StreamReader reader = new StreamReader(Application.persistentDataPath + "/DifficultyLevel.json");
         string datastr = reader.ReadToEnd();
         reader.Close();
-        var obj = JsonUtility.FromJson<JsonLoadGameModeManager>(datastr); //Monobehavior‚ğŒp³‚µ‚½ƒNƒ‰ƒX‚Å‚ÍJsonƒtƒ@ƒCƒ‹‚ğ“Ç‚İ‚Ş‚±‚Æ‚ª‚Å‚«‚È‚¢‚½‚ßA‘¼‚ÌƒNƒ‰ƒX‚ğ¶¬‚µ“Ç‚İ‚Ş
+        var obj = JsonUtility.FromJson<JsonLoadGameModeManager>(datastr); //Monobehaviorã‚’ç¶™æ‰¿ã—ãŸã‚¯ãƒ©ã‚¹ã§ã¯Jsonãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã¿è¾¼ã‚€ã“ã¨ãŒã§ããªã„ãŸã‚ã€ä»–ã®ã‚¯ãƒ©ã‚¹ã‚’ç”Ÿæˆã—èª­ã¿è¾¼ã‚€
         instance.nowDifficultyLevel = obj.nowDifficultyLevel;
     }
 }
 
-//Json‚©‚çƒCƒ“ƒXƒ^ƒ“ƒX‚ğ¶¬‚·‚é‚½‚ß‚ÌƒNƒ‰ƒX
+//Jsonã‹ã‚‰ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’ç”Ÿæˆã™ã‚‹ãŸã‚ã®ã‚¯ãƒ©ã‚¹
 class JsonLoadGameModeManager
 {
     public DifficultyLevel nowDifficultyLevel;

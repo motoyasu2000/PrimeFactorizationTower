@@ -1,35 +1,39 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
 namespace UI
 {
+    //ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼æ™‚ã®ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚’ç®¡ç†ã™ã‚‹ã‚¯ãƒ©ã‚¹
     public class GameOverMenuManager : MonoBehaviour
     {
-        ScoreManager scoreManager;
-        GameModeManager gameModeManager;
         int oldMaxScore;
         int newScore;
-        [SerializeField] GameManager gameManager;
-        [SerializeField] TextMeshProUGUI gameOverReason;
-        [SerializeField] GameObject Scores_NonUpdateRecord;
-        [SerializeField] GameObject Scores_UpdateRecord;
+        GameModeManager gameModeManager;
+        GameManager gameManager;
+        TextMeshProUGUI gameOverReason;
+        GameObject nonUpdateRecord; //ã‚¹ã‚³ã‚¢ã‚’æ›´æ–°ã—ãªã‹ã£ãŸå ´åˆã®ãƒ¬ã‚³ãƒ¼ãƒ‰ã®è¡¨ç¤ºUI
+        GameObject updateRecord; //ã‚¹ã‚³ã‚¢ã‚’æ›´æ–°ãŸå ´åˆã®ãƒ¬ã‚³ãƒ¼ãƒ‰ã®è¡¨ç¤ºUI
         void Awake()
         {
-            scoreManager = ScoreManager.ScoreManagerInstance;
             gameModeManager = GameModeManager.GameModemanagerInstance;
+            gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+            gameOverReason = GameObject.Find("GameOverReason").GetComponent<TextMeshProUGUI>();
+            //éã‚¢ã‚¯ãƒ†ã‚£ãƒ–ãªã®ã§transform.Findã§å–å¾—
+            nonUpdateRecord = transform.Find("Scores_NonUpdateRecord").gameObject;
+            updateRecord = transform.Find("Scores_UpdateRecord").gameObject;
 
             PrintGameOverReason();
             DisplayScoreMenu();
         }
 
-        //ƒQ[ƒ€ƒI[ƒo[‚Ì‰æ–Ê‚É‚ÄAƒQ[ƒ€ƒI[ƒo[‚É‚È‚Á‚½——R‚ğ•\¦‚·‚éƒƒ\ƒbƒh
+        //ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼æ™‚ã®ç”»é¢ã«ã¦ã€ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼ã«ãªã£ãŸç†ç”±ã‚’è¡¨ç¤ºã™ã‚‹ãƒ¡ã‚½ãƒƒãƒ‰
         void PrintGameOverReason()
         {
             switch (gameModeManager.NowGameMode)
             {
-                //ƒQ[ƒ€ƒ‚[ƒh‚ªPileUp‚Å‚ ‚é‚Æ‚«A‘fˆö”•ª‰ğ‚ğŠÔˆá‚¦‚½ê‡‚ÍA©•ª‚Ì‘I‚ñ‚¾”š‚Å‡¬”‚ğŠ„‚Á‚½ê‡‚Ç‚¤‚È‚é‚Ì‚©‚Ì•\¦A—‰º‚µ‚Ä‚µ‚Ü‚Á‚½ê‡‚ÍFellDown‚Æ•\¦‚ğ‚·‚éB
+                //ã‚²ãƒ¼ãƒ ãƒ¢ãƒ¼ãƒ‰ãŒPileUpã§ã‚ã‚‹ã¨ãã€ç´ å› æ•°åˆ†è§£ã‚’é–“é•ãˆãŸå ´åˆã¯ã€è‡ªåˆ†ã®é¸ã‚“ã æ•°å­—ã§åˆæˆæ•°ã‚’å‰²ã£ãŸå ´åˆã©ã†ãªã‚‹ã®ã‹ã®è¡¨ç¤ºã€è½ä¸‹ã—ã¦ã—ã¾ã£ãŸå ´åˆã¯FellDownã¨è¡¨ç¤ºã‚’ã™ã‚‹
                 case GameModeManager.GameMode.PileUp:
                     if (gameManager.PrimeNumber_GO != 0) gameOverReason.text = $"{gameManager.CompositeNumber_GO} / {gameManager.PrimeNumber_GO} = {gameManager.CompositeNumber_GO / gameManager.PrimeNumber_GO}...{gameManager.CompositeNumber_GO % gameManager.PrimeNumber_GO}";
                     else gameOverReason.text = "Fell Down";
@@ -37,7 +41,7 @@ namespace UI
             }
         }
 
-        //ƒQ[ƒ€ƒI[ƒo[‚ÌƒXƒRƒA‚ğ•\¦‚³‚¹‚éƒƒ\ƒbƒhBÅ‚ƒXƒRƒA‚ğXV‚µ‚½‚©”Û‚©‚ÅˆÙ‚È‚éƒXƒRƒA‚Ì•\¦‚Ìd•û‚ğ‚·‚éB
+        //ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼æ™‚ã®ã‚¹ã‚³ã‚¢ã‚’è¡¨ç¤ºã•ã›ã‚‹ãƒ¡ã‚½ãƒƒãƒ‰ æœ€é«˜ã‚¹ã‚³ã‚¢ã‚’æ›´æ–°ã—ãŸã‹å¦ã‹ã§ç•°ãªã‚‹ã‚¹ã‚³ã‚¢ã®è¡¨ç¤ºã®ä»•æ–¹ã‚’ã™ã‚‹
         void DisplayScoreMenu()
         {
             oldMaxScore = gameManager.OldMaxScore;
@@ -45,31 +49,31 @@ namespace UI
             Debug.Log(oldMaxScore);
             if (newScore <= oldMaxScore)
             {
-                Scores_NonUpdateRecord.SetActive(true);
+                nonUpdateRecord.SetActive(true);
                 PrintNonUpdateRecord();
             }
             else
             {
-                Scores_UpdateRecord.SetActive(true);
+                updateRecord.SetActive(true);
                 PrintUpdateRecord();
             }
 
         }
 
-        //ƒXƒRƒA‚ğXV‚µ‚È‚©‚Á‚½ê‡‚ÌƒXƒRƒA‚Ì•\¦B
+        //ã‚¹ã‚³ã‚¢ã‚’æ›´æ–°ã—ãªã‹ã£ãŸå ´åˆã®ã‚¹ã‚³ã‚¢ã®è¡¨ç¤º
         void PrintNonUpdateRecord()
         {
-            TextMeshProUGUI newScoreText = Scores_NonUpdateRecord.transform.Find("NewScore").GetComponent<TextMeshProUGUI>();
-            TextMeshProUGUI oldScoreText = Scores_NonUpdateRecord.transform.Find("OldScore").GetComponent<TextMeshProUGUI>();
+            TextMeshProUGUI newScoreText = nonUpdateRecord.transform.Find("NewScore").GetComponent<TextMeshProUGUI>();
+            TextMeshProUGUI oldScoreText = nonUpdateRecord.transform.Find("OldScore").GetComponent<TextMeshProUGUI>();
             newScoreText.text = "New Score: " + newScore.ToString();
             oldScoreText.text = "Max Score: " + oldMaxScore.ToString();
         }
 
-        //ƒXƒRƒA‚ğXV‚µ‚½ê‡‚ÌƒXƒRƒA‚Ì•\¦B
+        //ã‚¹ã‚³ã‚¢ã‚’æ›´æ–°ã—ãŸå ´åˆã®ã‚¹ã‚³ã‚¢ã®è¡¨ç¤º
         void PrintUpdateRecord()
         {
-            TextMeshProUGUI newScoreText = Scores_UpdateRecord.transform.Find("NewScore").GetComponent<TextMeshProUGUI>();
-            TextMeshProUGUI oldScoreText = Scores_UpdateRecord.transform.Find("OldScore").GetComponent<TextMeshProUGUI>();
+            TextMeshProUGUI newScoreText = updateRecord.transform.Find("NewScore").GetComponent<TextMeshProUGUI>();
+            TextMeshProUGUI oldScoreText = updateRecord.transform.Find("OldScore").GetComponent<TextMeshProUGUI>();
             newScoreText.text = newScore.ToString();
             oldScoreText.text = "Old Max: " + oldMaxScore.ToString();
         }
