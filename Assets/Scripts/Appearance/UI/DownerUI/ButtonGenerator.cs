@@ -17,7 +17,8 @@ namespace UI
             buttonArea = GameObject.Find("ButtonArea");
             buttonPrefab = Resources.Load("ButtonPrefab") as GameObject;
             gameModeManager = GameModeManager.GameModemanagerInstance;
-            for(int i=0; i<gameModeManager.PrimeNumberPool.Length; i++)
+            int[] myPrimeNumberPool = gameModeManager.GetGameModeMatchDifficultyLevel();
+            for (int i=0; i<myPrimeNumberPool.Length; i++)
             {
                 //左端(もしくは下端)を基準にしたインデックス
                 int xi_left = i % 3;
@@ -32,9 +33,8 @@ namespace UI
 
                 buttonRectTransform.offsetMin = Vector2.zero;
                 buttonRectTransform.offsetMax = Vector2.zero;
-
-                int[] myPrimeNumberPool = gameModeManager.GetGameModeMatchDifficultyLevel();
-                if(i < myPrimeNumberPool.Length)newButton.GetComponent<BlockGenerator>().SetPrimeNumber(myPrimeNumberPool[i]);
+                
+                newButton.GetComponent<BlockGenerator>().SetPrimeNumber(myPrimeNumberPool[i]);
             }
         }
     }
