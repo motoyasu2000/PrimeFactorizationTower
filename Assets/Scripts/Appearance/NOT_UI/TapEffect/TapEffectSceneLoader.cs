@@ -1,12 +1,33 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.SceneManagement;
 
 public class TapEffectSceneLoader : MonoBehaviour
 {
-    void Start()
+    IEnumerator Start()
     {
-        SceneManager.LoadScene("TapEffectScene", LoadSceneMode.Additive);
+        //TapEffectSceneを非同期ロード
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync("TapEffectScene", LoadSceneMode.Additive);
+
+        //ロードが完了するまで待機
+        while (!asyncLoad.isDone)
+        {
+            yield return null;
+        }
+
+        //ロード完了後
+        Scene tapEffectScene = SceneManager.GetSceneByName("TapEffectScene");
+        GameObject[] rootGameObjects = tapEffectScene.GetRootGameObjects();
+        Camera tapEffectCamera = null;
+        foreach (GameObject obj in rootGameObjects)
+        {
+            if (obj.name == "TapEffectCamera") tapEffectCamera = obj.GetComponent<Camera>();
+        }
+
+        var cameraData = Camera.main.GetUniversalAdditionalCameraData();
+        cameraData.cameraStack.Add(tapEffectCamera);
     }
+
 }

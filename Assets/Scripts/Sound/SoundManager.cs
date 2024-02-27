@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 //音声を管理するクラス
 [Serializable]
@@ -33,6 +34,7 @@ public class SoundManager : MonoBehaviour
     AudioSource voice_freeze;
     AudioSource se_done;
     AudioSource se_freeze;
+    AudioSource se_tap;
     AudioSource bgm_play;
     AudioSource bgm_title;
 
@@ -41,6 +43,7 @@ public class SoundManager : MonoBehaviour
     public AudioSource VOICE_FREEZE => voice_freeze;
     public AudioSource SE_DONE => se_done;
     public AudioSource SE_FREEZE => se_freeze;
+    public AudioSource SE_TAP => se_tap;
     public AudioSource BGM_PLAY => bgm_play;
     public AudioSource BGM_TITLE => bgm_title;
 
@@ -60,6 +63,7 @@ public class SoundManager : MonoBehaviour
         voice_freeze = transVoices.Find("Freeze").GetComponent<AudioSource>();
         se_done = transSEs.Find("Done").GetComponent<AudioSource>();
         se_freeze = transSEs.Find("Freeze").GetComponent<AudioSource>();
+        se_tap = transSEs.Find("Tap").GetComponent <AudioSource>();
         bgm_play = transBGMs.Find("Play").GetComponent <AudioSource>();
         bgm_title = transBGMs.Find("Title").GetComponent<AudioSource>();
 
@@ -69,6 +73,7 @@ public class SoundManager : MonoBehaviour
         Voices.Add(voice_freeze);
         SEs.Add(se_done);
         SEs.Add(se_freeze);
+        SEs.Add(se_tap);
         BGMs.Add(bgm_play);
         BGMs.Add(bgm_title);
 
@@ -77,10 +82,13 @@ public class SoundManager : MonoBehaviour
         {
             instance = this;
             DontDestroyOnLoad(instance);
+
+            string sceneName = SceneManager.GetActiveScene().name;
+            if (sceneName == "PlayScene") PlayAudio(BGM_PLAY);
+            else if (sceneName == "TitleScene") PlayAudio(BGM_TITLE);
         }
 
-        //BGMの再生と音声システムデータの読み込み
-        PlayAudio(bgm_title);
+        //音声システムデータの読み込み
         LoadSoundSettingData();
     }
     private void Update()

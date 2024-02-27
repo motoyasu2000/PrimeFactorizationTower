@@ -1,14 +1,21 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class TapEffectSpawner : MonoBehaviour
 {
     GameObject tapEffect;
+    SoundManager soundManager;
+    Camera tapEffectCamera;
+    Scene tapEffectScene;
 
     private void Start()
     {
         tapEffect = Resources.Load("TapEffect") as GameObject;
+        soundManager = SoundManager.SoundManagerInstance;
+        tapEffectCamera = GameObject.Find("TapEffectCamera").GetComponent<Camera>();
+        tapEffectScene = SceneManager.GetSceneByName("TapEffectScene");
     }
 
     void Update()
@@ -21,11 +28,14 @@ public class TapEffectSpawner : MonoBehaviour
             if (touch.phase == TouchPhase.Began)
             {
                 //スクリーン座標をワールド座標に変換
-                Vector3 touchPosition = Camera.main.ScreenToWorldPoint(touch.position);
+                Vector3 touchPosition = tapEffectCamera.ScreenToWorldPoint(touch.position);
                 touchPosition.z = 0;
 
-                //エフェクトをインスタンス化
-                Instantiate(tapEffect, touchPosition, Quaternion.identity);
+                //エフェクトをインスタンス化して、TapEffectManager内に送る
+                GameObject nowTapEffect = Instantiate(tapEffect, touchPosition, Quaternion.identity);
+                SceneManager.MoveGameObjectToScene(nowTapEffect, tapEffectScene);
+
+                soundManager.PlayAudio(soundManager.SE_TAP);
             }
         }
     }
