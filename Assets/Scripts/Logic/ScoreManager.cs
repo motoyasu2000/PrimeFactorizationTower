@@ -16,7 +16,7 @@ public class ScoreManager : MonoBehaviour
     GameObject afterField;
     GameObject completedField;
     TextMeshProUGUI maxScore;
-    Dictionary<GameModeManager.DifficultyLevel, int[]> pileUpScores = new Dictionary<GameModeManager.DifficultyLevel,int[]>();
+    [SerializeField] Dictionary<GameModeManager.DifficultyLevel, int[]> pileUpScores = new Dictionary<GameModeManager.DifficultyLevel,int[]>();　//Json形式で保存するために、シリアライズ可能にしておく
     public float NowScore => nowScore;
     public Dictionary<GameModeManager.DifficultyLevel, int[]> PileUpScores => pileUpScores;
 
@@ -92,6 +92,7 @@ public class ScoreManager : MonoBehaviour
     //シーンロード時に呼ばれる初期化メソッド
     void InitializeFields()
     {
+        nowScore = 0;
         //列挙型DifficultyLevelで定義されているのに、辞書のキー内に存在しない難易度があったら、その難易度のキーを追加する。
         foreach (GameModeManager.DifficultyLevel level in Enum.GetValues(typeof(GameModeManager.DifficultyLevel)))
         {
@@ -101,15 +102,16 @@ public class ScoreManager : MonoBehaviour
             }
         }
 
-        //ゲームシーンにあるゲームオブジェクト名を使って変数を作っているので 現在GameScene以外ならこの後の処理を行わない。
-        if (SceneManager.GetActiveScene() != SceneManager.GetSceneByName("GameScene")) return;
+        //ゲームシーンにあるゲームオブジェクト名を使って変数を作っているので 現在PlayScene以外ならこの後の処理を行わない。
+        if (SceneManager.GetActiveScene() != SceneManager.GetSceneByName("PlayScene")) return;
         instance.blockField = GameObject.Find("BlockField");
         instance.afterField = blockField.transform.Find("AfterField").gameObject;
         instance.completedField = blockField.transform.Find("CompletedField").gameObject;
-        instance.maxScore = GameObject.Find("MaxScore").GetComponent<TextMeshProUGUI>();
+        instance.maxScore = GameObject.Find("MaxScoreText").GetComponent<TextMeshProUGUI>();
         instance.nowScore = 0;
         //表示する最高スコアの更新
         instance.maxScore.text = instance.pileUpScores[GameModeManager.GameModemanagerInstance.NowDifficultyLevel][0].ToString();
+        Debug.Log("instance.pileUpScores[GameModeManager.GameModemanagerInstance.NowDifficultyLevel][0]");
     }
 
     //新しいスコアをスコアを管理する辞書に追加し、ソートを行う。
