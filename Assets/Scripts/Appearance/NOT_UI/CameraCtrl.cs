@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 //ブロックが積みあがっていき、高くなりすぎるとブロックがカメラにとらえられなくなる恐れがある。
-//そこでブロックの最高点からカメラの高さや範囲を拡大する必要があり、それを管理するクラス。
+//そこでブロックの最高点からカメラの高さや範囲を計算して拡大するクラス。
 public class CameraCtrl : MonoBehaviour
 {
     float startHeight = 6; //カメラの移動を開始する高さ
