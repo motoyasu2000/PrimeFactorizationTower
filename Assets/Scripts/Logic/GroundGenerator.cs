@@ -16,6 +16,7 @@ public class GroundGenerator : MonoBehaviour
             newGround.transform.localScale = new Vector3(1, Random.Range(0.5f, 1.5f), 1); //変形
             newGround.transform.Rotate(new Vector3(0, 0, Random.Range(-20f, 20f))); //回転
             newGround.transform.parent = transform;
+            newGround.tag = "Ground";
         }
     }
 }
