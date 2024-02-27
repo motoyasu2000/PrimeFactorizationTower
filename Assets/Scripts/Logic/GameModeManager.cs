@@ -62,6 +62,21 @@ public class GameModeManager : MonoBehaviour
         Debug.Log($"ModeSet : {newGameMode}");
     }
 
+    public int[] GetGameModeMatchDifficultyLevel()
+    {
+        switch (instance.nowDifficultyLevel)
+        {
+            case DifficultyLevel.Normal:
+                return normalPool.ToArray();
+            case DifficultyLevel.Difficult:
+                return difficultPool.ToArray();
+            case DifficultyLevel.Insane:
+                return insanePool.ToArray();
+        }
+        Debug.LogError("定義外の難易度の可能性があります。");
+        return null;
+    }
+
     public void ChangeDifficultyLevel(DifficultyLevel newDifficultyLevel)
     {
         instance.nowDifficultyLevel = newDifficultyLevel;
