@@ -337,7 +337,7 @@ LineRenderer:
       atime6: 0
       atime7: 0
       m_Mode: 1
-      m_ColorSpace: 0
+      m_ColorSpace: -1
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
     numCornerVertices: 0
@@ -390,5 +390,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5caa9e4ba6715fe41920e7fdc212c771, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  neighborEdge: []
-  isGround: 0
