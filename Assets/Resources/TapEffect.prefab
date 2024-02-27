@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7019944649877983848}
   - component: {fileID: 4750488044857119051}
   - component: {fileID: 1798360875509591060}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: TapEffect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
