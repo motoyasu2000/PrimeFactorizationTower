@@ -8,6 +8,8 @@ namespace UI
     //画面下部にあるボタンUIの数値を設定するクラス
     public class ButtonGenerator : MonoBehaviour
     {
+        const float xScale = 0.97f;
+        const float yScale = 0.93f;
         readonly float[] splitPoints = { 0, 0.33f, 0.66f, 1 };
         GameObject buttonArea;
         GameObject buttonPrefab;
@@ -24,16 +26,24 @@ namespace UI
                 int xi_left = i % 3;
                 int yi_left = 2 - (i / 3); //今回のゲームだとy座標が高いほど小さい数値となるなので、上から設置するために逆順にする。
 
+                //ボタンを生成し、複数のボタンを子オブジェクトとして持つようのゲームオブジェクトであるButtonArea内に移動
                 GameObject newButton = Instantiate(buttonPrefab);
                 newButton.transform.SetParent(buttonArea.transform);
 
+                //ボタンの位置や大きさをビューポート座標で指定(3*3)
                 RectTransform buttonRectTransform = newButton.GetComponent<RectTransform>();
                 buttonRectTransform.anchorMin = new Vector2(splitPoints[xi_left], splitPoints[yi_left]);
                 buttonRectTransform.anchorMax = new Vector2(splitPoints[xi_left + 1], splitPoints[yi_left + 1]);
 
+                //上で指定したアンカーと誤差を無くす
                 buttonRectTransform.offsetMin = Vector2.zero;
                 buttonRectTransform.offsetMax = Vector2.zero;
-                
+
+                //大きさの調整と、z座標の調整
+                buttonRectTransform.localScale = new Vector3(xScale, yScale, 1);
+                buttonRectTransform.anchoredPosition3D = Vector3.zero;
+
+                //ボタンに素数を割り当てる
                 newButton.GetComponent<BlockGenerator>().SetPrimeNumber(myPrimeNumberPool[i]);
             }
         }
