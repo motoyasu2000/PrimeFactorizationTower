@@ -9,13 +9,14 @@ namespace UI
     {
         const int originWidth = 750;
         int nowWidth;
-        static int nowScaleFactor;
-        public static int NowScaleFactor => nowScaleFactor;
+        static float nowScaleFactor;
+        public static float NowScaleFactor => nowScaleFactor;
         void Awake()
         {
-            nowWidth = Screen.width;
-            nowScaleFactor = nowWidth / originWidth;
-            GetComponent<Canvas>().scaleFactor = nowScaleFactor;
+            //nowWidth = Screen.width;
+            //nowScaleFactor = nowWidth / originWidth;
+            //GetComponent<Canvas>().scaleFactor = nowScaleFactor;
+            nowScaleFactor = GetComponent<Canvas>().scaleFactor;
         }
     }
 }
