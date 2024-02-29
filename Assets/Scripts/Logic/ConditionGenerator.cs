@@ -10,7 +10,7 @@ public class ConditionGenerator : MonoBehaviour
     GameModeManager gameModeManager;
     ConditionNumberTextManager conditionNumberManager;
 
-    void Start()
+    void Awake()
     {
         gameModeManager = GameModeManager.GameModemanagerInstance;
         conditionNumberManager = GameObject.Find("ConditonNumber").GetComponent<ConditionNumberTextManager>();
@@ -32,7 +32,7 @@ public class ConditionGenerator : MonoBehaviour
                 break;
 
             case GameModeManager.DifficultyLevel.Insane:
-                returnDict = GenerateConditionForDifficultyLevel(gameModeManager.NormalPool, 2, 4);
+                returnDict = GenerateConditionForDifficultyLevel(gameModeManager.InsanePool, 2, 4);
                 break;
         }
         

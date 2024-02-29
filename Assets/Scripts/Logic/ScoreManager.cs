@@ -111,7 +111,7 @@ public class ScoreManager : MonoBehaviour
         instance.nowScore = 0;
         //表示する最高スコアの更新
         instance.maxScore.text = instance.pileUpScores[GameModeManager.GameModemanagerInstance.NowDifficultyLevel][0].ToString();
-        Debug.Log("instance.pileUpScores[GameModeManager.GameModemanagerInstance.NowDifficultyLevel][0]");
+        //Debug.Log(instance.pileUpScores[GameModeManager.GameModemanagerInstance.NowDifficultyLevel][0]);
     }
 
     //新しいスコアをスコアを管理する辞書に追加し、ソートを行う。

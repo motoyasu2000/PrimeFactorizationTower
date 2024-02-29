@@ -203,6 +203,7 @@ public class GameManager : MonoBehaviour
             else
             {
                 nowUpCompositeNumberText.text = "E";
+                nowUpCompositeNumberText.color = Color.red;
             }
 
         }

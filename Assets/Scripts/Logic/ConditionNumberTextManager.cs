@@ -7,7 +7,7 @@ using UnityEngine;
 public class ConditionNumberTextManager : MonoBehaviour
 {
     TextMeshProUGUI conditionNumberText; //左上の条件テキスト
-    private void Start()
+    private void Awake()
     {
         conditionNumberText = GetComponent<TextMeshProUGUI>();
     }
