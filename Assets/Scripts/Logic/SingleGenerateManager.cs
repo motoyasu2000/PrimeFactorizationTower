@@ -15,12 +15,12 @@ public class SingleGenerateManager : MonoBehaviour
     bool rotateFlag = false;
     Camera mainCamera;
     CameraCtrl mainCameraCtrl;
-    Vector3 defo; //初期位置
+    Vector3 defaultPoint; //初期位置
     private void Start()
     {
         mainCamera = Camera.main;
         mainCameraCtrl = mainCamera.GetComponent<CameraCtrl>();
-        defo = transform.position;
+        defaultPoint = transform.position;
         scoreManager = ScoreManager.ScoreManagerInstance;
     }
     private void Update()
@@ -88,6 +88,6 @@ public class SingleGenerateManager : MonoBehaviour
     void MoveSingleGameObjectPoint()
     {
         if(scoreManager.NowScore < mainCameraCtrl.StartHeight) return;
-        transform.position = new Vector3(defo.x,scoreManager.NowScore + 3, defo.z); //最も高いぶろっぐより3つ上にブロックを生成
+        transform.position = new Vector3(defaultPoint.x,scoreManager.NowScore + 3, defaultPoint.z); //最も高いぶろっぐより3つ上にブロックを生成
     }
 }
