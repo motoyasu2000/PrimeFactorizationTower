@@ -14,7 +14,7 @@ public class GameOverField : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("PrimeNumberBlock"))
         {
-            gameManager.GameOver();
+            gameManager.GameOver(false);
         }
     }
 }

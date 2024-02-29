@@ -173,7 +173,7 @@ public class GameManager : MonoBehaviour
         CalculateNowPrimeNumberProduct();
         if (nowUpCompositeNumber % nowPrimeNumberProduct != 0)
         {
-            GameOver();
+            GameOver(true);
         }
 
         //もしブロックの数値の積が、上部の合成数と一致していたなら
@@ -194,8 +194,17 @@ public class GameManager : MonoBehaviour
             BlockInfo blockInfo = block.GetComponent<BlockInfo>();
 
             nowPrimeNumberProduct *= blockInfo.GetPrimeNumber();
-            nowUpCompositeNumberText.text = (nowUpCompositeNumber / nowPrimeNumberProduct).ToString(); //残りの数字を計算して描画。ただしafterFieldが空になるとこの中の処理が行われなくなるので
-                                                                                                       //UpCompositeNumberの更新のたびに、この値も更新してあげる必要がある。
+            //もし、画面上部の合成数がafterfield内の素数の積で割り切れるなら、割った値を表示、割り切れなかったらEと表示
+            if(nowUpCompositeNumber % nowPrimeNumberProduct == 0)
+            {
+                nowUpCompositeNumberText.text = (nowUpCompositeNumber / nowPrimeNumberProduct).ToString(); //残りの数字を計算して描画。ただしafterFieldが空になるとこの中の処理が行われなくなるので
+                                                                                                           //UpCompositeNumberの更新のたびに、このテキストの値も更新してあげる必要がある。
+            }
+            else
+            {
+                nowUpCompositeNumberText.text = "E";
+            }
+
         }
     }
 
@@ -234,13 +243,15 @@ public class GameManager : MonoBehaviour
         nowPrimeNumberProduct = 1; 
     }
 
-    public void GameOver()
+    public void GameOver(bool missPrimeNumberfactorization)
     {
-        //最後のゲームオーバー理由の出力の際に、元の合成数とその時選択してしまった素数の情報が必要なので、変数に入れておく。
-        compositeNumber_GO = nowUpCompositeNumber * afterField.transform.GetChild(afterField.transform.childCount - 1).GetComponent<BlockInfo>().GetPrimeNumber() / nowPrimeNumberProduct;
-        primeNumber_GO = afterField.transform.GetChild(afterField.transform.childCount - 1).GetComponent<BlockInfo>().GetPrimeNumber();
+        //素因数分解を間違えてしまった場合、最後のゲームオーバー理由の出力の際に、元の合成数とその時選択してしまった素数の情報が必要なので、変数に入れておく。
+        if(missPrimeNumberfactorization){
+            compositeNumber_GO = nowUpCompositeNumber * afterField.transform.GetChild(afterField.transform.childCount - 1).GetComponent<BlockInfo>().GetPrimeNumber() / nowPrimeNumberProduct;
+            primeNumber_GO = afterField.transform.GetChild(afterField.transform.childCount - 1).GetComponent<BlockInfo>().GetPrimeNumber();
+        }
 
-        //スコアの更新とゲームオーバー時の演出、後処理の呼び出し。S
+        //スコアの更新とゲームオーバー時の演出、後処理の呼び出し。
         oldMaxScore = scoreManager.PileUpScores[gameModeManager.NowDifficultyLevel][0]; //ソート前に過去の最高スコアの情報を取得しておく(のちにこのゲームで最高スコアを更新したかを確認するため)
         scoreManager.InsertPileUpScoreAndSort(newScore);
         scoreManager.SaveScoreData();
