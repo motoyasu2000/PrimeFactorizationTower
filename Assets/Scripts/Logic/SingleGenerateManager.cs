@@ -7,77 +7,55 @@ using UnityEngine;
 public class SingleGenerateManager : MonoBehaviour
 {
     ScoreManager scoreManager;
-    GameObject singleGameObject;
-    float spinSpeed = 20f;
-    float rotateCounter = 0;
-    bool rotateFlag = false;
-    Camera mainCamera;
+    GameObject singleBlock;
     Vector3 defaultPoint; //初期位置
-    private void Start()
+    public GameObject SingleBlock => singleBlock;
+    private void Awake()
     {
-        mainCamera = Camera.main;
         defaultPoint = transform.position;
         scoreManager = ScoreManager.ScoreManagerInstance;
     }
     private void Update()
     {
-        RotateUntil(45);
         MoveSingleGameObjectPoint();
     }
-    public void SetSingleGameObject(GameObject setObject)
+
+    //単一のブロックのみが格納されることを保証する。
+    public void SetSingleGameObject(GameObject newBlock)
     {
         //引数がnullならsingleGameObjectをnullにして処理を終了
-        if(setObject == null)
+        if(newBlock == null)
         {
-            singleGameObject = null;
+            singleBlock = null;
             return;
         }
 
         //singleGameObjectがもともとnullなら普通に代入
-        if(singleGameObject == null)
+        if(singleBlock == null)
         {
-            singleGameObject = setObject;
+            singleBlock = newBlock;
         }
         //singleGameObjectに何かが入っている状態で呼ばれた場合には
         else
         {
-            //元のゲームオブジェクトの数値と後から来たゲームオブジェクトの数値が一致しているなら元のゲームオブジェクトを回転
-            if (singleGameObject.GetComponent<BlockInfo>().GetPrimeNumber() == setObject.GetComponent<BlockInfo>().GetPrimeNumber())
-            {
-                //Debug.Log("回転");
-                Destroy(setObject);
-                rotateFlag = true;
-            }
-            //一致していないなら古い方のゲームオブジェクトを消して更新
-            else
+            //ブロックの数値が一致していなければ、元ブロックを消去して更新
+            if(singleBlock.GetComponent<BlockInfo>().GetPrimeNumber() != newBlock.GetComponent<BlockInfo>().GetPrimeNumber())
             {
                 //Debug.Log($"oldnum: {singleGameObject.GetComponent<BlockInfo>().GetNumber()}  newnum: {setObject.GetComponent<BlockInfo>().GetNumber()}");
-                Destroy(singleGameObject);
-                singleGameObject = setObject;
+                Destroy(singleBlock);
+                singleBlock = newBlock;
             }
-        }
-    }
-
-    void RotateUntil(float dMaxAngle)
-    {
-        //nullかflagがfalseならreturn
-        if (singleGameObject == null || !rotateFlag) return;
-        singleGameObject.transform.Rotate(0, 0, -spinSpeed);
-        rotateCounter += spinSpeed;
-        if(rotateCounter >= dMaxAngle)
-        {
-            
-            //余分に回転したらもどる。
-            singleGameObject.transform.Rotate(0, 0, rotateCounter - dMaxAngle);
-            //回転状態の初期化
-            rotateCounter = 0;
-            rotateFlag = false;
+            //一致していたら、新しい方を消して更新を行わない。
+            else
+            {
+                Destroy(newBlock);
+            }
         }
     }
 
     public GameObject GetSingleGameObject()
     {
-        return singleGameObject;
+        return singleBlock;
     }
 
     //ブロックの生成地点をゲームの実行中に変更するメソッド
