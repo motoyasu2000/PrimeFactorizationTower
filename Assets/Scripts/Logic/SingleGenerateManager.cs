@@ -83,7 +83,7 @@ public class SingleGenerateManager : MonoBehaviour
     //ブロックの生成地点をゲームの実行中に変更するメソッド
     void MoveSingleGameObjectPoint()
     {
-        if(scoreManager.NowHeight < Info.cameraTrackingStartHeight) return;
+        if(scoreManager.NowHeight < Info.CameraTrackingStartHeight) return;
         transform.position = new Vector3(defaultPoint.x,scoreManager.NowHeight + 3, defaultPoint.z); //最も高いぶろっぐより3つ上にブロックを生成
     }
 }
