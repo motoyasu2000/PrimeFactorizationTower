@@ -17,9 +17,9 @@ public class CameraCtrl : MonoBehaviour
     }
     void Update()
     {
-        if (Info.cameraTrackingStartHeight > scoreManager.NowHeight) return;
-        Camera.main.orthographicSize = scoreManager.NowHeight - Info.cameraTrackingStartHeight + 10; //scoreManager.MaxHeight - startHeightは変化量、10は初期値
-        newCameraHeight = defo.y + (scoreManager.NowHeight - Info.cameraTrackingStartHeight) * 0.3f; //画面の下30％部分を固定してカメラの範囲を拡大
+        if (Info.CameraTrackingStartHeight > scoreManager.NowHeight) return;
+        Camera.main.orthographicSize = scoreManager.NowHeight - Info.CameraTrackingStartHeight + 10; //scoreManager.MaxHeight - startHeightは変化量、10は初期値
+        newCameraHeight = defo.y + (scoreManager.NowHeight - Info.CameraTrackingStartHeight) * 0.3f; //画面の下30％部分を固定してカメラの範囲を拡大
         Camera.main.transform.position = new Vector3(defo.x,newCameraHeight, defo.z);
     }
 }
