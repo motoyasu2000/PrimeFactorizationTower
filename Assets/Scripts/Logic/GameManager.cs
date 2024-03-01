@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Common;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
@@ -52,7 +53,7 @@ public class GameManager : MonoBehaviour
     //その他
     GameModeManager gameModeManager; //難易度ごとに生成する合成数が異なるので、現在の難易度の情報を持つGamemodemanagerの情報が必要
                                      //また、スコアを保存する際、どの難易度のスコアを更新するかの情報も必要なので、そこでも使う。
-    int nowPhase = 0; //現在いくつの合成数を素因数分解し終えたか　これが増えると上に表示される合成数の値が大きくなるなどする。
+    int nowPhase = 0; //現在いくつの合成数を素因数分解し終えたか　これが増えると上に表示される合成数の値が大きくなるなどすることが可能。
 
     //初期化処理
     private void Awake()
@@ -154,6 +155,7 @@ public class GameManager : MonoBehaviour
         CheckSingleFieldBlocksOnGround(completedField.transform);
     }
 
+    //引数で指定されたTransform上の子要素のすべてが、地面に設置しているのかをチェックする
     void CheckSingleFieldBlocksOnGround(Transform fieldTransform)
     {
         foreach (Transform block in fieldTransform)
@@ -188,7 +190,7 @@ public class GameManager : MonoBehaviour
     //afterField内のブロックの積を計算、nowPrimeNumberProductを更新、テキストの描画
     void CalculateNowPrimeNumberProduct()
     {
-        nowPrimeNumberProduct = 1; //初期は1にしておく
+        nowPrimeNumberProduct = 1;
         foreach (Transform block in afterField.transform) //afterField内の全てのゲームオブジェクトのチェック
         {
             BlockInfo blockInfo = block.GetComponent<BlockInfo>();
@@ -258,11 +260,13 @@ public class GameManager : MonoBehaviour
         scoreManager.SaveScoreData();
         bloomManager.LightUpStart();
         soundManager.FadeOutVolume();
-        StartCoroutine(PostGameOver(1.2f));
+
+        const float delayTime = 1.2f;
+        StartCoroutine(PostGameOver(delayTime));
     }
 
 
-    //ゲームオーバー後、一定時間後にゲームオーバーメニューを表示し、bgmのストップ
+    //ゲームオーバー後、一定時間後にゲームオーバーメニューを表示し、bgmのストップ。ゲームオーバー後の後処理
     IEnumerator PostGameOver(float time)
     {
         yield return new WaitForSeconds(time);

@@ -13,7 +13,7 @@ public class Network : MonoBehaviour
     Dictionary<int, List<GameObject>> nodesDict = new Dictionary<int, List<GameObject>>();
 
     //サブグラフの探索
-    const int CheckNumParFrame = 3; //1フレーム当たりにキューから取り出す数
+    int CheckNumParFrame = 3; //1フレーム当たりにキューから取り出す数
     Queue<ExpandNetwork> startExpandNetworks = new Queue<ExpandNetwork>(); //ネットワークの拡張を開始する最初のサブネットワークをリストとして保存しておく。非同期の処理を一つずつ実行するため、タプルの２つ目の要素は条件の辞書
 
     //条件の生成
@@ -160,7 +160,7 @@ public class Network : MonoBehaviour
         }
     }
 
-    //サブネットワークを物理的に結合し色を変更し、仮想的なネットワークから切り離すメソッド
+    //サブネットワーク内のGameObjectを物理的に結合し色を変更し、仮想的なネットワークから切り離すメソッド
     private void FreezeNodes(List<GameObject> nodes)
     {
         for(int i=1; i<nodes.Count; i++)

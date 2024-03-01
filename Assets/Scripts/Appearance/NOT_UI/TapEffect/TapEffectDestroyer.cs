@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//タップエフェクトが、パーティクルの再生が終了したら自動的にDestroyされるようにするクラス。
 public class TapEffectDestroyer : MonoBehaviour
 {
     void Start()

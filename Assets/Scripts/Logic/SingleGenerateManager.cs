@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Common;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -14,12 +15,10 @@ public class SingleGenerateManager : MonoBehaviour
     float rotateCounter = 0;
     bool rotateFlag = false;
     Camera mainCamera;
-    CameraCtrl mainCameraCtrl;
     Vector3 defaultPoint; //初期位置
     private void Start()
     {
         mainCamera = Camera.main;
-        mainCameraCtrl = mainCamera.GetComponent<CameraCtrl>();
         defaultPoint = transform.position;
         scoreManager = ScoreManager.ScoreManagerInstance;
     }
@@ -87,7 +86,7 @@ public class SingleGenerateManager : MonoBehaviour
     //ブロックの生成地点をゲームの実行中に変更するメソッド
     void MoveSingleGameObjectPoint()
     {
-        if(scoreManager.NowScore < mainCameraCtrl.StartHeight) return;
-        transform.position = new Vector3(defaultPoint.x,scoreManager.NowScore + 3, defaultPoint.z); //最も高いぶろっぐより3つ上にブロックを生成
+        if(scoreManager.NowHeight < Info.cameraTrackingStartHeight) return;
+        transform.position = new Vector3(defaultPoint.x,scoreManager.NowHeight + 3, defaultPoint.z); //最も高いぶろっぐより3つ上にブロックを生成
     }
 }
