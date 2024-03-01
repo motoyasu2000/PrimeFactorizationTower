@@ -1,13 +1,8 @@
-﻿using Common;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System.IO;
-using UnityEngine.SceneManagement;
-using System;
-using UnityEngine.Rendering;
-using static Unity.Collections.AllocatorManager;
 using Random = UnityEngine.Random;
 
 //ゲームを管理するクラス。画面上部の合成数の計算や表示、ゲームオーバーの管理などを行う。

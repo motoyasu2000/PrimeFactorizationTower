@@ -1,14 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-namespace Common
+ï»¿namespace Common
 {
-    //ƒQ[ƒ€“à‚Ìî•ñA•¡”‚ÌƒNƒ‰ƒX‚©‚çQÆ‚³‚ê‚é‰Â”\«‚ª‚ ‚é’è”‚ğW‚ß‚½ƒNƒ‰ƒX
+    //ã‚²ãƒ¼ãƒ å†…ã®æƒ…å ±ã€‚è¤‡æ•°ã®ã‚¯ãƒ©ã‚¹ã‹ã‚‰å‚ç…§ã•ã‚Œã‚‹å¯èƒ½æ€§ãŒã‚ã‚‹å®šæ•°ã‚’é›†ã‚ãŸã‚¯ãƒ©ã‚¹
     public static class Info
     {
-        public static readonly int rankDisplayLimit = 10; //•\¦‚·‚éƒ‰ƒ“ƒLƒ“ƒO‚ÌãŒÀ’l
-        public static readonly int cameraTrackingStartHeight = 4; //‚Ç‚±‚Ü‚Å‚‚­Ï‚ñ‚¾‚çƒJƒƒ‰‚ª“®‚«o‚·‚©
-        public static readonly float groundHeight = 0.5f; //Œ³‚Ì’n–Ê‚Ì‚‚³
+        public static readonly int rankDisplayLimit = 10; //è¡¨ç¤ºã™ã‚‹ãƒ©ãƒ³ã‚­ãƒ³ã‚°ã®ä¸Šé™å€¤
+        public static readonly int cameraTrackingStartHeight = 4; //ã©ã“ã¾ã§é«˜ãç©ã‚“ã ã‚‰ã‚«ãƒ¡ãƒ©ãŒå‹•ãå‡ºã™ã‹
+        public static readonly float groundHeight = 0.5f; //å…ƒã®åœ°é¢ã®é«˜ã•
     }
 }

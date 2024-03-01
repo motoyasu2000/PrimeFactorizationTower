@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 //音声設定データ(BGM音量・SE音量・ボイス音量)を設定するクラス、音量を調節するバーによって操作される。

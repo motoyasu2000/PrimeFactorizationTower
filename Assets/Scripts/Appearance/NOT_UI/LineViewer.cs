@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 //ブロックの落下地点がわかりやすくなるように、y軸下方向に線を伸ばすクラス。ブロックにアタッチされている。
 public class LineViewer : MonoBehaviour

@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace UI
 {
@@ -40,7 +38,6 @@ namespace UI
             float widthForRightZone_Viewport = rightEdgeOfUpNumber_Viewport / canvas.transform.localScale.x;
             float widthForRightZone_World = mainCamera.ViewportToWorldPoint(new Vector3(widthForRightZone_Viewport, 0, 0)).x;
             myTransform.sizeDelta = new Vector2(widthForRightZone_World, nowUpNumberTransform.sizeDelta.y);
-
         }
     }
 }

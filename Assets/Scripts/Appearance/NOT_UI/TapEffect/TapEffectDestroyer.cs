@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+ï»¿using UnityEngine;
 
-//ƒ^ƒbƒvƒGƒtƒFƒNƒg‚ªAƒp[ƒeƒBƒNƒ‹‚ÌÄ¶‚ªI—¹‚µ‚½‚ç©“®“I‚ÉDestroy‚³‚ê‚é‚æ‚¤‚É‚·‚éƒNƒ‰ƒXB
+//ã‚¿ãƒƒãƒ—ã‚¨ãƒ•ã‚§ã‚¯ãƒˆãŒã€ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ã®å†ç”ŸãŒçµ‚äº†ã—ãŸã‚‰è‡ªå‹•çš„ã«Destroyã•ã‚Œã‚‹ã‚ˆã†ã«ã™ã‚‹ã‚¯ãƒ©ã‚¹ã€‚
 public class TapEffectDestroyer : MonoBehaviour
 {
     void Start()

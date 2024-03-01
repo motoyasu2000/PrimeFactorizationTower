@@ -1,6 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+
 namespace UI
 {
     //画面上部左側に表示される条件のサイズや位置を適切に修正するためのクラス
