@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 //徐々にBGM音量を下げていくクラス。ゲームオーバー時に、ゲームオブジェクトにこのクラスをアタッチすることで、BGMがフェードアウトするようにする。
 public class FadeOutVolumer : MonoBehaviour

@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 //ブロックに表示される文字のサイズを調整するクラス
 public class AutoSizeChangeText : MonoBehaviour

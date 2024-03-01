@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 //各シングルトンを生成するためのクラス。このスクリプトがアタッチされたゲームオブジェクトがシーン内にあるだけで、必要なインスタンスが無ければすべて生成されるようにする。
 public class SingletonGenerator : MonoBehaviour

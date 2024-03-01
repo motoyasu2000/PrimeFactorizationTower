@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.SceneManagement;
+﻿using UnityEngine.SceneManagement;
 
 //シーンをロードする際に呼び出す静的クラス。通常のシーンのロードに比べ、再生するBGMの管理も行う。
 public static class SceneLoadHelper
