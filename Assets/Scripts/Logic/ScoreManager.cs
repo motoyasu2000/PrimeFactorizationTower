@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Common;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using TMPro;
@@ -10,14 +11,15 @@ using UnityEngine.SceneManagement;
 
 public class ScoreManager : MonoBehaviour
 {
-    const float groundHeight = 0.5f; //元の地面の高さ
-    float nowScore = 0; //現在進行中のゲームのスコアが入る変数
+    float nowHeight = 0; //現在のゲームオブジェクトのブロックの高さが入る変数
     GameObject blockField;
     GameObject afterField;
     GameObject completedField;
     TextMeshProUGUI maxScore;
+
+    //各レベルのスコアは要素数11の配列として保存される。0~9番目が過去のランキング、10番目に最新のスコアが入り、ソートされるという仕組み
     [SerializeField] Dictionary<GameModeManager.DifficultyLevel, int[]> pileUpScores = new Dictionary<GameModeManager.DifficultyLevel,int[]>();　//Json形式で保存するために、シリアライズ可能にしておく
-    public float NowScore => nowScore;
+    public float NowHeight => nowHeight;
     public Dictionary<GameModeManager.DifficultyLevel, int[]> PileUpScores => pileUpScores;
 
     //インスタンス
@@ -42,6 +44,7 @@ public class ScoreManager : MonoBehaviour
         InitializeFields();
     }
 
+    //現在の高さからスコアを計算する
     public int CalculatePileUpScore()
     {
         float height = CalculateAllGameObjectsMaxHeight();
@@ -56,17 +59,17 @@ public class ScoreManager : MonoBehaviour
         {
             foreach (Transform block in afterField.transform)
             {
-                nowScore = Mathf.Max(nowScore, CalculateGameObjectMaxHeight(block.gameObject)); //現在見ているゲームオブジェクトの最も高い頂点とmaxの比較                                                                          //Debug.Log(block.gameObject.name);
+                nowHeight = Mathf.Max(nowHeight, CalculateGameObjectMaxHeight(block.gameObject)); //現在見ているゲームオブジェクトの最も高い頂点とmaxの比較                                                                          //Debug.Log(block.gameObject.name);
             }
         }
         if (completedField != null)
         {
             foreach (Transform block in completedField.transform)
             {
-                nowScore = Mathf.Max(nowScore, CalculateGameObjectMaxHeight(block.gameObject)); //現在見ているゲームオブジェクトの最も高い頂点とmaxの比較
+                nowHeight = Mathf.Max(nowHeight, CalculateGameObjectMaxHeight(block.gameObject)); //現在見ているゲームオブジェクトの最も高い頂点とmaxの比較
             }
         }
-        return nowScore;
+        return nowHeight;
     }
 
     //指定されたゲームオブジェクトの全頂点の中で、最も高い頂点のy座標を計算し、返す
@@ -80,7 +83,7 @@ public class ScoreManager : MonoBehaviour
             max = Mathf.Max(max, worldPoint.y);
             //Debug.Log(worldPoint.y);
         }
-        return max-groundHeight; //初めの高さを0にするために元の高さ分引く
+        return max-Info.groundHeight; //初めの高さを0にするために元の高さ分引く
     }
 
     //シーンのロード時に実行されるメソッド
@@ -92,13 +95,13 @@ public class ScoreManager : MonoBehaviour
     //シーンロード時に呼ばれる初期化メソッド
     void InitializeFields()
     {
-        nowScore = 0;
+        nowHeight = 0;
         //列挙型DifficultyLevelで定義されているのに、辞書のキー内に存在しない難易度があったら、その難易度のキーを追加する。
         foreach (GameModeManager.DifficultyLevel level in Enum.GetValues(typeof(GameModeManager.DifficultyLevel)))
         {
             if (!instance.pileUpScores.ContainsKey(level))
             {
-                instance.pileUpScores[level] = new int[11];
+                instance.pileUpScores[level] = new int[Info.rankDisplayLimit + 1];
             }
         }
 
@@ -108,7 +111,7 @@ public class ScoreManager : MonoBehaviour
         instance.afterField = blockField.transform.Find("AfterField").gameObject;
         instance.completedField = blockField.transform.Find("CompletedField").gameObject;
         instance.maxScore = GameObject.Find("MaxScoreText").GetComponent<TextMeshProUGUI>();
-        instance.nowScore = 0;
+        instance.nowHeight = 0;
         //表示する最高スコアの更新
         instance.maxScore.text = instance.pileUpScores[GameModeManager.GameModemanagerInstance.NowDifficultyLevel][0].ToString();
         //Debug.Log(instance.pileUpScores[GameModeManager.GameModemanagerInstance.NowDifficultyLevel][0]);
@@ -118,7 +121,7 @@ public class ScoreManager : MonoBehaviour
     public void InsertPileUpScoreAndSort(int newScore)
     {
         GameModeManager.DifficultyLevel nowLevel = GameModeManager.GameModemanagerInstance.NowDifficultyLevel;
-        ScoreManagerInstance.pileUpScores[nowLevel][10] = newScore;
+        ScoreManagerInstance.pileUpScores[nowLevel][Info.rankDisplayLimit] = newScore;
         Array.Sort(ScoreManagerInstance.pileUpScores[nowLevel]);
         Array.Reverse(ScoreManagerInstance.pileUpScores[nowLevel]);
     }
@@ -160,7 +163,7 @@ public class ScoreManager : MonoBehaviour
 
         public Top10Score()
         {
-            scores = new int[11];
+            scores = new int[Info.rankDisplayLimit + 1];
         }
     }
 

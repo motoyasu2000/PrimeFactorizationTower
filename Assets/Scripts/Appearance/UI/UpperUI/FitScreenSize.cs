@@ -22,8 +22,6 @@ namespace UI
             rectTransform.sizeDelta = new Vector2(0, -canvasHeight * maxYAnchor + width / 4.2f); //-canvasHeight*maxYAnchorが上端の位置でそこから横幅/4.2分だけ下がる この処理によりUIのサイズをスマホの画面幅に限らず一定にする。
                                                                                                  //Debug.Log(canvasHeight + " " + width);
 
-
-
         }
     }
 }
