@@ -58,7 +58,7 @@ public class Network : MonoBehaviour
             var item = startExpandNetworks.Dequeue();
             foreach (var block in item.myNetwork)
             {
-                if (block.GetComponent<BlockInfo>().enabled == false) return; //もうネットワークから切り離されて処理を行う予定でないブロックもこの中に含まれてしまっており、そのようなものは条件を満たさない。
+                //if (block.GetComponent<BlockInfo>().enabled == false) return; //もうネットワークから切り離されて処理を行う予定でないブロックもこの中に含まれてしまっており、そのようなものは条件を満たさない。
             }
             ExpandAndSearch(item);
         }
@@ -235,6 +235,10 @@ public class Network : MonoBehaviour
         Instantiate(effect, position, Quaternion.identity);
     }
 
+    ////////////////////////////////////
+    //以下ネットワーク内の探索で使うメソッド//
+    ////////////////////////////////////
+
     //ネットワーク全体に条件にマッチするものがないかを探索するためのメソッド 条件に存在する素数のうち、ネットワーク全体で最小個数の素数を探し、そのノードから探索を始める
     void CheckConditionAllNetwork()
     {
@@ -283,7 +287,7 @@ public class Network : MonoBehaviour
         return requiredCounts.Count == 0; //必要なノードがすべて含まれていればtrue
     }
 
-    //ネットワークからサブグラフを探索する拡張前のExpandNetworkを、拡張するネットワークを入れるキューに追加する。Update内で、このキューから要素が取り出され、自動で探索が始まる。
+    //ネットワークからサブグラフを探索する拡張前のExpandNetworkを、拡張するネットワークを入れるキューに追加する。Update内でこのキューから要素が取り出され、自動で探索が始まる。
     public void AddStartExpandNetworks(HashSet<GameObject> neiborSet)
     {
         ExpandNetwork currentNetwork = null;

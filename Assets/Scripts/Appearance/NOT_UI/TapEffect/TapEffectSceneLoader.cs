@@ -28,7 +28,5 @@ public class TapEffectSceneLoader : MonoBehaviour
         var cameraData = Camera.main.GetUniversalAdditionalCameraData();
         //Debug.Log($"CameraData: {cameraData}, CameraDataStack: {cameraData.cameraStack}, TapEffectCamera: {tapEffectCamera}");
         cameraData.cameraStack.Add(tapEffectCamera);
-
     }
-
 }
