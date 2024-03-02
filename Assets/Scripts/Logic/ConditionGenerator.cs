@@ -39,7 +39,6 @@ public class ConditionGenerator : MonoBehaviour
         int compositeNumber = DictToCompositeNumber(returnDict);
         conditionNumberManager.PrintConditionNumber(compositeNumber.ToString());
 
-        //デバッグ
         Debug.Log("Keys : " + string.Join(",", returnDict.Keys));
         Debug.Log("Values : " + string.Join(",", returnDict.Values));
 
