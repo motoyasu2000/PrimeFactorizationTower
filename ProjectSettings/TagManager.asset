@@ -9,6 +9,7 @@ TagManager:
   - Ground
   - UppestUI
   - UnderClickable
+  - Button
   layers:
   - Default
   - TransparentFX
@@ -19,7 +20,7 @@ TagManager:
   - 
   - PrimeNumberOrigin
   - PrimeNumberBlock
-  - 
+  - TapEffect
   - 
   - 
   - 
