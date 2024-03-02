@@ -6,7 +6,6 @@ public class TapEffectSpawner : MonoBehaviour
     GameObject tapEffect;
     SoundManager soundManager;
     Camera tapEffectCamera;
-    Canvas canvas;
     Touch touch;
     Scene tapEffectScene;
 
@@ -15,7 +14,6 @@ public class TapEffectSpawner : MonoBehaviour
         tapEffect = Resources.Load("TapEffect") as GameObject;
         soundManager = SoundManager.SoundManagerInstance;
         tapEffectCamera = GameObject.Find("TapEffectCamera").GetComponent<Camera>();
-        canvas = GameObject.Find("Canvas").GetComponent <Canvas>();
         tapEffectScene = SceneManager.GetSceneByName("TapEffectScene");
     }
 
@@ -54,10 +52,8 @@ public class TapEffectSpawner : MonoBehaviour
         Vector3 touchPosition = tapEffectCamera.ScreenToWorldPoint(touch.position);
         touchPosition.z = 0;
 
-        //エフェクトをインスタンス化して、TapEffectScen内に送る
+        //エフェクトをインスタンス化して、TapEffectScene内に送る
         GameObject nowTapEffect = Instantiate(tapEffect, touchPosition, Quaternion.identity);
         SceneManager.MoveGameObjectToScene(nowTapEffect, tapEffectScene);
-
-        
     }
 }
