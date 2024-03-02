@@ -131,55 +131,9 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1311188995113761860, guid: a9ca25860f060f4428a29e3693c49c64, type: 3}
-      propertyPath: m_text
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 1311188995113761860, guid: a9ca25860f060f4428a29e3693c49c64, type: 3}
-      propertyPath: m_fontSize
-      value: 78
-      objectReference: {fileID: 0}
-    - target: {fileID: 1311188995113761860, guid: a9ca25860f060f4428a29e3693c49c64, type: 3}
-      propertyPath: m_fontSizeBase
-      value: 78
-      objectReference: {fileID: 0}
-    - target: {fileID: 3268905588581958445, guid: a9ca25860f060f4428a29e3693c49c64, type: 3}
-      propertyPath: m_fontSize
-      value: 77
-      objectReference: {fileID: 0}
-    - target: {fileID: 3268905588581958445, guid: a9ca25860f060f4428a29e3693c49c64, type: 3}
-      propertyPath: m_fontSizeBase
-      value: 77
-      objectReference: {fileID: 0}
-    - target: {fileID: 3704564260105096304, guid: a9ca25860f060f4428a29e3693c49c64, type: 3}
-      propertyPath: m_text
-      value: 'Now
-
-        Score'
-      objectReference: {fileID: 0}
-    - target: {fileID: 3704564260105096304, guid: a9ca25860f060f4428a29e3693c49c64, type: 3}
-      propertyPath: m_fontSize
-      value: 77
-      objectReference: {fileID: 0}
-    - target: {fileID: 3704564260105096304, guid: a9ca25860f060f4428a29e3693c49c64, type: 3}
-      propertyPath: m_fontSizeBase
-      value: 77
-      objectReference: {fileID: 0}
-    - target: {fileID: 4999361382001611593, guid: a9ca25860f060f4428a29e3693c49c64, type: 3}
-      propertyPath: m_fontSize
-      value: 77
-      objectReference: {fileID: 0}
-    - target: {fileID: 4999361382001611593, guid: a9ca25860f060f4428a29e3693c49c64, type: 3}
-      propertyPath: m_fontSizeBase
-      value: 77
-      objectReference: {fileID: 0}
     - target: {fileID: 7166181246097463014, guid: a9ca25860f060f4428a29e3693c49c64, type: 3}
       propertyPath: m_Name
       value: PlayScene
-      objectReference: {fileID: 0}
-    - target: {fileID: 7303938505876874813, guid: a9ca25860f060f4428a29e3693c49c64, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 600
       objectReference: {fileID: 0}
     - target: {fileID: 8370085127610974085, guid: a9ca25860f060f4428a29e3693c49c64, type: 3}
       propertyPath: m_LocalPosition.x
@@ -220,20 +174,6 @@ PrefabInstance:
     - target: {fileID: 8370085127610974085, guid: a9ca25860f060f4428a29e3693c49c64, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8979605483122707064, guid: a9ca25860f060f4428a29e3693c49c64, type: 3}
-      propertyPath: m_text
-      value: 'Max
-
-        Score'
-      objectReference: {fileID: 0}
-    - target: {fileID: 8979605483122707064, guid: a9ca25860f060f4428a29e3693c49c64, type: 3}
-      propertyPath: m_fontSize
-      value: 77
-      objectReference: {fileID: 0}
-    - target: {fileID: 8979605483122707064, guid: a9ca25860f060f4428a29e3693c49c64, type: 3}
-      propertyPath: m_fontSizeBase
-      value: 77
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
