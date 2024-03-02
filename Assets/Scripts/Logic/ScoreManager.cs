@@ -8,7 +8,6 @@ using UnityEngine.SceneManagement;
 
 //スコア管理を担当するクラス。
 //ゲーム中のスコア計算、保存・読み込み、シーン間でのスコアデータの保持を行う。
-
 public class ScoreManager : MonoBehaviour
 {
     float nowHeight = 0; //現在のゲームオブジェクトのブロックの高さが入る変数
