@@ -3,7 +3,6 @@ using UnityEngine;
 
 //ブロックの生成が単一であることを保証するクラス
 //複数のブロックが同時に生成されないよう、異なるブロックを生成仕様としたとき、初めにあったブロックの方が削除され、上書きされるようにする。
-//既にあるブロックと同じボタンを押した場合には、初めにあったブロックが時計回りに回転する。(ここは後に他のクラスで管理できるようにする。)
 public class SingleGenerateManager : MonoBehaviour
 {
     ScoreManager scoreManager;

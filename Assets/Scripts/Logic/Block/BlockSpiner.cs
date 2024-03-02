@@ -14,6 +14,11 @@ public class BlockSpiner : MonoBehaviour
     {
         StartCoroutine(RotateSingleBlock(45));
     }
+    //落下前の単一のブロックを反時計回りに45度回転させる
+    public void RotateSingleBlock_45_Reverse()
+    {
+        StartCoroutine(RotateSingleBlock(-45));
+    }
     //落下前の単一のブロックを反時計回りに90度回転させる
     public void RotateSingleBlock_90()
     {
