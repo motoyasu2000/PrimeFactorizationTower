@@ -1,0 +1,44 @@
+﻿using Common;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+
+//ブロックが積みあがっていき、高くなりすぎるとブロックがカメラにとらえられなくなる恐れがある。
+//そこでブロックの最高点からカメラを範囲を計算し、拡大する必要がある。カメラの範囲を変更してもUIが正常に保たれるようにする。
+//これらを行うクラス
+public class CamerasManager : MonoBehaviour
+{
+    float downerUI_MAXY; //画面下部のUIの最高点。この高さを軸に拡大していく。
+    float newCamerasHeight; //新たに変更されるカメラの高さ
+    float orthographicSize_defo; //初期のカメラの大きさ
+    Vector3 position_defo; //初期のカメラの座標
+    RectTransform downerUITransform; //画面下部のUI
+    ScoreManager scoreManager;
+    Camera mainCamera;
+    Camera UICamera;
+    void Start()
+    {
+        //プレイシーンであれば初期化
+        if (SceneManager.GetActiveScene().name != "PlayScene") return;
+        downerUITransform = GameObject.Find("DownerUI").GetComponent<RectTransform>();
+        downerUI_MAXY = downerUITransform.anchoredPosition.y;
+        position_defo = transform.position;
+        scoreManager = ScoreManager.ScoreManagerInstance;
+        mainCamera = Camera.main;
+        UICamera = transform.Find("UICamera").GetComponent<Camera>();
+        orthographicSize_defo = mainCamera.orthographicSize;
+    }
+    void Update()
+    {
+        //playSceneでなかったり、特定の高さ以上になっていない場合は処理を行わない。
+        if (SceneManager.GetActiveScene().name != "PlayScene") return;
+        if (Info.CameraTrackingStartHeight > scoreManager.NowHeight) return;
+
+        float newOrthographicSize = scoreManager.NowHeight - Info.CameraTrackingStartHeight + orthographicSize_defo; //新たなカメラの大きさ
+                                                                                                                     //scoreManager.MaxHeight - startHeightは変化量、10は初期値
+        mainCamera.orthographicSize = newOrthographicSize;
+        UICamera.orthographicSize = newOrthographicSize; //UICameraの大きさも変更しないと、mainCameraが大きくなるにつれ、UIが相対的に小さくなっていってしまう。
+
+        newCamerasHeight = position_defo.y + (scoreManager.NowHeight - Info.CameraTrackingStartHeight) * downerUI_MAXY; //画面の下30％部分を固定してカメラの範囲を拡大
+        mainCamera.transform.position = new Vector3(position_defo.x,newCamerasHeight, position_defo.z);
+    }
+}
