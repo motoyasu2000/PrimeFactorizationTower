@@ -171,8 +171,8 @@ public class Network : MonoBehaviour
         ChangeColorNodes(nodes);
     }
 
-    //第二引数で指定した時間後、第一引数で指定したゲームオブジェクトのリストに、物理的な計算を行わなくするメソッド。空中に固定される。
-    IEnumerator StopRigidbodys(List<GameObject> nodes, float second)
+    //第二引数で指定した時間後、第一引数で指定したゲームオブジェクトのリストに、物理的な計算を行わなくするメソッド。空中に固定し、水色にする。
+    IEnumerator FreezeBlocks(List<GameObject> nodes, float second)
     {
         yield return new WaitForSeconds(second);
         foreach (var node in nodes)
@@ -181,7 +181,8 @@ public class Network : MonoBehaviour
             rb2d.velocity = Vector3.zero;
             rb2d.angularVelocity = 0;
             rb2d.isKinematic = true;
-            node.GetComponent<SpriteRenderer>().color = new Color(23f / 255f, 1f, 1f);
+            Color fleezeColor = new Color(23f / 255f, 1f, 1f);
+            node.GetComponent<SpriteRenderer>().color = fleezeColor;
         }
         yield break;
     }
@@ -195,25 +196,26 @@ public class Network : MonoBehaviour
                 FreezeNodes(nodes);
                 effectTextManager.PrintEffectText("Criteria Met");
                 soundManager.PlayAudio(soundManager.VOICE_CRITERIAMAT);
-                DelayProcessFreeze(nodes, 1.5f);
+                const float delayTime = 1.5f;
+                DelayProcessFreeze(nodes, delayTime);
                 break;
         }
         //後処理
         startExpandNetworks = new Queue<ExpandNetwork>(); //探索が完了したらもうネットワーク内に条件を満たすものが存在しないと考えられるので、キューをリセットしておく。(あるとバグが発生する)
         nowCriteriaMetChecking = true;
         CheckConditionAllNetwork();
+        freezeCondition = _conditionGenerator.GenerateCondition();
     }
 
     //第二引数で指定した時間後、Freezeの文字、サウンド、エフェクトを出力し、第一引数で指定したGameObjectのリストを空中に固定する
     private void DelayProcessFreeze(List<GameObject> nodes, float delayTime)
     {
         Vector3 nodesCenter = CaluculateCenter(nodes);
-        StartCoroutine(StopRigidbodys(nodes, delayTime));
+        StartCoroutine(FreezeBlocks(nodes, delayTime));
         StartCoroutine(soundManager.PlayAudio(soundManager.VOICE_FREEZE, delayTime));
         StartCoroutine(soundManager.PlayAudio(soundManager.SE_FREEZE, delayTime));
         StartCoroutine(effectTextManager.PrintEffectText("Freeze", delayTime));
         StartCoroutine(InstantiateEffect(freezeEffect, nodesCenter, delayTime));
-        freezeCondition = _conditionGenerator.GenerateCondition();
     }
 
     //引数で与えられたゲームオブジェクトたちの重心を計算して返すメソッド
@@ -287,7 +289,7 @@ public class Network : MonoBehaviour
         return requiredCounts.Count == 0; //必要なノードがすべて含まれていればtrue
     }
 
-    //ネットワークからサブグラフを探索する拡張前のExpandNetworkを、拡張するネットワークを入れるキューに追加する。Update内でこのキューから要素が取り出され、自動で探索が始まる。
+    //ネットワークからサブグラフを探索する拡張前のExpandNetworkを、拡張するネットワークを格納するキューに追加する。Update内でこのキューから要素が取り出され、自動で探索が始まる。
     public void AddStartExpandNetworks(HashSet<GameObject> neiborSet)
     {
         ExpandNetwork currentNetwork = null;
