@@ -273,6 +273,7 @@ public class GameManager : MonoBehaviour
         gameOverMenu.SetActive(true);
         soundManager.StopAudio(soundManager.BGM_PLAY);
         SoundManager.LoadSoundSettingData();
+        isGameOver = false;
     }
 
     public bool GetCompleteNumberFlag()
