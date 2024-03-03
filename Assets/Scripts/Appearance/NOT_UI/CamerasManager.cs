@@ -20,12 +20,14 @@ public class CamerasManager : MonoBehaviour
         //プレイシーンであれば初期化
         if (SceneManager.GetActiveScene().name != "PlayScene") return;
         downerUITransform = GameObject.Find("DownerUI").GetComponent<RectTransform>();
-        downerUI_MAXY = downerUITransform.anchoredPosition.y;
+        downerUI_MAXY = downerUITransform.anchorMax.y;
         position_defo = transform.position;
         scoreManager = ScoreManager.ScoreManagerInstance;
         mainCamera = Camera.main;
         UICamera = transform.Find("UICamera").GetComponent<Camera>();
         orthographicSize_defo = mainCamera.orthographicSize;
+
+        Debug.Log(downerUI_MAXY);
     }
     void Update()
     {
@@ -33,12 +35,12 @@ public class CamerasManager : MonoBehaviour
         if (SceneManager.GetActiveScene().name != "PlayScene") return;
         if (Info.CameraTrackingStartHeight > scoreManager.NowHeight) return;
 
-        float newOrthographicSize = scoreManager.NowHeight - Info.CameraTrackingStartHeight + orthographicSize_defo; //新たなカメラの大きさ
-                                                                                                                     //scoreManager.MaxHeight - startHeightは変化量、10は初期値
+        float moveingDistance = scoreManager.NowHeight - Info.CameraTrackingStartHeight; //開始高度からの移動距離
+        float newOrthographicSize = moveingDistance + orthographicSize_defo; //新たなカメラの大きさ
         mainCamera.orthographicSize = newOrthographicSize;
         UICamera.orthographicSize = newOrthographicSize; //UICameraの大きさも変更しないと、mainCameraが大きくなるにつれ、UIが相対的に小さくなっていってしまう。
 
-        newCamerasHeight = position_defo.y + (scoreManager.NowHeight - Info.CameraTrackingStartHeight) * downerUI_MAXY; //画面の下30％部分を固定してカメラの範囲を拡大
+        newCamerasHeight = position_defo.y + moveingDistance * downerUI_MAXY; //中心が画面下UIの最大点になるようにする。
         mainCamera.transform.position = new Vector3(position_defo.x,newCamerasHeight, position_defo.z);
     }
 }

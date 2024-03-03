@@ -46,8 +46,9 @@ public class ScoreManager : MonoBehaviour
     //現在の高さからスコアを計算する
     public int CalculatePileUpScore()
     {
+        const int scoreMultiplier = 1000; //高さにかかるスコア倍率
         float height = CalculateAllGameObjectsMaxHeight();
-        return (int)(height * 1000);
+        return (int)(height * scoreMultiplier);
     }
 
     //全ゲームオブジェクトの頂点から最も高い頂点のy座標を返すメソッド(GameObjectのpivotではなく、頂点レベルで高さを計算する。)
