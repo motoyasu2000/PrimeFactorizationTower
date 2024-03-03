@@ -173,9 +173,10 @@ public class SoundManager : MonoBehaviour
     {
         if (!File.Exists(Application.persistentDataPath + "/SoundSetting.json"))
         {
-            instance.volume_BGM = 0.5f;
-            instance.volume_SE = 0.5f;
-            instance.volume_Voice = 0.5f;
+            float defaultVolume = 0.5f;
+            instance.volume_BGM = defaultVolume;
+            instance.volume_SE = defaultVolume;
+            instance.volume_Voice = defaultVolume;
             return;
         }
         StreamReader reader = new StreamReader(Application.persistentDataPath + "/SoundSetting.json");

@@ -10,9 +10,18 @@ public class GroundGenerator : MonoBehaviour
 
         for(int i=-3; i<=3; i++)
         {
-            GameObject newGround = Instantiate(groundToken, new Vector3(i, 0, 0), Quaternion.identity); //生成
-            newGround.transform.localScale = new Vector3(1, Random.Range(0.5f, 1.5f), 1); //変形
-            newGround.transform.Rotate(new Vector3(0, 0, Random.Range(-20f, 20f))); //回転
+            //生成
+            GameObject newGround = Instantiate(groundToken, new Vector3(i, 0, 0), Quaternion.identity);
+
+            //変形
+            float randomHeight = Random.Range(0.5f, 1.5f);
+            newGround.transform.localScale = new Vector3(1, randomHeight, 1);
+
+            //回転
+            float randomSpinAngle = Random.Range(-20f, 20f);
+            newGround.transform.Rotate(new Vector3(0, 0, randomSpinAngle)); 
+
+            //親とタグの設定
             newGround.transform.parent = transform;
             newGround.tag = "Ground";
         }
