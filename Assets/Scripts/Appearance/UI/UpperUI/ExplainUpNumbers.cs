@@ -17,8 +17,8 @@ namespace UI
         float timeCounter = 0;
         void Start()
         {
-            nowUpNumber = GameObject.Find("NowUpNumber");
-            nextUpNumber = GameObject.Find("NextUpNumber");
+            nowUpNumber = GameObject.Find("NowUpCompositeNumberText");
+            nextUpNumber = GameObject.Find("NextUpCompositeNumberText");
             conditionNumber = GameObject.Find("ConditonNumber");
             nowUpNumberText = nowUpNumber.GetComponent<TextMeshProUGUI>();
             nextUpNumberText = nextUpNumber.GetComponent<TextMeshProUGUI>();
