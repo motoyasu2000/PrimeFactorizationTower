@@ -5,6 +5,7 @@ using UnityEngine.Rendering.Universal;
 //isLightUpStartがtrueになると、bloomの値が上昇し続けて画面がまぶしくなっていくようにするクラス。ゲームオーバー時に呼ばれる演出。
 public class BloomManager : MonoBehaviour
 {
+    const float lightUpPowerCoefficient = 30f; //時間当たりにどのくらいbloomの値を大きくするのかを決定する値
     bool isLightUpStart = false;
     Volume volume;
     VolumeProfile profile;
@@ -20,7 +21,7 @@ public class BloomManager : MonoBehaviour
     {
         if (isLightUpStart)
         {
-            bloom.intensity.value += 0.5f;
+            bloom.intensity.value += Time.deltaTime * lightUpPowerCoefficient;
         }
     }
     public void LightUpStart()

@@ -17,9 +17,9 @@ namespace UI
             width = rectTransform.rect.width;
             canvasHeight = transform.parent.GetComponent<Canvas>().GetComponent<RectTransform>().rect.height;
             maxYAnchor = rectTransform.anchorMax.y;
-            rectTransform.sizeDelta = new Vector2(0, -canvasHeight * maxYAnchor + width / 4.2f); //-canvasHeight*maxYAnchorが上端の位置でそこから横幅/4.2分だけ下がる この処理によりUIのサイズをスマホの画面幅に限らず一定にする。
+            const float screenAdjustmentFactor = 4.2f; //画面幅に大路手どのくらいUIのサイズを変更するのかを決定する値。
+            rectTransform.sizeDelta = new Vector2(0, -canvasHeight * maxYAnchor + width / screenAdjustmentFactor); //-canvasHeight*maxYAnchorが上端の位置で、そこから下端の位置を画面幅に合わせて設定する。 この処理によりUIのサイズをスマホの画面幅に限らず一定にする。
                                                                                                  //Debug.Log(canvasHeight + " " + width);
-
         }
     }
 }

@@ -1,35 +1,35 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//—‰º‘O‚Ì’Pˆê‚ÌƒuƒƒbƒN‚ğ‰ñ“]‚³‚¹‚éƒNƒ‰ƒXB
+//è½ä¸‹å‰ã®å˜ä¸€ã®ãƒ–ãƒ­ãƒƒã‚¯ã‚’å›è»¢ã•ã›ã‚‹ã‚¯ãƒ©ã‚¹ã€‚
 public class BlockSpiner : MonoBehaviour
 {
     const float spinSpeed = 1000f;
-    float angleCounter = 0; //‚Ç‚Ì‚­‚ç‚¢‰ñ“]‚µ‚½‚Ì‚©”‚¦‚éŠÖ”
+    float angleCounter = 0; //ã©ã®ãã‚‰ã„å›è»¢ã—ãŸã®ã‹æ•°ãˆã‚‹é–¢æ•°
     bool isSpiningNow = false;
 
-    //—‰º‘O‚Ì’Pˆê‚ÌƒuƒƒbƒN‚ğ”½Œv‰ñ‚è‚É45“x‰ñ“]‚³‚¹‚é
+    //è½ä¸‹å‰ã®å˜ä¸€ã®ãƒ–ãƒ­ãƒƒã‚¯ã‚’åæ™‚è¨ˆå›ã‚Šã«45åº¦å›è»¢ã•ã›ã‚‹
     public void RotateSingleBlock_45()
     {
         StartCoroutine(RotateSingleBlock(45));
     }
-    //—‰º‘O‚Ì’Pˆê‚ÌƒuƒƒbƒN‚ğ”½Œv‰ñ‚è‚É45“x‰ñ“]‚³‚¹‚é
+    //è½ä¸‹å‰ã®å˜ä¸€ã®ãƒ–ãƒ­ãƒƒã‚¯ã‚’åæ™‚è¨ˆå›ã‚Šã«45åº¦å›è»¢ã•ã›ã‚‹
     public void RotateSingleBlock_45_Reverse()
     {
         StartCoroutine(RotateSingleBlock(-45));
     }
-    //—‰º‘O‚Ì’Pˆê‚ÌƒuƒƒbƒN‚ğ”½Œv‰ñ‚è‚É90“x‰ñ“]‚³‚¹‚é
+    //è½ä¸‹å‰ã®å˜ä¸€ã®ãƒ–ãƒ­ãƒƒã‚¯ã‚’åæ™‚è¨ˆå›ã‚Šã«90åº¦å›è»¢ã•ã›ã‚‹
     public void RotateSingleBlock_90()
     {
         StartCoroutine(RotateSingleBlock(90));
     }
 
-    //ˆø”‚Å—^‚¦‚ç‚ê‚½”’l•ª‚¾‚¯—‰º‘O‚Ì’Pˆê‚ÌƒuƒƒbƒN‚ğ”½Œv‰ñ‚è‚É‰ñ“]‚³‚¹‚é
+    //å¼•æ•°ã§ä¸ãˆã‚‰ã‚ŒãŸæ•°å€¤åˆ†ã ã‘è½ä¸‹å‰ã®å˜ä¸€ã®ãƒ–ãƒ­ãƒƒã‚¯ã‚’åæ™‚è¨ˆå›ã‚Šã«å›è»¢ã•ã›ã‚‹
     IEnumerator RotateSingleBlock(float angleOfRotation)
     {
         GameObject singleBlock = GetComponent<SingleGenerateManager>().SingleBlock;
-        //‰ñ“]’†‚ÉV‚½‚È‰ñ“]‚ªs‚í‚ê‚È‚¢‚æ‚¤‚É
+        //å›è»¢ä¸­ã«æ–°ãŸãªå›è»¢ãŒè¡Œã‚ã‚Œãªã„ã‚ˆã†ã«
         if (!isSpiningNow && singleBlock != null)
         {
             isSpiningNow = true;
@@ -39,7 +39,7 @@ public class BlockSpiner : MonoBehaviour
                 angleCounter += nowFrameRotateValue;
                 singleBlock.transform.Rotate(Vector3.forward * nowFrameRotateValue);
 
-                //w’è‚ÌŠp“xˆÈã‚É‰ñ“]‚µ‚½‚çAw’è‚ÌŠp“x‚Æ‚Ì·•ª‚¾‚¯–ß‚Á‚ÄAangleCounter‚ğƒŠƒZƒbƒg‚µAˆ—‚ğI—¹B
+                //æŒ‡å®šã®è§’åº¦ä»¥ä¸Šã«å›è»¢ã—ãŸã‚‰ã€æŒ‡å®šã®è§’åº¦ã¨ã®å·®åˆ†ã ã‘æˆ»ã£ã¦ã€angleCounterã‚’ãƒªã‚»ãƒƒãƒˆã—ã€å‡¦ç†ã‚’çµ‚äº†ã€‚
                 if (angleCounter > angleOfRotation)
                 {
                     singleBlock.transform.Rotate(Vector3.forward * (angleOfRotation - angleCounter));

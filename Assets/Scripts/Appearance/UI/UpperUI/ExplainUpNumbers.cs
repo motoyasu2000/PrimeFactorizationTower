@@ -3,9 +3,13 @@ using UnityEngine;
 
 namespace UI
 {
-    //チュートリアルでのUIの説明の際に、今説明しているUIがを点滅させる関数。これにより今どこの説明をしているのかがわかりやすくなる。
+    //チュートリアルでのUIの説明の際に、今説明しているUIがを点滅させるクラス。これにより今どこの説明をしているのかがわかりやすくなる。
     public class ExplainUpNumbers : MonoBehaviour
     {
+
+        const float blinkSpeedCoefficient = 1.4f; // 時間当たりにどのくらい点滅するのかを調整するための値
+        float timeCounter = 0;
+        Color startColor;
         GameObject nowUpNumber;
         GameObject nextUpNumber;
         GameObject conditionNumber;
@@ -13,8 +17,8 @@ namespace UI
         TextMeshProUGUI nextUpNumberText;
         TextMeshProUGUI conditionNumberText;
         TextMeshProUGUI nowText;
-        Color startColor;
-        float timeCounter = 0;
+
+
         void Start()
         {
             nowUpNumber = GameObject.Find("NowUpCompositeNumberText");
@@ -33,7 +37,7 @@ namespace UI
 
         void Update()
         {
-            timeCounter += Time.deltaTime * 1.4f;
+            timeCounter += Time.deltaTime * blinkSpeedCoefficient;
             if (timeCounter > 1) timeCounter = 0;
             nowText.color = new Color(timeCounter, timeCounter, timeCounter);
         }
