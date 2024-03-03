@@ -36,6 +36,7 @@ public class GameManager : MonoBehaviour
     //ゲームオーバー処理
     int compositeNumber_GO; //ゲームオーバー時の合成数
     int primeNumber_GO; //ゲームオーバー時の素数
+    bool isGameOver = false; //ゲームオーバーになったらこのフラグをtrueにし、falseの時のみゲームオーバーの処理を実行するようにすることで、ゲームオーバーの処理が1度しか呼ばれないようにする。
     BloomManager bloomManager; //ゲームオーバー時の演出用
     public int CompositeNumber_GO => compositeNumber_GO;
     public int PrimeNumber_GO => primeNumber_GO;
@@ -243,6 +244,10 @@ public class GameManager : MonoBehaviour
 
     public void GameOver(bool missPrimeNumberfactorization)
     {
+        //このメソッドが1度しか呼ばれないように
+        if (isGameOver) return;
+        else isGameOver = true;
+
         //素因数分解を間違えてしまった場合、最後のゲームオーバー理由の出力の際に、元の合成数とその時選択してしまった素数の情報が必要なので、変数に入れておく。
         if(missPrimeNumberfactorization){
             compositeNumber_GO = nowUpCompositeNumber * afterField.transform.GetChild(afterField.transform.childCount - 1).GetComponent<BlockInfo>().GetPrimeNumber() / nowPrimeNumberProduct;
@@ -261,7 +266,7 @@ public class GameManager : MonoBehaviour
     }
 
 
-    //ゲームオーバー後、一定時間後にゲームオーバーメニューを表示し、bgmのストップ。ゲームオーバー後の後処理
+    //ゲームオーバー後、一定時間後にゲームオーバーメニューを表示し、bgmのストップ。ゲームオーバーの後処理
     IEnumerator PostGameOver(float time)
     {
         yield return new WaitForSeconds(time);
