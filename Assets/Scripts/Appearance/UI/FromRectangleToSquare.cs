@@ -2,10 +2,15 @@
 
 namespace UI
 {
-    //画面上部中央に表示される、生成可能なブロックの条件を記載した数値を正方形のブロック状に表示させる関数。色々な画面幅のあるスマホに動的に対応するため。
-    public class NowUpCompositeNumberIntoSquare : MonoBehaviour
+    //縦幅を取得し、横幅に適用することで、長方形のUIから正方形のUIに変更するクラス。色々な画面幅のあるスマホに動的に対応するため。
+    public class FromRectangleToSquare : MonoBehaviour
     {
-        public RectTransform myRectTransform;
+        RectTransform myRectTransform;
+
+        private void Start()
+        {
+            myRectTransform = GetComponent<RectTransform>();
+        }
         private void Update()
         {
             AdjustSize();
