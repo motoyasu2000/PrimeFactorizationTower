@@ -34,6 +34,8 @@ public class GameModeManager : MonoBehaviour
     List<int> difficultPool = new List<int>();
     List<int> insanePool = new List<int>();
     [SerializeField] DifficultyLevel nowDifficultyLevel = DifficultyLevel.Difficult; //Json形式で保存するために、シリアライズ可能にしておく
+
+    //プロパティ
     public int[] PrimeNumberPool => primeNumberPool;
     public List<int> NormalPool => normalPool;
     public List<int> DifficultPool => difficultPool;
