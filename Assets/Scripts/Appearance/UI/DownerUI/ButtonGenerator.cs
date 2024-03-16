@@ -5,9 +5,9 @@ namespace UI
     //画面下部にあるボタンUIの数値を設定するクラス
     public class ButtonGenerator : MonoBehaviour
     {
+        static readonly int splitCount = 3;
         static readonly float xScale = 0.97f;
         static readonly float yScale = 0.93f;
-        static readonly int splitCount = 3;
         static readonly float[] splitPoints = { 0, 0.33f, 0.66f, 1 };
         GameObject buttonArea;
         GameObject buttonPrefab;

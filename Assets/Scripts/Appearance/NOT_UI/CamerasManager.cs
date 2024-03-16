@@ -27,7 +27,7 @@ public class CamerasManager : MonoBehaviour
         UICamera = transform.Find("UICamera").GetComponent<Camera>();
         orthographicSize_defo = mainCamera.orthographicSize;
 
-        Debug.Log(downerUI_MAXY);
+        //Debug.Log(downerUI_MAXY);
     }
     void Update()
     {
