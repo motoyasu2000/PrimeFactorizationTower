@@ -83,7 +83,7 @@ public class ScoreManager : MonoBehaviour
             max = Mathf.Max(max, worldPoint.y);
             //Debug.Log(worldPoint.y);
         }
-        return max-Info.GroundHeight; //初めの高さを0にするために元の高さ分引く
+        return max-GameInfo.GroundHeight; //初めの高さを0にするために元の高さ分引く
     }
 
     //シーンのロード時に実行されるメソッド
@@ -101,7 +101,7 @@ public class ScoreManager : MonoBehaviour
         {
             if (!instance.pileUpScores.ContainsKey(level))
             {
-                instance.pileUpScores[level] = new int[Info.RankDisplayLimit + 1];
+                instance.pileUpScores[level] = new int[GameInfo.RankDisplayLimit + 1];
             }
         }
 
@@ -121,7 +121,7 @@ public class ScoreManager : MonoBehaviour
     public void InsertPileUpScoreAndSort(int newScore)
     {
         GameModeManager.DifficultyLevel nowLevel = GameModeManager.GameModemanagerInstance.NowDifficultyLevel;
-        ScoreManagerInstance.pileUpScores[nowLevel][Info.RankDisplayLimit] = newScore;
+        ScoreManagerInstance.pileUpScores[nowLevel][GameInfo.RankDisplayLimit] = newScore;
         Array.Sort(ScoreManagerInstance.pileUpScores[nowLevel]);
         Array.Reverse(ScoreManagerInstance.pileUpScores[nowLevel]);
     }
@@ -163,7 +163,7 @@ public class ScoreManager : MonoBehaviour
 
         public Top10Score()
         {
-            scores = new int[Info.RankDisplayLimit + 1];
+            scores = new int[GameInfo.RankDisplayLimit + 1];
         }
     }
 

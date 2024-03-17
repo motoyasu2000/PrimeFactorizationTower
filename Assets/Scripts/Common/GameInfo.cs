@@ -1,7 +1,7 @@
 ﻿namespace Common
 {
     //ゲーム内の情報。複数のクラスから参照される可能性がある定数を集めたクラス
-    public static class Info
+    public static class GameInfo
     {
         static readonly int rankDisplayLimit = 10; //表示するランキングの上限値
         static readonly int cameraTrackingStartHeight = 4; //どこまで高く積んだらカメラが動き出すか
