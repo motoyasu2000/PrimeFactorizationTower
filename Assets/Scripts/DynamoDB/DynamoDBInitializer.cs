@@ -1,9 +1,12 @@
-using Amazon;
+﻿using Amazon;
 using Amazon.DynamoDBv2;
 using Amazon.Runtime;
 using System;
+using System.Threading.Tasks;
+using Unity.VisualScripting;
 using UnityEngine;
-
+using UnityEngine.SocialPlatforms.Impl;
+//※dynamoDBのapiをたたくのは初めてなので、勉強のメモ用のコメントが多くなっております。
 
 public class DynamoDBInitializer : MonoBehaviour
 {
@@ -28,7 +31,36 @@ public class DynamoDBInitializer : MonoBehaviour
             ddbManager.Initialize(client);
         }
 
-        //�e�X�g�p
-        ddbManager.SaveScoreAsync("aaa", 10, 100);
+        //テスト用
+        //ddbManager.SaveScoreAsync("aaa", 20, 100);
+        //ddbManager.SaveScoreAsync("aaa", 30, 200);
+        ddbManager.GetScoreAsync("aaa", 10).ContinueWith(task =>　//ContinueWithで非同期操作が完了した後に何をするのかを指定している。
+        {
+            if (task.IsFaulted)
+            {
+                // エラーが発生した場合
+                Debug.LogError($"レコード取得失敗: {task.Exception}");
+            }
+            else
+            {
+                // 成功した場合、取得したレコードの詳細をログに出力
+                var ranking = task.Result;
+                if (ranking != null)
+                {
+                    Debug.Log($"ModeAndLevel: {ranking.ModeAndLevel}, Score: {ranking.Score}, PlayerID: {ranking.PlayerID}");
+                }
+                else
+                {
+                    Debug.Log("レコードが見つかりませんでした。");
+                }
+            }
+        });
+        ddbManager.GetTop10Scores("aaa", (records) =>
+        {
+            foreach (var record in records)
+            {
+                Debug.Log($"Score: {record.score}, PlayerID: {record.playerID}");
+            }
+        });
     }
 }
