@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using System.IO;
 using Random = UnityEngine.Random;
+using AWS;
 
 //ゲームを管理するクラス。画面上部の合成数の計算や表示、ゲームオーバーの管理などを行う。
 public class GameManager : MonoBehaviour
@@ -21,8 +22,10 @@ public class GameManager : MonoBehaviour
     bool isGroundAll = false; //全てのブロックが地面に設置しているかをチェックする変数。falseであれば、高さを計算しない。
     bool isGroundAll_past = false; //1フレーム前のisGroundAll
     ScoreManager scoreManager;
+    DynamoDBManager ddbManager;
     public bool IsGroundAll => isGroundAll;
     public bool IsGroundAll_past => isGroundAll_past;
+    public bool IsBreakScore => (oldMaxScore < newScore); //スコアを更新したかを判定するフラグ
     public int OldMaxScore => oldMaxScore;
     public int NewScore => newScore;
 
@@ -54,6 +57,7 @@ public class GameManager : MonoBehaviour
     //初期化処理
     private void Awake()
     {
+        ddbManager = GameObject.Find("DynamoDBManager").GetComponent<DynamoDBManager>();
         nowUpCompositeNumberText = GameObject.Find("NowUpCompositeNumberText").GetComponent<TextMeshProUGUI>();
         nextUpCompositeNumberText = GameObject.Find("NextUpCompositeNumberText").GetComponent<TextMeshProUGUI>();
         nowScoreText = GameObject.Find("NowScoreText").GetComponent<TextMeshProUGUI>();
@@ -260,6 +264,8 @@ public class GameManager : MonoBehaviour
         scoreManager.SaveScoreData();
         bloomManager.LightUpStart();
         soundManager.FadeOutVolume();
+        //スコアを更新していれば、データベースの更新
+        if (IsBreakScore) ddbManager.SaveScoreAsync(GameModeManager.GameModemanagerInstance.ModeAndLevel, newScore);
 
         const float delayTime = 1.2f;
         StartCoroutine(PostGameOver(delayTime));

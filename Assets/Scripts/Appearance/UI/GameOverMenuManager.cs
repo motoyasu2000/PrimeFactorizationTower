@@ -45,21 +45,21 @@ namespace UI
             oldMaxScore = gameManager.OldMaxScore;
             newScore = gameManager.NewScore;
             Debug.Log(oldMaxScore);
-            if (newScore <= oldMaxScore)
+            if (!gameManager.IsBreakScore)
             {
                 nonUpdateRecord.SetActive(true);
-                PrintNonUpdateRecord();
+                DisplayNonBreakRecord();
             }
             else
             {
                 updateRecord.SetActive(true);
-                PrintUpdateRecord();
+                DisplayBreakRecord();
             }
 
         }
 
         //スコアを更新しなかった場合のスコアの表示
-        void PrintNonUpdateRecord()
+        void DisplayNonBreakRecord()
         {
             TextMeshProUGUI newScoreText = nonUpdateRecord.transform.Find("NewScore").GetComponent<TextMeshProUGUI>();
             TextMeshProUGUI oldScoreText = nonUpdateRecord.transform.Find("OldScore").GetComponent<TextMeshProUGUI>();
@@ -68,7 +68,7 @@ namespace UI
         }
 
         //スコアを更新した場合のスコアの表示
-        void PrintUpdateRecord()
+        void DisplayBreakRecord()
         {
             TextMeshProUGUI newScoreText = updateRecord.transform.Find("NewScore").GetComponent<TextMeshProUGUI>();
             TextMeshProUGUI oldScoreText = updateRecord.transform.Find("OldScore").GetComponent<TextMeshProUGUI>();
