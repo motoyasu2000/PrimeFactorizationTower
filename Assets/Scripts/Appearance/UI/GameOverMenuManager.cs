@@ -44,7 +44,7 @@ namespace UI
         {
             oldMaxScore = gameManager.OldMaxScore;
             newScore = gameManager.NewScore;
-            Debug.Log(oldMaxScore);
+
             if (!gameManager.IsBreakScore)
             {
                 nonUpdateRecord.SetActive(true);

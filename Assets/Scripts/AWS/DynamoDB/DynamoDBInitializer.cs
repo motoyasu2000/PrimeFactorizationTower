@@ -41,6 +41,14 @@ namespace AWS
                 //認証が完了した後にDynamoDBClientを初期化
                 AmazonDynamoDBClient client = new AmazonDynamoDBClient(credentials, config);
                 ddbManager.Initialize(client, cognitoAWSCredentials);
+
+                ddbManager.GetTop10Scores(GameModeManager.GameModemanagerInstance.ModeAndLevel, records =>
+                {
+                    foreach (var record in records)
+                    {
+                        Debug.Log(record.Score);
+                    }
+                });
             }
         }
 
