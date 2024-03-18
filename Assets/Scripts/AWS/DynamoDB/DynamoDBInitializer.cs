@@ -47,6 +47,7 @@ namespace AWS
                     foreach (var record in records)
                     {
                         Debug.Log(record.Score);
+                        //ddbManager.DeleteOldScoreAsync(GameModeManager.GameModemanagerInstance.ModeAndLevel, record.Score);
                     }
                 });
             }

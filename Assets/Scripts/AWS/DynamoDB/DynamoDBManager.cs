@@ -61,6 +61,7 @@ namespace AWS
                         if (result.Exception == null)
                         {
                             Debug.Log("スコア更新成功！");
+                            DeleteOldScoreAsync(modeAndLevel, oldScore);
                         }
                         else
                         {
@@ -70,7 +71,8 @@ namespace AWS
                 }
                 else
                 {
-                    Debug.LogError("現在の最高スコア以下を現在の最高スコア以下に更新しようとしました。");
+                    Debug.LogError("現在の最高スコアを現在の最高スコア以下に更新しようとしました。");
+
                 }
             }
 
@@ -116,17 +118,17 @@ namespace AWS
                         record = new DisplayScores()
                         {
                             ModeAndLevel = "",
-                            Score = 0,
+                            Score = -1,
                             PlayerID = playerID
                         };
-                        Debug.LogWarning("初めてのPlayerIDAndModeAndLevelの更新です。");
+                        Debug.LogWarning("初めての更新です。");
                     }
                     else
                     {
                         record = new DisplayScores()
                         {
                             ModeAndLevel = "",
-                            Score = 0,
+                            Score = -1,
                             PlayerID = playerID
                         };
                         Debug.LogError("レコード数が異常値です");
@@ -143,7 +145,7 @@ namespace AWS
         }
 
         //引数で指定されたモード・レベルに対応するレコードを削除する処理。スコアの更新の際、古いスコアを消去するために使う。
-        Task DeleteOldScoreAsync(string modeAndLevel, int oldScore)
+        public Task DeleteOldScoreAsync(string modeAndLevel, int oldScore)
         {
             var source = new TaskCompletionSource<bool>();
             try
