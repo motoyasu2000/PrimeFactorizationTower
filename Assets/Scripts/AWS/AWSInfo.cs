@@ -1,4 +1,4 @@
-using Amazon;
+ï»¿using Amazon;
 using Amazon.CognitoIdentity;
 using Amazon.Runtime;
 using System;
@@ -6,7 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//”FØ‚É•K—v‚Èî•ñ‚âregion‚Ìî•ñACognito‚Ìî•ñ‚È‚ÇAAWS‚Ì‘€ì‚Å—p‚¢‚é‚½‚ß‚ÌÃ“I‚È•Ï”‚ğ‘‚¢‚Æ‚­êŠ
+//èªè¨¼ã«å¿…è¦ãªæƒ…å ±ã‚„regionã®æƒ…å ±ã€Cognitoã®æƒ…å ±ãªã©ã€AWSã®æ“ä½œã§ç”¨ã„ã‚‹ãŸã‚ã®é™çš„ãªå¤‰æ•°ã‚’æ›¸ã„ã¨ãå ´æ‰€
 namespace AWS
 {
     public static class AWSInfo

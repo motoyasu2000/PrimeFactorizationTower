@@ -10,7 +10,7 @@ using UnityEngine;
 using UnityEngine.SocialPlatforms.Impl;
 namespace AWS
 {
-    public class AWSInitializer : MonoBehaviour
+    public class DynamoDBInitializer : MonoBehaviour
     {
         DynamoDBManager ddbManager;
 
@@ -41,16 +41,6 @@ namespace AWS
                 //認証が完了した後にDynamoDBClientを初期化
                 AmazonDynamoDBClient client = new AmazonDynamoDBClient(credentials, config);
                 ddbManager.Initialize(client, cognitoAWSCredentials);
-
-                //ddbManager.SaveScoreAsync(GameModeManager.GameModemanagerInstance.ModeAndLevel, 100);
-
-                ddbManager.GetTop10Scores(GameModeManager.GameModemanagerInstance.ModeAndLevel, records =>
-                {
-                    foreach (var record in records)
-                    {
-                        Debug.Log($"PlayerID: {record.playerID}, Score: {record.score}");
-                    }
-                });
             }
         }
 

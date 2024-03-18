@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using Amazon.DynamoDBv2.Model;
 using Amazon.CognitoIdentity;
-//※dynamoDBのapiをたたくのは初めてでデーターベースの操作も不慣れのため、勉強のメモ用のコメントが多くなっております。
+//※dynamoDBのapiをたたくのは初めてでデータベースの操作も不慣れのため、勉強のメモ用のコメントが多くなっております。
 //コメントがぐちゃぐちゃで読みにくかったらごめんなさい。
 
 
@@ -31,8 +31,6 @@ namespace AWS
             context = new DynamoDBContext(client);
             this.client = client;
             playerID = cognitoAWSCredentials.GetCachedIdentityId();
-            if (context == null) Debug.LogError("clientからcontextが取得できませんでした。");
-            else Debug.Log($"正常にcontextが取得できました。: {context}");
             Debug.Log(playerID);
         }
 
@@ -41,38 +39,70 @@ namespace AWS
         {
             try
             {
-                var ranking = new DynamoDBDatas
+                var existingRecord = await GetRecordAsync(modeAndLevel);
+                //既にrecordが存在していて、新しいスコアが既存のスコアを上回っていたら、もしくは既存のスコアが見当たらなければ、スコアを更新する。
+                if ((existingRecord != null && score > existingRecord.Score) || existingRecord == null)
                 {
-                    ModeAndLevel = modeAndLevel,
-                    Score = score,
-                    PlayerID = playerID
-                };
+                    var ranking = new DynamoDBDatas
+                    {
+                        ModeAndLevel = modeAndLevel,
+                        Score = score,
+                        PlayerID = playerID
+                    };
 
-                //DynamoDBにスコアを保存、うまくいったかどうかの情報や、なぜ失敗したのかの情報がresultにcallbackされる
-                context.SaveAsync(ranking, result =>
+                    //DynamoDBにスコアを保存、うまくいったかどうかの情報や、なぜ失敗したのかの情報がresultにcallbackされる
+                    context.SaveAsync(ranking, result =>
+                    {
+                        if (result.Exception == null)
+                        {
+                            Debug.Log("スコア更新成功！");
+                        }
+                        else
+                        {
+                            Debug.LogError($"スコア更新失敗: {result.Exception.Message}");
+                        }
+                    });
+                }
+                else
                 {
-                    if (result.Exception == null)
-                    {
-                        Debug.Log("スコア更新成功！");
-                    }
-                    else
-                    {
-                        Debug.LogError($"スコア更新失敗: {result.Exception.Message}");
-                    }
-                });
+                    Debug.LogError("現在のスコアを下回るスコアに更新しようとしました。");
+                }
             }
+
             catch (Exception e)
             {
                 Debug.LogError(e.Message);
             }
         }
 
-        //引数で指定されたモードとレベルとスコアに対するrecordをDynamoDBから非同期で取得する。(Task型で戻す)
-        public Task<DynamoDBDatas> GetScoreAsync(string modeAndLevel, int score)
+        //引数で指定されたモード・レベルに対応するレコードを削除する処理。スコアの更新の際、古いスコアを消去するために使う。※同一IDであれば自動で上書きされることが判明したため、現状は不要だった。
+        Task DeleteScoreAsync(string modeAndLevel)
+        {
+            var source = new TaskCompletionSource<bool>();
+            var key = new DynamoDBDatas { ModeAndLevel = modeAndLevel, PlayerID = playerID };
+            context.DeleteAsync(key, result =>
+            {
+                if (result.Exception == null)
+                {
+                    Debug.Log($"レコード削除成功！");
+                    source.SetResult(true);
+                }
+                else
+                {
+                    Debug.LogError($"レコード削除失敗: {result.Exception.Message}");
+                    source.SetException(result.Exception);
+                }
+            });
+
+            return source.Task;
+        }
+
+        //引数で指定されたモードに対するrecordをDynamoDBから非同期で取得する。(Task型で戻す)
+        public Task<DynamoDBDatas> GetRecordAsync(string modeAndLevel)
         {
             var source = new TaskCompletionSource<DynamoDBDatas>();
-            //AmazonDynamoDBCallbackは非同期操作の結果を受け取るために使われる。非同期操作が完了すると、SDK内部からこのコールバックが呼び出される。
-            context.LoadAsync<DynamoDBDatas>(modeAndLevel, score, new AmazonDynamoDBCallback<DynamoDBDatas>((result) =>
+            // PlayerID を使ってレコードを取得
+            context.LoadAsync<DynamoDBDatas>(modeAndLevel, playerID, new AmazonDynamoDBCallback<DynamoDBDatas>((result) =>
             {
                 if (result.Exception == null)
                 {
