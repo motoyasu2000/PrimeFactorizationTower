@@ -246,14 +246,16 @@ public class GameManager : MonoBehaviour
         nowPrimeNumberProduct = 1; 
     }
 
-    public void GameOver(bool missPrimeNumberfactorization)
+    public async void GameOver(bool missPrimeNumberfactorization)
     {
         //このメソッドが1度しか呼ばれないように
         if (isGameOver) return;
         else isGameOver = true;
 
+        Debug.Log("GameOver");
+
         //素因数分解を間違えてしまった場合、最後のゲームオーバー理由の出力の際に、元の合成数とその時選択してしまった素数の情報が必要なので、変数に入れておく。
-        if(missPrimeNumberfactorization){
+        if (missPrimeNumberfactorization){
             compositeNumber_GO = nowUpCompositeNumber * afterField.transform.GetChild(afterField.transform.childCount - 1).GetComponent<BlockInfo>().GetPrimeNumber() / nowPrimeNumberProduct;
             primeNumber_GO = afterField.transform.GetChild(afterField.transform.childCount - 1).GetComponent<BlockInfo>().GetPrimeNumber();
         }
@@ -265,7 +267,7 @@ public class GameManager : MonoBehaviour
         bloomManager.LightUpStart();
         soundManager.FadeOutVolume();
         //スコアを更新していれば、データベースの更新
-        if (IsBreakScore) ddbManager.SaveScoreAsync(GameModeManager.GameModemanagerInstance.ModeAndLevel, newScore);
+        if (IsBreakScore) await ddbManager.SaveScoreAsync(GameModeManager.GameModemanagerInstance.ModeAndLevel, newScore);
 
         const float delayTime = 1.2f;
         StartCoroutine(PostGameOver(delayTime));
@@ -279,7 +281,6 @@ public class GameManager : MonoBehaviour
         gameOverMenu.SetActive(true);
         soundManager.StopAudio(soundManager.BGM_PLAY);
         SoundManager.LoadSoundSettingData();
-        isGameOver = false;
     }
 
     public bool GetCompleteNumberFlag()

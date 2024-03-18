@@ -61,6 +61,7 @@ namespace AWS
                         if (result.Exception == null)
                         {
                             Debug.Log("スコア更新成功！");
+                            DeleteOldScoreAsync(playerIDAndModeAndLevel, oldScore); //古いスコアを消去
                         }
                         else
                         {
@@ -89,7 +90,7 @@ namespace AWS
             try
             {
                 //QueryAsyncを使用する際にはクエリの情報を持つクラスQueryRequestのインスタンスが必要で、ここでクエリの細かい設定を行う。
-                var highestScoreQuery = GetScoreQuery(playerIDAndModeAndLevel, false, 1);
+                var highestScoreQuery = GetRecordsQuery(playerIDAndModeAndLevel, false, 1);
 
                 //設定したクエリ(queryRequest)を非同期で実行、結果がresponseに格納される。
                 client.QueryAsync(highestScoreQuery, response =>
@@ -134,6 +135,37 @@ namespace AWS
             }
         }
 
+        //引数で指定されたモード・レベルに対応するレコードを削除する処理。スコアの更新の際、古いスコアを消去するために使う。
+        Task DeleteOldScoreAsync(string modeAndLevel, int oldScore)
+        {
+            string playerIDAndModeAndLevel = $"{playerID}_{modeAndLevel}";
+            var source = new TaskCompletionSource<bool>();
+            try
+            {
+                Debug.Log($"{oldScore}がスコアのrecordを消去します");
+                var key = new DynamoDBDatas { PlayerIDAndModeAndLevel = playerIDAndModeAndLevel, Score = oldScore };
+                context.DeleteAsync(key, result =>
+                {
+                    if (result.Exception == null)
+                    {
+                        Debug.Log($"レコード削除成功！");
+                        source.SetResult(true);
+                    }
+                    else
+                    {
+                        Debug.LogError($"レコード削除失敗: {result.Exception.Message}");
+                        source.SetException(result.Exception);
+                    }
+                });
+            }
+            catch(Exception e)
+            {
+                Debug.LogError(e.Message);
+                source.SetException(e);
+            }
+            return source.Task;
+        }
+
         //引数で指定されたモードとレベルに応じてDynamoDBから非同期で取得し、結果をコールバックとして戻す。
         public void GetTop10Scores(string modeAndLevel, Action<List<DisplayScores>> callback)
         {
@@ -141,7 +173,7 @@ namespace AWS
             try
             {
                 //QueryAsyncを使用する際にはクエリの情報を持つクラスQueryRequestのインスタンスが必要で、ここでクエリの細かい設定を行う。
-                var top10ScoreQuery = GetScoreQuery(playerIDAndModeAndLevel, false, 10);
+                var top10ScoreQuery = GetRecordsQuery(playerIDAndModeAndLevel, false, 10);
 
                 //設定したクエリ(queryRequest)を非同期で実行、結果がresponseに格納される。
                 client.QueryAsync(top10ScoreQuery, response =>
@@ -197,34 +229,8 @@ namespace AWS
             return context == null;
         }
 
-
-        //現状使わないもの
-
-        //引数で指定されたモード・レベルに対応するレコードを削除する処理。スコアの更新の際、古いスコアを消去するために使う。※同一IDであれば自動で上書きされることが判明したため、現状は不要だった。
-        Task DeleteScoreAsync(string modeAndLevel)
-        {
-            string playerIDAndModeAndLevel = $"{playerID}_{modeAndLevel}";
-            var source = new TaskCompletionSource<bool>();
-            var key = new DynamoDBDatas { PlayerIDAndModeAndLevel = playerIDAndModeAndLevel };
-            context.DeleteAsync(key, result =>
-            {
-                if (result.Exception == null)
-                {
-                    Debug.Log($"レコード削除成功！");
-                    source.SetResult(true);
-                }
-                else
-                {
-                    Debug.LogError($"レコード削除失敗: {result.Exception.Message}");
-                    source.SetException(result.Exception);
-                }
-            });
-
-            return source.Task;
-        }
-
-        //最高スコアを取得するクエリ、引数でplayerIDAndModeAndLevel、昇順か降順か、取得するレコードの上限数を指定できる。
-        QueryRequest GetScoreQuery(string playerIDAndModeAndLevel, bool isForward, int limitValue)
+        //クエリを返すメソッド、引数でplayerIDAndModeAndLevel、昇順か降順か、取得するレコードの上限数を指定できる。
+        QueryRequest GetRecordsQuery(string playerIDAndModeAndLevel, bool isForward, int limitValue)
         {
             return new QueryRequest
             {
