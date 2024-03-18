@@ -267,7 +267,7 @@ public class GameManager : MonoBehaviour
         bloomManager.LightUpStart();
         soundManager.FadeOutVolume();
         //スコアを更新していれば、データベースの更新
-        if (IsBreakScore) await ddbManager.SaveScoreAsync(GameModeManager.GameModemanagerInstance.ModeAndLevel, newScore);
+        if (IsBreakScore) ddbManager.SaveScoreAsync(GameModeManager.GameModemanagerInstance.ModeAndLevel, newScore);
 
         const float delayTime = 1.2f;
         StartCoroutine(PostGameOver(delayTime));
