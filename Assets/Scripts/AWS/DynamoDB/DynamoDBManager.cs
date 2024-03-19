@@ -85,6 +85,7 @@ namespace AWS
 
 
         //引数で指定されたモードに対するrecordをDynamoDBから非同期で取得する。(Task型で戻す)
+        //SaveScoreAsyncメソッドによってスコア更新の際に呼び出される。
         public void GetRecordAsync(string modeAndLevel, Action<DisplayScores> callback)
         {
             try
@@ -103,6 +104,8 @@ namespace AWS
                     var result = response.Response;//クエリの結果をresultに格納
 
                     DisplayScores record;
+
+                    //更新
                     if (result.Items.Count == 1)
                     {
                         record = new DisplayScores()
@@ -113,7 +116,10 @@ namespace AWS
                         };
                         if (result.Items.Count > 1) Debug.LogError("単一のレコードを返すためのクエリに、複数のレコードが返ってきています。");
                     }
-                    else if(result.Items.Count == 0)
+                    //初期化
+                    //recordのScoreはSaveScoreAsyncメソッドによって新しく更新されたスコアと比較され、新しいスコアの方が大きければ正常に更新される。
+                    //ここでは、必ずスコアの更新が成功するようにScore:-1を返している。
+                    else if (result.Items.Count == 0)
                     {
                         record = new DisplayScores()
                         {
@@ -123,14 +129,10 @@ namespace AWS
                         };
                         Debug.LogWarning("初めての更新です。");
                     }
+                    //異常
                     else
                     {
-                        record = new DisplayScores()
-                        {
-                            ModeAndLevel = "",
-                            Score = -1,
-                            PlayerID = playerID
-                        };
+                        record = null;
                         Debug.LogError("レコード数が異常値です");
                     }
                     callback(record);
