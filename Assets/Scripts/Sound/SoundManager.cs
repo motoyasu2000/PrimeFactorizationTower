@@ -37,6 +37,7 @@ public class SoundManager : MonoBehaviour
     AudioSource bgm_play;
     AudioSource bgm_title;
 
+    //音声データのプロパティ
     public AudioSource VOICE_DONE => voice_done;
     public AudioSource VOICE_CRITERIAMAT => voice_criteriaMet;
     public AudioSource VOICE_FREEZE => voice_freeze;
