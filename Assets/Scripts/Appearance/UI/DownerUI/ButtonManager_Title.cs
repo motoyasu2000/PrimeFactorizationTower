@@ -1,4 +1,5 @@
-﻿using TMPro;
+﻿using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -10,31 +11,57 @@ namespace UI
     {
         GameObject singlePlay;
         GameObject multiPlay;
-        GameObject history;
+        GameObject ranking;
         GameObject setting;
         GameObject credit;
-        Transform ranking_transform;
-        Button[] difficultyLevelButtons = new Button[3];
         GameObject[] menus = new GameObject[5];
+        Transform ranking_transform;
+
+        //初期だと全て非アクティブで厄介なので、これらは全てUnityエンジン上から設定する。
+        Button[] difficultyLevelButtons = new Button[3];
+        Button[] rankButton_localOrGlobal = new Button[2];
+        Button[] rankButton_gameMode = new Button[1];
+        Button[] rankButton_difficultyLevel = new Button[3];
 
         void Awake()
         {
             singlePlay = GameObject.Find("SinglePlay");
             multiPlay = GameObject.Find("MultiPlay");
-            history = GameObject.Find("History");
+            ranking = GameObject.Find("Ranking");
             setting = GameObject.Find("Setting");
             credit = GameObject.Find("Credit");
 
-            InitializeDifficultyLevelButton();
-            InitializeHistory();
+            if(ranking) InitializeRankingButtons();
+            if (ranking) DisplayRankingHandler();
+            if (setting) InitializeDifficultyLevelButton();
 
             menus[0] = singlePlay;
             menus[1] = multiPlay;
-            menus[2] = history;
+            menus[2] = ranking;
             menus[3] = setting;
             menus[4] = credit;
         }
 
+        void InitializeRankingButtons()
+        {
+            rankButton_difficultyLevel[0] = GameObject.Find("NormalButton").GetComponent<Button>();
+            rankButton_difficultyLevel[1] = GameObject.Find("DifficultButton").GetComponent<Button>();
+            rankButton_difficultyLevel[2] = GameObject.Find("InsaneButton").GetComponent<Button>();
+            ChooseSingleButton(rankButton_difficultyLevel, (int)GameModeManager.Ins.NowDifficultyLevel);
+        }
+        void InitializeDifficultyLevelButton()
+        {
+            difficultyLevelButtons[0] = GameObject.Find("NormalButton").GetComponent<Button>();
+            difficultyLevelButtons[1] = GameObject.Find("DifficultButton").GetComponent<Button>();
+            difficultyLevelButtons[2] = GameObject.Find("InsaneButton").GetComponent<Button>();
+            ChooseSingleButton(difficultyLevelButtons, (int)GameModeManager.Ins.NowDifficultyLevel);
+        }
+        void DisplayRankingHandler()
+        {
+            int diffLevel = (int)GameModeManager.Ins.NowDifficultyLevel;
+            int gameMode = (int)GameModeManager.Ins.NowGameMode;
+            DisplayRanking(diffLevel);
+        }
         public void DisplayMenu(GameObject menu)
         {
             menu.SetActive(true);
@@ -69,10 +96,21 @@ namespace UI
         public void ChangeDifficultyLevel(int diffLevel)
         {
             GameModeManager.Ins.ChangeDifficultyLevel((GameModeManager.DifficultyLevel)diffLevel);
-            for (int i = 0; i < 3; i++)
+            ChooseSingleButton(difficultyLevelButtons, diffLevel);
+        }
+
+        public void DisplayRankingByDifficultyLevel(int diffLevel)
+        {
+            ChooseSingleButton(rankButton_difficultyLevel, diffLevel);
+            DisplayRanking(diffLevel);
+        }
+
+        public void ChooseSingleButton(Button[] buttons, int diffLevel)
+        {
+            for(int i=0; i<buttons.Length; i++)
             {
-                if (i == diffLevel)　ChangeButtonColor_Selected(difficultyLevelButtons[i]);
-                else ChangeButtonColor_Unselected(difficultyLevelButtons[i]);
+                if (i == diffLevel) ChangeButtonColor_Selected(buttons[i]);
+                else ChangeButtonColor_Unselected(buttons[i]);
             }
         }
         public void ChangeButtonColor_Selected(Button button)
@@ -83,25 +121,10 @@ namespace UI
         {
             button.GetComponent<Image>().color = new Color(150f / 255f, 150f / 255f, 150f / 255f, 1);
         }
-        //最初にどの難易度ボタンが光っているか
-        void InitializeDifficultyLevelButton()
+
+        public void DisplayRanking(int diffLevel)
         {
-            if (setting == null && history == null) return; //設定画面かランキング画面でない場合、処理を行わない。
-            difficultyLevelButtons[0] = GameObject.Find("NormalButton").GetComponent<Button>();
-            difficultyLevelButtons[1] = GameObject.Find("DifficultButton").GetComponent<Button>();
-            difficultyLevelButtons[2] = GameObject.Find("InsaneButton").GetComponent<Button>();
-            ChangeDifficultyLevel((int)GameModeManager.Ins.NowDifficultyLevel);
-        }
-        void InitializeHistory()
-        {
-            int diffLevel = (int)GameModeManager.Ins.NowDifficultyLevel;
-            int gameMode = (int)GameModeManager.Ins.NowGameMode;
-            DisplayRankingScores(diffLevel);
-        }
-        public void DisplayRankingScores(int diffLevel)
-        {
-            if (history == null) return;
-            ranking_transform = history.transform.Find("Ranking"); //Rankingは子要素にスコアや順位を表示させるセルを10位まで持っている。
+            ranking_transform = ranking.transform.Find("RankingTable"); //Rankingは子要素にスコアや順位を表示させるセルを10位まで持っている。
             int rankCounter = 0;
 
             //※他のゲームモードが追加されたならこのあたりに条件分岐で今のゲームモードのスコアのものを取得する処理を書く※

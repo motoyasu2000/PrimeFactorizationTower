@@ -71,7 +71,7 @@ namespace AWS
                         if (result.Exception == null)
                         {
                             Debug.Log("スコア更新成功！");
-                            DeleteOldScoreAsync(modeAndLevel, oldScore);
+                            DeleteOldScoreAsync(modeAndLevel, oldScore); //最高スコアを更新したら、過去の最高スコアを消去
                         }
                         else
                         {
