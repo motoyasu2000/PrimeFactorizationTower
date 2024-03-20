@@ -23,7 +23,7 @@ public class ScoreManager : MonoBehaviour
 
     //インスタンス
     private static ScoreManager instance;
-    public static ScoreManager ScoreManagerInstance => instance;
+    public static ScoreManager Ins => instance;
 
     //シングルトンパターンを使用して、ScoreManagerのインスタンスを管理。
     void Awake()
@@ -113,23 +113,23 @@ public class ScoreManager : MonoBehaviour
         instance.maxScore = GameObject.Find("MaxScoreText").GetComponent<TextMeshProUGUI>();
         instance.nowHeight = 0;
         //表示する最高スコアの更新
-        instance.maxScore.text = instance.pileUpScores[GameModeManager.GameModemanagerInstance.NowDifficultyLevel][0].ToString();
+        instance.maxScore.text = instance.pileUpScores[GameModeManager.Ins.NowDifficultyLevel][0].ToString();
         //Debug.Log(instance.pileUpScores[GameModeManager.GameModemanagerInstance.NowDifficultyLevel][0]);
     }
 
     //新しいスコアをスコアを管理する辞書に追加し、ソートを行う。
     public void InsertPileUpScoreAndSort(int newScore)
     {
-        GameModeManager.DifficultyLevel nowLevel = GameModeManager.GameModemanagerInstance.NowDifficultyLevel;
-        ScoreManagerInstance.pileUpScores[nowLevel][GameInfo.RankDisplayLimit] = newScore;
-        Array.Sort(ScoreManagerInstance.pileUpScores[nowLevel]);
-        Array.Reverse(ScoreManagerInstance.pileUpScores[nowLevel]);
+        GameModeManager.DifficultyLevel nowLevel = GameModeManager.Ins.NowDifficultyLevel;
+        Ins.pileUpScores[nowLevel][GameInfo.RankDisplayLimit] = newScore;
+        Array.Sort(Ins.pileUpScores[nowLevel]);
+        Array.Reverse(Ins.pileUpScores[nowLevel]);
     }
 
     //現在のスコアをjson形式で保存
     public void SaveScoreData()
     {
-        SerializableScore score = new SerializableScore();
+        ScoreData score = new ScoreData();
         score.SetScore(instance.pileUpScores);
         string jsonstr = JsonUtility.ToJson(score);
         StreamWriter writer = new StreamWriter(Application.persistentDataPath + "/PileUp.json", false);
@@ -145,7 +145,7 @@ public class ScoreManager : MonoBehaviour
         StreamReader reader = new StreamReader(Application.persistentDataPath + "/PileUp.json");
         string datastr = reader.ReadToEnd();
         reader.Close();
-        var obj = JsonUtility.FromJson<SerializableScore>(datastr); //Monobehaviorを継承したクラスではJsonファイルを読み込むことができないため、他のクラスを生成し読み込む
+        var obj = JsonUtility.FromJson<ScoreData>(datastr); //Monobehaviorを継承したクラスではJsonファイルを読み込むことができないため、他のクラスを生成し読み込む
         instance.pileUpScores = obj.GetScore();
     }
 
@@ -168,12 +168,12 @@ public class ScoreManager : MonoBehaviour
     }
 
     [Serializable]
-    class SerializableScore
+    class ScoreData
     {
         //シリアライズ可能なリストを使用 ※他次元配列や辞書はシリアライズできない
         [SerializeField] private List<Top10Score> pileUpScores_Serializable = new List<Top10Score>();
 
-        public SerializableScore()
+        public ScoreData()
         {
             foreach (GameModeManager.DifficultyLevel level in Enum.GetValues(typeof(GameModeManager.DifficultyLevel)))
             {

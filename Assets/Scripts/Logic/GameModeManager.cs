@@ -8,7 +8,7 @@ public class GameModeManager : MonoBehaviour
 {
     //シングルトンのインスタンス
     private static GameModeManager instance;
-    public static GameModeManager GameModemanagerInstance => instance;
+    public static GameModeManager Ins => instance;
 
     //ゲームモード関係
     public enum GameMode
@@ -102,13 +102,13 @@ public class GameModeManager : MonoBehaviour
         StreamReader reader = new StreamReader(Application.persistentDataPath + "/DifficultyLevel.json");
         string datastr = reader.ReadToEnd();
         reader.Close();
-        var obj = JsonUtility.FromJson<JsonLoadGameModeManager>(datastr); //Monobehaviorを継承したクラスではJsonファイルを読み込むことができないため、他のクラスを生成し読み込む
+        var obj = JsonUtility.FromJson<GameModeData>(datastr); //Monobehaviorを継承したクラスではJsonファイルを読み込むことができないため、他のクラスを生成し読み込む
         instance.nowDifficultyLevel = obj.nowDifficultyLevel;
     }
 }
 
 //Jsonからインスタンスを生成するためのクラス
-class JsonLoadGameModeManager
+class GameModeData
 {
     public DifficultyLevel nowDifficultyLevel;
 }

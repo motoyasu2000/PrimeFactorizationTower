@@ -64,9 +64,9 @@ public class GameManager : MonoBehaviour
         blockField = GameObject.Find("BlockField");
         afterField = blockField.transform.Find("AfterField").gameObject;
         completedField = blockField.transform.Find("CompletedField").gameObject;
-        soundManager = SoundManager.SoundManagerInstance;
-        scoreManager = ScoreManager.ScoreManagerInstance;
-        gameModeManager = GameModeManager.GameModemanagerInstance;
+        soundManager = SoundManager.Ins;
+        scoreManager = ScoreManager.Ins;
+        gameModeManager = GameModeManager.Ins;
         bloomManager = GameObject.Find("GlobalVolume").GetComponent<BloomManager>();
         upCompositeNumberqueue.Enqueue(GenerateCompositeNumber());
         gameOverMenu = GameObject.Find("Canvas").transform.Find("GameOverMenu").gameObject;
@@ -106,7 +106,7 @@ public class GameManager : MonoBehaviour
     {
         int upCompositeNumber = -1;
 
-        switch (GameModeManager.GameModemanagerInstance.NowDifficultyLevel)
+        switch (GameModeManager.Ins.NowDifficultyLevel)
         {
             case GameModeManager.DifficultyLevel.Normal:
                 upCompositeNumber = GenerateCompositeNumberForDifficultyLevel(gameModeManager.NormalPool, 3000, 2, 5);
@@ -267,7 +267,7 @@ public class GameManager : MonoBehaviour
         bloomManager.LightUpStart();
         soundManager.FadeOutVolume();
         //スコアを更新していれば、データベースの更新
-        if (IsBreakScore) ddbManager.SaveScoreAsync(GameModeManager.GameModemanagerInstance.ModeAndLevel, newScore);
+        if (IsBreakScore) ddbManager.SaveScoreAsync(GameModeManager.Ins.ModeAndLevel, newScore);
 
         const float delayTime = 1.2f;
         StartCoroutine(PostGameOver(delayTime));
