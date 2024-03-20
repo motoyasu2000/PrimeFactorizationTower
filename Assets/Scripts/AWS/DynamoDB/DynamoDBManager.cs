@@ -34,10 +34,20 @@ namespace AWS
             this.client = client;
             playerID = cognitoAWSCredentials.GetCachedIdentityId();
             Debug.Log(playerID);
+
+            //テスト
+            //SaveScoreAsync(GameModeManager.Ins.ModeAndLevel, 500, "testID1", "yuppo");
+            //SaveScoreAsync(GameModeManager.Ins.ModeAndLevel, 1000, "testID2", "yuppoma");
+            //SaveScoreAsync(GameModeManager.Ins.ModeAndLevel, 2000, "testID3", "ottoseiuchi");
+        }
+
+         public void SaveScoreAsyncHandler(string modeAndLevel, int newScore)
+        {
+            SaveScoreAsync(modeAndLevel, newScore, playerID, PlayerInfoManager.Ins.Name);
         }
 
         //スコアをDynamoDBに非同期で保存する。
-        public async Task SaveScoreAsync(string modeAndLevel, int newScore)
+        public async Task SaveScoreAsync(string modeAndLevel, int newScore, string playerID, string name)
         {
             try
             {
@@ -52,7 +62,7 @@ namespace AWS
                         ModeAndLevel = modeAndLevel,
                         Score = newScore,
                         PlayerID = playerID,
-                        Name = PlayerInfoManager.Ins.Name,
+                        Name = name,
                     };
 
                     //DynamoDBにスコアを保存、なぜ失敗したのかなどの情報がresultにcallbackされる
