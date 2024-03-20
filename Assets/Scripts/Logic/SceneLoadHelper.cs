@@ -7,8 +7,8 @@ public static class SceneLoadHelper
     {
         SceneManager.LoadScene(sceneName);
         SoundManager.LoadSoundSettingData();
-        SoundManager soundManager = SoundManager.SoundManagerInstance;
-        if (sceneName == "PlayScene") soundManager.PlayAudio(SoundManager.SoundManagerInstance.BGM_PLAY);
-        else if (sceneName == "TitleScene") soundManager.PlayAudio(SoundManager.SoundManagerInstance.BGM_TITLE);
+        SoundManager soundManager = SoundManager.Ins;
+        if (sceneName == "PlayScene") soundManager.PlayAudio(SoundManager.Ins.BGM_PLAY);
+        else if (sceneName == "TitleScene") soundManager.PlayAudio(SoundManager.Ins.BGM_TITLE);
     }
 }

@@ -135,6 +135,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: TitleScene
       objectReference: {fileID: 0}
+    - target: {fileID: 4356894738711161323, guid: 390ad338d9f3e95459dbff9880a17862, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8354504171607043444, guid: 390ad338d9f3e95459dbff9880a17862, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

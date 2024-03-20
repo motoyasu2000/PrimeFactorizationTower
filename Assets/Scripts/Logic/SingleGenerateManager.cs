@@ -13,7 +13,7 @@ public class SingleGenerateManager : MonoBehaviour
     private void Awake()
     {
         defaultPoint = transform.position;
-        scoreManager = ScoreManager.ScoreManagerInstance;
+        scoreManager = ScoreManager.Ins;
     }
     private void Update()
     {

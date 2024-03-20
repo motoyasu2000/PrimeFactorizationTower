@@ -42,7 +42,7 @@ namespace AWS
                 AmazonDynamoDBClient client = new AmazonDynamoDBClient(credentials, config);
                 ddbManager.Initialize(client, cognitoAWSCredentials);
 
-                ddbManager.GetTop10Scores(GameModeManager.GameModemanagerInstance.ModeAndLevel, records =>
+                ddbManager.GetTop10Scores(GameModeManager.Ins.ModeAndLevel, records =>
                 {
                     foreach (var record in records)
                     {

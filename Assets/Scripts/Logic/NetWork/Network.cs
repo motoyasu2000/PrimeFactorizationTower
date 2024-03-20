@@ -32,9 +32,9 @@ public class Network : MonoBehaviour
     private void Start()
     {
         //初期化処理
-        primeNumberPool = GameModeManager.GameModemanagerInstance.PrimeNumberPool;
-        gameModeManager = GameModeManager.GameModemanagerInstance;
-        soundManager = SoundManager.SoundManagerInstance;
+        primeNumberPool = GameModeManager.Ins.PrimeNumberPool;
+        gameModeManager = GameModeManager.Ins;
+        soundManager = SoundManager.Ins;
         conditionGenerator = transform.Find("ConditionGenerator").GetComponent<ConditionGenerator>();
         effectTextManager = GameObject.Find("EffectText").GetComponent<EffectTextManager>();
         freezeEffect = (GameObject)Resources.Load("FreezeEffect");

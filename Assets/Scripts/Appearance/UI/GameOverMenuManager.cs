@@ -15,7 +15,7 @@ namespace UI
         GameObject updateRecord; //スコアを更新た場合のレコードの表示UI
         void Awake()
         {
-            gameModeManager = GameModeManager.GameModemanagerInstance;
+            gameModeManager = GameModeManager.Ins;
             gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
             gameOverReason = GameObject.Find("GameOverReason").GetComponent<TextMeshProUGUI>();
             //非アクティブなのでtransform.Findで取得

@@ -12,7 +12,7 @@ public class TapEffectSpawner : MonoBehaviour
     private void Start()
     {
         tapEffect = Resources.Load("TapEffect") as GameObject;
-        soundManager = SoundManager.SoundManagerInstance;
+        soundManager = SoundManager.Ins;
         tapEffectCamera = GameObject.Find("TapEffectCamera").GetComponent<Camera>();
         tapEffectScene = SceneManager.GetSceneByName("TapEffectScene");
     }

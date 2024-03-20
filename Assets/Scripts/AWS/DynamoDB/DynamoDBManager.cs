@@ -34,8 +34,6 @@ namespace AWS
             this.client = client;
             playerID = cognitoAWSCredentials.GetCachedIdentityId();
             Debug.Log(playerID);
-
-
         }
 
         //スコアをDynamoDBに非同期で保存する。
@@ -48,11 +46,13 @@ namespace AWS
                 //新しいスコアが既存のスコアを上回っていたら、スコアを更新する。
                 if (newScore > oldScore)
                 {
+                    Debug.Log(PlayerInfoManager.Ins.Name);
                     var ranking = new DynamoDBDatas
                     {
                         ModeAndLevel = modeAndLevel,
                         Score = newScore,
                         PlayerID = playerID,
+                        Name = PlayerInfoManager.Ins.Name,
                     };
 
                     //DynamoDBにスコアを保存、なぜ失敗したのかなどの情報がresultにcallbackされる
@@ -86,7 +86,7 @@ namespace AWS
 
         //引数で指定されたモードに対するrecordをDynamoDBから非同期で取得する。(Task型で戻す)
         //SaveScoreAsyncメソッドによってスコア更新の際に呼び出される。
-        public void GetRecordAsync(string modeAndLevel, Action<DisplayScores> callback)
+        public void GetRecordAsync(string modeAndLevel, Action<PlayerScoreRecord> callback)
         {
             try
             {
@@ -103,16 +103,17 @@ namespace AWS
 
                     var result = response.Response;//クエリの結果をresultに格納
 
-                    DisplayScores record;
+                    PlayerScoreRecord record;
 
                     //更新
                     if (result.Items.Count == 1)
                     {
-                        record = new DisplayScores()
+                        record = new PlayerScoreRecord()
                         {
                             ModeAndLevel = result.Items[0]["ModeAndLevel"].S,
                             Score = int.Parse(result.Items[0]["Score"].N),
                             PlayerID = result.Items[0]["PlayerID"].S,
+                            Name = result.Items[0]["PlayerID"].S,
                         };
                         if (result.Items.Count > 1) Debug.LogError("単一のレコードを返すためのクエリに、複数のレコードが返ってきています。");
                     }
@@ -121,11 +122,12 @@ namespace AWS
                     //ここでは、必ずスコアの更新が成功するようにScore:-1を返している。
                     else if (result.Items.Count == 0)
                     {
-                        record = new DisplayScores()
+                        record = new PlayerScoreRecord()
                         {
                             ModeAndLevel = "",
                             Score = -1,
-                            PlayerID = playerID
+                            PlayerID = playerID,
+                            Name = PlayerInfoManager.Ins.Name,
                         };
                         Debug.LogWarning("初めての更新です。");
                     }
@@ -177,7 +179,7 @@ namespace AWS
         }
 
         //引数で指定されたモードとレベルに応じてDynamoDBから非同期で取得し、結果をコールバックとして戻す。
-        public void GetTop10Scores(string modeAndLevel, Action<List<DisplayScores>> callback)
+        public void GetTop10Scores(string modeAndLevel, Action<List<PlayerScoreRecord>> callback)
         {
             try
             {
@@ -195,17 +197,18 @@ namespace AWS
                     }
 
                     var result = response.Response;//クエリの結果をresultに格納
-                    List<DisplayScores> records = new List<DisplayScores>(); //表示するrecordのトップ１０を格納するリスト、この値をコールバックする
+                    List<PlayerScoreRecord> records = new List<PlayerScoreRecord>(); //表示するrecordのトップ１０を格納するリスト、この値をコールバックする
 
                     //foreach文を使用して取得したレコードを一つずつ処理する。ここではrecordsリストを生成追加している。
                     foreach (var item in result.Items)
                     {
-                        records.Add(new DisplayScores
+                        records.Add(new PlayerScoreRecord
                         {
                             //「.N」や「.S」は内部のデータの型を表しており他にもバイナリ(B)、文字列リスト(SS)、数値リスト(NS)などがある。全て文字列として値が返ってくる点に注意。
                             ModeAndLevel = item["ModeAndLevel"].S,
                             Score = int.Parse(item["Score"].N),
-                            PlayerID = item["PlayerID"].S
+                            PlayerID = item["PlayerID"].S,
+                            Name = item["Name"].S,
                         }); ;
                     }
                     callback(records);
@@ -229,13 +232,17 @@ namespace AWS
 
             [DynamoDBProperty]
             public string PlayerID { get; set; }
+
+            [DynamoDBProperty]
+            public string Name { get; set; }
         }
 
-        public class DisplayScores
+        public class PlayerScoreRecord
         {
             public string ModeAndLevel;
             public int Score;
             public string PlayerID;
+            public string Name;
         }
 
         public bool WaitInitialize()

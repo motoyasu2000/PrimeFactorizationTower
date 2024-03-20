@@ -45,7 +45,7 @@ namespace UI
         public void ExplainHowToPlay()
         {
             settingMenu.SetActive(false);
-            if (GameModeManager.GameModemanagerInstance.NowGameMode == GameModeManager.GameMode.PileUp) ExplainPileUp();
+            if (GameModeManager.Ins.NowGameMode == GameModeManager.GameMode.PileUp) ExplainPileUp();
         }
 
         //チュートリアルの表示

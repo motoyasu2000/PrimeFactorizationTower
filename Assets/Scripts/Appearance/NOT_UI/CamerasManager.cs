@@ -22,7 +22,7 @@ public class CamerasManager : MonoBehaviour
         downerUITransform = GameObject.Find("DownerUI").GetComponent<RectTransform>();
         downerUI_MAXY = downerUITransform.anchorMax.y;
         position_defo = transform.position;
-        scoreManager = ScoreManager.ScoreManagerInstance;
+        scoreManager = ScoreManager.Ins;
         mainCamera = Camera.main;
         UICamera = transform.Find("UICamera").GetComponent<Camera>();
         orthographicSize_defo = mainCamera.orthographicSize;

@@ -16,7 +16,7 @@ namespace UI
         {
             buttonArea = GameObject.Find("ButtonArea");
             buttonPrefab = Resources.Load("ButtonPrefab") as GameObject;
-            gameModeManager = GameModeManager.GameModemanagerInstance;
+            gameModeManager = GameModeManager.Ins;
             int[] myPrimeNumberPool = gameModeManager.GetGameModeMatchDifficultyLevel();
             for (int i=0; i<myPrimeNumberPool.Length; i++)
             {

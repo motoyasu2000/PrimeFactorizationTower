@@ -11,7 +11,7 @@ public class ConditionGenerator : MonoBehaviour
 
     void Awake()
     {
-        gameModeManager = GameModeManager.GameModemanagerInstance;
+        gameModeManager = GameModeManager.Ins;
         conditionNumberManager = GameObject.Find("ConditonNumber").GetComponent<ConditionNumberTextManager>();
     }
 
@@ -20,7 +20,7 @@ public class ConditionGenerator : MonoBehaviour
     {
         //キーが素数、バリューがその素数の数の辞書の生成(難易度ごと)
         Dictionary<int,int> returnDict = new Dictionary<int,int>();
-        switch (GameModeManager.GameModemanagerInstance.NowDifficultyLevel)
+        switch (GameModeManager.Ins.NowDifficultyLevel)
         {
             case GameModeManager.DifficultyLevel.Normal:
                 returnDict = GenerateConditionForDifficultyLevel(gameModeManager.NormalPool,3,5);
