@@ -148,6 +148,9 @@ namespace UI
 
             //ローカルランキングが否か・ゲームモード・難易度によって異なるモノを取得。
             int[] scores = new int[10];
+            string[] names = Enumerable.Repeat<string>("", 10).ToArray();
+
+            //globalランキングを表示させる場合
             if (isGrobal)
             {
                 string modeAndLevel = $"{(GameModeManager.GameMode)gameMode}_{(GameModeManager.DifficultyLevel)diffLevel}";
@@ -160,6 +163,8 @@ namespace UI
                     for (int i = 0; i < records.Count(); i++)
                     {
                         scores[i] = records[i].Score;
+                        names[i] = records[i].Name;
+                        Debug.Log($"{i+1}位のスコア: {scores[i]} 名前: {names[i]}");
                     }
                     isCompleted = true;
                 });
@@ -167,6 +172,7 @@ namespace UI
                 yield return new WaitUntil(() => isCompleted);
                 Debug.Log("非同期処理完了");
             }
+            //ローカルランキングを表示させる場合。
             else
             {
                 switch ((GameModeManager.GameMode)gameMode)
@@ -182,12 +188,20 @@ namespace UI
             }
 
             int rankCounter = 0;
+
+            //全てのランキングのセルのスコアと名前を更新する
             foreach (Transform sell in ranking_transform)
             {
                 if (sell.name.Substring(0, 4) == "Sell")
                 {
-                    TextMeshProUGUI rank = sell.transform.Find("Score").GetComponent<TextMeshProUGUI>();
-                    rank.text = scores[rankCounter++].ToString();
+                    //スコアの更新
+                    TextMeshProUGUI score = sell.transform.Find("Score").GetComponent<TextMeshProUGUI>();
+                    score.text = scores[rankCounter].ToString();
+
+                    TextMeshProUGUI name = sell.transform.Find("Name").GetComponent<TextMeshProUGUI>();
+                    name.text = names[rankCounter];
+
+                    rankCounter++;
                 }
             }
         }
