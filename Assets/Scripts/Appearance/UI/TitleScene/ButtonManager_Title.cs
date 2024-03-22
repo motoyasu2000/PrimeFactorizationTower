@@ -1,4 +1,5 @@
 ﻿using AWS;
+using Common;
 using System.Collections;
 using System.Linq;
 using TMPro;
@@ -11,20 +12,25 @@ namespace UI
     //タイトルシーンで扱うボタンが呼び出すメソッドを持つクラス
     public class ButtonManager_Title : MonoBehaviour
     {
-        static int nowRankButton_isGrobal; //0ならローカル、1ならグローバル
-        static int nowRankButton_gameMode;
-        static int nowRankButton_diffcultyLevel;
-
+        //Titleで扱うメニュー
         GameObject singlePlay;
         GameObject multiPlay;
         GameObject ranking;
         GameObject setting;
         GameObject credit;
         GameObject[] menus = new GameObject[5];
+
+        Button[] difficultyLevelButtons = new Button[3]; //難易度を切り替えるボタン
+
         Transform ranking_transform;
 
-        //初期だと全て非アクティブで厄介なので、これらは全てUnityエンジン上から設定する。
-        Button[] difficultyLevelButtons = new Button[3];
+        //現在表示させているランキングが何のランキングであるのかを示す変数。
+        public enum LocalOrGlobal {local, global}
+        static LocalOrGlobal nowRankButton_localOrGlobal; //0ならローカル、1ならグローバル
+        static int nowRankButton_gameMode;
+        static int nowRankButton_difficultyLevel;
+
+        //どのランキングを表示するか選ぶタブボタン
         Button[] rankButtons_localOrGlobal = new Button[2];
         Button[] rankButtons_gameMode = new Button[1];
         Button[] rankButtons_difficultyLevel = new Button[3];
@@ -58,7 +64,7 @@ namespace UI
         {
             rankButtons_localOrGlobal[0] = GameObject.Find("LocalButton").GetComponent<Button>();
             rankButtons_localOrGlobal[1] = GameObject.Find("GlobalButton").GetComponent<Button>();
-            ChooseSingleButton(rankButtons_localOrGlobal, nowRankButton_isGrobal);
+            ChooseSingleButton(rankButtons_localOrGlobal, (int)nowRankButton_localOrGlobal);
 
             rankButtons_gameMode[0] = GameObject.Find("PileUpButton").GetComponent<Button>();
             ChooseSingleButton(rankButtons_gameMode, nowRankButton_gameMode);
@@ -66,8 +72,10 @@ namespace UI
             rankButtons_difficultyLevel[0] = GameObject.Find("NormalButton").GetComponent<Button>();
             rankButtons_difficultyLevel[1] = GameObject.Find("DifficultButton").GetComponent<Button>();
             rankButtons_difficultyLevel[2] = GameObject.Find("InsaneButton").GetComponent<Button>();
-            ChooseSingleButton(rankButtons_difficultyLevel, nowRankButton_diffcultyLevel); 
+            ChooseSingleButton(rankButtons_difficultyLevel, nowRankButton_difficultyLevel); 
         }
+
+        //難易度設定画面が表示されると、現在の難易度のボタンのみが緑に見えるようにする。
         void InitializeDifficultyLevelButton()
         {
             difficultyLevelButtons[0] = GameObject.Find("NormalButton").GetComponent<Button>();
@@ -80,12 +88,14 @@ namespace UI
         void DisplayNowStateRanking()
         {
             //難易度のみ現在の難易度を表示。ゲームの仕様上、私はこの難易度でこのゲームをするといったようなのがある程度決まっていることが多く、自分以外のランキングに興味がない人が多いと考えられるため。
-            nowRankButton_diffcultyLevel = (int)GameModeManager.Ins.NowDifficultyLevel;
+            nowRankButton_difficultyLevel = (int)GameModeManager.Ins.NowDifficultyLevel;
             //直前までプレイしていたゲームモード
             nowRankButton_gameMode = (int)GameModeManager.Ins.NowGameMode;
-            nowRankButton_isGrobal = 0;
+            nowRankButton_localOrGlobal = 0;
             DisplayRankingHandler();
         }
+
+        //----------------メニューの推移---------------------
         public void DisplayMenu(GameObject menu)
         {
             menu.SetActive(true);
@@ -99,8 +109,9 @@ namespace UI
                 menu.gameObject.SetActive(false);
             }
         }
+        //----------------メニューの推移---------------------
 
-        //シーンを推移するメソッド達
+        //----------------シーンの推移---------------------
         public void RestartScene()
         {
             SceneLoadHelper.LoadScene(SceneManager.GetActiveScene().name);
@@ -114,19 +125,13 @@ namespace UI
             SceneLoadHelper.LoadScene("PlayScene");
             GameModeManager.Ins.SetGameMode(GameModeManager.GameMode.PileUp);
         }
+        //----------------シーンの推移---------------------
 
-        //ランキングメニューのボタンで扱うメソッドたち
-        //現在選択している難易度のタブを緑に、非選択のタブを赤に表示するメソッド
-        public void ChangeDifficultyLevel(int diffLevel)
-        {
-            GameModeManager.Ins.ChangeDifficultyLevel((GameModeManager.DifficultyLevel)diffLevel);
-            ChooseSingleButton(difficultyLevelButtons, diffLevel);
-        }
-
+        //----------------ランキングのタブボタンの操作---------------------
         public void DisplayRankingByLocalOrGlobal(int isGrobal)
         {
             ChooseSingleButton(rankButtons_localOrGlobal, isGrobal);
-            nowRankButton_isGrobal = isGrobal;
+            nowRankButton_localOrGlobal = (LocalOrGlobal)isGrobal;
             DisplayRankingHandler();
         }
 
@@ -140,10 +145,19 @@ namespace UI
         public void DisplayRankingByDifficultyLevel(int diffLevel)
         {
             ChooseSingleButton(rankButtons_difficultyLevel, diffLevel);
-            nowRankButton_diffcultyLevel = diffLevel;
+            nowRankButton_difficultyLevel = diffLevel;
             DisplayRankingHandler();
         }
+        //----------------ランキングのタブボタンの操作---------------------
 
+        //難易度ボタンの操作
+        public void ChangeDifficultyLevel(int diffLevel)
+        {
+            GameModeManager.Ins.ChangeDifficultyLevel((GameModeManager.DifficultyLevel)diffLevel);
+            ChooseSingleButton(difficultyLevelButtons, diffLevel);
+        }
+
+        //----------------現在選ばれているランキングのタブや難易度選択ボタンが単一であることを保証する---------------------
         public void ChooseSingleButton(Button[] buttons, int buttonsNumber)
         {
             for (int i = 0; i < buttons.Length; i++)
@@ -158,15 +172,17 @@ namespace UI
         }
         public void ChangeButtonColor_Unselected(Button button)
         {
-            button.GetComponent<Image>().color = new Color(150f / 255f, 150f / 255f, 150f / 255f, 1);
+            button.GetComponent<Image>().color = GameInfo.MyRed;
         }
+        //----------------現在選ばれているランキングのタブや難易度選択ボタンが単一であることを保証する---------------------
 
+        //----------------ランキングの表示---------------------
         public void DisplayRankingHandler()
         {
-            StartCoroutine(DisplayRanking(nowRankButton_diffcultyLevel, nowRankButton_gameMode, nowRankButton_isGrobal));
+            StartCoroutine(DisplayRanking(nowRankButton_difficultyLevel, nowRankButton_gameMode, nowRankButton_localOrGlobal));
         }
 
-        public IEnumerator DisplayRanking(int diffLevel, int gameMode, int isGrobal)
+        public IEnumerator DisplayRanking(int diffLevel, int gameMode, LocalOrGlobal localOrGlobal)
         {
             ranking_transform = ranking.transform.Find("RankingTable"); //Rankingは子要素にスコアや順位を表示させるセルを10位まで持っている。
 
@@ -175,10 +191,9 @@ namespace UI
             string[] names = Enumerable.Repeat<string>("", 10).ToArray();
 
             //globalランキングを表示させる場合
-            if (isGrobal == 1)
+            if (localOrGlobal == LocalOrGlobal.local)
             {
                 string modeAndLevel = $"{(GameModeManager.GameMode)gameMode}_{(GameModeManager.DifficultyLevel)diffLevel}";
-                Debug.Log(modeAndLevel);
                 bool isCompleted = false; //処理が完了したかどうかを追跡するフラグ
 
                 Debug.Log("非同期処理開始");
@@ -196,8 +211,9 @@ namespace UI
                 yield return new WaitUntil(() => isCompleted);
                 Debug.Log("非同期処理完了");
             }
+
             //ローカルランキングを表示させる場合。
-            else if(isGrobal == 0)
+            else if(localOrGlobal == LocalOrGlobal.global)
             {
                 switch ((GameModeManager.GameMode)gameMode)
                 {
@@ -209,9 +225,10 @@ namespace UI
                         break;
                 }
             }
+
             else
             {
-                Debug.LogError($"isGlobalに異常値が入っています isGlobal: {isGrobal}");
+                Debug.LogError($"localOrGlobalに予期せぬ値が入っています localOrGlobal: {localOrGlobal}");
             }
 
             int rankCounter = 0;
@@ -232,5 +249,6 @@ namespace UI
                 }
             }
         }
+        //----------------ランキングの表示---------------------
     }
 }
