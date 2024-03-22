@@ -114,15 +114,15 @@ namespace UI
         //----------------シーンの推移---------------------
         public void RestartScene()
         {
-            SceneLoadHelper.LoadScene(SceneManager.GetActiveScene().name);
+            Helper.LoadScene(SceneManager.GetActiveScene().name);
         }
         public void MoveTitleScene()
         {
-            SceneLoadHelper.LoadScene("TitleScene");
+            Helper.LoadScene("TitleScene");
         }
         public void MovePlayScene()
         {
-            SceneLoadHelper.LoadScene("PlayScene");
+            Helper.LoadScene("PlayScene");
             GameModeManager.Ins.SetGameMode(GameModeManager.GameMode.PileUp);
         }
         //----------------シーンの推移---------------------
@@ -162,8 +162,8 @@ namespace UI
         {
             for (int i = 0; i < buttons.Length; i++)
             {
-                if (i == buttonsNumber) ChangeButtonColor_Selected(buttons[i]);
-                else ChangeButtonColor_Unselected(buttons[i]);
+                if (i == buttonsNumber) ChangeButtonColor_Selected(buttons[i]); //選択中のボタンを緑に
+                else ChangeButtonColor_Unselected(buttons[i]); //選択されていないボタンを赤に
             }
         }
         public void ChangeButtonColor_Selected(Button button)
@@ -172,7 +172,7 @@ namespace UI
         }
         public void ChangeButtonColor_Unselected(Button button)
         {
-            button.GetComponent<Image>().color = GameInfo.MyRed;
+            button.GetComponent<Image>().color = GameInfo.ButtonRed;
         }
         //----------------現在選ばれているランキングのタブや難易度選択ボタンが単一であることを保証する---------------------
 
