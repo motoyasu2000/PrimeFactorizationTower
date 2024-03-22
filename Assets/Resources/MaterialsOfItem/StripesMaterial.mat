@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: BlocksMaterial
+  m_Name: StripesMaterial
   m_Shader: {fileID: 4800000, guid: 6a6a11351123e474596e676b668583dd, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -43,7 +43,10 @@ Material:
     m_Floats:
     - _EnableExternalAlpha: 0
     - _GlowStrength: 1
+    - _Spase: 73.59
+    - _Timer: 0
     m_Colors:
+    - _AnotherColor: {r: 1, g: 0, b: 0, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _Flip: {r: 1, g: 1, b: 1, a: 1}
     - _GlowColor: {r: 0.4716981, g: 0.4716981, b: 0.4716981, a: 1}
