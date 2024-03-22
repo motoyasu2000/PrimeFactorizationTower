@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using Common;
 
 namespace UI
 {
@@ -36,11 +37,11 @@ namespace UI
         //シーン間の推移
         public void MoveTitleScene()
         {
-            SceneLoadHelper.LoadScene("TitleScene");
+            Helper.LoadScene("TitleScene");
         }
         public void MovePlayScene()
         {
-            SceneLoadHelper.LoadScene("PlayScene");
+            Helper.LoadScene("PlayScene");
         }
         public void ExplainHowToPlay()
         {

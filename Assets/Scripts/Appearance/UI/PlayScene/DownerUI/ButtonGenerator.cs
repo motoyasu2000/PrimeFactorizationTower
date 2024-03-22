@@ -1,14 +1,15 @@
 ﻿using UnityEngine;
+using Common;
 
 namespace UI
 {
-    //画面下部にあるボタンUIの数値を設定するクラス
+    //画面下部にあるボタンUIを生成するクラス
     public class ButtonGenerator : MonoBehaviour
     {
         static readonly int splitCount = 3;
         static readonly float xScale = 0.97f;
         static readonly float yScale = 0.93f;
-        static readonly float[] splitPoints = { 0, 0.33f, 0.66f, 1 };
+        static readonly float[] splitPoints = Helper.CalculateSplitAnchorPoints(splitCount);
         GameObject buttonArea;
         GameObject buttonPrefab;
         GameModeManager gameModeManager;
@@ -20,7 +21,6 @@ namespace UI
             int[] myPrimeNumberPool = gameModeManager.GetGameModeMatchDifficultyLevel();
             for (int i=0; i<myPrimeNumberPool.Length; i++)
             {
-                
                 //左端(もしくは下端)を基準にしたインデックス
                 int xi_left = i % splitCount;
                 int yi_left = (splitCount-1) - (i / splitCount); //今回のゲームだとy座標が高いほど小さい数値となるなので、上から設置するために逆順にする。
@@ -34,7 +34,7 @@ namespace UI
                 buttonRectTransform.anchorMin = new Vector2(splitPoints[xi_left], splitPoints[yi_left]);
                 buttonRectTransform.anchorMax = new Vector2(splitPoints[xi_left + 1], splitPoints[yi_left + 1]);
 
-                //上で指定したアンカーと誤差を無くす
+                //上で指定したアンカーとの誤差を無くす
                 buttonRectTransform.offsetMin = Vector2.zero;
                 buttonRectTransform.offsetMax = Vector2.zero;
 

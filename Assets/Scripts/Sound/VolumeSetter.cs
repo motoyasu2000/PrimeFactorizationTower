@@ -25,7 +25,7 @@ public class VolumeSetter : MonoBehaviour
         SetVolumeVoice();
     }
 
-    //サウンドマネージャーの音量データを調整する変数を変更して、その情報を保存するメソッドたち
+    //サウンドマネージャーの音量を調整する変数を変更して、その情報を保存するメソッドたち
     public void SetVolumeBGM()
     {
         SoundManager.Ins.SetVolumeBGM(sliders[0].value);
