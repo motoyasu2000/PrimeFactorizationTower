@@ -191,7 +191,7 @@ namespace UI
             string[] names = Enumerable.Repeat<string>("", 10).ToArray();
 
             //globalランキングを表示させる場合
-            if (localOrGlobal == LocalOrGlobal.local)
+            if (localOrGlobal == LocalOrGlobal.global)
             {
                 string modeAndLevel = $"{(GameModeManager.GameMode)gameMode}_{(GameModeManager.DifficultyLevel)diffLevel}";
                 bool isCompleted = false; //処理が完了したかどうかを追跡するフラグ
@@ -213,7 +213,7 @@ namespace UI
             }
 
             //ローカルランキングを表示させる場合。
-            else if(localOrGlobal == LocalOrGlobal.global)
+            else if(localOrGlobal == LocalOrGlobal.local)
             {
                 switch ((GameModeManager.GameMode)gameMode)
                 {
