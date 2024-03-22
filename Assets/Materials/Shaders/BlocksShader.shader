@@ -1,10 +1,11 @@
-Shader "Unlit/BlocksShader"
+Shader "Custom/StripesShader"
 {
     Properties
     {
-        _Color("Color", Color) = (1,1,1,1)
-        _GlowColor("Glow Color", Color) = (1,0,0,1)
-        _GlowStrength("Glow Strength", Range(0,1)) = 0.5
+        _Color ("Main Color", Color) = (1,1,1,1)
+        _AnotherColor("AnotherColor", Color) = (1,1,1,1)
+        _Spase("Space", Float) = 0
+        _Timer("Timer", Float) = 0
     }
 
     SubShader
@@ -17,34 +18,32 @@ Shader "Unlit/BlocksShader"
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
-            #include "UnityCG.cginc"
-
-            struct appdata
-            {
-                float4 vertex : POSITION;
-            };
-
-            struct v2f
-            {
-                float4 vertex : SV_POSITION;
-            };
-
+            
             fixed4 _Color;
-            float4 _GlowColor;
-            float _GlowStrength;
+            fixed4 _AnotherColor;
+            Float _Spase;
+            Float _Timer;
 
-            v2f vert(appdata v)
-            {
+            struct appdata {
+                float4 vertex : POSITION;
+                float2 uv : TEXCOORD0;
+            };
+
+            struct v2f {
+                float4 pos : SV_POSITION;
+                float2 uv : TEXCOORD0;
+            };
+
+            v2f vert (appdata v) {
                 v2f o;
-                o.vertex = UnityObjectToClipPos(v.vertex);
+                o.pos = UnityObjectToClipPos(v.vertex);
+                o.uv = v.uv;
                 return o;
             }
 
-            fixed4 frag(v2f i) : SV_Target
-            {
-                fixed4 col = _Color;
-                col.rgb += _GlowColor.rgb * _GlowStrength; // Simple glow effect
-                return col;
+            fixed4 frag (v2f i) : SV_Target {
+                float stripe = sin(i.uv.y * _Spase + _Timer);
+                return _Color * stripe + _AnotherColor * (1-stripe);
             }
             ENDCG
         }
