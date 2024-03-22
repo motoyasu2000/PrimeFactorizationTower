@@ -24,10 +24,9 @@ namespace AWS
     //staticなクラスにしたいが、Debug.LogErrorを使用したいため、MonoBehaviorを継承させる
     public class DynamoDBManager : MonoBehaviour
     {
-        AmazonDynamoDBClient client;
-        private DynamoDBContext context;
         string playerID;
-
+        AmazonDynamoDBClient client;
+        DynamoDBContext context;
         public void Initialize(AmazonDynamoDBClient client, CognitoAWSCredentials cognitoAWSCredentials)
         {
             context = new DynamoDBContext(client);

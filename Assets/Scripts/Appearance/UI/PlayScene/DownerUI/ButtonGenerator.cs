@@ -21,9 +21,9 @@ namespace UI
             int[] myPrimeNumberPool = gameModeManager.GetGameModeMatchDifficultyLevel();
             for (int i=0; i<myPrimeNumberPool.Length; i++)
             {
-                //左端(もしくは下端)を基準にしたインデックス
+                //左端(もしくは上端)を基準にしたインデックス
                 int xi_left = i % splitCount;
-                int yi_left = (splitCount-1) - (i / splitCount); //今回のゲームだとy座標が高いほど小さい数値となるなので、上から設置するために逆順にする。
+                int yi_up = (splitCount-1) - (i / splitCount); //今回のゲームだとy座標が高いほど小さい数値となるなので、上から設置するために逆順にする。
 
                 //ボタンを生成し、複数のボタンを子オブジェクトとして持つようのゲームオブジェクトであるButtonArea内に移動
                 GameObject newButton = Instantiate(buttonPrefab);
@@ -31,8 +31,8 @@ namespace UI
 
                 //ボタンの位置や大きさをビューポート座標で指定(3*3)
                 RectTransform buttonRectTransform = newButton.GetComponent<RectTransform>();
-                buttonRectTransform.anchorMin = new Vector2(splitPoints[xi_left], splitPoints[yi_left]);
-                buttonRectTransform.anchorMax = new Vector2(splitPoints[xi_left + 1], splitPoints[yi_left + 1]);
+                buttonRectTransform.anchorMin = new Vector2(splitPoints[xi_left], splitPoints[yi_up]);
+                buttonRectTransform.anchorMax = new Vector2(splitPoints[xi_left + 1], splitPoints[yi_up + 1]);
 
                 //上で指定したアンカーとの誤差を無くす
                 buttonRectTransform.offsetMin = Vector2.zero;

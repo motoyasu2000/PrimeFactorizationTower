@@ -1,8 +1,10 @@
 ﻿using AWS;
 using Common;
+using System;
 using System.Collections;
 using System.Linq;
 using TMPro;
+using Unity.Sentis.Layers;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -22,7 +24,10 @@ namespace UI
 
         Button[] difficultyLevelButtons = new Button[3]; //難易度を切り替えるボタン
 
-        Transform ranking_transform;
+        int[] scores; //ランキングに表示するスコア
+        string[] names; //ランキングに表示する名前
+        Transform ranking_transform; //ランキングを表示するセルの親
+        GameObject rankingCell; //ランキングを表示するときに生成されるセル
 
         //現在表示させているランキングが何のランキングであるのかを示す変数。
         public enum LocalOrGlobal {local, global}
@@ -39,10 +44,14 @@ namespace UI
 
         void Awake()
         {
+            rankingCell = Resources.Load("RankingCell") as GameObject;
             ddbManager = GameObject.Find("DynamoDBManager").GetComponent<DynamoDBManager>();
             InitializeMenus();
-            if (ranking) InitializeRankingButtons();
-            if (ranking) DisplayNowStateRanking();
+            if (ranking) {
+                ranking_transform = ranking.transform.Find("RankingTable");
+                InitializeRankingButtons();
+                DisplayNowStateRanking();
+            }
             if (setting) InitializeDifficultyLevelButton();
         }
         void InitializeMenus()
@@ -182,13 +191,12 @@ namespace UI
             StartCoroutine(DisplayRanking(nowRankButton_difficultyLevel, nowRankButton_gameMode, nowRankButton_localOrGlobal));
         }
 
+        //ローカルランキングが否か・ゲームモード・難易度によって異なるランキングを表示する。
         public IEnumerator DisplayRanking(int diffLevel, int gameMode, LocalOrGlobal localOrGlobal)
         {
-            ranking_transform = ranking.transform.Find("RankingTable"); //Rankingは子要素にスコアや順位を表示させるセルを10位まで持っている。
-
-            //ローカルランキングが否か・ゲームモード・難易度によって異なるモノを取得。
-            int[] scores = new int[10];
-            string[] names = Enumerable.Repeat<string>("", 10).ToArray();
+            //ランキングに表示する要素の初期化
+            scores = new int[10];
+            names = Enumerable.Repeat<string>("", 10).ToArray();
 
             //globalランキングを表示させる場合
             if (localOrGlobal == LocalOrGlobal.global)
@@ -196,7 +204,6 @@ namespace UI
                 string modeAndLevel = $"{(GameModeManager.GameMode)gameMode}_{(GameModeManager.DifficultyLevel)diffLevel}";
                 bool isCompleted = false; //処理が完了したかどうかを追跡するフラグ
 
-                Debug.Log("非同期処理開始");
                 ddbManager.GetTop10Scores(modeAndLevel, (records) =>
                 {
                     for (int i = 0; i < records.Count(); i++)
@@ -209,16 +216,17 @@ namespace UI
                 });
                 // 非同期処理が完了するまで待機
                 yield return new WaitUntil(() => isCompleted);
-                Debug.Log("非同期処理完了");
             }
 
             //ローカルランキングを表示させる場合。
             else if(localOrGlobal == LocalOrGlobal.local)
             {
+                names = Enumerable.Repeat<string>(PlayerInfoManager.Ins.Name, 10).ToArray(); //ローカルランキングでは全て自分の名前。
                 switch ((GameModeManager.GameMode)gameMode)
                 {
                     case GameModeManager.GameMode.PileUp:
                         scores = ScoreManager.Ins.PileUpScores[(GameModeManager.DifficultyLevel)diffLevel];
+                        
                         break;
                     default:
                         Debug.LogError("予期せぬゲームモードです");
@@ -231,22 +239,52 @@ namespace UI
                 Debug.LogError($"localOrGlobalに予期せぬ値が入っています localOrGlobal: {localOrGlobal}");
             }
 
-            int rankCounter = 0;
+            //ランキングに表示する各セルの生成。
+            GenerateRankingCells();
+        }
+        void GenerateRankingCells()
+        {
+            ResetRankingCell(); //過去表示されていたランキングのセルを消去してリセット
 
-            //全てのランキングのセルのスコアと名前を更新する
-            foreach (Transform sell in ranking_transform)
+            //セルを分割するアンカーポイントの計算
+            float[] splitsPoints_y = Helper.CalculateSplitAnchorPoints(GameInfo.RankDisplayLimit); 
+            Array.Reverse(splitsPoints_y); //ランキングは上から表示させたいため、上の位置のアンカーポイントが最初の方に来るようにする。
+
+            //スコアが0になるまで生成し続ける。
+            for(int i=0; scores[i] > 0; i++)
             {
-                if (sell.name.Substring(0, 4) == "Sell")
-                {
-                    //スコアの更新
-                    TextMeshProUGUI score = sell.transform.Find("Score").GetComponent<TextMeshProUGUI>();
-                    score.text = scores[rankCounter].ToString();
+                //生成・親オブジェクトの設定・スケーリング
+                GameObject nowRankingCell = Instantiate(rankingCell);
+                nowRankingCell.transform.SetParent(ranking_transform);
+                nowRankingCell.transform.localScale = Vector3.one;
 
-                    TextMeshProUGUI name = sell.transform.Find("Name").GetComponent<TextMeshProUGUI>();
-                    name.text = names[rankCounter];
+                //どの位置でセルを分割するのかの設定
+                RectTransform cellRectTransform = nowRankingCell.GetComponent<RectTransform>();
+                cellRectTransform.anchorMin = new Vector2(0, splitsPoints_y[i+1]);
+                cellRectTransform.anchorMax = new Vector2(1, splitsPoints_y[i]);
 
-                    rankCounter++;
-                }
+                //設定した分割の地点で分割
+                cellRectTransform.offsetMin = Vector2.zero;
+                cellRectTransform.offsetMax = Vector2.zero;
+
+                //順位・名前・スコアなど、表示される文字の設定
+                TextMeshProUGUI rank = nowRankingCell.transform.Find("Rank").GetComponent<TextMeshProUGUI>();
+                rank.text = $"{i+1}: ";
+
+                TextMeshProUGUI score = nowRankingCell.transform.Find("Score").GetComponent<TextMeshProUGUI>();
+                score.text = scores[i].ToString();
+
+                TextMeshProUGUI name = nowRankingCell.transform.Find("Name").GetComponent<TextMeshProUGUI>();
+                name.text = names[i];
+            }
+        }
+
+        //セルの親オブジェクトとなるゲームオブジェクトの子要素をすべて削除することによりリセットを行う。
+        void ResetRankingCell()
+        {
+            foreach(Transform cell in ranking_transform)
+            {
+                Destroy(cell.gameObject);
             }
         }
         //----------------ランキングの表示---------------------
