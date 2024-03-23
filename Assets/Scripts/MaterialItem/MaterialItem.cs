@@ -20,7 +20,7 @@ namespace MaterialLibrary
         private Material _material = null;
 
         //コンストラクタでマテリアルをロードするとコンパイル時にロードされてしまい、Unity側の初期化が終わっていないことがある。
-        //そのため、Materialプロパティを呼び出すとき、にマテリアルをロードするようにする。
+        //そのため、Materialプロパティを呼び出すときにマテリアルをロードするようにする。
         //マテリアルのプロパティを呼び出すのはUnity上のAwakeやStartであることがおおいため、基本的にUnity側の初期化が終わった後でロードできる。
         public Material Material
         {
@@ -42,25 +42,21 @@ namespace MaterialLibrary
         //float型のプロパティの操作
         public void SetPropertyFloat(T property, float value)
         {
-            var propertyInfo = property.GetType().GetField(property.ToString()); //ジェネリックで受け取った列挙型の値に基づいて、その列挙型の値が定義されているフィールドのメタデータを取得している
-            var attribute = propertyInfo.GetCustomAttribute<ShaderPropertyAttribute>(); //propertyInfoからShaderPropertyAttributeの取得。見つからなければnullが返る。
-            if (attribute != null)
-            {
-                Material.SetFloat(attribute.PropertyName, value); //ShaderPropertyAttributeに基づいてシェーダーのプロパティを設定
-            }
-            else
-            {
-                Debug.LogError("指定された列挙型の値に対応するShaderPropertyAttributeが見つかりませんでした。。");
-            }
+            SetProperty<float>(property, value, Material.SetFloat);
         }
         //Color型のプロパティの操作
         public void SetPropertyColor(T property, Color value)
+        {
+            SetProperty<Color>(property, value, Material.SetColor);
+        }
+
+        void SetProperty<TProperty>(T property, TProperty value, Action<string,TProperty> action)
         {
             var propertyInfo = property.GetType().GetField(property.ToString()); //ジェネリックで受け取った列挙型の値に基づいて、その列挙型の値が定義されているフィールドのメタデータを取得している
             var attribute = propertyInfo.GetCustomAttribute<ShaderPropertyAttribute>(); //propertyInfoからShaderPropertyAttributeの取得。見つからなければnullが返る。
             if (attribute != null)
             {
-                Material.SetColor(attribute.PropertyName, value); //ShaderPropertyAttributeに基づいてシェーダーのプロパティを設定
+                action(attribute.PropertyName, value); //第三引数で受け取ったメソッドの実行。
             }
             else
             {
