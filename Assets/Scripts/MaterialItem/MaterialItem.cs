@@ -1,46 +1,84 @@
 ﻿using Amazon.Runtime.Internal.Auth;
 using System;
+using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//シェーダーのプロパティをＣ＃スクリプトから操作する場合には、文字列でプロパティ名を指定しなければならない。
-//それを解決するために、列挙型の要素と文字列をマッピングして、列挙型の要素によって文字列を指定するようにしたい。
-//しかし今回のゲームでは多くのマテリアルが存在することが想定されるため、マテリアルを扱うクラスの抽象クラスをつくりたかったが、
-//今回はマテリアルごとに要素が異なるenumを持ちたかったが、enumは定数の集まりであるべきで、abstractと組み合わせることはできない。
-//そこで、ジェネリックを使用して表現してみた。
-//また、リストとしてMaterialItemクラスを格納するために、さらに抽象的なインターフェースを定義した。
-
+//リフレクションやジェネリックや属性、Lazyパターンなど慣れていないことが多いため、メモ用のコメントが多くなっております。
 namespace MaterialLibrary
 {
+    //MaterialItemを継承したクラスのリストを作るために、より抽象的なインターフェースを定義しておく。
     public interface IMaterialItem
     {
         Material Material { get; set; }
     }
 
+    //enumを持つことを間接的に継承先のクラスに強制させるために、ジェネリックを持たせる
     public abstract class MaterialItem<T> : IMaterialItem where T : Enum
     {
-        public Material Material { get; set; }
-        public abstract T Property { get; set; } //文字列を使わずにプロパティを操作するための列挙型
-        public Dictionary<T, string> PropertyNamesDict { get; set; } //列挙型の要素とシェーダーのプロパティ名を対応付ける辞書
+        private Material _material = null;
+
+        //コンストラクタでマテリアルをロードするとコンパイル時にロードされてしまい、Unity側の初期化が終わっていないことがある。
+        //そのため、Materialプロパティを呼び出すとき、にマテリアルをロードするようにする。
+        //マテリアルのプロパティを呼び出すのはUnity上のAwakeやStartであることがおおいため、基本的にUnity側の初期化が終わった後でロードできる。
+        public Material Material
+        {
+            get
+            {
+                if (_material == null)
+                {
+                    _material = LoadMaterial();
+                }
+                return _material;
+            }
+            set { _material = value; }
+        }
+
+        //Materialをロードするための抽象メソッド。継承先で実装。
+        protected abstract Material LoadMaterial();
 
         //-------------------列挙型の要素からシェーダーのプロパティを操作するメソッドたち----------------------
         //float型のプロパティの操作
         public void SetPropertyFloat(T property, float value)
         {
-            if (PropertyNamesDict.TryGetValue(property, out string propertyName))
+            var propertyInfo = property.GetType().GetField(property.ToString()); //ジェネリックで受け取った列挙型の値に基づいて、その列挙型の値が定義されているフィールドのメタデータを取得している
+            var attribute = propertyInfo.GetCustomAttribute<ShaderPropertyAttribute>(); //propertyInfoからShaderPropertyAttributeの取得。見つからなければnullが返る。
+            if (attribute != null)
             {
-                Material.SetFloat(propertyName, value);
+                Material.SetFloat(attribute.PropertyName, value); //ShaderPropertyAttributeに基づいてシェーダーのプロパティを設定
+            }
+            else
+            {
+                Debug.LogError("指定された列挙型の値に対応するShaderPropertyAttributeが見つかりませんでした。。");
             }
         }
         //Color型のプロパティの操作
         public void SetPropertyColor(T property, Color value)
         {
-            if (PropertyNamesDict.TryGetValue(property, out string propertyName))
+            var propertyInfo = property.GetType().GetField(property.ToString()); //ジェネリックで受け取った列挙型の値に基づいて、その列挙型の値が定義されているフィールドのメタデータを取得している
+            var attribute = propertyInfo.GetCustomAttribute<ShaderPropertyAttribute>(); //propertyInfoからShaderPropertyAttributeの取得。見つからなければnullが返る。
+            if (attribute != null)
             {
-                Material.SetColor(propertyName, value);
+                Material.SetColor(attribute.PropertyName, value); //ShaderPropertyAttributeに基づいてシェーダーのプロパティを設定
+            }
+            else
+            {
+                Debug.LogError("指定された列挙型の値に対応するShaderPropertyAttributeが見つかりませんでした。");
             }
         }
-        //-------------------列挙型の要素からシェーダーのプロパティを操作するメソッドたち----------------------
+        //----------------------------------------------------------------------------------------------------
+    }
+
+    //enum内で列挙型の値とシェーダーのプロパティ名のマッピングを行えるようにする。
+    [AttributeUsage(AttributeTargets.Field)]
+    public class ShaderPropertyAttribute : Attribute
+    {
+        public string PropertyName { get; private set; }
+
+        public ShaderPropertyAttribute(string propertyName)
+        {
+            PropertyName = propertyName;
+        }
     }
 }

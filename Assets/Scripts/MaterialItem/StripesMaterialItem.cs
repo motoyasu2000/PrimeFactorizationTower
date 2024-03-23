@@ -7,26 +7,21 @@ namespace MaterialLibrary
 {
     public enum StripesMaterialProperty
     {
+        [ShaderProperty("_Color")]
         MainColor,
+        [ShaderProperty("_AnotherColor")]
         AnotherColor,
+        [ShaderProperty("_Space")]
         Space,
+        [ShaderProperty("_Timer")]
         Timer,
     }
 
     public class StripesMaterialItem : MaterialItem<StripesMaterialProperty>
     {
-        public override StripesMaterialProperty Property { get; set; }
-
-        public StripesMaterialItem()
+        protected override Material LoadMaterial()
         {
-            Material = Resources.Load<Material>("MaterialsOfItem/StripesMaterial");
-            PropertyNamesDict = new Dictionary<StripesMaterialProperty, string>()
-            {
-                { StripesMaterialProperty.MainColor, "_MainColor" },
-                { StripesMaterialProperty.AnotherColor, "_AnotherColor" },
-                { StripesMaterialProperty.Space, "_Space" },
-                { StripesMaterialProperty.Timer, "_Timer" },
-            };
+            return Resources.Load<Material>("MaterialsOfItem/StripesMaterial");
         }
     }
 }
