@@ -4,7 +4,7 @@ Shader "Custom/StripesShader"
     {
         _Color ("Main Color", Color) = (1,1,1,1)
         _AnotherColor("AnotherColor", Color) = (1,1,1,1)
-        _Spase("Space", Float) = 0
+        _Space("Space", Float) = 0
         _Timer("Timer", Float) = 0
     }
 
@@ -21,7 +21,7 @@ Shader "Custom/StripesShader"
             
             fixed4 _Color;
             fixed4 _AnotherColor;
-            Float _Spase;
+            Float _Space;
             Float _Timer;
 
             struct appdata {
@@ -42,7 +42,7 @@ Shader "Custom/StripesShader"
             }
 
             fixed4 frag (v2f i) : SV_Target {
-                float stripe = sin(i.uv.y * _Spase + _Timer);
+                float stripe = sin(i.uv.y * _Space + _Timer);
                 return _Color * stripe + _AnotherColor * (1-stripe);
             }
             ENDCG
