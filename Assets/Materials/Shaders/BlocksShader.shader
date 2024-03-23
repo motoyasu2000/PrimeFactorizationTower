@@ -2,6 +2,7 @@ Shader "Custom/StripesShader"
 {
     Properties
     {
+        _MainTex ("Texture", 2D) = "white" {} //ゲームオブジェクトのスプライトレンダラーから取得されるテクスチャを受け取る。
         _Color ("Main Color", Color) = (1,1,1,1)
         _AnotherColor("AnotherColor", Color) = (1,1,1,1)
         _Space("Space", Float) = 0
@@ -19,6 +20,7 @@ Shader "Custom/StripesShader"
             #pragma vertex vert
             #pragma fragment frag
             
+            sampler2D _MainTex; 
             fixed4 _Color;
             fixed4 _AnotherColor;
             Float _Space;
@@ -42,9 +44,14 @@ Shader "Custom/StripesShader"
             }
 
             fixed4 frag (v2f i) : SV_Target {
-                float stripe = sin(i.uv.y * _Space + _Timer);
-                return _Color * stripe + _AnotherColor * (1-stripe);
+                fixed4 texColor = tex2D(_MainTex, i.uv);
+                float stripePattern = sin(i.uv.y * _Space + _Timer) * 0.5 + 0.5;
+                fixed4 stripeColor = lerp(_AnotherColor, _Color, stripePattern);
+                stripeColor.a = texColor.a; //元のテクスチャの透明度を適用
+                if(texColor.a == 0) discard; //元のテクスチャで透明な部分は完全に見えないようにする
+                return stripeColor;
             }
+
             ENDCG
         }
     }
