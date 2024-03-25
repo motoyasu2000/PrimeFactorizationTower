@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerInfoManager : MonoBehaviour
 {
@@ -22,7 +23,7 @@ public class PlayerInfoManager : MonoBehaviour
     void Awake()
     {
         //非アクティブなオブジェクトなので、transform.Findで探している。
-        inputNameMenuBackGround = GameObject.Find("Canvas").transform.Find("InputNameMenuBackGround").gameObject;
+        if(SceneManager.GetActiveScene().name == "TitleScene") inputNameMenuBackGround = GameObject.Find("Canvas").transform.Find("InputNameMenuBackGround").gameObject;
 
         if (instance == null)
         {
