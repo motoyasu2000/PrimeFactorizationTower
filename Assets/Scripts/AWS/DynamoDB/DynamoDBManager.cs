@@ -145,7 +145,7 @@ namespace AWS
                     {
                         record = null;
                         Debug.LogError("レコード数が異常値です");
-                    }
+                    }zz
                     callback(record);
                 });
                 

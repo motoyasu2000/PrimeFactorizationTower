@@ -5,6 +5,7 @@ using TMPro;
 using System.IO;
 using Random = UnityEngine.Random;
 using AWS;
+using Common;
 
 //ゲームを管理するクラス。画面上部の合成数の計算や表示、ゲームオーバーの管理などを行う。
 public class GameManager : MonoBehaviour
@@ -30,9 +31,10 @@ public class GameManager : MonoBehaviour
     public int NewScore => newScore;
 
     //画面中央の合成数の管理や、素因数分解ができているかのチェック
+    int upCompositeNumberMax = 1;
     int nowUpCompositeNumber = 1;
-    int nowPrimeNumberProduct = 1;
     bool completeCompositeNumberFlag = false;
+    Dictionary<int, int> upCompositeNumberDict;
     Queue<int> upCompositeNumberqueue = new Queue<int>();
     SoundManager soundManager;
 
@@ -68,7 +70,8 @@ public class GameManager : MonoBehaviour
         scoreManager = ScoreManager.Ins;
         gameModeManager = GameModeManager.Ins;
         bloomManager = GameObject.Find("GlobalVolume").GetComponent<BloomManager>();
-        upCompositeNumberqueue.Enqueue(GenerateCompositeNumber());
+        upCompositeNumberDict = GenerateUpCompositeNumberDict();
+        upCompositeNumberqueue.Enqueue(Helper.CalculateCompsiteNumberForDict(upCompositeNumberDict));
         gameOverMenu = GameObject.Find("Canvas").transform.Find("GameOverMenu").gameObject;
         explainPileUp = GameObject.Find("Canvas").transform.Find("ExplainPileUp").gameObject;
     }
@@ -81,7 +84,7 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         UpCompositeNumberSetting();
-        CheckAllBlocksOnGround(); 
+        CheckAllBlocksOnGround();
         CheckPrimeNumberProduct();
         CalculateScore();
     }
@@ -94,54 +97,39 @@ public class GameManager : MonoBehaviour
         if (string.IsNullOrWhiteSpace(nowUpCompositeNumberText.text))
         {
             completeCompositeNumberFlag = false; //これがtrueの間はblockが生成されないようになっているので、画面上部の合成数が更新された瞬間にfalseにしてあげる。
-            upCompositeNumberqueue.Enqueue(GenerateCompositeNumber());
-            nowUpCompositeNumber = upCompositeNumberqueue.Dequeue();
-            nowUpCompositeNumberText.text = nowUpCompositeNumber.ToString();
+            upCompositeNumberDict = GenerateUpCompositeNumberDict();
+            upCompositeNumberqueue.Enqueue(Helper.CalculateCompsiteNumberForDict(upCompositeNumberDict));
+            upCompositeNumberMax = upCompositeNumberqueue.Dequeue();
+            nowUpCompositeNumberText.text = upCompositeNumberMax.ToString();
             nextUpCompositeNumberText.text = upCompositeNumberqueue.Peek().ToString();
         }
     }
 
     //現在の難易度がどの様になっていたとしても、その難易度に合った合成数を生成する
-    int GenerateCompositeNumber()
+    Dictionary<int, int> GenerateUpCompositeNumberDict()
     {
-        int upCompositeNumber = -1;
+        Dictionary<int, int> upCompositeNumbersDict = new Dictionary<int, int>();
 
         switch (GameModeManager.Ins.NowDifficultyLevel)
         {
             case GameModeManager.DifficultyLevel.Normal:
-                upCompositeNumber = GenerateCompositeNumberForDifficultyLevel(gameModeManager.NormalPool, 3000, 2, 5);
+                upCompositeNumbersDict = Helper.GenerateCompositeNumberDictCustom(gameModeManager.NormalPool, 3000, 2, 5);
                 break;
 
             case GameModeManager.DifficultyLevel.Difficult:
-                upCompositeNumber = GenerateCompositeNumberForDifficultyLevel(gameModeManager.DifficultPool, 10000, 3, 6);
+                upCompositeNumbersDict = Helper.GenerateCompositeNumberDictCustom(gameModeManager.DifficultPool, 10000, 3, 6);
                 break;
 
             case GameModeManager.DifficultyLevel.Insane:
-                upCompositeNumber = GenerateCompositeNumberForDifficultyLevel(gameModeManager.DifficultPool, 100000, 3, 7);
+                upCompositeNumbersDict = Helper.GenerateCompositeNumberDictCustom(gameModeManager.DifficultPool, 100000, 3, 7);
+                break;
+            default:
+                Debug.LogError("予想外の難易度で素数が生成されようとしました。");
                 break;
         }
 
         nowPhase++;
-        return upCompositeNumber;
-        return 16 * 27 * 125 * 343;
-    }
-
-    //指定した素数プールから合成数を生成する。合成数の上限値や、素数の数も乱数の上限値を書くことで指定することができる。
-    int GenerateCompositeNumberForDifficultyLevel(List<int> primeNumberPool, int maxCompositeNumber ,int minRand, int maxRand)
-    {
-        int randomIndex;
-        int randomPrimeNumber;
-        int upCompositeNumber = 1;
-        int numberOfPrimeNumber = Random.Range(minRand, maxRand);
-
-        for(int i=0; i<numberOfPrimeNumber; i++)
-        {
-            randomIndex = Random.Range(0, primeNumberPool.Count);
-            randomPrimeNumber = primeNumberPool[randomIndex];
-            if(upCompositeNumber * randomPrimeNumber < maxCompositeNumber) upCompositeNumber *= randomPrimeNumber;
-        }
-
-        return upCompositeNumber;
+        return upCompositeNumbersDict;
     }
 
     //全てのゲームオブジェクトが地面に設置しているかのチェック
@@ -173,13 +161,13 @@ public class GameManager : MonoBehaviour
     {
         //AfterField内の合成数を計算し、素因数分解が間違っていないかのチェック　間違っていればゲームオーバー
         CalculateNowPrimeNumberProduct();
-        if (nowUpCompositeNumber % nowPrimeNumberProduct != 0)
+        if (upCompositeNumberMax % nowUpCompositeNumber != 0)
         {
             GameOver(true);
         }
 
         //もしブロックの数値の積が、上部の合成数と一致していたなら
-        if (nowPrimeNumberProduct == nowUpCompositeNumber)
+        if (nowUpCompositeNumber == upCompositeNumberMax)
         {
             completeCompositeNumberFlag = true;
             RemoveUpCompositeNumber(); //上の数字の消去
@@ -190,16 +178,16 @@ public class GameManager : MonoBehaviour
     //afterField内のブロックの積を計算、nowPrimeNumberProductを更新、テキストの描画
     void CalculateNowPrimeNumberProduct()
     {
-        nowPrimeNumberProduct = 1;
+        nowUpCompositeNumber = 1;
         foreach (Transform block in afterField.transform) //afterField内の全てのゲームオブジェクトのチェック
         {
             BlockInfo blockInfo = block.GetComponent<BlockInfo>();
 
-            nowPrimeNumberProduct *= blockInfo.GetPrimeNumber();
+            nowUpCompositeNumber *= blockInfo.GetPrimeNumber();
             //もし、画面上部の合成数がafterfield内の素数の積で割り切れるなら、割った値を表示、割り切れなかったらEと表示
-            if(nowUpCompositeNumber % nowPrimeNumberProduct == 0)
+            if (upCompositeNumberMax % nowUpCompositeNumber == 0)
             {
-                nowUpCompositeNumberText.text = (nowUpCompositeNumber / nowPrimeNumberProduct).ToString(); //残りの数字を計算して描画。ただしafterFieldが空になるとこの中の処理が行われなくなるので
+                nowUpCompositeNumberText.text = (upCompositeNumberMax / nowUpCompositeNumber).ToString(); //残りの数字を計算して描画。ただしafterFieldが空になるとこの中の処理が行われなくなるので
                                                                                                            //UpCompositeNumberの更新のたびに、このテキストの値も更新してあげる必要がある。
             }
             else
@@ -243,7 +231,7 @@ public class GameManager : MonoBehaviour
             block.SetParent(completedField.transform);
         }
         nowUpCompositeNumberText.text = "";
-        nowPrimeNumberProduct = 1; 
+        nowUpCompositeNumber = 1;
     }
 
     public async void GameOver(bool missPrimeNumberfactorization)
@@ -255,8 +243,9 @@ public class GameManager : MonoBehaviour
         Debug.Log("GameOver");
 
         //素因数分解を間違えてしまった場合、最後のゲームオーバー理由の出力の際に、元の合成数とその時選択してしまった素数の情報が必要なので、変数に入れておく。
-        if (missPrimeNumberfactorization){
-            compositeNumber_GO = nowUpCompositeNumber * afterField.transform.GetChild(afterField.transform.childCount - 1).GetComponent<BlockInfo>().GetPrimeNumber() / nowPrimeNumberProduct;
+        if (missPrimeNumberfactorization)
+        {
+            compositeNumber_GO = upCompositeNumberMax * afterField.transform.GetChild(afterField.transform.childCount - 1).GetComponent<BlockInfo>().GetPrimeNumber() / nowUpCompositeNumber;
             primeNumber_GO = afterField.transform.GetChild(afterField.transform.childCount - 1).GetComponent<BlockInfo>().GetPrimeNumber();
         }
 
