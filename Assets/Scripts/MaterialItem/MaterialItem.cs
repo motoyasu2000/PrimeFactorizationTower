@@ -15,7 +15,7 @@ namespace MaterialLibrary
     }
 
     //enumを持つことを間接的に継承先のクラスに強制させるために、ジェネリックを持たせる
-    public abstract class MaterialItem<T> : IMaterialItem where T : Enum
+    public abstract class MaterialItem<TEnum> : IMaterialItem where TEnum : Enum
     {
         private Material _material = null;
 
@@ -40,17 +40,17 @@ namespace MaterialLibrary
 
         //-------------------列挙型の要素からシェーダーのプロパティを操作するメソッドたち----------------------
         //float型のプロパティの操作
-        public void SetPropertyFloat(T property, float value)
+        public void SetPropertyFloat(TEnum property, float value)
         {
             SetProperty<float>(property, value, Material.SetFloat);
         }
         //Color型のプロパティの操作
-        public void SetPropertyColor(T property, Color value)
+        public void SetPropertyColor(TEnum property, Color value)
         {
             SetProperty<Color>(property, value, Material.SetColor);
         }
 
-        void SetProperty<TProperty>(T property, TProperty value, Action<string,TProperty> action)
+        void SetProperty<TProperty>(TEnum property, TProperty value, Action<string,TProperty> action)
         {
             var propertyInfo = property.GetType().GetField(property.ToString()); //ジェネリックで受け取った列挙型の値に基づいて、その列挙型の値が定義されているフィールドのメタデータを取得している
             var attribute = propertyInfo.GetCustomAttribute<ShaderPropertyAttribute>(); //propertyInfoからShaderPropertyAttributeの取得。見つからなければnullが返る。
