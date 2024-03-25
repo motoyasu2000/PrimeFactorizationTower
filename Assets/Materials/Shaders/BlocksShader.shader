@@ -1,8 +1,8 @@
-Shader "Custom/StripesShader"
+ï»¿Shader "Custom/StripesShader"
 {
     Properties
     {
-        _MainTex ("Texture", 2D) = "white" {} //ƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚ÌƒXƒvƒ‰ƒCƒgƒŒƒ“ƒ_ƒ‰[‚©‚çæ“¾‚³‚ê‚éƒeƒNƒXƒ`ƒƒ‚ğó‚¯æ‚éB
+        _MainTex ("Texture", 2D) = "white" {} //ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆãƒ¬ãƒ³ãƒ€ãƒ©ãƒ¼ã‹ã‚‰ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚’å—ã‘å–ã‚‹ã€‚
         _Color ("Main Color", Color) = (1,1,1,1)
         _AnotherColor("AnotherColor", Color) = (1,1,1,1)
         _Space("Space", Float) = 0
@@ -12,7 +12,6 @@ Shader "Custom/StripesShader"
     SubShader
     {
         Tags { "RenderType"="Opaque" }
-        LOD 100
 
         Pass
         {
@@ -47,8 +46,8 @@ Shader "Custom/StripesShader"
                 fixed4 texColor = tex2D(_MainTex, i.uv);
                 float stripePattern = sin(i.uv.y * _Space + _Timer) * 0.5 + 0.5;
                 fixed4 stripeColor = lerp(_AnotherColor, _Color, stripePattern);
-                stripeColor.a = texColor.a; //Œ³‚ÌƒeƒNƒXƒ`ƒƒ‚Ì“§–¾“x‚ğ“K—p
-                if(texColor.a == 0) discard; //Œ³‚ÌƒeƒNƒXƒ`ƒƒ‚Å“§–¾‚È•”•ª‚ÍŠ®‘S‚ÉŒ©‚¦‚È‚¢‚æ‚¤‚É‚·‚é
+                stripeColor.a = texColor.a; //å…ƒã®ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®é€æ˜åº¦ã‚’é©ç”¨
+                if(texColor.a == 0) discard; //å…ƒã®ãƒ†ã‚¯ã‚¹ãƒãƒ£ã§é€æ˜ãªéƒ¨åˆ†ã¯å®Œå…¨ã«è¦‹ãˆãªã„ã‚ˆã†ã«ã™ã‚‹
                 return stripeColor;
             }
 
