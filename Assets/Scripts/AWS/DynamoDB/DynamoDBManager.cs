@@ -8,6 +8,7 @@ using Amazon.DynamoDBv2.Model;
 using Amazon.CognitoIdentity;
 using static Unity.VisualScripting.Member;
 using UnityEngine.SocialPlatforms.Impl;
+using System.Linq;
 //※dynamoDBのapiをたたくのは初めてでデータベースの操作も不慣れのため、勉強のメモ用のコメントが多くなっております。
 //コメントがぐちゃぐちゃで読みにくかったらごめんなさい。
 
@@ -38,6 +39,7 @@ namespace AWS
             //SaveScoreAsync(GameModeManager.Ins.ModeAndLevel, 500, "testID1", "yuppo");
             //SaveScoreAsync(GameModeManager.Ins.ModeAndLevel, 1000, "testID2", "yuppoma");
             //SaveScoreAsync(GameModeManager.Ins.ModeAndLevel, 2000, "testID3", "ottoseiuchi");
+            GetRecordAsync(GameModeManager.Ins.ModeAndLevel, (record) => Debug.Log(record.Score));
         }
 
          public void SaveScoreAsyncHandler(string modeAndLevel, int newScore)
@@ -55,7 +57,6 @@ namespace AWS
                 //新しいスコアが既存のスコアを上回っていたら、スコアを更新する。
                 if (newScore > oldScore)
                 {
-                    Debug.Log(PlayerInfoManager.Ins.Name);
                     var ranking = new DynamoDBDatas
                     {
                         ModeAndLevel = modeAndLevel,
@@ -99,6 +100,7 @@ namespace AWS
         {
             try
             {
+                Debug.Log($"{modeAndLevel} {playerID}");
                 var singleQuery = GetSingleScoreQuery(modeAndLevel, playerID);
                 //設定したクエリ(queryRequest)を非同期で実行、結果がresponseに格納される。
                 client.QueryAsync(singleQuery, response =>
@@ -111,6 +113,12 @@ namespace AWS
                     }
 
                     var result = response.Response;//クエリの結果をresultに格納
+                    if (result.Items == null) Debug.Log("null");
+                    foreach (var item in result.Items)
+                    {
+                        var itemDetails = item.Select(kv => $"{kv.Key}: {kv.Value.S ?? "null"}").ToArray();
+                        Debug.Log($"Item: {String.Join(", ", itemDetails)}");
+                    }
 
                     PlayerScoreRecord record;
 
@@ -122,7 +130,7 @@ namespace AWS
                             ModeAndLevel = result.Items[0]["ModeAndLevel"].S,
                             Score = int.Parse(result.Items[0]["Score"].N),
                             PlayerID = result.Items[0]["PlayerID"].S,
-                            Name = result.Items[0]["PlayerID"].S,
+                            Name = result.Items[0]["Name"].S,
                         };
                         if (result.Items.Count > 1) Debug.LogError("単一のレコードを返すためのクエリに、複数のレコードが返ってきています。");
                     }
@@ -143,9 +151,22 @@ namespace AWS
                     //異常
                     else
                     {
-                        record = null;
+                        //先頭の要素のみ取得し
+                        record = new PlayerScoreRecord()
+                        {
+                            ModeAndLevel = result.Items[0]["ModeAndLevel"].S,
+                            Score = int.Parse(result.Items[0]["Score"].N),
+                            PlayerID = result.Items[0]["PlayerID"].S,
+                            Name = result.Items[0]["Name"].S,
+                        };
+                        //他の要素はすべて消去
+                        for (int i=1; i< result.Items.Count; i++)
+                        {
+                            DeleteOldScoreAsync(modeAndLevel, int.Parse(result.Items[i]["Score"].N));
+                        }
+
                         Debug.LogError("レコード数が異常値です");
-                    }zz
+                    }
                     callback(record);
                 });
                 
@@ -264,7 +285,7 @@ namespace AWS
         {
             return new QueryRequest
             {
-                TableName = "PFT_PlayerScoreRanking",
+                TableName = AWSInfo.TableName,
                 KeyConditionExpression = "ModeAndLevel = :v1", //ModeAndLevelキーが:v1と一致するレコードを検索する。v1はプレースホルダーで、下の式で実際の値を割り当てている。
                 FilterExpression = "PlayerID = :v2", //playerIDに対するフィルタ式、フィルタはクエリの実行後に適用されるため、大量のデータを扱う場合には注意
 
@@ -274,7 +295,6 @@ namespace AWS
                 {":v1", new AttributeValue { S = modeAndLevel }},
                 {":v2", new AttributeValue { S = playerID }}
                 },
-                Limit = 1 //レコード数の上限
             };
         }
 
@@ -283,7 +303,7 @@ namespace AWS
         {
             return new QueryRequest
             {
-                TableName = "PFT_PlayerScoreRanking",
+                TableName = AWSInfo.TableName,
                 KeyConditionExpression = "ModeAndLevel = :v1",
                 ExpressionAttributeValues = new Dictionary<string, AttributeValue> {
                 {":v1", new AttributeValue { S = modeAndLevel }},
