@@ -98,20 +98,30 @@ public class TouchBlock : MonoBehaviour
 
         //タッチした位置にブロックを移動する(x軸方向の移動のみ)
         draggedObject = singleGenerateManager.GetSingleGameObject().transform;
-        draggedObject.position = new Vector3(touchPosition.x, primeNumberGeneratingPoint.transform.position.y, touchPosition.z); //ブロックx座標をタッチしている座標に
+        MoveBlockX(touchPosition.x); //ブロックx座標をタッチしている座標に
         isDragging = true;
     }
 
     //指を触れている間はその指のx座標にブロックを動かす。
     void HandleTouchMoved(Touch touch)
     {
-        draggedObject.position = new Vector3(touchPosition.x, primeNumberGeneratingPoint.transform.position.y, touchPosition.z);
+        MoveBlockX(touchPosition.x);
     }
 
     //指を話したときの処理、ブロックを落下させ、素数を持ったブロックとして機能するようにする。また、離したブロックをネットワークにノードとして追加する
     void HandleTouchEnded(Touch touch)
     {
         isDragging = false;
+        BlockRelease();
+    }
+
+    void MoveBlockX(float newX)
+    {
+        draggedObject.position = new Vector3(newX, primeNumberGeneratingPoint.transform.position.y, primeNumberGeneratingPoint.transform.position.z);
+    }
+
+    void BlockRelease()
+    {
         draggedObject = null;
         singleGenerateManager.SetSingleGameObject(null); //このブロックがsingleGameObjectに入ったままにしていると、ボタンが押された瞬間にDestroyが呼ばれてしまう。
         this.enabled = false;
@@ -121,5 +131,12 @@ public class TouchBlock : MonoBehaviour
         blockInfo.EnableCollider(); //ゲームオブジェクトの落下地点を視覚化する線の描画の際に一時的にコライダーを非活性化するので、ここでコライダーを復活させる。
         gameObject.transform.parent = afterField.transform;
         network.AddNode(gameObject);
+    }
+
+    //AIが操作する
+    public void MoveBlockXAndRelease(float newX)
+    {
+        MoveBlockX(newX);
+        BlockRelease();
     }
 }

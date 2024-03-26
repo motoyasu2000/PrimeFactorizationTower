@@ -55,7 +55,7 @@ public class BlockMaterialItemManager : MonoBehaviour
         }
         else
         {
-            Debug.LogError("指定されたゲームオブジェクトにRendererコンポーネントが見つかりません。");
+            Debug.LogError("指定されたGameObjectにRendererコンポーネントが見つかりません。");
         }
     }
 }
