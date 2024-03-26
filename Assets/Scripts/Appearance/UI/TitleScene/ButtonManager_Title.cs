@@ -3,6 +3,7 @@ using Common;
 using System;
 using System.Collections;
 using System.Linq;
+using System.Threading.Tasks;
 using TMPro;
 using Unity.Sentis.Layers;
 using UnityEngine;
@@ -186,13 +187,14 @@ namespace UI
         //----------------現在選ばれているランキングのタブや難易度選択ボタンが単一であることを保証する---------------------
 
         //----------------ランキングの表示---------------------
-        public void DisplayRankingHandler()
+        //処理の完了を待たないため、注意
+        public async void DisplayRankingHandler()
         {
-            StartCoroutine(DisplayRanking(nowRankButton_difficultyLevel, nowRankButton_gameMode, nowRankButton_localOrGlobal));
+            await DisplayRanking(nowRankButton_difficultyLevel, nowRankButton_gameMode, nowRankButton_localOrGlobal);
         }
 
         //ローカルランキングが否か・ゲームモード・難易度によって異なるランキングを表示する。
-        public IEnumerator DisplayRanking(int diffLevel, int gameMode, LocalOrGlobal localOrGlobal)
+        public async Task DisplayRanking(int diffLevel, int gameMode, LocalOrGlobal localOrGlobal)
         {
             //ランキングに表示する要素の初期化
             scores = new int[10];
@@ -202,9 +204,8 @@ namespace UI
             if (localOrGlobal == LocalOrGlobal.global)
             {
                 string modeAndLevel = $"{(GameModeManager.GameMode)gameMode}_{(GameModeManager.DifficultyLevel)diffLevel}";
-                bool isCompleted = false; //処理が完了したかどうかを追跡するフラグ
 
-                ddbManager.GetTop10Scores(modeAndLevel, (records) =>
+                var records = await ddbManager.GetTop10Scores(modeAndLevel);
                 {
                     for (int i = 0; i < records.Count(); i++)
                     {
@@ -212,10 +213,7 @@ namespace UI
                         names[i] = records[i].Name;
                         Debug.Log($"{i+1}位のスコア: {scores[i]} 名前: {names[i]}");
                     }
-                    isCompleted = true;
-                });
-                // 非同期処理が完了するまで待機
-                yield return new WaitUntil(() => isCompleted);
+                };
             }
 
             //ローカルランキングを表示させる場合。

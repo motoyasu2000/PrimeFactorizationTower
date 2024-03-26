@@ -16,10 +16,10 @@ namespace AWS
 
         private void Awake()
         {
-            StartCoroutine(InitializeAWS());
+            _ = InitializeAWSAsync(); //完了を待たないので注意
         }
 
-        private IEnumerator InitializeAWS()
+        private async Task InitializeAWSAsync()
         {
             ddbManager = transform.parent.GetComponent<DynamoDBManager>();
 
@@ -30,7 +30,7 @@ namespace AWS
                 CognitoAWSCredentials cognitoAWSCredentials = new CognitoAWSCredentials(AWSInfo.PlayerIDPoolID, AWSInfo.Region);
 
                 //Cognitoの認証を非同期で待つ
-                yield return StartCoroutine(WaitGettingID(cognitoAWSCredentials));
+                await WaitGettingIDAsync(cognitoAWSCredentials);
 
                 BasicAWSCredentials credentials = new BasicAWSCredentials(AWSInfo.AccessKeyID, AWSInfo.SecretAccessKey);
                 AmazonDynamoDBConfig config = new AmazonDynamoDBConfig()
@@ -42,30 +42,32 @@ namespace AWS
                 AmazonDynamoDBClient client = new AmazonDynamoDBClient(credentials, config);
                 ddbManager.Initialize(client, cognitoAWSCredentials);
 
-                ddbManager.GetTop10Scores(GameModeManager.Ins.ModeAndLevel, records =>
+                var records = await ddbManager.GetTop10Scores(GameModeManager.Ins.ModeAndLevel);
+                foreach (var record in records)
                 {
-                    foreach (var record in records)
-                    {
-                        Debug.Log(record.Score);
-                        //ddbManager.DeleteOldScoreAsync(GameModeManager.GameModemanagerInstance.ModeAndLevel, record.Score);
-                    }
-                });
+                    Debug.Log(record.Score);
+                    //ddbManager.DeleteOldScoreAsync(GameModeManager.GameModemanagerInstance.ModeAndLevel, record.Score);
+                }
+                
             }
         }
 
         //認証が終わるまで待機するためのコルーチン
-        private IEnumerator WaitGettingID(CognitoAWSCredentials cognitoAWSCredentials)
+        private Task WaitGettingIDAsync(CognitoAWSCredentials cognitoAWSCredentials)
         {
-            bool isComplete = false;
-
+            var tcs = new TaskCompletionSource<bool>();
             cognitoAWSCredentials.GetIdentityIdAsync(response =>
             {
-                isComplete = true;
-                if(response.Exception != null) Debug.LogError(response.Exception.Message);
+                if (response.Exception == null)
+                {
+                    tcs.SetResult(true);
+                }
+                else
+                {
+                    tcs.SetException(response.Exception);
+                }
             });
-
-            //認証が完了するまで待機
-            yield return new WaitUntil(() => isComplete);
+            return tcs.Task;
         }
     }
 }
