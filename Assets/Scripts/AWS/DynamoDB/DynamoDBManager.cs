@@ -34,17 +34,11 @@ namespace AWS
             this.client = client;
             playerID = cognitoAWSCredentials.GetCachedIdentityId();
             Debug.Log(playerID);
-
-            //テスト
-            //SaveScoreAsync(GameModeManager.Ins.ModeAndLevel, 500, "testID1", "yuppo");
-            //SaveScoreAsync(GameModeManager.Ins.ModeAndLevel, 1000, "testID2", "yuppoma");
-            //SaveScoreAsync(GameModeManager.Ins.ModeAndLevel, 2000, "testID3", "ottoseiuchi");
-            GetRecordAsync(GameModeManager.Ins.ModeAndLevel, (record) => Debug.Log(record.Score));
         }
 
-         public void SaveScoreAsyncHandler(string modeAndLevel, int newScore)
+         public async Task SaveScoreAsyncHandler(string modeAndLevel, int newScore)
         {
-            SaveScoreAsync(modeAndLevel, newScore, playerID, PlayerInfoManager.Ins.Name);
+            await SaveScoreAsync(modeAndLevel, newScore, playerID, PlayerInfoManager.Ins.Name);
         }
 
         //スコアをDynamoDBに非同期で保存する。
@@ -53,7 +47,8 @@ namespace AWS
             try
             {
                 int oldScore = 0;
-                GetRecordAsync(modeAndLevel,(record)=>  oldScore=record.Score); //データベース上の現在の最高スコアを探し
+                PlayerScoreRecord playerScoreRecord = await GetRecordAsync(modeAndLevel);
+                oldScore = playerScoreRecord.Score;
                 //新しいスコアが既存のスコアを上回っていたら、スコアを更新する。
                 if (newScore > oldScore)
                 {
@@ -96,14 +91,16 @@ namespace AWS
 
         //引数で指定されたモードに対するrecordをDynamoDBから非同期で取得する。(Task型で戻す)
         //SaveScoreAsyncメソッドによってスコア更新の際に呼び出される。
-        public void GetRecordAsync(string modeAndLevel, Action<PlayerScoreRecord> callback)
+        public Task<PlayerScoreRecord> GetRecordAsync(string modeAndLevel)
         {
+            var tcs = new TaskCompletionSource<PlayerScoreRecord>();
+
             try
             {
                 Debug.Log($"{modeAndLevel} {playerID}");
-                var singleQuery = GetSingleScoreQuery(modeAndLevel, playerID);
+                var query = GetScoreQuery(modeAndLevel, playerID);
                 //設定したクエリ(queryRequest)を非同期で実行、結果がresponseに格納される。
-                client.QueryAsync(singleQuery, response =>
+                client.QueryAsync(query, response =>
                 {
                     //エラーがあればエラー内容を表示
                     if (response.Exception != null)
@@ -113,13 +110,6 @@ namespace AWS
                     }
 
                     var result = response.Response;//クエリの結果をresultに格納
-                    if (result.Items == null) Debug.Log("null");
-                    foreach (var item in result.Items)
-                    {
-                        var itemDetails = item.Select(kv => $"{kv.Key}: {kv.Value.S ?? "null"}").ToArray();
-                        Debug.Log($"Item: {String.Join(", ", itemDetails)}");
-                    }
-
                     PlayerScoreRecord record;
 
                     //更新
@@ -132,7 +122,6 @@ namespace AWS
                             PlayerID = result.Items[0]["PlayerID"].S,
                             Name = result.Items[0]["Name"].S,
                         };
-                        if (result.Items.Count > 1) Debug.LogError("単一のレコードを返すためのクエリに、複数のレコードが返ってきています。");
                     }
                     //初期化
                     //recordのScoreはSaveScoreAsyncメソッドによって新しく更新されたスコアと比較され、新しいスコアの方が大きければ正常に更新される。
@@ -167,7 +156,7 @@ namespace AWS
 
                         Debug.LogError("レコード数が異常値です");
                     }
-                    callback(record);
+                    tcs.SetResult(record);
                 });
                 
 
@@ -175,7 +164,10 @@ namespace AWS
             catch (Exception e)
             {
                 Debug.LogError(e.Message);
+                tcs.SetException(e);
             }
+
+            return tcs.Task;
         }
 
         //引数で指定されたモード・レベルに対応するレコードを削除する処理。スコアの更新の際、古いスコアを消去するために使う。
@@ -280,8 +272,8 @@ namespace AWS
             return context == null;
         }
 
-        //クエリを返すメソッド、引数でModeAndLevelとIDからスコア一意に取得する。
-        QueryRequest GetSingleScoreQuery(string modeAndLevel, string playerID)
+        //クエリを返すメソッド、引数でModeAndLevelとIDからスコア一意に取得する。スコアが更新されると、過去のレコードを上書きするので一つのrecordのみが取得されるはずである。
+        QueryRequest GetScoreQuery(string modeAndLevel, string playerID)
         {
             return new QueryRequest
             {
