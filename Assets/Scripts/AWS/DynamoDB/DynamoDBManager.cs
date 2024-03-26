@@ -173,7 +173,7 @@ namespace AWS
         //引数で指定されたモード・レベルに対応するレコードを削除する処理。スコアの更新の際、古いスコアを消去するために使う。
         public Task DeleteOldScoreAsync(string modeAndLevel, int oldScore)
         {
-            var source = new TaskCompletionSource<bool>();
+            var tcs = new TaskCompletionSource<bool>();
             try
             {
                 Debug.Log($"{oldScore}がスコアのrecordを消去します");
@@ -183,26 +183,27 @@ namespace AWS
                     if (result.Exception == null)
                     {
                         Debug.Log($"レコード削除成功！");
-                        source.SetResult(true);
+                        tcs.SetResult(true);
                     }
                     else
                     {
                         Debug.LogError($"レコード削除失敗: {result.Exception.Message}");
-                        source.SetException(result.Exception);
+                        tcs.SetException(result.Exception);
                     }
                 });
             }
             catch(Exception e)
             {
                 Debug.LogError(e.Message);
-                source.SetException(e);
+                tcs.SetException(e);
             }
-            return source.Task;
+            return tcs.Task;
         }
 
-        //引数で指定されたモードとレベルに応じてDynamoDBから非同期で取得し、結果をコールバックとして戻す。
-        public void GetTop10Scores(string modeAndLevel, Action<List<PlayerScoreRecord>> callback)
+        //引数で指定されたモードとレベルに応じてDynamoDBから非同期で取得し、結果をTaskとして返す。
+        public async Task<List<PlayerScoreRecord>> GetTop10Scores(string modeAndLevel)
         {
+            var tcs = new TaskCompletionSource<List<PlayerScoreRecord>>();
             try
             {
                 //QueryAsyncを使用する際にはクエリの情報を持つクラスQueryRequestのインスタンスが必要で、ここでクエリの細かい設定を行う。
@@ -219,7 +220,7 @@ namespace AWS
                     }
 
                     var result = response.Response;//クエリの結果をresultに格納
-                    List<PlayerScoreRecord> records = new List<PlayerScoreRecord>(); //表示するrecordのトップ１０を格納するリスト、この値をコールバックする
+                    List<PlayerScoreRecord> records = new List<PlayerScoreRecord>(); //表示するrecordのトップ１０を格納するリスト、この値をTaskで返す。
 
                     //foreach文を使用して取得したレコードを一つずつ処理する。ここではrecordsリストを生成追加している。
                     foreach (var item in result.Items)
@@ -233,13 +234,15 @@ namespace AWS
                             Name = item["Name"].S,
                         }); ;
                     }
-                    callback(records);
+                    tcs.SetResult(records);
                 });
             }
             catch (Exception e)
             {
                 Debug.LogError(e.Message);
+                tcs.SetException(e);
             }
+            return await tcs.Task;
         }
 
 
