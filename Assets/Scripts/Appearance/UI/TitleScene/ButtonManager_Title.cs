@@ -187,7 +187,6 @@ namespace UI
         //----------------現在選ばれているランキングのタブや難易度選択ボタンが単一であることを保証する---------------------
 
         //----------------ランキングの表示---------------------
-        //処理の完了を待たないため、注意
         public async void DisplayRankingHandler()
         {
             await DisplayRanking(nowRankButton_difficultyLevel, nowRankButton_gameMode, nowRankButton_localOrGlobal);
