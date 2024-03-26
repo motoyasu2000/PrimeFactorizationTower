@@ -11,7 +11,7 @@ public class TouchBlock : MonoBehaviour
     Vector3 touchPosition; //現在タッチしている位置
     Transform draggedObject = null; //現在選択しているゲームオブジェクトを格納する変数　Update内でRaycastを毎秒行っているので、
                                     //選択するゲームオブジェクトが変更されないようにドラッグ中のオブジェクトのみを取得するようにしている。
-                                    //ブロックの処理
+    //ブロックの処理
     BlockInfo blockInfo;
     Network network;
     GraphicRaycaster graphicRaycaster;
