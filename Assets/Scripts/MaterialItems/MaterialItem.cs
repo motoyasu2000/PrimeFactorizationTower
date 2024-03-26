@@ -12,6 +12,8 @@ namespace MaterialLibrary
     public interface IMaterialItem
     {
         Material Material { get; set; }
+        void SetPropertyColor<TEnum>(TEnum property, Color value) where TEnum : Enum;
+        void SetPropertyFloat<TEnum>(TEnum property, float value) where TEnum : Enum;
     }
 
     //enumを持つことを間接的に継承先のクラスに強制させるために、ジェネリックを持たせる
@@ -35,28 +37,42 @@ namespace MaterialLibrary
             set { _material = value; }
         }
 
-        //Materialをロードするための抽象メソッド。継承先で実装。
+        //Materialをロードするための抽象メソッド。継承先で実装。※ResourcesからマテリアルをロードしてそのままMaterial変数に設定するのではなく、コピーしてからMaterial変数に設定する。
         protected abstract Material LoadMaterial();
 
         //-------------------列挙型の要素からシェーダーのプロパティを操作するメソッドたち----------------------
         //float型のプロパティの操作
-        public void SetPropertyFloat(TEnum property, float value)
+        public void SetPropertyColor<TEnumProperty>(TEnumProperty property, Color value) where TEnumProperty : Enum
         {
-            SetProperty<float>(property, value, Material.SetFloat);
+            if (typeof(TEnum) == typeof(TEnumProperty))
+            {
+                SetProperty<Color>(property, value, Material.SetColor);
+            }
+            else
+            {
+                throw new InvalidOperationException("Enumの型が不一致です。");
+            }
         }
         //Color型のプロパティの操作
-        public void SetPropertyColor(TEnum property, Color value)
+        public void SetPropertyFloat<TEnumProperty>(TEnumProperty property, float value) where TEnumProperty : Enum
         {
-            SetProperty<Color>(property, value, Material.SetColor);
+            if (typeof(TEnum) == typeof(TEnumProperty))
+            {
+                SetProperty<float>(property, value, Material.SetFloat);
+            }
+            else
+            {
+                throw new InvalidOperationException("Enumの型が不一致です。");
+            }
         }
 
-        void SetProperty<TProperty>(TEnum property, TProperty value, Action<string,TProperty> action)
+        void SetProperty<TProperty>(Enum property, TProperty value, Action<string, TProperty> action)
         {
-            var propertyInfo = property.GetType().GetField(property.ToString()); //ジェネリックで受け取った列挙型の値に基づいて、その列挙型の値が定義されているフィールドのメタデータを取得している
-            var attribute = propertyInfo.GetCustomAttribute<ShaderPropertyAttribute>(); //propertyInfoからShaderPropertyAttributeの取得。見つからなければnullが返る。
+            var propertyInfo = property.GetType().GetField(property.ToString());
+            var attribute = propertyInfo.GetCustomAttribute<ShaderPropertyAttribute>();
             if (attribute != null)
             {
-                action(attribute.PropertyName, value); //第三引数で受け取ったメソッドの実行。
+                action(attribute.PropertyName, value);
             }
             else
             {

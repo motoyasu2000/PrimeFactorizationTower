@@ -24,7 +24,6 @@ public class BlockInfo : MonoBehaviour
         myCollider = GetComponent<Collider2D>();
         network = GameObject.Find("Network").GetComponent<Network>();
         SetText();
-        SetShader();
     }
 
     //クリックするとkinematicからdynamicに変化するようにする。
@@ -133,14 +132,6 @@ public class BlockInfo : MonoBehaviour
         {
             return false;
         }
-    }
-
-    private void SetShader()
-    {
-        Color myColor = GetComponent<SpriteRenderer>().color;
-        GetComponent<SpriteRenderer>().material.SetColor("_GlowColor", myColor);
-        GetComponent<SpriteRenderer>().material.SetColor("_Color", myColor);
-        //Debug.Log($"{GetComponent<SpriteRenderer>().material.GetColor("_GlowColor")}");
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
