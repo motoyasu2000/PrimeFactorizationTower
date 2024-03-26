@@ -1,4 +1,4 @@
-using MaterialLibrary;
+﻿using MaterialLibrary;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -21,7 +21,8 @@ namespace MaterialLibrary
     {
         protected override Material LoadMaterial()
         {
-            return Resources.Load<Material>("MaterialsOfItem/StripesMaterial");
+            var originalMaterial = Resources.Load<Material>("MaterialsOfItem/StripesMaterial");
+            return new Material(originalMaterial);
         }
     }
 }

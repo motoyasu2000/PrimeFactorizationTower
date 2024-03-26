@@ -9,6 +9,7 @@ public class BlockGenerator : MonoBehaviour
     GameObject primeNumberGeneratingPoint;
     GameObject blockField;
     GameObject beforeField;
+    AllBlocksManager allBlocksManager;
     SingleGenerateManager singleGenerateManager;
     TextMeshProUGUI buttonText;
     GameManager gameManager;
@@ -21,6 +22,7 @@ public class BlockGenerator : MonoBehaviour
         buttonText.text = primeNumber.ToString();
         blockField = GameObject.Find("BlockField");
         beforeField = blockField.transform.Find("BeforeField").gameObject;
+        allBlocksManager = GameObject.Find("AllBlocksManager").GetComponent<AllBlocksManager>();
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
     //ブロックを生成する関数の引数を制御する関数。
@@ -50,8 +52,7 @@ public class BlockGenerator : MonoBehaviour
     }
     GameObject GetPrimeNumberBlock(int primeNumber)
     {
-        //Debug.Log("Block" + primeNumber.ToString());
-        return (GameObject)Resources.Load("Block" + primeNumber.ToString());
+        return allBlocksManager.BlocksDict[primeNumber];
     }
 
     public void SetPrimeNumber(int newPrimeNumber)
