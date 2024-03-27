@@ -55,7 +55,7 @@ public class GameManager : MonoBehaviour
     //ターンの切り替え
     bool isDropBlockNowTurn = false;
     float allBlocksStandingStillTimer = 0; //全てのゲームオブジェクトが連続で静止している時間
-    const float changeTurnTime = 1.2f; //全てのゲームオブジェクトがどれだけの時間静止すればターンが切り替わるのか
+    const float changeTurnTime = 0.4f; //全てのゲームオブジェクトがどれだけの時間静止すればターンが切り替わるのか
     const float stillStandingScale = 0.05f; //ゲームオブジェクトの速度がどのくらいなら静止しているとみなすか
     public bool IsDropBlockNowTurn => isDropBlockNowTurn;
 
@@ -93,9 +93,6 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        //画面上部の合成数の更新
-        UpCompositeNumberSetting();
-
         //全てのブロックが地面に設置しているかのチェック
         CheckAllBlocksOnGround();
 
@@ -104,6 +101,12 @@ public class GameManager : MonoBehaviour
 
         //PrimeNumberCheckField内部の合成数の素因数分解が間違っているかのチェック、間違っていたらゲームーオーバー
         CheckFactorizationIncorrect();
+
+        //PrimeNumberCheckField内部の合成数の積が画面上部の数値と一致していたらいるかのチェック。一致していたら上の文字を消去
+        CheckFactorizationPerfect();
+
+        //画面上部に表示される合成数が消去されていたら、更新を行う
+        UpCompositeNumberSetting();
 
         //スコアを計算し、UIを更新
         CalculateScore();

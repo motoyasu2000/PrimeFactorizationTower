@@ -5,21 +5,25 @@ using Random = UnityEngine.Random;
 using Common;
 
 //左上に表示される条件を生成するためのクラス
-public class ConditionGenerator : MonoBehaviour
+public class ConditionManager : MonoBehaviour
 {
+    //キーが素数、バリューがその素数の数の辞書の生成
+    Dictionary<int, int> conditionNumberDict = new Dictionary<int, int>();
     GameModeManager gameModeManager;
-    ConditionNumberTextManager conditionNumberManager;
+    UIManager UIManager;
+
+    public Dictionary<int, int> ConditionNumberDict => conditionNumberDict;
 
     void Awake()
     {
         gameModeManager = GameModeManager.Ins;
-        conditionNumberManager = GameObject.Find("ConditonNumber").GetComponent<ConditionNumberTextManager>();
+        UIManager = GameObject.Find("UIManager").GetComponent<UIManager>();
+        GenerateCondition();
     }
 
-    //条件を生成するメソッド(難易度ごと)
-    public Dictionary<int,int> GenerateCondition()
+    //条件を生成するメソッド(難易度ごとに異なる素数プール、異なる素数の数、異なる値の範囲で提供)
+    public void GenerateCondition()
     {
-        //キーが素数、バリューがその素数の数の辞書の生成(難易度ごと)
         Dictionary<int,int> conditionNumberDict = new Dictionary<int,int>();
         switch (GameModeManager.Ins.NowDifficultyLevel)
         {
@@ -38,11 +42,9 @@ public class ConditionGenerator : MonoBehaviour
         
         //合成数の計算と表示
         int compositeNumber = Helper.CalculateCompsiteNumberForDict(conditionNumberDict);
-        conditionNumberManager.PrintConditionNumber(compositeNumber.ToString());
+        UIManager.PrintConditionNumber(compositeNumber.ToString());
 
         Debug.Log("Keys : " + string.Join(",", conditionNumberDict.Keys));
         Debug.Log("Values : " + string.Join(",", conditionNumberDict.Values));
-
-        return conditionNumberDict;
     }
 }
