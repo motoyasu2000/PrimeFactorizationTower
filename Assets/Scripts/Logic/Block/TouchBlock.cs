@@ -24,6 +24,9 @@ public class TouchBlock : MonoBehaviour
     GameObject canvas;
     EventSystem eventSystem;
 
+    //外部とのやり取り
+    GameManager gameManager;
+
     private void Start()
     {
         //初期化
@@ -36,6 +39,7 @@ public class TouchBlock : MonoBehaviour
         canvas = GameObject.Find("Canvas");
         eventSystem = FindObjectOfType<EventSystem>();
         graphicRaycaster = canvas.GetComponent<GraphicRaycaster>();
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 
     void Update()
@@ -133,6 +137,7 @@ public class TouchBlock : MonoBehaviour
         blockInfo.EnableCollider(); //ゲームオブジェクトの落下地点を視覚化する線の描画の際に一時的にコライダーを非活性化するので、ここでコライダーを復活させる。
         gameObject.transform.parent = afterField.transform;
         network.AddNode(gameObject);
+        gameManager.DropBlockProcess();
     }
 
     //AIが操作する

@@ -29,6 +29,7 @@ public class BlockGenerator : MonoBehaviour
     public void GenerateBlock()
     {
         if (gameManager.GetCompleteNumberFlag()) return; //素数が揃えられている状態であればリターン
+        if (gameManager.IsDropBlockNowTurn) return; //既に現在のターンでブロックがドロップされていたらリターン
         HundleGenerateBlock(primeNumber);
     }
 

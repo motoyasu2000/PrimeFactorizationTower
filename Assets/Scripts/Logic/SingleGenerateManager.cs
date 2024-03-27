@@ -6,9 +6,9 @@ using UnityEngine;
 public class SingleGenerateManager : MonoBehaviour
 {
     const float dropHeightAbovePeak = 3f; //積み木の最高地点から見た相対的な高さ
-    ScoreManager scoreManager;
     GameObject singleBlock;
     Vector3 defaultPoint; //初期位置
+    ScoreManager scoreManager;
     public GameObject SingleBlock => singleBlock;
     private void Awake()
     {
