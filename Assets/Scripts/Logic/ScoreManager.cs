@@ -12,7 +12,7 @@ public class ScoreManager : MonoBehaviour
 {
     float nowHeight = 0; //現在のゲームオブジェクトのブロックの高さが入る変数
     GameObject blockField;
-    GameObject afterField;
+    GameObject primeNumberCheckField;
     GameObject completedField;
     TextMeshProUGUI maxScore;
 
@@ -55,9 +55,9 @@ public class ScoreManager : MonoBehaviour
     float CalculateAllGameObjectsMaxHeight()
     {
         List<Vector3> allVertices = new List<Vector3>();
-        if (afterField != null)
+        if (primeNumberCheckField != null)
         {
-            foreach (Transform block in afterField.transform)
+            foreach (Transform block in primeNumberCheckField.transform)
             {
                 nowHeight = Mathf.Max(nowHeight, CalculateGameObjectMaxHeight(block.gameObject)); //現在見ているゲームオブジェクトの最も高い頂点とmaxの比較                                                                          //Debug.Log(block.gameObject.name);
             }
@@ -108,7 +108,7 @@ public class ScoreManager : MonoBehaviour
         //ゲームシーンにあるゲームオブジェクト名を使って変数を作っているので 現在PlayScene以外ならこの後の処理を行わない。
         if (SceneManager.GetActiveScene() != SceneManager.GetSceneByName("PlayScene")) return;
         instance.blockField = GameObject.Find("BlockField");
-        instance.afterField = blockField.transform.Find("AfterField").gameObject;
+        instance.primeNumberCheckField = blockField.transform.Find("PrimeNumberCheckField").gameObject;
         instance.completedField = blockField.transform.Find("CompletedField").gameObject;
         instance.maxScore = GameObject.Find("MaxScoreText").GetComponent<TextMeshProUGUI>();
         instance.nowHeight = 0;
