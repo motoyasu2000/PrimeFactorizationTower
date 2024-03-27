@@ -18,10 +18,7 @@ public class Network : MonoBehaviour
 
     //条件の生成
     bool nowCriteriaMetChecking = false; //条件を達成した後、生成した合成数を現在のネットワークが既に満たしているかをどうかを表す変数
-    ConditionGenerator conditionGenerator;
-    Dictionary<int, int> freezeCondition;
-    public ConditionGenerator _conditionGenerator => conditionGenerator;
-    public Dictionary<int, int> FreezeCondition => freezeCondition;
+    ConditionManager conditionGenerator;
 
     //条件達成時の処理 ※ゲームモードごとに条件達成時の処理が変わる可能性がある。
     GameModeManager gameModeManager;
@@ -35,10 +32,9 @@ public class Network : MonoBehaviour
         primeNumberPool = GameModeManager.Ins.PrimeNumberPool;
         gameModeManager = GameModeManager.Ins;
         soundManager = SoundManager.Ins;
-        conditionGenerator = transform.Find("ConditionGenerator").GetComponent<ConditionGenerator>();
+        conditionGenerator = GameObject.Find("ConditionManager").GetComponent<ConditionManager>();
         effectTextManager = GameObject.Find("EffectText").GetComponent<EffectTextManager>();
         freezeEffect = (GameObject)Resources.Load("FreezeEffect");
-        freezeCondition = _conditionGenerator.GenerateCondition();
         foreach (var value in primeNumberPool)
         {
             nodesDict.Add(value, new List<GameObject>());
@@ -204,7 +200,7 @@ public class Network : MonoBehaviour
         startExpandNetworks = new Queue<ExpandNetwork>(); //探索が完了したらもうネットワーク内に条件を満たすものが存在しないと考えられるので、キューをリセットしておく。(あるとバグが発生する)
         nowCriteriaMetChecking = true;
         CheckConditionAllNetwork();
-        freezeCondition = _conditionGenerator.GenerateCondition();
+        conditionGenerator.GenerateCondition();
     }
 
     //第二引数で指定した時間後、Freezeの文字、サウンド、エフェクトを出力し、第一引数で指定したGameObjectのリストを空中に固定する
@@ -248,7 +244,7 @@ public class Network : MonoBehaviour
         int minNodeNum = int.MaxValue; //最小個数の素数の数
 
         //条件に存在する素数を全探索し、最小個数のものを探す
-        foreach (int valueInFreezeCondition in freezeCondition.Keys)
+        foreach (int valueInFreezeCondition in conditionGenerator.ConditionNumberDict.Keys)
         {
             if(minNodeNum > nodesDict[valueInFreezeCondition].Count)
             {
@@ -259,7 +255,7 @@ public class Network : MonoBehaviour
         //最小個数の素数はすでに求まっているので、それに対してfor分を回してstartExpandNetworks
         foreach(var node in nodesDict[minNode])
         {
-            startExpandNetworks.Enqueue(new ExpandNetwork(null, node, freezeCondition));
+            startExpandNetworks.Enqueue(new ExpandNetwork(null, node, conditionGenerator.ConditionNumberDict));
         }
     }
 
@@ -297,11 +293,11 @@ public class Network : MonoBehaviour
         {
             if(currentNetwork == null)
             {
-                currentNetwork = new ExpandNetwork(null, startNode, freezeCondition);
+                currentNetwork = new ExpandNetwork(null, startNode, conditionGenerator.ConditionNumberDict);
             }
             else
             {
-                currentNetwork = new ExpandNetwork(currentNetwork, startNode, freezeCondition);
+                currentNetwork = new ExpandNetwork(currentNetwork, startNode, conditionGenerator.ConditionNumberDict);
             }
         }
         //Debug.Log(string.Join(", ",currentNetwork.myNetwork));
@@ -312,12 +308,12 @@ public class Network : MonoBehaviour
     private void ExpandAndSearch(ExpandNetwork currentNetwork)
     {
         //拡張したネットワークが条件を満たしていたら
-        if (ContainsAllRequiredNodes(currentNetwork.myNetwork, freezeCondition))
+        if (ContainsAllRequiredNodes(currentNetwork.myNetwork, conditionGenerator.ConditionNumberDict))
         {
             //条件生成時に既に条件を達成していた場合→条件を再生成して再び調査。
             if (nowCriteriaMetChecking) 
             {
-                freezeCondition = _conditionGenerator.GenerateCondition();
+                conditionGenerator.GenerateCondition();
                 nowCriteriaMetChecking = true;
                 CheckConditionAllNetwork();
                 //Debug.Log("再生成");
@@ -347,7 +343,7 @@ public class Network : MonoBehaviour
             foreach (var adjacentNode in adjacentNodes)
             {
                 if (adjacentNode.gameObject.GetComponent<BlockInfo>().enabled == false) continue; //ネットワークから切り離されてblockinfoがなくなったブロックがadjacentNodesに含まれれば、処理をスキップ
-                ExpandNetwork newNetwork = new ExpandNetwork(currentNetwork, adjacentNode, freezeCondition); //拡張
+                ExpandNetwork newNetwork = new ExpandNetwork(currentNetwork, adjacentNode, conditionGenerator.ConditionNumberDict); //拡張
 
                 //場合によっては拡張前に戻る
                 if (newNetwork.BackFlag)

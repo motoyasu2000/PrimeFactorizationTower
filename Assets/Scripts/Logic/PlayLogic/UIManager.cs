@@ -3,16 +3,15 @@ using TMPro;
 using UnityEngine;
 
 //条件を表示するテキストを管理するためのクラス
-public class ConditionNumberTextManager : MonoBehaviour
+public class UIManager : MonoBehaviour
 {
     TextMeshProUGUI conditionNumberText; //左上の条件テキスト
     private void Awake()
     {
-        conditionNumberText = GetComponent<TextMeshProUGUI>();
+        conditionNumberText = GameObject.Find("ConditonNumberText").GetComponent<TextMeshProUGUI>();
     }
     public void PrintConditionNumber(string str)
     {
-        conditionNumberText.gameObject.SetActive(true);
         conditionNumberText.text = str;
     }
 
