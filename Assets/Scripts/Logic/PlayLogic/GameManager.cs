@@ -20,25 +20,26 @@ public class GameManager : MonoBehaviour
     //スコアの管理
     int oldMaxScore = -1;
     int newScore = -1;
-    bool isGroundAll = false; //全てのブロックが地面に設置しているかをチェックする変数。falseであれば、高さを計算しない。
-    bool isGroundAll_past = false; //1フレーム前のisGroundAll
+    bool areAllBlocksGrounded = false; //全てのブロックが地面に設置しているか。スコア計算の条件やターンの切り替えの条件で使う
+    bool wereAllBlocksGroundedLastFrame = false; //1フレーム前のareAllBlocksGrounded
     ScoreManager scoreManager;
     DynamoDBManager ddbManager;
-    public bool IsGroundAll => isGroundAll;
-    public bool IsGroundAll_past => isGroundAll_past;
+    public bool AreAllBlocksGrounded => areAllBlocksGrounded;
+    public bool WereAllBlocksGroundedLastFrame => wereAllBlocksGroundedLastFrame;
     public bool IsBreakScore => (oldMaxScore < newScore); //スコアを更新したかを判定するフラグ
     public int OldMaxScore => oldMaxScore;
     public int NewScore => newScore;
 
     //画面中央の合成数の管理や、素因数分解ができているかのチェック
-    int upCompositeNumberMax = 1;
-    int nowUpCompositeNumber = 1;
     bool completeCompositeNumberFlag = false;
+    int currentUpCompositeNumber = 1;
+    int targetUpCompositeNumber = 1;
     Dictionary<int, int> upCompositeNumberDict;
     Queue<int> upCompositeNumberqueue = new Queue<int>();
     SoundManager soundManager;
 
     //ゲームオーバー処理
+    const float delayTime = 1.2f;
     int compositeNumber_GO; //ゲームオーバー時の合成数
     int primeNumber_GO; //ゲームオーバー時の素数
     bool isGameOver = false; //ゲームオーバーになったらこのフラグをtrueにし、falseの時のみゲームオーバーの処理を実行するようにすることで、ゲームオーバーの処理が1度しか呼ばれないようにする。
@@ -48,7 +49,7 @@ public class GameManager : MonoBehaviour
 
     //ブロックの親オブジェクト候補
     GameObject blockField; //下二つの様なブロックの親オブジェクトをまとめる親オブジェクト
-    GameObject afterField; //ブロックを落下させた瞬間、そのブロックは、このゲームオブジェクトの子要素となる
+    GameObject primeNumberCheckField; //ブロックを落下させた瞬間、そのブロックは、このゲームオブジェクトの子要素となる
     GameObject completedField; //afterField内のブロックの積が画面上部の合成数と一致したら、それらのブロックはこのゲームオブジェクトの子要素になる
 
     //ターンの切り替え
@@ -73,7 +74,7 @@ public class GameManager : MonoBehaviour
         nextUpCompositeNumberText = GameObject.Find("NextUpCompositeNumberText").GetComponent<TextMeshProUGUI>();
         nowScoreText = GameObject.Find("NowScoreText").GetComponent<TextMeshProUGUI>();
         blockField = GameObject.Find("BlockField");
-        afterField = blockField.transform.Find("AfterField").gameObject;
+        primeNumberCheckField = blockField.transform.Find("PrimeNumberCheckField").gameObject;
         completedField = blockField.transform.Find("CompletedField").gameObject;
         soundManager = SoundManager.Ins;
         scoreManager = ScoreManager.Ins;
@@ -92,15 +93,27 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
+        //画面上部の合成数の更新
         UpCompositeNumberSetting();
+
+        //全てのブロックが地面に設置しているかのチェック
         CheckAllBlocksOnGround();
-        CheckPrimeNumberProduct();
+
+        //PrimeNumberCheckField内部の合成数を計算
+        CalculateNowPrimeNumberProduct();
+
+        //PrimeNumberCheckField内部の合成数の素因数分解が間違っているかのチェック、間違っていたらゲームーオーバー
+        CheckFactorizationIncorrect();
+
+        //スコアを計算し、UIを更新
         CalculateScore();
+
+        //全てのブロックが静止している時間(allBlocksStandingStillTimer)を計算
         CountAllBlocksStandingStillTime();
+
+        //ターンの切り替え条件をチェックし、必要であればターンを切り替える
         CheckNextTurnChangeable();
     }
-
-
 
     //画面上部に表示される合成数や、ネクストの合成数の設定を行う
     void UpCompositeNumberSetting()
@@ -111,13 +124,13 @@ public class GameManager : MonoBehaviour
             completeCompositeNumberFlag = false; //これがtrueの間はblockが生成されないようになっているので、画面上部の合成数が更新された瞬間にfalseにしてあげる。
             upCompositeNumberDict = GenerateUpCompositeNumberDict();
             upCompositeNumberqueue.Enqueue(Helper.CalculateCompsiteNumberForDict(upCompositeNumberDict));
-            upCompositeNumberMax = upCompositeNumberqueue.Dequeue();
-            nowUpCompositeNumberText.text = upCompositeNumberMax.ToString();
+            targetUpCompositeNumber = upCompositeNumberqueue.Dequeue();
+            nowUpCompositeNumberText.text = targetUpCompositeNumber.ToString();
             nextUpCompositeNumberText.text = upCompositeNumberqueue.Peek().ToString();
         }
     }
 
-    //現在の難易度がどの様になっていたとしても、その難易度に合った合成数を生成する
+    //あらゆる難易度に合わせて、画面上部の合成数を生成する。難易度によって使われる素数プール、素数の数、合成数の最大値が異なる。
     Dictionary<int, int> GenerateUpCompositeNumberDict()
     {
         Dictionary<int, int> upCompositeNumbersDict = new Dictionary<int, int>();
@@ -147,11 +160,11 @@ public class GameManager : MonoBehaviour
     //全てのゲームオブジェクトが地面に設置しているかのチェック
     void CheckAllBlocksOnGround()
     {
-        isGroundAll_past = isGroundAll; //1フレーム前のisGroundAllの保存
-        isGroundAll = true; //初期はtrueにしておく
+        wereAllBlocksGroundedLastFrame = areAllBlocksGrounded; //1フレーム前のisGroundAllの保存
+        areAllBlocksGrounded = true; //初期はtrueにしておく
 
         //afterField、completedField内のブロックが全て地面に設置しているか　設置していなければisGroundAllがfalseとなる
-        CheckSingleFieldBlocksOnGround(afterField.transform);
+        CheckSingleFieldBlocksOnGround(primeNumberCheckField.transform);
         CheckSingleFieldBlocksOnGround(completedField.transform);
     }
 
@@ -163,43 +176,46 @@ public class GameManager : MonoBehaviour
             BlockInfo blockInfo = block.GetComponent<BlockInfo>();
             if (!blockInfo.CheckIsGround()) //一つでも地面に接地してなければ
             {
-                isGroundAll = false; //isGroundAllはfalse
+                areAllBlocksGrounded = false; //isGroundAllはfalse
             }
         }
     }
 
-    //素数ブロックの積が、画面上部の合成数の因数になっているかのチェック
-    void CheckPrimeNumberProduct()
+    //素数ブロックの積が、画面上部の合成数と一致しているかのチェック。一致していたら上の数字の消去
+    void CheckFactorizationPerfect()
     {
-        //AfterField内の合成数を計算し、素因数分解が間違っていないかのチェック　間違っていればゲームオーバー
-        CalculateNowPrimeNumberProduct();
-        if (upCompositeNumberMax % nowUpCompositeNumber != 0)
-        {
-            GameOver(true);
-        }
-
         //もしブロックの数値の積が、上部の合成数と一致していたなら
-        if (nowUpCompositeNumber == upCompositeNumberMax)
+        if (currentUpCompositeNumber == targetUpCompositeNumber)
         {
             completeCompositeNumberFlag = true;
-            RemoveUpCompositeNumber(); //上の数字の消去
             soundManager.PlayAudio(soundManager.SE_DONE); //doneの再生
+            RemoveUpCompositeNumber(); //上の数字の消去
+        }
+    }
+
+    //PrimeNumberCheckField内の合成数に応じてゲームオーバーにするかのチェックを行う。
+    void CheckFactorizationIncorrect()
+    {
+        //PrimeNumberCheckField内の素因数分解が間違っていないかのチェック　間違っていればゲームオーバー
+        if (targetUpCompositeNumber % currentUpCompositeNumber != 0)
+        {
+            GameOver(true);
         }
     }
 
     //afterField内のブロックの積を計算、nowPrimeNumberProductを更新、テキストの描画
     void CalculateNowPrimeNumberProduct()
     {
-        nowUpCompositeNumber = 1;
-        foreach (Transform block in afterField.transform) //afterField内の全てのゲームオブジェクトのチェック
+        currentUpCompositeNumber = 1;
+        foreach (Transform block in primeNumberCheckField.transform) //afterField内の全てのゲームオブジェクトのチェック
         {
             BlockInfo blockInfo = block.GetComponent<BlockInfo>();
 
-            nowUpCompositeNumber *= blockInfo.GetPrimeNumber();
+            currentUpCompositeNumber *= blockInfo.GetPrimeNumber();
             //もし、画面上部の合成数がafterfield内の素数の積で割り切れるなら、割った値を表示、割り切れなかったらEと表示
-            if (upCompositeNumberMax % nowUpCompositeNumber == 0)
+            if (targetUpCompositeNumber % currentUpCompositeNumber == 0)
             {
-                nowUpCompositeNumberText.text = (upCompositeNumberMax / nowUpCompositeNumber).ToString(); //残りの数字を計算して描画。ただしafterFieldが空になるとこの中の処理が行われなくなるので
+                nowUpCompositeNumberText.text = (targetUpCompositeNumber / currentUpCompositeNumber).ToString(); //残りの数字を計算して描画。ただしafterFieldが空になるとこの中の処理が行われなくなるので
                                                                                                            //UpCompositeNumberの更新のたびに、このテキストの値も更新してあげる必要がある。
             }
             else
@@ -218,7 +234,7 @@ public class GameManager : MonoBehaviour
         switch (gameModeManager.NowGameMode)
         {
             case GameModeManager.GameMode.PileUp:
-                if (isGroundAll)
+                if (areAllBlocksGrounded)
                 {
                     newScore = scoreManager.CalculatePileUpScore();
                     nowScoreText.text = newScore.ToString();
@@ -233,7 +249,7 @@ public class GameManager : MonoBehaviour
         //まずは、blockFieldから移動する。
         List<Transform> blocksToMove = new List<Transform>();
         //すべての子オブジェクトを一時的なリストに追加。Transformをイテレートしながらtransformを変更しないように、一旦リストに追加。
-        foreach (Transform block in afterField.transform)
+        foreach (Transform block in primeNumberCheckField.transform)
         {
             blocksToMove.Add(block);
         }
@@ -243,14 +259,14 @@ public class GameManager : MonoBehaviour
             block.SetParent(completedField.transform);
         }
         nowUpCompositeNumberText.text = "";
-        nowUpCompositeNumber = 1;
+        currentUpCompositeNumber = 1;
     }
 
     //全てのゲームオブジェクトが連続で静止した時間をカウントする
     void CountAllBlocksStandingStillTime()
     {
         //全てのゲームオブジェクトが動いておらず、地面にくっついていればTimerをカウント
-        if (CheckAllBlocksStandingStill() && isGroundAll)
+        if (CheckAllBlocksStandingStill() && areAllBlocksGrounded)
         {
             allBlocksStandingStillTimer += Time.deltaTime;
         }
@@ -263,7 +279,7 @@ public class GameManager : MonoBehaviour
     //全てのブロックがほぼ静止していればtrue
     bool CheckAllBlocksStandingStill()
     {
-        foreach(Transform child in afterField.transform)
+        foreach(Transform child in primeNumberCheckField.transform)
         {
             if (!CheckBlockStandStill(child)) return false;
         }
@@ -294,7 +310,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public async void GameOver(bool missPrimeNumberfactorization)
+    public async void GameOver(bool isFactorizationIncorrect)
     {
         //このメソッドが1度しか呼ばれないように
         if (isGameOver) return;
@@ -303,10 +319,10 @@ public class GameManager : MonoBehaviour
         Debug.Log("GameOver");
 
         //素因数分解を間違えてしまった場合、最後のゲームオーバー理由の出力の際に、元の合成数とその時選択してしまった素数の情報が必要なので、変数に入れておく。
-        if (missPrimeNumberfactorization)
+        if (isFactorizationIncorrect)
         {
-            compositeNumber_GO = upCompositeNumberMax * afterField.transform.GetChild(afterField.transform.childCount - 1).GetComponent<BlockInfo>().GetPrimeNumber() / nowUpCompositeNumber;
-            primeNumber_GO = afterField.transform.GetChild(afterField.transform.childCount - 1).GetComponent<BlockInfo>().GetPrimeNumber();
+            compositeNumber_GO = targetUpCompositeNumber * primeNumberCheckField.transform.GetChild(primeNumberCheckField.transform.childCount - 1).GetComponent<BlockInfo>().GetPrimeNumber() / currentUpCompositeNumber;
+            primeNumber_GO = primeNumberCheckField.transform.GetChild(primeNumberCheckField.transform.childCount - 1).GetComponent<BlockInfo>().GetPrimeNumber();
         }
 
         //スコアの更新とゲームオーバー時の演出、後処理の呼び出し。
@@ -318,7 +334,6 @@ public class GameManager : MonoBehaviour
         //スコアを更新していれば、データベースの更新
         if (IsBreakScore) await ddbManager.SaveScoreAsyncHandler(GameModeManager.Ins.ModeAndLevel, newScore);
 
-        const float delayTime = 1.2f;
         StartCoroutine(PostGameOver(delayTime));
     }
 

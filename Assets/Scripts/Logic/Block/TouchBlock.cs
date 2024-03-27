@@ -18,7 +18,7 @@ public class TouchBlock : MonoBehaviour
     SingleGenerateManager singleGenerateManager; //ゲームオブジェクトが単一であることを保証するためのクラス
     GameObject primeNumberGeneratingPoint; //ゲームオブジェクトを生成する場所を示すゲームオブジェクト  
     GameObject blockField;
-    GameObject afterField;
+    GameObject primeNumberCheckField;
 
     //UI部分
     GameObject canvas;
@@ -34,7 +34,7 @@ public class TouchBlock : MonoBehaviour
         primeNumberGeneratingPoint = GameObject.Find("PrimeNumberGeneratingPoint");
         singleGenerateManager = primeNumberGeneratingPoint.GetComponent<SingleGenerateManager>();
         blockField = GameObject.Find("BlockField");
-        afterField = blockField.transform.Find("AfterField").gameObject;
+        primeNumberCheckField = blockField.transform.Find("PrimeNumberCheckField").gameObject;
         network = GameObject.Find("Network").GetComponent<Network>();
         canvas = GameObject.Find("Canvas");
         eventSystem = FindObjectOfType<EventSystem>();
@@ -135,7 +135,7 @@ public class TouchBlock : MonoBehaviour
         gameObject.layer = LayerMask.NameToLayer("PrimeNumberBlock"); //レイヤーを変更することにより、初めて他のブロックと衝突するようになる。
         blockInfo.ChangeDynamic(); //重力の影響を受けるようにする。
         blockInfo.EnableCollider(); //ゲームオブジェクトの落下地点を視覚化する線の描画の際に一時的にコライダーを非活性化するので、ここでコライダーを復活させる。
-        gameObject.transform.parent = afterField.transform;
+        gameObject.transform.parent = primeNumberCheckField.transform;
         network.AddNode(gameObject);
         gameManager.DropBlockProcess();
     }
