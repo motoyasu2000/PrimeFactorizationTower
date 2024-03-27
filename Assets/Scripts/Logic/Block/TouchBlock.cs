@@ -86,6 +86,8 @@ public class TouchBlock : MonoBehaviour
         pointerEventData.position = touch.position; //スクリーン座標で指定することに注意
         List<RaycastResult> results = new List<RaycastResult>();
         graphicRaycaster.Raycast(pointerEventData, results);
+
+        //ヒットしたゲームオブジェクトにUIが含まれていたら処理を行わない。
         foreach (RaycastResult result in results)
         {
             GameObject hitGameObject = result.gameObject;

@@ -52,9 +52,11 @@ public class GameManager : MonoBehaviour
     GameObject completedField; //afterField内のブロックの積が画面上部の合成数と一致したら、それらのブロックはこのゲームオブジェクトの子要素になる
 
     //その他
+    int nowPhase = 0; //現在いくつの合成数を素因数分解し終えたか　これが増えると上に表示される合成数の値が大きくなるなどすることが可能。
     GameModeManager gameModeManager; //難易度ごとに生成する合成数が異なるので、現在の難易度の情報を持つGamemodemanagerの情報が必要
                                      //また、スコアを保存する際、どの難易度のスコアを更新するかの情報も必要なので、そこでも使う。
-    int nowPhase = 0; //現在いくつの合成数を素因数分解し終えたか　これが増えると上に表示される合成数の値が大きくなるなどすることが可能。
+
+
 
     //初期化処理
     private void Awake()
@@ -88,6 +90,7 @@ public class GameManager : MonoBehaviour
         CheckPrimeNumberProduct();
         CalculateScore();
     }
+
 
 
     //画面上部に表示される合成数や、ネクストの合成数の設定を行う
