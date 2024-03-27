@@ -316,7 +316,7 @@ public class Network : MonoBehaviour
                 conditionGenerator.GenerateCondition();
                 nowCriteriaMetChecking = true;
                 CheckConditionAllNetwork();
-                //Debug.Log("再生成");
+                Debug.Log("再生成");
                 return;
             }
             Debug.Log(string.Join(", ", currentNetwork.myNetwork));

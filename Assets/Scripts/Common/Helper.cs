@@ -76,8 +76,8 @@ namespace Common
                 AddPrimeNumberDict(ref compositeNumbersDict, randomPrimeNumber); //各素数の数を数える辞書に素数の追加
             }
 
-            Debug.Log(String.Join(",", compositeNumbersDict.Keys));
-            Debug.Log(String.Join(",", compositeNumbersDict.Values));
+            //Debug.Log(String.Join(",", compositeNumbersDict.Keys));
+            //Debug.Log(String.Join(",", compositeNumbersDict.Values));
             return compositeNumbersDict;
         }
     }

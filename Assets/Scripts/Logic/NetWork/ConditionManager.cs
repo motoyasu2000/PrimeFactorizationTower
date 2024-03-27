@@ -10,21 +10,20 @@ public class ConditionManager : MonoBehaviour
     //キーが素数、バリューがその素数の数の辞書の生成
     Dictionary<int, int> conditionNumberDict = new Dictionary<int, int>();
     GameModeManager gameModeManager;
-    UIManager UIManager;
+    UpperUIManager upperUIManager;
 
     public Dictionary<int, int> ConditionNumberDict => conditionNumberDict;
 
     void Awake()
     {
         gameModeManager = GameModeManager.Ins;
-        UIManager = GameObject.Find("UIManager").GetComponent<UIManager>();
+        upperUIManager = GameObject.Find("UpperUIManager").GetComponent<UpperUIManager>();
         GenerateCondition();
     }
 
     //条件を生成するメソッド(難易度ごとに異なる素数プール、異なる素数の数、異なる値の範囲で提供)
     public void GenerateCondition()
     {
-        Dictionary<int,int> conditionNumberDict = new Dictionary<int,int>();
         switch (GameModeManager.Ins.NowDifficultyLevel)
         {
             case GameModeManager.DifficultyLevel.Normal:
@@ -42,7 +41,7 @@ public class ConditionManager : MonoBehaviour
         
         //合成数の計算と表示
         int compositeNumber = Helper.CalculateCompsiteNumberForDict(conditionNumberDict);
-        UIManager.PrintConditionNumber(compositeNumber.ToString());
+        upperUIManager.DisplayNumber(UpperUIManager.KindOfUI.Condition, compositeNumber.ToString());
 
         Debug.Log("Keys : " + string.Join(",", conditionNumberDict.Keys));
         Debug.Log("Values : " + string.Join(",", conditionNumberDict.Values));
