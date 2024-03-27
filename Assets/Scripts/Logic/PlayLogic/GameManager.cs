@@ -51,6 +51,13 @@ public class GameManager : MonoBehaviour
     GameObject afterField; //ブロックを落下させた瞬間、そのブロックは、このゲームオブジェクトの子要素となる
     GameObject completedField; //afterField内のブロックの積が画面上部の合成数と一致したら、それらのブロックはこのゲームオブジェクトの子要素になる
 
+    //ターンの切り替え
+    bool isDropBlockNowTurn = false;
+    float allBlocksStandingStillTimer = 0; //全てのゲームオブジェクトが連続で静止している時間
+    const float changeTurnTime = 1.2f; //全てのゲームオブジェクトがどれだけの時間静止すればターンが切り替わるのか
+    const float stillStandingScale = 0.05f; //ゲームオブジェクトの速度がどのくらいなら静止しているとみなすか
+    public bool IsDropBlockNowTurn => isDropBlockNowTurn;
+
     //その他
     int nowPhase = 0; //現在いくつの合成数を素因数分解し終えたか　これが増えると上に表示される合成数の値が大きくなるなどすることが可能。
     GameModeManager gameModeManager; //難易度ごとに生成する合成数が異なるので、現在の難易度の情報を持つGamemodemanagerの情報が必要
@@ -89,6 +96,8 @@ public class GameManager : MonoBehaviour
         CheckAllBlocksOnGround();
         CheckPrimeNumberProduct();
         CalculateScore();
+        CountAllBlocksStandingStillTime();
+        CheckNextTurnChangeable();
     }
 
 
@@ -237,6 +246,54 @@ public class GameManager : MonoBehaviour
         nowUpCompositeNumber = 1;
     }
 
+    //全てのゲームオブジェクトが連続で静止した時間をカウントする
+    void CountAllBlocksStandingStillTime()
+    {
+        //全てのゲームオブジェクトが動いておらず、地面にくっついていればTimerをカウント
+        if (CheckAllBlocksStandingStill() && isGroundAll)
+        {
+            allBlocksStandingStillTimer += Time.deltaTime;
+        }
+        else
+        {
+            allBlocksStandingStillTimer = 0;
+        }
+    }
+
+    //全てのブロックがほぼ静止していればtrue
+    bool CheckAllBlocksStandingStill()
+    {
+        foreach(Transform child in afterField.transform)
+        {
+            if (!CheckBlockStandStill(child)) return false;
+        }
+        return true;
+    }
+
+    //引数で受け取ったblock(Transform型)がほぼ静止していればtrue
+    bool CheckBlockStandStill(Transform block)
+    {
+        if (block.GetComponent<Rigidbody2D>().velocity.magnitude < stillStandingScale)
+            return true;
+        else
+            return false;
+    }
+
+    //次のターンに進んでよいか判断し、進んでよければ進んで初期化
+    void CheckNextTurnChangeable()
+    {
+        //全てのゲームオブジェクトの静止時間が基準を超えており、かつ、このターン内にブロックが生成されていれば
+        if(allBlocksStandingStillTimer > changeTurnTime && isDropBlockNowTurn)
+        {
+            //ターンを切り替えて
+            TurnMangaer.NextTurn();
+
+            //初期化
+            allBlocksStandingStillTimer = 0;
+            isDropBlockNowTurn = false;
+        }
+    }
+
     public async void GameOver(bool missPrimeNumberfactorization)
     {
         //このメソッドが1度しか呼ばれないように
@@ -278,5 +335,11 @@ public class GameManager : MonoBehaviour
     public bool GetCompleteNumberFlag()
     {
         return completeCompositeNumberFlag;
+    }
+
+    //ブロックがドロップしたとき(afterFieldに送られたとき)に呼び出されるメソッド
+    public void DropBlockProcess()
+    {
+        isDropBlockNowTurn = true;
     }
 }
