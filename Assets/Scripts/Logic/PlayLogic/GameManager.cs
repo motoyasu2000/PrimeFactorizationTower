@@ -11,7 +11,6 @@ using Common;
 public class GameManager : MonoBehaviour
 {
     //UI
-    TextMeshProUGUI nowUpCompositeNumberText;
     TextMeshProUGUI nowScoreText;
     GameObject gameOverMenu;
     GameObject explainPileUp; //チュートリアル時のテキスト
@@ -31,12 +30,12 @@ public class GameManager : MonoBehaviour
     public int NewScore => newScore;
 
     //画面中央の合成数の管理や、素因数分解ができているかのチェック
-    int currentUpOriginNumber = 1;
+    int currentOriginNumber = 1;
     Dictionary<int, int> upCompositeNumberDict;
     Queue<int> upCompositeNumberqueue = new Queue<int>();
     SoundManager soundManager;
     OriginManager originManager;
-    public bool IsFactorizationComplete => currentUpOriginNumber == originManager.OriginNumber;
+    public bool IsFactorizationComplete => currentOriginNumber == originManager.OriginNumber;
 
     //ゲームオーバー処理
     const float delayTime = 1.2f;
@@ -71,7 +70,6 @@ public class GameManager : MonoBehaviour
     {
         upperUIManager = GameObject.Find("UpperUIManager").GetComponent<UpperUIManager>();
         ddbManager = GameObject.Find("DynamoDBManager").GetComponent<DynamoDBManager>();
-        nowUpCompositeNumberText = GameObject.Find("OriginNumberText").GetComponent<TextMeshProUGUI>();
         nowScoreText = GameObject.Find("NowScoreText").GetComponent<TextMeshProUGUI>();
         blockField = GameObject.Find("BlockField");
         primeNumberCheckField = blockField.transform.Find("PrimeNumberCheckField").gameObject;
@@ -170,6 +168,29 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    //primeNumberCheckField内のブロックの積を計算、currentOriginNumberの更新、テキストの描画
+    void CalculateNowPrimeNumberProduct()
+    {
+        currentOriginNumber = 1;
+        foreach (Transform block in primeNumberCheckField.transform) //afterField内の全てのゲームオブジェクトのチェック
+        {
+            BlockInfo blockInfo = block.GetComponent<BlockInfo>();
+
+            currentOriginNumber *= blockInfo.GetPrimeNumber();
+            //もし、画面上部の合成数がafterfield内の素数の積で割り切れるなら、割った値を表示、割り切れなかったらEと表示
+            if (originManager.OriginNumber % currentOriginNumber == 0)
+            {
+                upperUIManager.ChangeDisplayText(UpperUIManager.KindOfUI.Origin, (originManager.OriginNumber / currentOriginNumber).ToString());
+            }
+            else
+            {
+                upperUIManager.ChangeDisplayText(UpperUIManager.KindOfUI.Origin, "E");
+                upperUIManager.ChangeDisplayColor(UpperUIManager.KindOfUI.Origin, Color.red);
+            }
+
+        }
+    }
+
     //素数ブロックの積が、画面上部の合成数と一致しているかのチェック。一致していたら上の数字の消去
     void CheckFactorizationPerfect()
     {
@@ -185,35 +206,12 @@ public class GameManager : MonoBehaviour
     void CheckFactorizationIncorrect()
     {
         //PrimeNumberCheckField内の素因数分解が間違っていないかのチェック　間違っていればゲームオーバー
-        if (originManager.OriginNumber % currentUpOriginNumber != 0)
+        if (originManager.OriginNumber % currentOriginNumber != 0)
         {
             GameOver(true);
         }
     }
 
-    //afterField内のブロックの積を計算、nowPrimeNumberProductを更新、テキストの描画
-    void CalculateNowPrimeNumberProduct()
-    {
-        currentUpOriginNumber = 1;
-        foreach (Transform block in primeNumberCheckField.transform) //afterField内の全てのゲームオブジェクトのチェック
-        {
-            BlockInfo blockInfo = block.GetComponent<BlockInfo>();
-
-            currentUpOriginNumber *= blockInfo.GetPrimeNumber();
-            //もし、画面上部の合成数がafterfield内の素数の積で割り切れるなら、割った値を表示、割り切れなかったらEと表示
-            if (originManager.OriginNumber % currentUpOriginNumber == 0)
-            {
-                nowUpCompositeNumberText.text = (originManager.OriginNumber / currentUpOriginNumber).ToString(); //残りの数字を計算して描画。ただしafterFieldが空になるとこの中の処理が行われなくなるので
-                                                                                                           //UpCompositeNumberの更新のたびに、このテキストの値も更新してあげる必要がある。
-            }
-            else
-            {
-                nowUpCompositeNumberText.text = "E";
-                nowUpCompositeNumberText.color = Color.red;
-            }
-
-        }
-    }
 
     //各ゲームモードでのスコア計算
     void CalculateScore()
@@ -248,7 +246,7 @@ public class GameManager : MonoBehaviour
             {
                 block.SetParent(completedField.transform);
             }
-            currentUpOriginNumber = 1;
+            currentOriginNumber = 1;
         }
     }
 
@@ -311,7 +309,7 @@ public class GameManager : MonoBehaviour
         //素因数分解を間違えてしまった場合、最後のゲームオーバー理由の出力の際に、元の合成数とその時選択してしまった素数の情報が必要なので、変数に入れておく。
         if (isFactorizationIncorrect)
         {
-            compositeNumber_GO = originManager.OriginNumber * primeNumberCheckField.transform.GetChild(primeNumberCheckField.transform.childCount - 1).GetComponent<BlockInfo>().GetPrimeNumber() / currentUpOriginNumber;
+            compositeNumber_GO = originManager.OriginNumber * primeNumberCheckField.transform.GetChild(primeNumberCheckField.transform.childCount - 1).GetComponent<BlockInfo>().GetPrimeNumber() / currentOriginNumber;
             primeNumber_GO = primeNumberCheckField.transform.GetChild(primeNumberCheckField.transform.childCount - 1).GetComponent<BlockInfo>().GetPrimeNumber();
         }
 

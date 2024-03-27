@@ -41,7 +41,7 @@ public class ConditionManager : MonoBehaviour
         
         //合成数の計算と表示
         int compositeNumber = Helper.CalculateCompsiteNumberForDict(conditionNumberDict);
-        upperUIManager.DisplayNumber(UpperUIManager.KindOfUI.Condition, compositeNumber.ToString());
+        upperUIManager.ChangeDisplayText(UpperUIManager.KindOfUI.Condition, compositeNumber.ToString());
 
         Debug.Log("Keys : " + string.Join(",", conditionNumberDict.Keys));
         Debug.Log("Values : " + string.Join(",", conditionNumberDict.Values));

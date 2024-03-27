@@ -2,6 +2,7 @@ using Common;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UI;
 using UnityEngine;
 
 public class OriginManager : MonoBehaviour
@@ -16,6 +17,7 @@ public class OriginManager : MonoBehaviour
 
     GameModeManager gameModeManager;
     UpperUIManager upperUIManager;
+    
 
     public Dictionary<int, int> OriginNumberDict => originNumberDict;
 
@@ -31,7 +33,6 @@ public class OriginManager : MonoBehaviour
         if(string.IsNullOrWhiteSpace(upperUIManager.OriginNumberText.text))
         {
             GenerateOrigin();
-            Debug.Log("a");
         }
     }
 
@@ -59,9 +60,9 @@ public class OriginManager : MonoBehaviour
 
         //çáê¨êîÇÃåvéZÇ∆ï\é¶
         int compositeNumberOrigin = Helper.CalculateCompsiteNumberForDict(originNumberDict);
-        int compositeNumberNext = Helper.CalculateCompsiteNumberForDict(originNumberDict);
-        upperUIManager.DisplayNumber(UpperUIManager.KindOfUI.Origin , compositeNumberOrigin.ToString());
-        upperUIManager.DisplayNumber(UpperUIManager.KindOfUI.NextOrigin, compositeNumberNext.ToString());
+        int compositeNumberNext = Helper.CalculateCompsiteNumberForDict(originNextNumberDict);
+        upperUIManager.ChangeDisplayText(UpperUIManager.KindOfUI.Origin , compositeNumberOrigin.ToString());
+        upperUIManager.ChangeDisplayText(UpperUIManager.KindOfUI.NextOrigin, compositeNumberNext.ToString());
 
         Debug.Log("Keys : " + string.Join(",", originNumberDict.Keys));
         Debug.Log("Values : " + string.Join(",", originNumberDict.Values));
@@ -73,4 +74,7 @@ public class OriginManager : MonoBehaviour
             GenerateOrigin();
         }
     }
+
+
+
 }
