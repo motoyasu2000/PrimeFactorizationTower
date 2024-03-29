@@ -182,7 +182,7 @@ namespace UI
         }
         public void ChangeButtonColor_Unselected(Button button)
         {
-            button.GetComponent<Image>().color = GameInfo.ButtonRed;
+            button.GetComponent<Image>().color = GameInfo.ButtonGray;
         }
         //----------------現在選ばれているランキングのタブや難易度選択ボタンが単一であることを保証する---------------------
 

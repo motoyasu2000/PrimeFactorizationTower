@@ -26,7 +26,7 @@ namespace Common
             get { return groundHeight; }
         }
 
-        public static Color ButtonRed
+        public static Color ButtonGray
         {
             get { return buttonGray; }
         }
