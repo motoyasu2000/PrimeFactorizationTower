@@ -13,8 +13,8 @@ namespace MaterialLibrary
         AnotherColor,
         [ShaderProperty("_Space")]
         Space,
-        [ShaderProperty("_Timer")]
-        Timer,
+        [ShaderProperty("_Speed")]
+        Speed,
     }
 
     public class StripesMaterialItem : MaterialItem<StripesMaterialProperty>

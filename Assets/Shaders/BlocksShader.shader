@@ -6,7 +6,7 @@
         _Color ("Main Color", Color) = (1,1,1,1)
         _AnotherColor("AnotherColor", Color) = (1,1,1,1)
         _Space("Space", Float) = 0
-        _Timer("Timer", Float) = 0
+        _Speed("Speed", Float) = 10
     }
 
     SubShader
@@ -23,7 +23,7 @@
             fixed4 _Color;
             fixed4 _AnotherColor;
             Float _Space;
-            Float _Timer;
+            Float _Speed;
 
             struct appdata {
                 float4 vertex : POSITION;
@@ -44,7 +44,7 @@
 
             fixed4 frag (v2f i) : SV_Target {
                 fixed4 texColor = tex2D(_MainTex, i.uv);
-                float stripePattern = sin(i.uv.y * _Space + _Timer) * 0.5 + 0.5;
+                float stripePattern = sin(i.uv.y * _Space + _Speed * _Time.y) * 0.5 + 0.5;
                 fixed4 stripeColor = lerp(_AnotherColor, _Color, stripePattern);
                 stripeColor.a = texColor.a; //元のテクスチャの透明度を適用
                 if(texColor.a == 0) discard; //元のテクスチャで透明な部分は完全に見えないようにする
