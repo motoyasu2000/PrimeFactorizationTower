@@ -1,4 +1,5 @@
 using AWS;
+using Common;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,8 +8,6 @@ using UnityEngine.SceneManagement;
 public class GameOverManager : MonoBehaviour
 {
     const float delayTime = 1.2f;
-    int oldMaxScore = -1;
-    int newScore = -1;
     int compositeNumberAtGameOver; //ゲームオーバー時の合成数
     int blockNumberAtGameOver; //ゲームオーバーの引き金となったブロックの素数
 
@@ -22,10 +21,8 @@ public class GameOverManager : MonoBehaviour
 
     public int CompositeNumberAtGameOver => compositeNumberAtGameOver;
     public int BlockNumberAtGameOver => blockNumberAtGameOver;
-    public int OldMaxScore => oldMaxScore;
-    public int NewScore => newScore;
 
-    public bool IsBreakScore => (oldMaxScore < newScore); //スコアを更新したかを判定するフラグ
+    public bool IsBreakScore => (GameInfo.Variables.GetOldMaxScore() < GameInfo.Variables.GetNowScore()); //スコアを更新したかを判定するフラグ
 
     private void Awake()
     {
@@ -51,14 +48,14 @@ public class GameOverManager : MonoBehaviour
             compositeNumberAtGameOver = originManager.OriginNumber * blockNumberAtGameOver / CalculateBlocksCompositNumberAtGameOver(); //CalculateBlocksCompositNumberAtGameOver()にはblockNumber_GOが含まれているためblockNumber_GOをかける
         }
 
-        //スコアの更新とゲームオーバー時の演出、後処理の呼び出し。
-        oldMaxScore = ScoreManager.Ins.PileUpScores[GameModeManager.Ins.NowDifficultyLevel][0]; //ソート前に過去の最高スコアの情報を取得しておく(のちにこのゲームで最高スコアを更新したかを確認するため)
+        //ゲームオーバー時の演出とスコアの更新、後処理の呼び出し。
         bloomManager.LightUpStart();
-        ScoreManager.Ins.InsertPileUpScoreAndSort(newScore);
+        GameInfo.Variables.SetOldMaxScore(ScoreManager.Ins.PileUpScores[GameModeManager.Ins.NowDifficultyLevel][0]);  //ソート前に過去の最高スコアの情報を取得しておく(のちにこのゲームで最高スコアを更新したかを確認するため)
+        ScoreManager.Ins.InsertPileUpScoreAndSort(GameInfo.Variables.GetNowScore()) ;
         ScoreManager.Ins.SaveScoreData();
         SoundManager.Ins.FadeOutVolume();
         //スコアを更新していれば、データベースの更新
-        if (IsBreakScore) await ddbManager.SaveScoreAsyncHandler(GameModeManager.Ins.ModeAndLevel, newScore);
+        if (IsBreakScore) await ddbManager.SaveScoreAsyncHandler(GameModeManager.Ins.ModeAndLevel, GameInfo.Variables.GetNowScore());
 
         StartCoroutine(PostGameOver(delayTime));
     }

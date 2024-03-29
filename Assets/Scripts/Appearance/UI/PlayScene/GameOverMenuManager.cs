@@ -1,5 +1,6 @@
 ﻿using TMPro;
 using UnityEngine;
+using Common;
 
 namespace UI
 {
@@ -46,8 +47,8 @@ namespace UI
         //ゲームオーバー時のスコアを表示させるメソッド 最高スコアを更新したか否かで異なるスコアの表示の仕方をする
         void DisplayScoreMenu()
         {
-            oldMaxScore = gameOverManager.OldMaxScore;
-            newScore = gameOverManager.NewScore;
+            oldMaxScore = GameInfo.Variables.GetOldMaxScore();
+            newScore = GameInfo.Variables.GetNowScore();
 
             if (!gameOverManager.IsBreakScore)
             {

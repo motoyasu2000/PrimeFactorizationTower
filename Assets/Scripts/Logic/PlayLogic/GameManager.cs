@@ -16,13 +16,11 @@ public class GameManager : MonoBehaviour
     UpperUIManager upperUIManager;
 
     //スコアの管理
-    int newScore = -1;
     bool areAllBlocksGrounded = false; //全てのブロックが地面に設置しているか。スコア計算の条件やターンの切り替えの条件で使う
     bool wereAllBlocksGroundedLastFrame = false; //1フレーム前のareAllBlocksGrounded
     ScoreManager scoreManager;
     public bool AreAllBlocksGrounded => areAllBlocksGrounded;
     public bool WereAllBlocksGroundedLastFrame => wereAllBlocksGroundedLastFrame;
-    public int NewScore => newScore;
 
     //画面中央の合成数の管理や、素因数分解ができているかのチェック
     int currentBlocksCompositNumber = 1;
@@ -204,8 +202,8 @@ public class GameManager : MonoBehaviour
             case GameModeManager.GameMode.PileUp:
                 if (areAllBlocksGrounded)
                 {
-                    newScore = scoreManager.CalculatePileUpScore();
-                    nowScoreText.text = newScore.ToString();
+                    GameInfo.Variables.SetNowScore(scoreManager.CalculatePileUpScore());
+                    nowScoreText.text = GameInfo.Variables.GetNowScore().ToString();
                 }
                 break;
         }
