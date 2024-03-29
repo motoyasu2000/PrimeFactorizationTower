@@ -7,7 +7,7 @@ using Random = UnityEngine.Random;
 using AWS;
 using Common;
 
-//ゲームを管理するクラス。画面上部の合成数の計算や表示、ゲームオーバーの管理などを行う。
+//ゲームを管理するクラス。Originの生成や表示、生成されたブロックが条件を満たすかの判定、ゲームオーバーの判定、ターンの管理などなど。
 public class GameManager : MonoBehaviour
 {
     //UI
@@ -28,14 +28,13 @@ public class GameManager : MonoBehaviour
     int currentBlocksCompositNumber = 1;
     Dictionary<int, int> upCompositeNumberDict;
     Queue<int> upCompositeNumberqueue = new Queue<int>();
-    SoundManager soundManager;
     OriginManager originManager;
     public bool IsFactorizationComplete => currentBlocksCompositNumber == originManager.OriginNumber;
 
     //ブロックの親オブジェクト候補
     GameObject blockField; //下二つの様なブロックの親オブジェクトをまとめる親オブジェクト
     GameObject primeNumberCheckField; //ブロックを落下させた瞬間、そのブロックは、このゲームオブジェクトの子要素となる
-    GameObject completedField; //afterField内のブロックの積が画面上部の合成数と一致したら、それらのブロックはこのゲームオブジェクトの子要素になる
+    GameObject completedField; //primeNumberCheckField内のブロックの積が画面上部の合成数と一致したら、それらのブロックはこのゲームオブジェクトの子要素になる
 
     //ターンの切り替え
     bool isDropBlockNowTurn = false;
@@ -47,7 +46,7 @@ public class GameManager : MonoBehaviour
     //その他
     int nowPhase = 0; //現在いくつの合成数を素因数分解し終えたか　これが増えると上に表示される合成数の値が大きくなるなどすることが可能。
     GameOverManager gameOverManager;
-    GameModeManager gameModeManager; //難易度ごとに生成する合成数が異なるので、現在の難易度の情報を持つGamemodemanagerの情報が必要
+    GameModeManager gameModeManager; //難易度ごとに生成する合成数が異なるので、現在の難易度の情報を持つGameModeManagerの情報が必要
                                      //また、スコアを保存する際、どの難易度のスコアを更新するかの情報も必要なので、そこでも使う。
 
 
@@ -60,7 +59,6 @@ public class GameManager : MonoBehaviour
         blockField = GameObject.Find("BlockField");
         primeNumberCheckField = blockField.transform.Find("PrimeNumberCheckField").gameObject;
         completedField = blockField.transform.Find("CompletedField").gameObject;
-        soundManager = SoundManager.Ins;
         scoreManager = ScoreManager.Ins;
         gameModeManager = GameModeManager.Ins;
         originManager = GameObject.Find("OriginManager").GetComponent<OriginManager>();
@@ -135,7 +133,7 @@ public class GameManager : MonoBehaviour
         wereAllBlocksGroundedLastFrame = areAllBlocksGrounded; //1フレーム前のisGroundAllの保存
         areAllBlocksGrounded = true; //初期はtrueにしておく
 
-        //afterField、completedField内のブロックが全て地面に設置しているか　設置していなければisGroundAllがfalseとなる
+        //primeNumberCheckField、completedField内のブロックが全て地面に設置しているか　設置していなければisGroundAllがfalseとなる
         CheckSingleFieldBlocksOnGround(primeNumberCheckField.transform);
         CheckSingleFieldBlocksOnGround(completedField.transform);
     }
@@ -157,12 +155,12 @@ public class GameManager : MonoBehaviour
     void CalculateNowPrimeNumberProduct()
     {
         currentBlocksCompositNumber = 1;
-        foreach (Transform block in primeNumberCheckField.transform) //afterField内の全てのゲームオブジェクトのチェック
+        foreach (Transform block in primeNumberCheckField.transform) //primeNumberCheckField内の全てのゲームオブジェクトのチェック
         {
             BlockInfo blockInfo = block.GetComponent<BlockInfo>();
 
             currentBlocksCompositNumber *= blockInfo.GetPrimeNumber();
-            //もし、画面上部の合成数がafterfield内の素数の積で割り切れるなら、割った値を表示、割り切れなかったらEと表示
+            //もし、画面上部の合成数がprimeNumberCheckField内の素数の積で割り切れるなら、割った値を表示、割り切れなかったらEと表示
             if (originManager.OriginNumber % currentBlocksCompositNumber == 0)
             {
                 upperUIManager.ChangeDisplayText(UpperUIManager.KindOfUI.Origin, (originManager.OriginNumber / currentBlocksCompositNumber).ToString());
@@ -183,7 +181,6 @@ public class GameManager : MonoBehaviour
         if (IsFactorizationComplete)
         {
             SoundManager.Ins.PlayAudio(SoundManager.Ins.SE_DONE); //doneの再生
-            upperUIManager.RemoveUpCompositeNumber(); //上の数字の消去
         }
     }
 
@@ -283,7 +280,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    //ブロックがドロップしたとき(afterFieldに送られたとき)に呼び出されるメソッド
+    //ブロックがドロップしたとき(primeNumberCheckFieldに送られたとき)に呼び出されるメソッド
     public void DropBlockProcess()
     {
         isDropBlockNowTurn = true;
