@@ -3,16 +3,16 @@
 //ブロックが地面から落下したかの判定を行うためのクラス。
 public class GameOverField : MonoBehaviour
 {
-    GameManager gameManager;
+    GameOverManager gameOverManager;
     private void Start()
     {
-        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        gameOverManager = GameObject.Find("GameOverManager").GetComponent<GameOverManager>();
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("PrimeNumberBlock"))
         {
-            gameManager.GameOver(false);
+            gameOverManager.GameOver(false);
         }
     }
 }
