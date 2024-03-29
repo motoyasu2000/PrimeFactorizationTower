@@ -30,7 +30,7 @@ public class OriginManager : MonoBehaviour
 
     private void Update()
     {
-        if(string.IsNullOrWhiteSpace(upperUIManager.OriginNumberText.text))
+        if(upperUIManager.OriginNumberText.text == "1")
         {
             GenerateOrigin();
         }

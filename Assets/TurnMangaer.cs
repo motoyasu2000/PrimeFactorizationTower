@@ -5,7 +5,7 @@ using UnityEngine;
 public static class TurnMangaer
 {
     static int nowTurn = 0;
-    static int maxTurn = 1;
+    static int maxTurn = 0;
     static Dictionary<int, string> playerNamesDict = new Dictionary<int, string>();
 
 

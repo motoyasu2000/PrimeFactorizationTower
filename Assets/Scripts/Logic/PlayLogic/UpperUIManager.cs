@@ -22,15 +22,6 @@ public class UpperUIManager : MonoBehaviour
         originNumberText = GameObject.Find("OriginNumberText").GetComponent<TextMeshProUGUI>();
         nextOriginNumberText = GameObject.Find("NextOriginNumberText").GetComponent<TextMeshProUGUI>();
     }
-    private void Update()
-    {
-    }
-
-
-    public void RemoveUpCompositeNumber()
-    {
-        originNumberText.text = "";
-    }
 
     public void ChangeDisplayText(KindOfUI kindOfUI,string str)
     {
