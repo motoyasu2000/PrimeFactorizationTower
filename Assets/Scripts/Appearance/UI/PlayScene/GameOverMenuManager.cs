@@ -9,14 +9,14 @@ namespace UI
         int oldMaxScore;
         int newScore;
         GameModeManager gameModeManager;
-        GameManager gameManager;
+        GameOverManager gameOverManager;
         TextMeshProUGUI gameOverReason;
         GameObject nonUpdateRecord; //スコアを更新しなかった場合のレコードの表示UI
         GameObject updateRecord; //スコアを更新た場合のレコードの表示UI
         void Awake()
         {
             gameModeManager = GameModeManager.Ins;
-            gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+            gameOverManager = GameObject.Find("GameOverManager").GetComponent<GameOverManager>();
             gameOverReason = GameObject.Find("GameOverReason").GetComponent<TextMeshProUGUI>();
             //非アクティブなのでtransform.Findで取得
             nonUpdateRecord = transform.Find("Scores_NonUpdateRecord").gameObject;
@@ -33,7 +33,11 @@ namespace UI
             {
                 //ゲームモードがPileUpであるとき、素因数分解を間違えた場合は、自分の選んだ数字で合成数を割った場合どうなるのかの表示、落下してしまった場合はFellDownと表示をする
                 case GameModeManager.GameMode.PileUp:
-                    if (gameManager.PrimeNumber_GO != 0) gameOverReason.text = $"{gameManager.CompositeNumber_GO} / {gameManager.PrimeNumber_GO} = {gameManager.CompositeNumber_GO / gameManager.PrimeNumber_GO}...{gameManager.CompositeNumber_GO % gameManager.PrimeNumber_GO}";
+                    if (gameOverManager.BlockNumberAtGameOver != 0) gameOverReason.text = 
+                            $"{gameOverManager.CompositeNumberAtGameOver} " +
+                            $"/ {gameOverManager.BlockNumberAtGameOver} " +
+                            $"= {gameOverManager.CompositeNumberAtGameOver / gameOverManager.BlockNumberAtGameOver}" +
+                            $"...{gameOverManager.CompositeNumberAtGameOver % gameOverManager.BlockNumberAtGameOver}";
                     else gameOverReason.text = "Fell Down";
                     break;
             }
@@ -42,10 +46,10 @@ namespace UI
         //ゲームオーバー時のスコアを表示させるメソッド 最高スコアを更新したか否かで異なるスコアの表示の仕方をする
         void DisplayScoreMenu()
         {
-            oldMaxScore = gameManager.OldMaxScore;
-            newScore = gameManager.NewScore;
+            oldMaxScore = gameOverManager.OldMaxScore;
+            newScore = gameOverManager.NewScore;
 
-            if (!gameManager.IsBreakScore)
+            if (!gameOverManager.IsBreakScore)
             {
                 nonUpdateRecord.SetActive(true);
                 DisplayNonBreakRecord();
