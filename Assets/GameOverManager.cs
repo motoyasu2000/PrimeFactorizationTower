@@ -1,4 +1,4 @@
-using AWS;
+ï»¿using AWS;
 using Common;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,21 +8,21 @@ using UnityEngine.SceneManagement;
 public class GameOverManager : MonoBehaviour
 {
     const float delayTime = 1.2f;
-    int compositeNumberAtGameOver; //ƒQ[ƒ€ƒI[ƒo[‚Ì‡¬”
-    int blockNumberAtGameOver; //ƒQ[ƒ€ƒI[ƒo[‚Ìˆø‚«‹à‚Æ‚È‚Á‚½ƒuƒƒbƒN‚Ì‘f”
+    int compositeNumberAtGameOver; //ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼æ™‚ã®åˆæˆæ•°
+    int blockNumberAtGameOver; //ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼ã®å¼•ãé‡‘ã¨ãªã£ãŸãƒ–ãƒ­ãƒƒã‚¯ã®ç´ æ•°
 
-    bool isGameOver = false; //ƒQ[ƒ€ƒI[ƒo[‚É‚È‚Á‚½‚ç‚±‚Ìƒtƒ‰ƒO‚ğtrue‚É‚µAfalse‚Ì‚Ì‚İƒQ[ƒ€ƒI[ƒo[‚Ìˆ—‚ğÀs‚·‚é‚æ‚¤‚É‚·‚é‚±‚Æ‚ÅAƒQ[ƒ€ƒI[ƒo[‚Ìˆ—‚ª1“x‚µ‚©ŒÄ‚Î‚ê‚È‚¢‚æ‚¤‚É‚·‚éB
-    GameObject primeNumberCheckField; //ƒuƒƒbƒN‚ğ—‰º‚³‚¹‚½uŠÔA‚»‚ÌƒuƒƒbƒN‚ÍA‚±‚ÌƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚Ìq—v‘f‚Æ‚È‚é
+    bool isGameOver = false; //ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼ã«ãªã£ãŸã‚‰ã“ã®ãƒ•ãƒ©ã‚°ã‚’trueã«ã—ã€falseã®æ™‚ã®ã¿ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼ã®å‡¦ç†ã‚’å®Ÿè¡Œã™ã‚‹ã‚ˆã†ã«ã™ã‚‹ã“ã¨ã§ã€ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼ã®å‡¦ç†ãŒ1åº¦ã—ã‹å‘¼ã°ã‚Œãªã„ã‚ˆã†ã«ã™ã‚‹ã€‚
+    GameObject primeNumberCheckField; //ãƒ–ãƒ­ãƒƒã‚¯ã‚’è½ä¸‹ã•ã›ãŸç¬é–“ã€ãã®ãƒ–ãƒ­ãƒƒã‚¯ã¯ã€ã“ã®ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å­è¦ç´ ã¨ãªã‚‹
     GameObject gameOverMenu;
-    GameObject gameOverBlock; //ƒQ[ƒ€ƒI[ƒo[‚Ìˆø‚«‹à‚Æ‚È‚Á‚½ƒuƒƒbƒN
-    BloomManager bloomManager; //ƒQ[ƒ€ƒI[ƒo[‚Ì‰‰o—p
+    GameObject gameOverBlock; //ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼ã®å¼•ãé‡‘ã¨ãªã£ãŸãƒ–ãƒ­ãƒƒã‚¯
+    BloomManager bloomManager; //ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼æ™‚ã®æ¼”å‡ºç”¨
     OriginManager originManager;
     DynamoDBManager ddbManager;
 
     public int CompositeNumberAtGameOver => compositeNumberAtGameOver;
     public int BlockNumberAtGameOver => blockNumberAtGameOver;
 
-    public bool IsBreakScore => (GameInfo.Variables.GetOldMaxScore() < GameInfo.Variables.GetNowScore()); //ƒXƒRƒA‚ğXV‚µ‚½‚©‚ğ”»’è‚·‚éƒtƒ‰ƒO
+    public bool IsBreakScore => (GameInfo.Variables.GetOldMaxScore() < GameInfo.Variables.GetNowScore()); //ã‚¹ã‚³ã‚¢ã‚’æ›´æ–°ã—ãŸã‹ã‚’åˆ¤å®šã™ã‚‹ãƒ•ãƒ©ã‚°
 
     private void Awake()
     {
@@ -34,34 +34,34 @@ public class GameOverManager : MonoBehaviour
     }
     public async void GameOver(bool isFactorizationIncorrect)
     {
-        //‚±‚Ìƒƒ\ƒbƒh‚ª1“x‚µ‚©ŒÄ‚Î‚ê‚È‚¢‚æ‚¤‚É
+        //ã“ã®ãƒ¡ã‚½ãƒƒãƒ‰ãŒ1åº¦ã—ã‹å‘¼ã°ã‚Œãªã„ã‚ˆã†ã«
         if (isGameOver) return;
         else isGameOver = true;
 
         Debug.Log("GameOver");
 
-        //‘fˆö”•ª‰ğ‚ğŠÔˆá‚¦‚Ä‚µ‚Ü‚Á‚½ê‡AÅŒã‚ÌƒQ[ƒ€ƒI[ƒo[——R‚Ìo—Í‚ÌÛ‚ÉAŒ³‚Ì‡¬”‚Æ‚»‚Ì‘I‘ğ‚µ‚Ä‚µ‚Ü‚Á‚½‘f”‚Ìî•ñ‚ª•K—v‚È‚Ì‚ÅA•Ï”‚É“ü‚ê‚Ä‚¨‚­B
+        //ç´ å› æ•°åˆ†è§£ã‚’é–“é•ãˆã¦ã—ã¾ã£ãŸå ´åˆã€æœ€å¾Œã®ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼ç†ç”±ã®å‡ºåŠ›ã®éš›ã«ã€å…ƒã®åˆæˆæ•°ã¨ãã®æ™‚é¸æŠã—ã¦ã—ã¾ã£ãŸç´ æ•°ã®æƒ…å ±ãŒå¿…è¦ãªã®ã§ã€å¤‰æ•°ã«å…¥ã‚Œã¦ãŠãã€‚
         if (isFactorizationIncorrect)
         {
             gameOverBlock = primeNumberCheckField.transform.GetChild(primeNumberCheckField.transform.childCount - 1).gameObject;
             blockNumberAtGameOver = gameOverBlock.GetComponent<BlockInfo>().GetPrimeNumber();
-            compositeNumberAtGameOver = originManager.OriginNumber * blockNumberAtGameOver / CalculateBlocksCompositNumberAtGameOver(); //CalculateBlocksCompositNumberAtGameOver()‚É‚ÍblockNumber_GO‚ªŠÜ‚Ü‚ê‚Ä‚¢‚é‚½‚ßblockNumber_GO‚ğ‚©‚¯‚é
+            compositeNumberAtGameOver = originManager.OriginNumber * blockNumberAtGameOver / CalculateBlocksCompositNumberAtGameOver(); //CalculateBlocksCompositNumberAtGameOver()ã«ã¯blockNumber_GOãŒå«ã¾ã‚Œã¦ã„ã‚‹ãŸã‚blockNumber_GOã‚’ã‹ã‘ã‚‹
         }
 
-        //ƒQ[ƒ€ƒI[ƒo[‚Ì‰‰o‚ÆƒXƒRƒA‚ÌXVAŒãˆ—‚ÌŒÄ‚Ño‚µB
+        //ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼æ™‚ã®æ¼”å‡ºã¨ã‚¹ã‚³ã‚¢ã®æ›´æ–°ã€å¾Œå‡¦ç†ã®å‘¼ã³å‡ºã—ã€‚
         bloomManager.LightUpStart();
-        GameInfo.Variables.SetOldMaxScore(ScoreManager.Ins.PileUpScores[GameModeManager.Ins.NowDifficultyLevel][0]);  //ƒ\[ƒg‘O‚É‰ß‹‚ÌÅ‚ƒXƒRƒA‚Ìî•ñ‚ğæ“¾‚µ‚Ä‚¨‚­(‚Ì‚¿‚É‚±‚ÌƒQ[ƒ€‚ÅÅ‚ƒXƒRƒA‚ğXV‚µ‚½‚©‚ğŠm”F‚·‚é‚½‚ß)
+        GameInfo.Variables.SetOldMaxScore(ScoreManager.Ins.PileUpScores[GameModeManager.Ins.NowDifficultyLevel][0]);  //ã‚½ãƒ¼ãƒˆå‰ã«éå»ã®æœ€é«˜ã‚¹ã‚³ã‚¢ã®æƒ…å ±ã‚’å–å¾—ã—ã¦ãŠã(ã®ã¡ã«ã“ã®ã‚²ãƒ¼ãƒ ã§æœ€é«˜ã‚¹ã‚³ã‚¢ã‚’æ›´æ–°ã—ãŸã‹ã‚’ç¢ºèªã™ã‚‹ãŸã‚)
         ScoreManager.Ins.InsertPileUpScoreAndSort(GameInfo.Variables.GetNowScore()) ;
         ScoreManager.Ins.SaveScoreData();
         SoundManager.Ins.FadeOutVolume();
-        //ƒXƒRƒA‚ğXV‚µ‚Ä‚¢‚ê‚ÎAƒf[ƒ^ƒx[ƒX‚ÌXV
+        //ã‚¹ã‚³ã‚¢ã‚’æ›´æ–°ã—ã¦ã„ã‚Œã°ã€ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ã®æ›´æ–°
         if (IsBreakScore) await ddbManager.SaveScoreAsyncHandler(GameModeManager.Ins.ModeAndLevel, GameInfo.Variables.GetNowScore());
 
         StartCoroutine(PostGameOver(delayTime));
     }
 
 
-    //ƒQ[ƒ€ƒI[ƒo[ŒãAˆê’èŠÔŒã‚ÉƒQ[ƒ€ƒI[ƒo[ƒƒjƒ…[‚ğ•\¦‚µAbgm‚ÌƒXƒgƒbƒvBƒQ[ƒ€ƒI[ƒo[‚ÌŒãˆ—
+    //ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼å¾Œã€ä¸€å®šæ™‚é–“å¾Œã«ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚’è¡¨ç¤ºã—ã€bgmã®ã‚¹ãƒˆãƒƒãƒ—ã€‚ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼ã®å¾Œå‡¦ç†
     IEnumerator PostGameOver(float time)
     {
         yield return new WaitForSeconds(time);

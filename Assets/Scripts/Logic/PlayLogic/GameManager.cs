@@ -23,11 +23,8 @@ public class GameManager : MonoBehaviour
     public bool WereAllBlocksGroundedLastFrame => wereAllBlocksGroundedLastFrame;
 
     //画面中央の合成数の管理や、素因数分解ができているかのチェック
-    int currentBlocksCompositNumber = 1;
-    Dictionary<int, int> upCompositeNumberDict;
-    Queue<int> upCompositeNumberqueue = new Queue<int>();
     OriginManager originManager;
-    public bool IsFactorizationComplete => currentBlocksCompositNumber == originManager.OriginNumber;
+    int prePrimeNumberCheckFieldCount = -1; //primeNumberCheckFieldの子オブジェクト数の変化に応じて処理を行うため
 
     //ブロックの親オブジェクト候補
     GameObject blockField; //下二つの様なブロックの親オブジェクトをまとめる親オブジェクト
@@ -60,8 +57,6 @@ public class GameManager : MonoBehaviour
         scoreManager = ScoreManager.Ins;
         gameModeManager = GameModeManager.Ins;
         originManager = GameObject.Find("OriginManager").GetComponent<OriginManager>();
-        upCompositeNumberDict = GenerateUpCompositeNumberDict();
-        upCompositeNumberqueue.Enqueue(Helper.CalculateCompsiteNumberForDict(upCompositeNumberDict));
         explainPileUp = GameObject.Find("Canvas").transform.Find("ExplainPileUp").gameObject;
         gameOverManager = GameObject.Find("GameOverManager").GetComponent<GameOverManager>();
     }
@@ -76,13 +71,10 @@ public class GameManager : MonoBehaviour
         //全てのブロックが地面に設置しているかのチェック
         CheckAllBlocksOnGround();
 
-        //PrimeNumberCheckField内部の合成数を計算
-        CalculateNowPrimeNumberProduct();
+        //PrimeNumberCheckField内部の合成数を計算。Originの条件を満たしていなければゲームオーバー
+        CheckMatchingOrigin();
 
-        //PrimeNumberCheckField内部の合成数の素因数分解が間違っているかのチェック、間違っていたらゲームーオーバー
-        CheckFactorizationIncorrect();
-
-        //PrimeNumberCheckField内部の合成数の積が画面上部の数値と一致していたらいるかのチェック。一致していたら上の文字を消去
+        //PrimeNumberCheckField内部の合成数の積が画面上部の数値と一致していたらいるかのチェック。
         CheckFactorizationPerfect();
 
         //Originを適切に素因数分解できていれば、PrimeNumberCheckFieldのブロックをすべてCompletedFieldに送る
@@ -96,33 +88,6 @@ public class GameManager : MonoBehaviour
 
         //ターンの切り替え条件をチェックし、必要であればターンを切り替える
         CheckNextTurnChangeable();
-    }
-
-    //あらゆる難易度に合わせて、画面上部の合成数を生成する。難易度によって使われる素数プール、素数の数、合成数の最大値が異なる。
-    Dictionary<int, int> GenerateUpCompositeNumberDict()
-    {
-        Dictionary<int, int> upCompositeNumbersDict = new Dictionary<int, int>();
-
-        switch (GameModeManager.Ins.NowDifficultyLevel)
-        {
-            case GameModeManager.DifficultyLevel.Normal:
-                upCompositeNumbersDict = Helper.GenerateCompositeNumberDictCustom(gameModeManager.NormalPool, 3000, 2, 5);
-                break;
-
-            case GameModeManager.DifficultyLevel.Difficult:
-                upCompositeNumbersDict = Helper.GenerateCompositeNumberDictCustom(gameModeManager.DifficultPool, 10000, 3, 6);
-                break;
-
-            case GameModeManager.DifficultyLevel.Insane:
-                upCompositeNumbersDict = Helper.GenerateCompositeNumberDictCustom(gameModeManager.DifficultPool, 100000, 3, 7);
-                break;
-            default:
-                Debug.LogError("予想外の難易度で素数が生成されようとしました。");
-                break;
-        }
-
-        nowPhase++;
-        return upCompositeNumbersDict;
     }
 
     //全てのゲームオブジェクトが地面に設置しているかのチェック
@@ -149,49 +114,37 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    //primeNumberCheckField内のブロックの積を計算、currentOriginNumberの更新、テキストの描画
-    void CalculateNowPrimeNumberProduct()
+    //テキストの描画、場合によってはゲームオーバー primeNumberCheckFieldの子要素の数が変化したときに呼ばれる
+    void CheckMatchingOrigin()
     {
-        currentBlocksCompositNumber = 1;
-        foreach (Transform block in primeNumberCheckField.transform) //primeNumberCheckField内の全てのゲームオブジェクトのチェック
+        if (primeNumberCheckField.transform.childCount == prePrimeNumberCheckFieldCount) return;
+        if (primeNumberCheckField.transform.childCount <= 0) return;
+        Transform lastBlock = primeNumberCheckField.transform.GetChild(primeNumberCheckField.transform.childCount - 1);
+        int lastBlockNumber = lastBlock.GetComponent<BlockInfo>().GetPrimeNumber();
+        //もし、画面上部の合成数がprimeNumberCheckField内の素数の積で割り切れるなら、割った値を表示、割り切れなかったらEと表示
+        if (originManager.CurrentOriginNumberDict.ContainsKey(lastBlockNumber))
         {
-            BlockInfo blockInfo = block.GetComponent<BlockInfo>();
-
-            currentBlocksCompositNumber *= blockInfo.GetPrimeNumber();
-            //もし、画面上部の合成数がprimeNumberCheckField内の素数の積で割り切れるなら、割った値を表示、割り切れなかったらEと表示
-            if (originManager.OriginNumber % currentBlocksCompositNumber == 0)
-            {
-                upperUIManager.ChangeDisplayText(UpperUIManager.KindOfUI.Origin, (originManager.OriginNumber / currentBlocksCompositNumber).ToString());
-            }
-            else
-            {
-                upperUIManager.ChangeDisplayText(UpperUIManager.KindOfUI.Origin, "E");
-                upperUIManager.ChangeDisplayColor(UpperUIManager.KindOfUI.Origin, Color.red);
-            }
-
+            originManager.RemovePrimeCurrentOriginNumberDict(lastBlockNumber);
+            upperUIManager.ChangeDisplayText(UpperUIManager.KindOfUI.Origin, originManager.CurrentOriginNumber.ToString());
         }
+        else
+        {
+            upperUIManager.ChangeDisplayText(UpperUIManager.KindOfUI.Origin, "E");
+            upperUIManager.ChangeDisplayColor(UpperUIManager.KindOfUI.Origin, Color.red);
+            gameOverManager.GameOver(true);
+        }
+        prePrimeNumberCheckFieldCount = primeNumberCheckField.transform.childCount;
     }
 
     //素数ブロックの積が、画面上部の合成数と一致しているかのチェック。一致していたら上の数字の消去
     void CheckFactorizationPerfect()
     {
-        //もしブロックの数値の積が、上部の合成数と一致していたなら
-        if (IsFactorizationComplete)
+        //辞書の中身が全て取り出せていれば
+        if (originManager.CurrentOriginNumberDict == null || originManager.CurrentOriginNumberDict.Count == 0)
         {
             SoundManager.Ins.PlayAudio(SoundManager.Ins.SE_DONE); //doneの再生
         }
     }
-
-    //PrimeNumberCheckField内の合成数に応じてゲームオーバーにするかのチェックを行う。
-    void CheckFactorizationIncorrect()
-    {
-        //PrimeNumberCheckField内の素因数分解が間違っていないかのチェック　間違っていればゲームオーバー
-        if (originManager.OriginNumber % currentBlocksCompositNumber != 0)
-        {
-            gameOverManager.GameOver(true);
-        }
-    }
-
 
     //各ゲームモードでのスコア計算
     void CalculateScore()
@@ -212,7 +165,7 @@ public class GameManager : MonoBehaviour
     //primeNumberCheckField内のブロックを全てcompletedFieldに移動させる。
     void MoveToCompletedField()
     {
-        if (IsFactorizationComplete)
+        if (originManager.CurrentOriginNumberDict == null || originManager.CurrentOriginNumberDict.Count == 0)
         {
             //まずは、blockFieldから移動する。
             List<Transform> blocksToMove = new List<Transform>();
@@ -226,7 +179,6 @@ public class GameManager : MonoBehaviour
             {
                 block.SetParent(completedField.transform);
             }
-            currentBlocksCompositNumber = 1;
         }
     }
 

@@ -5,29 +5,23 @@ using UnityEngine;
 //落下前の単一のブロックを回転させるクラス。
 public class BlockSpiner : MonoBehaviour
 {
-    const float spinSpeed = 1000f;
-    float angleCounter = 0; //どのくらい回転したのか数える関数
-    bool isSpiningNow = false;
+    //const float spinSpeed = 1000f;
+    //float angleCounter = 0; //どのくらい回転したのか数える関数
+    //bool isSpiningNow = false;
 
     //落下前の単一のブロックを反時計回りに45度回転させる
-    public void RotateSingleBlock_45()
+    public void SpinSingleBlock_45()
     {
         //StartCoroutine(RotateSingleBlock(45));
-        RotateSingleBlock(45);
+        SpinSingleBlock(45);
     }
     //落下前の単一のブロックを反時計回りに45度回転させる
-    public void RotateSingleBlock_45_Reverse()
+    public void SpinSingleBlock_45_Reverse()
     {
         //StartCoroutine(RotateSingleBlock(-45));
-        RotateSingleBlock(-45);
+        SpinSingleBlock(-45);
     }
-    //落下前の単一のブロックを反時計回りに90度回転させる
-    public void RotateSingleBlock_90()
-    {
-        //StartCoroutine(RotateSingleBlock(90));
-        RotateSingleBlock(90);
-    }
-    void RotateSingleBlock(float angleOfRotation)
+    void SpinSingleBlock(float angleOfRotation)
     {
         GameObject singleBlock = GetComponent<SingleGenerateManager>().SingleBlock;
         if (singleBlock != null)

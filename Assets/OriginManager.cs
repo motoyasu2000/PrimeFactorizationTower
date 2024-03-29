@@ -1,4 +1,4 @@
-using Common;
+ï»¿using Common;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -9,17 +9,20 @@ public class OriginManager : MonoBehaviour
 {
     bool isFirstGeneration = true;
 
-    //ƒL[‚ª‘f”AƒoƒŠƒ…[‚ª‚»‚Ì‘f”‚Ì”‚Ì«‘‚Ì¶¬
-    Dictionary<int, int> originNumberDict = new Dictionary<int, int>();
+    //ã‚­ãƒ¼ãŒç´ æ•°ã€ãƒãƒªãƒ¥ãƒ¼ãŒãã®ç´ æ•°ã®æ•°ã®è¾æ›¸ã®ç”Ÿæˆ
+    Dictionary<int, int> startOriginNumberDict = new Dictionary<int, int>();
+    Dictionary<int, int> currentOriginNumberDict = new Dictionary<int, int>();
     Dictionary<int, int> originNextNumberDict = new Dictionary<int, int>();
-    public int OriginNumber => Helper.CalculateCompsiteNumberForDict(originNumberDict);
-    public int OriginNextNumber => Helper.CalculateCompsiteNumberForDict(originNumberDict);
+    public Dictionary<int, int> StartoriginNumberDict => startOriginNumberDict;
+    public Dictionary<int,int> CurrentOriginNumberDict => currentOriginNumberDict;
+    public Dictionary<int, int> OriginNextNumberDict => originNextNumberDict;
+    public int OriginNumber => Helper.CalculateCompsiteNumberForDict(startOriginNumberDict);
+    public int CurrentOriginNumber => Helper.CalculateCompsiteNumberForDict(currentOriginNumberDict);
+    public int OriginNextNumber => Helper.CalculateCompsiteNumberForDict(startOriginNumberDict);
 
     GameModeManager gameModeManager;
     UpperUIManager upperUIManager;
-    
 
-    public Dictionary<int, int> OriginNumberDict => originNumberDict;
 
     void Awake()
     {
@@ -36,13 +39,14 @@ public class OriginManager : MonoBehaviour
         }
     }
 
-    //ğŒ‚ğ¶¬‚·‚éƒƒ\ƒbƒh(“ïˆÕ“x‚²‚Æ‚ÉˆÙ‚È‚é‘f”ƒv[ƒ‹AˆÙ‚È‚é‘f”‚Ì”AˆÙ‚È‚é’l‚Ì”ÍˆÍ‚Å’ñ‹Ÿ)
+    //æ¡ä»¶ã‚’ç”Ÿæˆã™ã‚‹ãƒ¡ã‚½ãƒƒãƒ‰(é›£æ˜“åº¦ã”ã¨ã«ç•°ãªã‚‹ç´ æ•°ãƒ—ãƒ¼ãƒ«ã€ç•°ãªã‚‹ç´ æ•°ã®æ•°ã€ç•°ãªã‚‹å€¤ã®ç¯„å›²ã§æä¾›)
     public void GenerateOrigin()
     {
-        //nextOrigin‚ğorigin‚É“ü‚ê‚Ä
-        originNumberDict = new Dictionary<int, int>(originNextNumberDict);
+        //nextOriginã‚’originã«å…¥ã‚Œã¦
+        startOriginNumberDict = new Dictionary<int, int>(originNextNumberDict);
+        currentOriginNumberDict = new Dictionary<int, int>(originNextNumberDict);
 
-        //nextOrigin‚ÌXV
+        //nextOriginã®æ›´æ–°
         switch (GameModeManager.Ins.NowDifficultyLevel)
         {
             case GameModeManager.DifficultyLevel.Normal:
@@ -58,16 +62,14 @@ public class OriginManager : MonoBehaviour
                 break;
         }
 
-        //‡¬”‚ÌŒvZ‚Æ•\¦
-        int compositeNumberOrigin = Helper.CalculateCompsiteNumberForDict(originNumberDict);
-        int compositeNumberNext = Helper.CalculateCompsiteNumberForDict(originNextNumberDict);
-        upperUIManager.ChangeDisplayText(UpperUIManager.KindOfUI.Origin , compositeNumberOrigin.ToString());
-        upperUIManager.ChangeDisplayText(UpperUIManager.KindOfUI.NextOrigin, compositeNumberNext.ToString());
+        //åˆæˆæ•°ã®è¨ˆç®—ã¨è¡¨ç¤º
+        upperUIManager.ChangeDisplayText(UpperUIManager.KindOfUI.Origin , OriginNumber.ToString());
+        upperUIManager.ChangeDisplayText(UpperUIManager.KindOfUI.NextOrigin, OriginNextNumber.ToString());
 
-        Debug.Log("Keys : " + string.Join(",", originNumberDict.Keys));
-        Debug.Log("Values : " + string.Join(",", originNumberDict.Values));
+        Debug.Log("Keys : " + string.Join(",", startOriginNumberDict.Keys));
+        Debug.Log("Values : " + string.Join(",", startOriginNumberDict.Values));
 
-        //Å‰‚¾‚¯2‰ñÀs‚·‚é‚±‚Æ‚ÅAorigin‚ànext‚à—¼•û‰Šú‰»‚·‚é
+        //æœ€åˆã ã‘2å›å®Ÿè¡Œã™ã‚‹ã“ã¨ã§ã€originã‚‚nextã‚‚ä¸¡æ–¹åˆæœŸåŒ–ã™ã‚‹
         if (isFirstGeneration)
         {
             isFirstGeneration = false;
@@ -75,6 +77,19 @@ public class OriginManager : MonoBehaviour
         }
     }
 
-
-
+    public void RemovePrimeCurrentOriginNumberDict(int primeNumber)
+    {
+        if (currentOriginNumberDict.ContainsKey(primeNumber))
+        {
+            currentOriginNumberDict[primeNumber]--;
+            if (currentOriginNumberDict[primeNumber] == 0)
+            {
+                currentOriginNumberDict.Remove(primeNumber);
+            }
+        }
+        else
+        {
+            Debug.LogError("å­˜åœ¨ã—ãªã„ã‚­ãƒ¼ã‚’é¸æŠã—ã¦ã„ã¾ã™ã€‚");
+        }
+    }
 }
