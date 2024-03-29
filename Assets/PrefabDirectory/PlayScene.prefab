@@ -4952,7 +4952,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 6139945076743420199}
         m_TargetAssemblyTypeName: BlockSpiner, Assembly-CSharp
-        m_MethodName: RotateSingleBlock_45_Reverse
+        m_MethodName: SpinSingleBlock_45_Reverse
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -12499,7 +12499,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 6139945076743420199}
         m_TargetAssemblyTypeName: BlockSpiner, Assembly-CSharp
-        m_MethodName: RotateSingleBlock_45
+        m_MethodName: SpinSingleBlock_45
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
