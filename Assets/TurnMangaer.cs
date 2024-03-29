@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,13 +11,13 @@ public static class TurnMangaer
 
     public static void SetNumberOfPlayer(int numberOfPleyer)
     {
-        if (numberOfPleyer <= 0) Debug.LogError("ƒvƒŒƒCƒ„[‚Í1lˆÈã•K—v‚Å‚·");
+        if (numberOfPleyer <= 0) Debug.LogError("ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã¯1äººä»¥ä¸Šå¿…è¦ã§ã™");
         maxTurn = numberOfPleyer - 1;
     }
 
     public static void SetPlayerNames(List<string> playerNames)
     {
-        playerNamesDict = new Dictionary<int, string>(); //‰Šú‰»
+        playerNamesDict = new Dictionary<int, string>(); //åˆæœŸåŒ–
         for(int i=0; i<maxTurn; i++)
         {
             playerNamesDict[i] = playerNames[i];
@@ -36,8 +36,8 @@ public static class TurnMangaer
         }
         else
         {
-            Debug.LogError("turn”‚ªˆÙí’l‚É‚È‚è‚Ü‚µ‚½B");
-            Debug.LogError($"Œ»İ‚Ìƒ^[ƒ“”{nowTurn} ãŒÀƒ^[ƒ“”{maxTurn}");
+            Debug.LogError("turnæ•°ãŒç•°å¸¸å€¤ã«ãªã‚Šã¾ã—ãŸã€‚");
+            Debug.LogError($"ç¾åœ¨ã®ã‚¿ãƒ¼ãƒ³æ•°{nowTurn} ä¸Šé™ã‚¿ãƒ¼ãƒ³æ•°{maxTurn}");
             nowTurn = 0;
         }
         Debug.Log(GetNowTurn());
