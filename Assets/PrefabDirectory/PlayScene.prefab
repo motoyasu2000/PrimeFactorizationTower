@@ -3759,7 +3759,7 @@ GameObject:
   - component: {fileID: 2429965152103512964}
   - component: {fileID: 1837806875868366857}
   m_Layer: 5
-  m_Name: ButtonArea
+  m_Name: BlockGanerateButtonArea
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13916,7 +13916,7 @@ GameObject:
   - component: {fileID: 286464159460671990}
   - component: {fileID: 6732617011343062026}
   m_Layer: 5
-  m_Name: RotationArea
+  m_Name: RotationButtonArea
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

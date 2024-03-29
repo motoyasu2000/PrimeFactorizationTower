@@ -15,7 +15,7 @@ namespace UI
         GameModeManager gameModeManager;
         void Awake()
         {
-            buttonArea = GameObject.Find("ButtonArea");
+            buttonArea = GameObject.Find("BlockGanerateButtonArea");
             buttonPrefab = Resources.Load("ButtonPrefab") as GameObject;
             gameModeManager = GameModeManager.Ins;
             int[] myPrimeNumberPool = gameModeManager.GetGameModeMatchDifficultyLevel();
