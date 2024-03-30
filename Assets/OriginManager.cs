@@ -18,7 +18,7 @@ public class OriginManager : MonoBehaviour
     public Dictionary<int, int> OriginNextNumberDict => originNextNumberDict;
     public int OriginNumber => Helper.CalculateCompsiteNumberForDict(startOriginNumberDict);
     public int CurrentOriginNumber => Helper.CalculateCompsiteNumberForDict(currentOriginNumberDict);
-    public int OriginNextNumber => Helper.CalculateCompsiteNumberForDict(startOriginNumberDict);
+    public int OriginNextNumber => Helper.CalculateCompsiteNumberForDict(originNextNumberDict);
 
     GameModeManager gameModeManager;
     UpperUIManager upperUIManager;

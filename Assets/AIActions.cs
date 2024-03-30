@@ -13,8 +13,6 @@ public class AIActions : MonoBehaviour
         beforeField = GameObject.Find("BeforeField");
     }
 
-
-
     public void MoveBlockXAndRelease(float x)
     {
         touchBlock = beforeField.GetComponent<TouchBlock>();
