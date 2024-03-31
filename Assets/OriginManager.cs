@@ -66,8 +66,8 @@ public class OriginManager : MonoBehaviour
         upperUIManager.ChangeDisplayText(UpperUIManager.KindOfUI.Origin , OriginNumber.ToString());
         upperUIManager.ChangeDisplayText(UpperUIManager.KindOfUI.NextOrigin, OriginNextNumber.ToString());
 
-        Debug.Log("Keys : " + string.Join(",", startOriginNumberDict.Keys));
-        Debug.Log("Values : " + string.Join(",", startOriginNumberDict.Values));
+        //Debug.Log("Keys : " + string.Join(",", startOriginNumberDict.Keys));
+        //Debug.Log("Values : " + string.Join(",", startOriginNumberDict.Values));
 
         //最初だけ2回実行することで、originもnextも両方初期化する
         if (isFirstGeneration)

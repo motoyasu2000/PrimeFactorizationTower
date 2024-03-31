@@ -21,9 +21,8 @@ public class GroundGenerator : MonoBehaviour
             float randomSpinAngle = Random.Range(-20f, 20f);
             newGround.transform.Rotate(new Vector3(0, 0, randomSpinAngle)); 
 
-            //親とタグの設定
+            //親の設定
             newGround.transform.parent = transform;
-            newGround.tag = "Ground";
         }
     }
 }
