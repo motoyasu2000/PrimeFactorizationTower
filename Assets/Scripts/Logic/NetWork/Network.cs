@@ -21,10 +21,12 @@ public class Network : MonoBehaviour
     ConditionManager conditionGenerator;
 
     //条件達成時の処理 ※ゲームモードごとに条件達成時の処理が変わる可能性がある。
+    GameObject freezeEffect;
+    [SerializeField]Material CriteriaMetMaterial;
     GameModeManager gameModeManager;
     SoundManager soundManager;
     EffectTextManager effectTextManager;
-    GameObject freezeEffect;
+
 
     private void Start()
     {
@@ -167,6 +169,15 @@ public class Network : MonoBehaviour
         ChangeColorNodes(nodes);
     }
 
+    private void SetCriteriaMetLayerAndMaterial(List<GameObject> nodes)
+    {
+        foreach(var node in nodes)
+        {
+            node.layer = LayerMask.NameToLayer("CriteriaMet");
+            node.GetComponent<SpriteRenderer>().material = CriteriaMetMaterial;
+        }
+    }
+
     //第二引数で指定した時間後、第一引数で指定したゲームオブジェクトのリストに、物理的な計算を行わなくするメソッド。空中に固定し、水色にする。
     IEnumerator FreezeBlocks(List<GameObject> nodes, float second)
     {
@@ -189,6 +200,7 @@ public class Network : MonoBehaviour
         switch (gameModeManager.NowGameMode)
         {
             case GameModeManager.GameMode.PileUp:
+                SetCriteriaMetLayerAndMaterial(nodes);
                 FreezeNodes(nodes);
                 effectTextManager.PrintEffectText("Criteria Met");
                 soundManager.PlayAudio(soundManager.VOICE_CRITERIAMAT);
