@@ -8,7 +8,7 @@
 
     SubShader
     {
-        Tags { "RenderType"="Opaque" }
+        Tags { "LightMode"="Universal2D" }
 
         Pass
         {

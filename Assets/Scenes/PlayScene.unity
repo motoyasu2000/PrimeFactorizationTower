@@ -131,6 +131,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2324725247480789587, guid: a9ca25860f060f4428a29e3693c49c64, type: 3}
+      propertyPath: CriteriaMetMaterial
+      value: 
+      objectReference: {fileID: 2100000, guid: 5be8600b203160c4c99b5f64f1d3c54f, type: 2}
+    - target: {fileID: 4555810845772659828, guid: a9ca25860f060f4428a29e3693c49c64, type: 3}
+      propertyPath: m_CullingMask.m_Bits
+      value: 3392
+      objectReference: {fileID: 0}
+    - target: {fileID: 4555810845772659828, guid: a9ca25860f060f4428a29e3693c49c64, type: 3}
+      propertyPath: m_AllowDynamicResolution
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4764170795464894718, guid: a9ca25860f060f4428a29e3693c49c64, type: 3}
+      propertyPath: m_CullingMask.m_Bits
+      value: 3479
+      objectReference: {fileID: 0}
+    - target: {fileID: 6616561248057241083, guid: a9ca25860f060f4428a29e3693c49c64, type: 3}
+      propertyPath: m_RequiresDepthTextureOption
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6616561248057241083, guid: a9ca25860f060f4428a29e3693c49c64, type: 3}
+      propertyPath: m_RequiresOpaqueTextureOption
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7166181246097463014, guid: a9ca25860f060f4428a29e3693c49c64, type: 3}
       propertyPath: m_Name
       value: PlayScene
