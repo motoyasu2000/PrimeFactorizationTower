@@ -33,7 +33,7 @@ namespace AWS
             context = new DynamoDBContext(client);
             this.client = client;
             playerID = cognitoAWSCredentials.GetCachedIdentityId();
-            Debug.Log(playerID);
+            //Debug.Log(playerID);
         }
 
          public async Task SaveScoreAsyncHandler(string modeAndLevel, int newScore)

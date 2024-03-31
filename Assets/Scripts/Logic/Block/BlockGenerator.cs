@@ -18,12 +18,15 @@ public class BlockGenerator : MonoBehaviour
     {
         primeNumberGeneratingPoint = GameObject.Find("PrimeNumberGeneratingPoint");
         singleGenerateManager = primeNumberGeneratingPoint.GetComponent<SingleGenerateManager>();
-        buttonText = transform.Find("Text").GetComponent<TextMeshProUGUI>();
-        buttonText.text = primeNumber.ToString();
         blockField = GameObject.Find("BlockField");
         beforeField = blockField.transform.Find("BeforeField").gameObject;
         allBlocksManager = GameObject.Find("AllBlocksManager").GetComponent<AllBlocksManager>();
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        if (transform.Find("Text") != null)
+        {
+            buttonText = transform.Find("Text").GetComponent<TextMeshProUGUI>();
+            buttonText.text = primeNumber.ToString();
+        }
     }
     //ブロックを生成する関数の引数を制御する関数。
     public void GenerateBlock()
@@ -49,6 +52,11 @@ public class BlockGenerator : MonoBehaviour
         IDCounter++;
 
         singleGenerateManager.SetSingleGameObject(generateObject);//生成したゲームオブジェクトの情報を、生成できるゲームオブジェクトが常に単一であるように管理するメソッドに入れる。
+    }
+
+    public void GenerateBlock_HundleAI(int primeNumber)
+    {
+        HundleGenerateBlock(primeNumber);
     }
     GameObject GetPrimeNumberBlock(int primeNumber)
     {

@@ -24,6 +24,7 @@ public class BlockInfo : MonoBehaviour
         myCollider = GetComponent<Collider2D>();
         network = GameObject.Find("Network").GetComponent<Network>();
         SetText();
+        SetShader();
     }
 
     //クリックするとkinematicからdynamicに変化するようにする。
@@ -37,6 +38,14 @@ public class BlockInfo : MonoBehaviour
     public void SetText()
     {
         primeNumberText.text = myPrimeNumber.ToString();
+    }
+
+    //シェーダーのMainColorをこのスプライトの色に変更する
+    public void SetShader()
+    {
+        SpriteRenderer renderer = GetComponent<SpriteRenderer>();
+        //if(もし初期設定であれば)
+        renderer.material.SetColor("_Color", renderer.color);
     }
 
     //自分自身の番号を設定するクラス。ブロックを生成するボタンによって指定される。

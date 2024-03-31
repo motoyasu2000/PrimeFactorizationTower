@@ -43,7 +43,7 @@ public class ConditionManager : MonoBehaviour
         int compositeNumber = Helper.CalculateCompsiteNumberForDict(conditionNumberDict);
         upperUIManager.ChangeDisplayText(UpperUIManager.KindOfUI.Condition, compositeNumber.ToString());
 
-        Debug.Log("Keys : " + string.Join(",", conditionNumberDict.Keys));
-        Debug.Log("Values : " + string.Join(",", conditionNumberDict.Values));
+        //Debug.Log("Keys : " + string.Join(",", conditionNumberDict.Keys));
+        //Debug.Log("Values : " + string.Join(",", conditionNumberDict.Values));
     }
 }

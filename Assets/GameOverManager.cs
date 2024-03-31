@@ -45,7 +45,7 @@ public class GameOverManager : MonoBehaviour
         {
             gameOverBlock = primeNumberCheckField.transform.GetChild(primeNumberCheckField.transform.childCount - 1).gameObject;
             blockNumberAtGameOver = gameOverBlock.GetComponent<BlockInfo>().GetPrimeNumber();
-            compositeNumberAtGameOver = originManager.OriginNumber * blockNumberAtGameOver / CalculateBlocksCompositNumberAtGameOver(); //CalculateBlocksCompositNumberAtGameOver()にはblockNumber_GOが含まれているためblockNumber_GOをかける
+            compositeNumberAtGameOver = originManager.OriginNumber * blockNumberAtGameOver / CalculateBlocksCompositNumberAtGameOver(); //CalculateBlocksCompositNumberAtGameOver()にはblockNumberAtGameOverが含まれているためblockNumberAtGameOverをかける
         }
 
         //ゲームオーバー時の演出とスコアの更新、後処理の呼び出し。
