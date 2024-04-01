@@ -11,9 +11,16 @@ public class PFTAI1 : Agent
     //現在の状況で選ぶべき素数のスコア。ただしゲーム側の制限で全てのキーが生成できるわけではないので、生成できる中で最もスコアの高いものを選択するロジックにする。
     Dictionary<int, float> primeNumberScores = new Dictionary<int, float>();
     AIActions actions;
+    ConditionManager conditionManager;
     public override void Initialize()
     {
         actions = transform.parent.GetComponent<AIActions>();
+        conditionManager = GameObject.Find("ConditionManager").GetComponent<ConditionManager>();
+    }
+
+    public override void CollectObservations(VectorSensor sensor)
+    {
+        sensor.AddObservation(conditionManager.ConditionNumber);
     }
 
     //actionBuffers0~8、素数の選択  actionBuffers9、落下位置の選択
@@ -36,4 +43,6 @@ public class PFTAI1 : Agent
         float blockPosX = actionBuffers.ContinuousActions[9] * 5;
         actions.MoveBlockXAndRelease(blockPosX);
     }
+
+
 }

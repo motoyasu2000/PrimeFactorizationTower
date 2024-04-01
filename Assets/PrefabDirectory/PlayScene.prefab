@@ -3144,7 +3144,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BrainParameters:
-    VectorObservationSize: 0
+    VectorObservationSize: 1
     NumStackedVectorObservations: 1
     m_ActionSpec:
       m_NumContinuousActions: 10
@@ -3153,10 +3153,10 @@ MonoBehaviour:
     VectorActionDescriptions: []
     VectorActionSpaceType: 0
     hasUpgradedBrainParametersWithActionSpec: 1
-  m_Model: {fileID: 0}
+  m_Model: {fileID: 5022602860645237092, guid: 84bf280254e00ea478b62c28bb6790c9, type: 3}
   m_InferenceDevice: 0
   m_BehaviorType: 0
-  m_BehaviorName: PFTAI_1
+  m_BehaviorName: PFTAI1
   TeamId: 0
   m_UseChildSensors: 1
   m_UseChildActuators: 1
@@ -9185,6 +9185,7 @@ GameObject:
   - component: {fileID: 4834550513698727419}
   - component: {fileID: 4555810845772659828}
   - component: {fileID: 6616561248057241083}
+  - component: {fileID: 798034735604069008}
   m_Layer: 0
   m_Name: AICamera
   m_TagString: AICamera
@@ -9302,6 +9303,18 @@ MonoBehaviour:
     mipBias: 0
     varianceClampScale: 0.9
     contrastAdaptiveSharpening: 0
+--- !u!114 &798034735604069008
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6611480842595725360}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 959b86b4f6a8c1d45b5da0c273b51450, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6699562555019141582
 GameObject:
   m_ObjectHideFlags: 0
@@ -9937,6 +9950,7 @@ Transform:
   - {fileID: 4595543289740164421}
   - {fileID: 6973837075843403383}
   - {fileID: 7004737082149439581}
+  - {fileID: 5171375504038505317}
   m_Father: {fileID: 8370085127610974085}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7166181246097463014
@@ -13528,6 +13542,53 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &8776589036239901562
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5171375504038505317}
+  - component: {fileID: 3459455716592861588}
+  m_Layer: 0
+  m_Name: TurnSetterForDebug
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5171375504038505317
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8776589036239901562}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1980718818631975185}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3459455716592861588
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8776589036239901562}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 691ad5f67287ed64d8c03681313149e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  names:
+  - ___AI___
+  - me
 --- !u!1 &8831407456440062971
 GameObject:
   m_ObjectHideFlags: 0

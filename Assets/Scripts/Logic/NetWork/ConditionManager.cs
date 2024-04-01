@@ -13,6 +13,7 @@ public class ConditionManager : MonoBehaviour
     UpperUIManager upperUIManager;
 
     public Dictionary<int, int> ConditionNumberDict => conditionNumberDict;
+    public int ConditionNumber => Helper.CalculateCompsiteNumberForDict(conditionNumberDict);
 
     void Awake()
     {
