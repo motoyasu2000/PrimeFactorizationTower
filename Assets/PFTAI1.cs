@@ -28,12 +28,12 @@ public class PFTAI1 : Agent
         //-1.0~1.0
         actions.GenerateBlock(primeNumberScores);
 
-        //-5.0~5.0
-        float blockPosX = actionBuffers.ContinuousActions[9] * 5;
-        actions.MoveBlockXAndRelease(blockPosX);
-
         //0~7 (êÆêî)
         int spin45Count = actionBuffers.DiscreteActions[0];
         actions.SpinBlock45SeveralTimes(spin45Count);
+
+        //-5.0~5.0
+        float blockPosX = actionBuffers.ContinuousActions[9] * 5;
+        actions.MoveBlockXAndRelease(blockPosX);
     }
 }
