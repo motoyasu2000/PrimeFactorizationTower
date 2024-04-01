@@ -28,6 +28,10 @@ public class BlockSpiner : MonoBehaviour
         {
             singleBlock.transform.Rotate(Vector3.forward * angleOfRotation);
         }
+        else
+        {
+            Debug.LogError($"singleblockはnullです");
+        }
     }
 
     ////引数で与えられた数値分だけ落下前の単一のブロックを反時計回りに回転させる

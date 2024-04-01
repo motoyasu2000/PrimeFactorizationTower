@@ -7,8 +7,6 @@ using System.Linq;
 //AIの行動をまとめたクラス
 public class AIActions : MonoBehaviour
 {
-    //現在の状況で選ぶべき素数のスコア。ただしゲーム側の制限で全てのキーが生成できるわけではないので、生成できる中で最もスコアの高いものを選択するロジックにする。
-    Dictionary<int, float> primeNumberScores = new Dictionary<int, float>();
     GameObject beforeField;
     OriginManager originManager;
     BlockGenerator blockGenerator;
@@ -35,15 +33,14 @@ public class AIActions : MonoBehaviour
     //引数で与えられたx座標にブロックを生成する
     public void MoveBlockXAndRelease(float x)
     {
-        touchBlock = beforeField.GetComponent<TouchBlock>();
+        touchBlock = beforeField.transform.GetChild(0).GetComponent<TouchBlock>();
+        touchBlock.Initialize();
         touchBlock.MoveBlockXAndRelease(x);
     }
 
     //最も選ぶべきブロックを生成する。
-    public void GenerateBlock()
+    public void GenerateBlock(Dictionary<int, float> primeNumberScores)
     {
-        //AIが求めた最も確率の高いキーを取得
-        CalculatePrimeNumberProbabilities();
         int highestProbKey = primeNumberScores
             .Where(kvp => originManager.CurrentOriginNumberDict.ContainsKey(kvp.Key))
             .OrderByDescending(kvp => kvp.Value)
@@ -52,7 +49,5 @@ public class AIActions : MonoBehaviour
         blockGenerator.GenerateBlock_HundleAI(highestProbKey);
     }
 
-    public void CalculatePrimeNumberProbabilities() {
-        //primeNumberProbabilitiesをAIが計算するようにする。
-    }
+
 }

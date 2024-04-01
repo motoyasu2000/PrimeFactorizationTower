@@ -27,7 +27,7 @@ public class ConditionManager : MonoBehaviour
         switch (GameModeManager.Ins.NowDifficultyLevel)
         {
             case GameModeManager.DifficultyLevel.Normal:
-                conditionNumberDict = Helper.GenerateCompositeNumberDictCustom(gameModeManager.NormalPool,int.MaxValue,1,1);
+                conditionNumberDict = Helper.GenerateCompositeNumberDictCustom(gameModeManager.NormalPool,int.MaxValue,3,3);
                 break;
 
             case GameModeManager.DifficultyLevel.Difficult:

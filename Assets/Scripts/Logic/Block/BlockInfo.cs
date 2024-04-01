@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System.Collections;
 
 //素数ブロックに関わる情報や、操作を行うクラス。素数ブロックにアタッチされている。
 public class BlockInfo : MonoBehaviour
@@ -74,8 +75,9 @@ public class BlockInfo : MonoBehaviour
         neighborEdge = null;
     }
 
-    public void EnableCollider()
+    public IEnumerator EnableCollider()
     {
+        yield return new WaitForEndOfFrame();
         myCollider.enabled = true;
     }
 

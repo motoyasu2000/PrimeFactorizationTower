@@ -7,7 +7,7 @@ public static class TurnMangaer
     static int nowTurn = 0;
     static int maxTurn = 0;
     static Dictionary<int, string> playerNamesDict = new Dictionary<int, string>();
-
+    static int totalTurn = 0;
 
     public static void SetNumberOfPlayer(int numberOfPleyer)
     {
@@ -18,14 +18,30 @@ public static class TurnMangaer
     public static void SetPlayerNames(List<string> playerNames)
     {
         playerNamesDict = new Dictionary<int, string>(); //初期化
-        for(int i=0; i<maxTurn; i++)
+        for(int i=0; i<=maxTurn; i++)
         {
             playerNamesDict[i] = playerNames[i];
+        }
+    }
+    public static string GetPlayerNames_NowTurn()
+    {
+        return playerNamesDict[nowTurn];
+    }
+    public static string GetPlayerNames_BeforeTurn()
+    {
+        if(nowTurn - 1 < 0)
+        {
+            return playerNamesDict[maxTurn];
+        }
+        else
+        {
+            return playerNamesDict[nowTurn - 1];
         }
     }
 
     public static void NextTurn()
     {
+        totalTurn++;
         if (nowTurn < maxTurn)
         {
             nowTurn++;
