@@ -29,17 +29,7 @@ public class TouchBlock : MonoBehaviour
 
     private void Start()
     {
-        //初期化
-        blockInfo = GetComponent<BlockInfo>();
-        primeNumberGeneratingPoint = GameObject.Find("PrimeNumberGeneratingPoint");
-        singleGenerateManager = primeNumberGeneratingPoint.GetComponent<SingleGenerateManager>();
-        blockField = GameObject.Find("BlockField");
-        primeNumberCheckField = blockField.transform.Find("PrimeNumberCheckField").gameObject;
-        network = GameObject.Find("Network").GetComponent<Network>();
-        canvas = GameObject.Find("Canvas");
-        eventSystem = FindObjectOfType<EventSystem>();
-        graphicRaycaster = canvas.GetComponent<GraphicRaycaster>();
-        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        Initialize();
     }
 
     void Update()
@@ -103,7 +93,6 @@ public class TouchBlock : MonoBehaviour
         if (singleGenerateManager.GetSingleGameObject() == null) return;
 
         //タッチした位置にブロックを移動する(x軸方向の移動のみ)
-        draggedObject = singleGenerateManager.GetSingleGameObject().transform;
         MoveBlockX(touchPosition.x); //ブロックx座標をタッチしている座標に
         isDragging = true;
     }
@@ -123,6 +112,7 @@ public class TouchBlock : MonoBehaviour
 
     void MoveBlockX(float newX)
     {
+        draggedObject = singleGenerateManager.GetSingleGameObject().transform;
         draggedObject.position = new Vector3(newX, primeNumberGeneratingPoint.transform.position.y, primeNumberGeneratingPoint.transform.position.z);
     }
 
@@ -134,7 +124,7 @@ public class TouchBlock : MonoBehaviour
         this.tag = "PrimeNumberBlock";
         gameObject.layer = LayerMask.NameToLayer("PrimeNumberBlock"); //レイヤーを変更することにより、初めて他のブロックと衝突するようになる。
         blockInfo.ChangeDynamic(); //重力の影響を受けるようにする。
-        blockInfo.EnableCollider(); //ゲームオブジェクトの落下地点を視覚化する線の描画の際に一時的にコライダーを非活性化するので、ここでコライダーを復活させる。
+        StartCoroutine(blockInfo.EnableCollider()); //ゲームオブジェクトの落下地点を視覚化する線の描画の際に一時的にコライダーを非活性化するので、ここでコライダーを復活させる。
         gameObject.transform.parent = primeNumberCheckField.transform;
         network.AddNode(gameObject);
         gameManager.DropBlockProcess();
@@ -145,5 +135,20 @@ public class TouchBlock : MonoBehaviour
     {
         MoveBlockX(newX);
         BlockRelease();
+    }
+
+    public void Initialize()
+    {
+        //初期化
+        blockInfo = GetComponent<BlockInfo>();
+        primeNumberGeneratingPoint = GameObject.Find("PrimeNumberGeneratingPoint");
+        singleGenerateManager = primeNumberGeneratingPoint.GetComponent<SingleGenerateManager>();
+        blockField = GameObject.Find("BlockField");
+        primeNumberCheckField = blockField.transform.Find("PrimeNumberCheckField").gameObject;
+        network = GameObject.Find("Network").GetComponent<Network>();
+        canvas = GameObject.Find("Canvas");
+        eventSystem = FindObjectOfType<EventSystem>();
+        graphicRaycaster = canvas.GetComponent<GraphicRaycaster>();
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 }

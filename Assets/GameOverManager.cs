@@ -21,6 +21,7 @@ public class GameOverManager : MonoBehaviour
 
     public int CompositeNumberAtGameOver => compositeNumberAtGameOver;
     public int BlockNumberAtGameOver => blockNumberAtGameOver;
+    public bool IsGameOver => isGameOver;  
 
     public bool IsBreakScore => (GameInfo.Variables.GetOldMaxScore() < GameInfo.Variables.GetNowScore()); //スコアを更新したかを判定するフラグ
 

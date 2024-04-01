@@ -248,7 +248,7 @@ namespace UI
             Array.Reverse(splitsPoints_y); //ランキングは上から表示させたいため、上の位置のアンカーポイントが最初の方に来るようにする。
 
             //スコアが0になるまで生成し続ける。
-            for(int i=0; scores[i] > 0; i++)
+            for(int i=0; scores[i] > 0 && i < 10; i++)
             {
                 //生成・親オブジェクトの設定・スケーリング
                 GameObject nowRankingCell = Instantiate(rankingCell);

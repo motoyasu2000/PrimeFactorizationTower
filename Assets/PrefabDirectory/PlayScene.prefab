@@ -3108,13 +3108,14 @@ GameObject:
   - component: {fileID: 6578092186317378061}
   - component: {fileID: 5396781379025045767}
   - component: {fileID: 4666518226081981467}
+  - component: {fileID: 5434025592006786471}
   m_Layer: 0
   m_Name: AI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &6215696400739801383
 Transform:
   m_ObjectHideFlags: 0
@@ -3143,7 +3144,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BrainParameters:
-    VectorObservationSize: 1
+    VectorObservationSize: 0
     NumStackedVectorObservations: 1
     m_ActionSpec:
       m_NumContinuousActions: 10
@@ -3173,7 +3174,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 282f342c2ab144bf38be65d4d0c4e07d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Camera: {fileID: 0}
+  m_Camera: {fileID: 4555810845772659828}
   m_SensorName: CameraSensor
   m_Width: 128
   m_Height: 256
@@ -3198,6 +3199,18 @@ MonoBehaviour:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
   MaxStep: 0
+--- !u!114 &5434025592006786471
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2903067034948041275}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3c54a798c058cf489051b7127bbdd4a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3112855325660779355
 GameObject:
   m_ObjectHideFlags: 0
@@ -9201,10 +9214,10 @@ Camera:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6611480842595725360}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.7283019, g: 0.7283019, b: 0.7283019, a: 0}
+  m_BackGroundColor: {r: 0.5943396, g: 0.5943396, b: 0.5943396, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -9233,7 +9246,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 1344
+    m_Bits: 3392
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 1
@@ -9258,8 +9271,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_RenderShadows: 0
-  m_RequiresDepthTextureOption: 2
-  m_RequiresOpaqueTextureOption: 2
+  m_RequiresDepthTextureOption: 0
+  m_RequiresOpaqueTextureOption: 0
   m_CameraType: 0
   m_Cameras: []
   m_RendererIndex: 1
@@ -10345,6 +10358,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e85b677aa2ab3241946197584ac195a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CriteriaMetMaterial: {fileID: 2100000, guid: 5be8600b203160c4c99b5f64f1d3c54f, type: 2}
 --- !u!1 &7671459979732825290
 GameObject:
   m_ObjectHideFlags: 0
@@ -14180,7 +14194,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2919577392562616548, guid: 55df50a43ae53b64cb662e9aa04cc9e1, type: 3}
       propertyPath: m_CullingMask.m_Bits
-      value: 1431
+      value: 3479
       objectReference: {fileID: 0}
     - target: {fileID: 7381474756950826148, guid: 55df50a43ae53b64cb662e9aa04cc9e1, type: 3}
       propertyPath: m_Name
