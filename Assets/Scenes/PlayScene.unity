@@ -157,6 +157,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4555810845772659828, guid: a9ca25860f060f4428a29e3693c49c64, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4555810845772659828, guid: a9ca25860f060f4428a29e3693c49c64, type: 3}
       propertyPath: m_CullingMask.m_Bits
       value: 3520
       objectReference: {fileID: 0}
@@ -166,16 +170,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5396781379025045767, guid: a9ca25860f060f4428a29e3693c49c64, type: 3}
       propertyPath: m_Width
-      value: 64
+      value: 128
       objectReference: {fileID: 0}
     - target: {fileID: 5396781379025045767, guid: a9ca25860f060f4428a29e3693c49c64, type: 3}
       propertyPath: m_Height
-      value: 128
+      value: 256
       objectReference: {fileID: 0}
     - target: {fileID: 6578092186317378061, guid: a9ca25860f060f4428a29e3693c49c64, type: 3}
       propertyPath: m_Model
       value: 
-      objectReference: {fileID: 5022602860645237092, guid: 194dc4d03eaac11418722d77502f92d6, type: 3}
+      objectReference: {fileID: 5022602860645237092, guid: acde37e4e6095c54d9fcede20a505c26, type: 3}
     - target: {fileID: 6578092186317378061, guid: a9ca25860f060f4428a29e3693c49c64, type: 3}
       propertyPath: m_BehaviorName
       value: PFTAI1

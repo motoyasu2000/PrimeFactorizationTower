@@ -40,6 +40,7 @@ public class BlockGenerator : MonoBehaviour
     {
         //ゲームオブジェクトの生成とその情報をもつインスタンスの取得
         GameObject generateObject = Instantiate(GetPrimeNumberBlock(primeNumber), primeNumberGeneratingPoint.transform.position, GetPrimeNumberBlock(primeNumber).transform.rotation, beforeField.transform);
+        singleGenerateManager.SetSingleGameObject(generateObject);//生成したゲームオブジェクトの情報を、生成できるゲームオブジェクトが常に単一であるように管理するメソッドに入れる。
         BlockInfo blockInfo = generateObject.GetComponent<BlockInfo>();
 
         //ブロックの持つ素数の設定とテキストの切り替え
@@ -50,8 +51,6 @@ public class BlockGenerator : MonoBehaviour
         blockInfo.SetID(IDCounter);
         generateObject.name = $"Block{primeNumber}_{IDCounter}";
         IDCounter++;
-
-        singleGenerateManager.SetSingleGameObject(generateObject);//生成したゲームオブジェクトの情報を、生成できるゲームオブジェクトが常に単一であるように管理するメソッドに入れる。
     }
 
     public void GenerateBlock_HundleAI(int primeNumber)
