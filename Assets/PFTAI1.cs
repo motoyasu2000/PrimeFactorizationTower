@@ -5,22 +5,42 @@ using Unity.MLAgents.Sensors;
 using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Policies;
 using UnityEngine;
+using Unity.Sentis;
 
 public class PFTAI1 : Agent
 {
     //現在の状況で選ぶべき素数のスコア。ただしゲーム側の制限で全てのキーが生成できるわけではないので、生成できる中で最もスコアの高いものを選択するロジックにする。
     Dictionary<int, float> primeNumberScores = new Dictionary<int, float>();
     AIActions actions;
+    OriginManager originManager;
     ConditionManager conditionManager;
     public override void Initialize()
     {
         actions = transform.parent.GetComponent<AIActions>();
+        originManager = GameObject.Find("OriginManager").GetComponent<OriginManager>();
         conditionManager = GameObject.Find("ConditionManager").GetComponent<ConditionManager>();
     }
 
     public override void CollectObservations(VectorSensor sensor)
     {
-        sensor.AddObservation(conditionManager.ConditionNumber);
+        AddObservationsOderindependent(conditionManager.ConditionNumberDict,sensor);
+        AddObservationsOderindependent(originManager.CurrentOriginNumberDict, sensor);
+    }
+
+    //ある素数に対応する場所にその素数の数を入れるようにした。
+    void AddObservationsOderindependent(Dictionary<int,int> dict, VectorSensor sensor)
+    {
+        foreach (int prime in GameModeManager.Ins.PrimeNumberPool)
+        {
+            if (dict.ContainsKey(prime))
+            {
+                sensor.AddObservation(prime);
+            }
+            else
+            {
+                sensor.AddObservation(0);
+            }
+        }
     }
 
     //actionBuffers0~8、素数の選択  actionBuffers9、落下位置の選択

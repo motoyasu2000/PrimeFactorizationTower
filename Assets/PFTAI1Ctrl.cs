@@ -7,12 +7,16 @@ using UnityEngine.SceneManagement;
 public class PFTAI1Ctrl : MonoBehaviour
 {
     bool getRewardFlag = false;
+    GameObject primeNumberCheckField;
+    GameObject completedField;
     PFTAI1 agent;
     GameManager gameManager;
     GameOverManager gameOverManager;
 
     private void Start()
     {
+        primeNumberCheckField = GameObject.Find("PrimeNumberCheckField");
+        completedField = GameObject.Find("CompletedField");
         agent = GetComponent<PFTAI1>();
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         gameOverManager = GameObject.Find("GameOverManager").GetComponent <GameOverManager>();
@@ -31,7 +35,8 @@ public class PFTAI1Ctrl : MonoBehaviour
         {
             if (!getRewardFlag)
             {
-                agent.AddReward(1.0f);
+                //Œ»İ‚ÌƒuƒƒbƒN”‚¾‚¯•ñV‚ª‚à‚ç‚¦‚é
+                agent.AddReward(CalculateTotalBlocksCount());
                 getRewardFlag = true;
             }
         }
@@ -43,5 +48,10 @@ public class PFTAI1Ctrl : MonoBehaviour
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             agent.EndEpisode();
         }
+    }
+
+    int CalculateTotalBlocksCount()
+    {
+        return primeNumberCheckField.transform.childCount + completedField.transform.childCount;
     }
 }
