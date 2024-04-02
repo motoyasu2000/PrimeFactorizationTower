@@ -36,7 +36,7 @@ public class ConditionManager : MonoBehaviour
                 break;
 
             case GameModeManager.DifficultyLevel.Insane:
-                conditionNumberDict = Helper.GenerateCompositeNumberDictCustom(gameModeManager.InsanePool, int.MaxValue, 2, 2);
+                conditionNumberDict = Helper.GenerateCompositeNumberDictCustom(gameModeManager.InsanePool, 600, 2, 3);
                 break;
         }
         
