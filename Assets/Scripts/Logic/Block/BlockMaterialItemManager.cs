@@ -7,20 +7,20 @@ using UnityEngine;
 public class BlockMaterialItemManager : MonoBehaviour
 {
     //BlockとMaterialItemのマッピング
-    private Dictionary<GameObject, IMaterialItem> blockMaterialItemDict = new Dictionary<GameObject, IMaterialItem>();
+    private Dictionary<GameObject, IEnumParametersBinder> blockMaterialItemDict = new Dictionary<GameObject, IEnumParametersBinder>();
     AllBlocksManager allBlocksManager;
 
     //本来は外からマッピングを行うし、パラメーターの設定も外から行うが、今回はテストとしてAwakeで設定してみる
     private void Awake()
     {
         allBlocksManager = GameObject.Find("AllBlocksManager").GetComponent<AllBlocksManager>();
-        IMaterialItem stripesMaterialItem = new StripesMaterialItem();
+        IEnumParametersBinder stripesMaterialItem = new StripesMaterialEnumBinder();
         stripesMaterialItem.SetPropertyColor(StripesMaterialProperty.MainColor, Color.black);
         ApplyMaterial(allBlocksManager.BlocksDict[2], stripesMaterialItem);
     }
 
     //MaterialItemをBlockに割り当てる
-    private void SetMaterialItem(GameObject block, IMaterialItem materialItem)
+    private void SetMaterialItem(GameObject block, IEnumParametersBinder materialItem)
     {
         if (blockMaterialItemDict.ContainsKey(block))
         {
@@ -30,9 +30,9 @@ public class BlockMaterialItemManager : MonoBehaviour
     }
 
     //BlockのMaterialItemを取得する
-    public IMaterialItem GetMaterialItem(GameObject block)
+    public IEnumParametersBinder GetMaterialItem(GameObject block)
     {
-        if (blockMaterialItemDict.TryGetValue(block, out IMaterialItem materialItem))
+        if (blockMaterialItemDict.TryGetValue(block, out IEnumParametersBinder materialItem))
         {
             return materialItem;
         }
@@ -44,7 +44,7 @@ public class BlockMaterialItemManager : MonoBehaviour
     }
 
     //実際にBlockにマテリアルを割り当てる。
-    public void ApplyMaterial(GameObject block, IMaterialItem materialItem)
+    public void ApplyMaterial(GameObject block, IEnumParametersBinder materialItem)
     {
         SetMaterialItem(block, materialItem);
 

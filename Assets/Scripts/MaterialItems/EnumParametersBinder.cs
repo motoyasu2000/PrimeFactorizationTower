@@ -8,16 +8,17 @@ using UnityEngine;
 //リフレクションやジェネリックや属性、Lazyパターンなど慣れていないことが多いため、メモ用のコメントが多くなっております。
 namespace MaterialLibrary
 {
-    //MaterialItemを継承したクラスのリストを作るために、より抽象的なインターフェースを定義しておく。
-    public interface IMaterialItem
+    //EnumParametersBinderを継承したクラスのリストを作るために、より抽象的なインターフェースを定義しておく。
+    public interface IEnumParametersBinder
     {
         Material Material { get; set; }
         void SetPropertyColor<TEnum>(TEnum property, Color value) where TEnum : Enum;
         void SetPropertyFloat<TEnum>(TEnum property, float value) where TEnum : Enum;
     }
 
+    //マテリアルのシェーダーのプロパティを列挙型で指定できるようにするためのクラス
     //enumを持つことを間接的に継承先のクラスに強制させるために、ジェネリックを持たせる
-    public abstract class MaterialItem<TEnum> : IMaterialItem where TEnum : Enum
+    public abstract class EnumParametersBinder<TEnumGeneral> : IEnumParametersBinder where TEnumGeneral : Enum
     {
         private Material _material = null;
 
@@ -42,9 +43,9 @@ namespace MaterialLibrary
 
         //-------------------列挙型の要素からシェーダーのプロパティを操作するメソッドたち----------------------
         //float型のプロパティの操作
-        public void SetPropertyColor<TEnumProperty>(TEnumProperty property, Color value) where TEnumProperty : Enum
+        public void SetPropertyColor<TEnumSpecific>(TEnumSpecific property, Color value) where TEnumSpecific : Enum
         {
-            if (typeof(TEnum) == typeof(TEnumProperty))
+            if (typeof(TEnumGeneral) == typeof(TEnumSpecific))
             {
                 SetProperty<Color>(property, value, Material.SetColor);
             }
@@ -54,9 +55,9 @@ namespace MaterialLibrary
             }
         }
         //Color型のプロパティの操作
-        public void SetPropertyFloat<TEnumProperty>(TEnumProperty property, float value) where TEnumProperty : Enum
+        public void SetPropertyFloat<TEnumSpecific>(TEnumSpecific property, float value) where TEnumSpecific : Enum
         {
-            if (typeof(TEnum) == typeof(TEnumProperty))
+            if (typeof(TEnumGeneral) == typeof(TEnumSpecific))
             {
                 SetProperty<float>(property, value, Material.SetFloat);
             }
@@ -66,7 +67,7 @@ namespace MaterialLibrary
             }
         }
 
-        void SetProperty<TProperty>(Enum property, TProperty value, Action<string, TProperty> action)
+        void SetProperty<TEnumSpecific>(Enum property, TEnumSpecific value, Action<string, TEnumSpecific> action)
         {
             var propertyInfo = property.GetType().GetField(property.ToString());
             var attribute = propertyInfo.GetCustomAttribute<ShaderPropertyAttribute>();
