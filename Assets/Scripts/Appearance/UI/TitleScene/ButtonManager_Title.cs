@@ -135,6 +135,10 @@ namespace UI
             Helper.LoadScene("PlayScene");
             GameModeManager.Ins.SetGameMode(GameModeManager.GameMode.PileUp);
         }
+        public void MoveMaterialScene()
+        {
+            Helper.LoadScene("MaterialScene");
+        }
         //----------------シーンの推移---------------------
 
         //----------------ランキングのタブボタンの操作---------------------

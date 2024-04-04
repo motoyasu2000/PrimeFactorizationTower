@@ -2,6 +2,7 @@
 using UnityEngine;
 using TMPro;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 //素数ブロックに関わる情報や、操作を行うクラス。素数ブロックにアタッチされている。
 public class BlockInfo : MonoBehaviour
@@ -23,7 +24,7 @@ public class BlockInfo : MonoBehaviour
         primeNumberText = transform.Find("PrimeNumberText").GetComponent<TextMeshPro>();
         rb2D = GetComponent<Rigidbody2D>();
         myCollider = GetComponent<Collider2D>();
-        network = GameObject.Find("Network").GetComponent<Network>();
+        if(SceneManager.GetActiveScene().name =="PlayeScene") network = GameObject.Find("Network").GetComponent<Network>();
         SetText();
         SetShader();
     }
