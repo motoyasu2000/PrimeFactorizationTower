@@ -10,6 +10,7 @@ public class SingleGenerateManager : MonoBehaviour
     Vector3 defaultPoint; //初期位置
     ScoreManager scoreManager;
     public GameObject SingleBlock => singleBlock;
+    public Vector3 GeneratingPoint => new Vector3(defaultPoint.x, scoreManager.NowHeight + dropHeightAbovePeak, defaultPoint.z);
     private void Awake()
     {
         defaultPoint = transform.position;
@@ -62,6 +63,6 @@ public class SingleGenerateManager : MonoBehaviour
     void MoveSingleGameObjectPoint()
     {
         if(scoreManager.NowHeight < GameInfo.CameraTrackingStartHeight) return;
-        transform.position = new Vector3(defaultPoint.x,scoreManager.NowHeight + dropHeightAbovePeak, defaultPoint.z); //最も高いブロックよりより一定数(dropHeightAbovePeak)上にブロックを生成
+        transform.position = GeneratingPoint; //最も高いブロックよりより一定数(dropHeightAbovePeak)上にブロックを生成
     }
 }
