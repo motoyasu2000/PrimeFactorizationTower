@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -31,16 +31,21 @@ public class BlockMaterialSelector : MonoBehaviour
         GameObject resourcesBlock = Resources.Load($"Block{NowBlockNum}") as GameObject;
         if(resourcesBlock == null)
         {
-            Debug.LogError($"�w�肳�ꂽ�u���b�N��Resources���猩����܂���ł����B: {NowBlockNum}");
+            Debug.LogError($"指定されたブロックがResourcesから見つかりませんでした。: {NowBlockNum}");
             return;
         }
         GameObject nowBlock = Instantiate(resourcesBlock);
+
+        //不必要なコンポーネントを無効に
         nowBlock.GetComponent<LineViewer>().enabled = false;
+        nowBlock.GetComponent<LineRenderer>().enabled = false;
+        nowBlock.GetComponent<TouchBlock>().enabled = false;
+
+        //ブロックに表示する文字の設定
         BlockInfo blockInfo = nowBlock.GetComponent<BlockInfo>();
         blockInfo.SetPrimeNumber(NowBlockNum);
         blockInfo.SetText();
-        nowBlock.GetComponent<LineRenderer>().enabled = false;
-        nowBlock.GetComponent<TouchBlock>().enabled = false;
+
         nowBlock.transform.SetParent(singleBlockParent.transform);
         nowBlock.transform.localPosition = Vector3.zero;
     }

@@ -1,3 +1,4 @@
+using Common;
 using MaterialLibrary;
 using System.Collections;
 using System.Collections.Generic;
@@ -11,11 +12,12 @@ namespace MaterialLibrary
         MainColor,
     }
 
-    public class DefaultBlocksMaterialItem : MaterialItem<DefaultBlocksMaterialProperty>
+    public class DefaultMaterialEnumBinder : EnumParametersBinder<DefaultBlocksMaterialProperty>
     {
         protected override Material LoadMaterial()
         {
-            var originalMaterial = Resources.Load<Material>("MaterialsOfItem/DefaultBlocksMaterial");
+            
+            var originalMaterial = Resources.Load<Material>($"{GameInfo.MaterialsOfItemPass}/{"DafaultBlocksMaterial"}");
             return new Material(originalMaterial);
         }
     }

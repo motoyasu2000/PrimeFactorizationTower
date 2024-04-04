@@ -1,4 +1,5 @@
-﻿using MaterialLibrary;
+﻿using Common;
+using MaterialLibrary;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,11 +18,11 @@ namespace MaterialLibrary
         Speed,
     }
 
-    public class StripesMaterialItem : MaterialItem<StripesMaterialProperty>
+    public class StripesMaterialEnumBinder : EnumParametersBinder<StripesMaterialProperty>
     {
         protected override Material LoadMaterial()
         {
-            var originalMaterial = Resources.Load<Material>("MaterialsOfItem/StripesMaterial");
+            var originalMaterial = Resources.Load<Material>($"{GameInfo.MaterialsOfItemPass}/StripesMaterial");
             return new Material(originalMaterial);
         }
     }
