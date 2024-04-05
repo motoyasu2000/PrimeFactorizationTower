@@ -17,7 +17,7 @@ namespace MaterialLibrary
         protected override Material LoadMaterial()
         {
             
-            var originalMaterial = Resources.Load<Material>($"{GameInfo.MaterialsOfItemPass}/{"DafaultBlocksMaterial"}");
+            var originalMaterial = Resources.Load<Material>(MaterialPasses.GetDefaultBlocksMaterialName());
             return new Material(originalMaterial);
         }
     }

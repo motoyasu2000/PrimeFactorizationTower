@@ -22,7 +22,7 @@ namespace MaterialLibrary
     {
         protected override Material LoadMaterial()
         {
-            var originalMaterial = Resources.Load<Material>($"{GameInfo.MaterialsOfItemPass}/StripesMaterial");
+            var originalMaterial = Resources.Load<Material>(MaterialPasses.GetStripesMaterialName());
             return new Material(originalMaterial);
         }
     }

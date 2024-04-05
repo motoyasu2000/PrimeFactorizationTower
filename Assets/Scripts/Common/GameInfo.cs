@@ -11,7 +11,6 @@ namespace Common
         static readonly int cameraTrackingStartHeight = 4; //どこまで高く積んだらカメラが動き出すか
         static readonly float groundHeight = 0.5f; //元の地面の高さ
         static readonly string AIName = "___AI___"; //AIの名前を表す特殊な文字列
-        static readonly string materialsOfItemPass = "MaterialsOfItem";
         static readonly Color buttonGray = new Color(150f / 255f, 150f / 255f, 150f / 255f, 1);
 
         //visual studioでどこから参照されているのかが追跡できるようにするために、プロパティで参照するようにする。
@@ -31,11 +30,6 @@ namespace Common
         public static string GetAIName
         {
             get { return AIName; }
-        }
-
-        public static string MaterialsOfItemPass
-        {
-            get { return materialsOfItemPass; }
         }
 
         public static Color ButtonGray

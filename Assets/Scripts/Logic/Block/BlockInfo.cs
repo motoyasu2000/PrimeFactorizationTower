@@ -24,7 +24,7 @@ public class BlockInfo : MonoBehaviour
         primeNumberText = transform.Find("PrimeNumberText").GetComponent<TextMeshPro>();
         rb2D = GetComponent<Rigidbody2D>();
         myCollider = GetComponent<Collider2D>();
-        if(SceneManager.GetActiveScene().name =="PlayeScene") network = GameObject.Find("Network").GetComponent<Network>();
+        if(SceneManager.GetActiveScene().name =="PlayScene") network = GameObject.Find("Network").GetComponent<Network>();
         SetText();
         SetShader();
     }
