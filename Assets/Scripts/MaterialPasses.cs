@@ -1,18 +1,18 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace MaterialLibrary {
     public static class MaterialPasses
     {
-        //ƒ}ƒeƒŠƒAƒ‹‚ÌƒpƒX
+        //ãƒãƒ†ãƒªã‚¢ãƒ«ã®ãƒ‘ã‚¹
         static readonly string materialsPass = "MaterialsOfItem";
 
-        //ƒ}ƒeƒŠƒAƒ‹‚Ì–¼‘O
+        //ãƒãƒ†ãƒªã‚¢ãƒ«ã®åå‰
         static readonly string stripesMaterialName = "StripesMaterial";
         static readonly string defaultBlocksMaterialItem = "DafaultBlocksMaterial";
 
-        //ƒpƒX‚ğæ“¾‚·‚éƒƒ\ƒbƒh
+        //ãƒ‘ã‚¹ã‚’å–å¾—ã™ã‚‹ãƒ¡ã‚½ãƒƒãƒ‰
         static string GetMaterialPass(string materialName)
         {
             return $"{materialsPass}/{materialName}";

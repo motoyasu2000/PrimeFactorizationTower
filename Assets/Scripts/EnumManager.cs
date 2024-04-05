@@ -1,30 +1,30 @@
-using System;
+ï»¿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//EnumŒ^‚ğŠO‚©‚ç•Ö—˜‚Éˆµ‚¤‚½‚ß‚ÌƒNƒ‰ƒX
+//Enumå‹ã‚’å¤–ã‹ã‚‰ä¾¿åˆ©ã«æ‰±ã†ãŸã‚ã®ã‚¯ãƒ©ã‚¹
 public static class EnumManager
 {
-    //Enum‚Ì—v‘f”‚ğæ“¾
+    //Enumã®è¦ç´ æ•°ã‚’å–å¾—
     public static int GetEnumCount<TEnum>() where TEnum : Enum
     {
         return Enum.GetValues(typeof(TEnum)).Length;
     }
 
-    //Enum‚Ì“Á’è‚Ì—v‘f‚ÌƒCƒ“ƒfƒbƒNƒX‚ğæ“¾
+    //Enumã®ç‰¹å®šã®è¦ç´ ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’å–å¾—
     public static int GetEnumIndex<TEnum>(TEnum value) where TEnum : Enum
     {
         return Array.IndexOf(Enum.GetValues(typeof(TEnum)), value);
     }
 
-    //Enum‚Ì’l‚©‚ç–¼‘O‚ğæ“¾
+    //Enumã®å€¤ã‹ã‚‰åå‰ã‚’å–å¾—
     public static string GetEnumName<TEnum>(TEnum value) where TEnum : Enum
     {
         return Enum.GetName(typeof(TEnum), value);
     }
 
-    //–¼‘O‚©‚çEnum‚Ì’l‚ğæ“¾
+    //åå‰ã‹ã‚‰Enumã®å€¤ã‚’å–å¾—
     public static TEnum GetEnumValue<TEnum>(string name) where TEnum : Enum
     {
         return (TEnum)Enum.Parse(typeof(TEnum), name);

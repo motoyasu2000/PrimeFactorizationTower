@@ -1,8 +1,8 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//Materialî•ñ‚ğjsonŒ`®‚ÅƒZ[ƒuEƒ[ƒh‚ğs‚¤‚½‚ß‚ÌƒNƒ‰ƒX
+//Materialæƒ…å ±ã‚’jsonå½¢å¼ã§ã‚»ãƒ¼ãƒ–ãƒ»ãƒ­ãƒ¼ãƒ‰ã‚’è¡Œã†ãŸã‚ã®ã‚¯ãƒ©ã‚¹
 [System.Serializable]
 public class MaterialData
 {
@@ -10,7 +10,7 @@ public class MaterialData
     public List<ParameterData> parameters;
 }
 
-//ƒ}ƒeƒŠƒAƒ‹‚ÌƒVƒF[ƒ_[‚ÌŠeƒpƒ‰ƒ[ƒ^[‚Ìî•ñ‚ğƒZ[ƒuEƒ[ƒh‚·‚é‚½‚ß‚ÌƒNƒ‰ƒX
+//ãƒãƒ†ãƒªã‚¢ãƒ«ã®ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã®å„ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ãƒ¼ã®æƒ…å ±ã‚’ã‚»ãƒ¼ãƒ–ãƒ»ãƒ­ãƒ¼ãƒ‰ã™ã‚‹ãŸã‚ã®ã‚¯ãƒ©ã‚¹
 [System.Serializable]
 public class ParameterData
 {
