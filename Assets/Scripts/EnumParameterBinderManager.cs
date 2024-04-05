@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace MaterialLibrary
 {
+    //EnumParameterBinderを継承したクラスの情報を保持するクラス
     public static class EnumParameterBinderManager
     {
         static readonly IEnumParametersBinder[] binders = new IEnumParametersBinder[]
