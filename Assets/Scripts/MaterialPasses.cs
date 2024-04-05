@@ -10,7 +10,7 @@ namespace MaterialLibrary {
 
         //マテリアルの名前
         static readonly string stripesMaterialName = "StripesMaterial";
-        static readonly string defaultBlocksMaterialItem = "DafaultBlocksMaterial";
+        static readonly string defaultBlocksMaterialItem = "DefaultBlocksMaterial";
 
         //パスを取得するメソッド
         static string GetMaterialPass(string materialName)

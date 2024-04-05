@@ -16,9 +16,9 @@ namespace MaterialLibrary
     {
         protected override Material LoadMaterial()
         {
-            
-            var originalMaterial = Resources.Load<Material>(MaterialPasses.GetDefaultBlocksMaterialName());
-            return new Material(originalMaterial);
+            var loadedMaterial = Resources.Load<Material>(MaterialPasses.GetDefaultBlocksMaterialName());
+            if (loadedMaterial == null) Debug.LogError("マテリアルのロードに失敗しました。");
+            return new Material(loadedMaterial);
         }
     }
 }

@@ -607,6 +607,7 @@ GameObject:
   - component: {fileID: 653360362}
   - component: {fileID: 653360364}
   - component: {fileID: 653360363}
+  - component: {fileID: 653360365}
   m_Layer: 5
   m_Name: MaterialButtonsPanel
   m_TagString: Untagged
@@ -671,6 +672,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 653360361}
   m_CullTransparentMesh: 1
+--- !u!114 &653360365
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 653360361}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e87167c945567524896855ef757c3078, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &654466686
 PrefabInstance:
   m_ObjectHideFlags: 0
