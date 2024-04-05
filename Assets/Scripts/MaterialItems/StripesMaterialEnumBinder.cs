@@ -22,8 +22,9 @@ namespace MaterialLibrary
     {
         protected override Material LoadMaterial()
         {
-            var originalMaterial = Resources.Load<Material>(MaterialPasses.GetStripesMaterialName());
-            return new Material(originalMaterial);
+            var loadedMaterial = Resources.Load<Material>(MaterialPasses.GetStripesMaterialName());
+            if (loadedMaterial == null) Debug.LogError("マテリアルのロードに失敗しました。");
+            return new Material(loadedMaterial);
         }
     }
 }

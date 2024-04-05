@@ -45,6 +45,7 @@ Material:
     - _GlowStrength: 1
     - _Space: 30
     - _Spase: 73.59
+    - _Speed: 4
     - _Timer: 177.91837
     m_Colors:
     - _AnotherColor: {r: 0, g: 1, b: 0, a: 1}
