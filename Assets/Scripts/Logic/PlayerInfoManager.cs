@@ -11,7 +11,8 @@ public class PlayerInfoManager : MonoBehaviour
     public static PlayerInfoManager Ins => instance;
 
     //保存する情報
-    [SerializeField]string name;
+    [SerializeField] string name;
+    [SerializeField] MaterialDatabase materialDatabase;
 
     //名前を入力させるUI　nameがjsonで保存されていなかった場合に、使う
     GameObject inputNameMenuBackGround;
@@ -70,5 +71,6 @@ public class PlayerInfoManager : MonoBehaviour
     class PlayerInfo
     {
         public string name;
+        public MaterialDatabase materialDatabase;
     }
 }

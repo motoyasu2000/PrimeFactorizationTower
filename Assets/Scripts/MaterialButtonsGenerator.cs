@@ -49,12 +49,16 @@ public class MaterialButtonsGenerator : MonoBehaviour
         materialButton.transform.SetParent(gameObject.transform);
 
         RectTransform buttonRectTransform = materialButton.GetComponent<RectTransform>();
+
+        //Anchorの設定
         buttonRectTransform.anchorMin = new Vector2(splitAnchorPoints_x[generateButtonCounter], 0);
         buttonRectTransform.anchorMax = new Vector2(splitAnchorPoints_x[generateButtonCounter+1], 1);
 
+        //Anchorとの差を0に
         buttonRectTransform.offsetMin = Vector2.zero;
         buttonRectTransform.offsetMax = Vector2.zero;
 
+        //
         buttonRectTransform.localScale = Vector2.one;
         buttonRectTransform.anchoredPosition3D = Vector3.zero;
 
