@@ -1067,7 +1067,7 @@ GameObject:
   - component: {fileID: 1203915762}
   - component: {fileID: 1203915761}
   m_Layer: 0
-  m_Name: MaterialDatabaseSetting
+  m_Name: MaterialDatabaseManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -7,11 +7,6 @@ namespace Common {
     //Enum型を外から便利に扱うためのクラス
     public static class EnumManager
     {
-        //Enumの要素数を取得
-        public static int GetEnumCount<TEnum>() where TEnum : Enum
-        {
-            return Enum.GetValues(typeof(TEnum)).Length;
-        }
 
         //Enumの値からインデックスを取得
         public static int GetEnumIndexFromValue<TEnum>(TEnum value) where TEnum : Enum

@@ -239,7 +239,7 @@ MonoBehaviour:
     VectorActionDescriptions: []
     VectorActionSpaceType: 0
     hasUpgradedBrainParametersWithActionSpec: 1
-  m_Model: {fileID: 5022602860645237092, guid: 0639eafdd6a1c394aaa110e9c55acf55, type: 3}
+  m_Model: {fileID: 5022602860645237092, guid: 64313363b50de694eb1ae9a2b217575a, type: 3}
   m_InferenceDevice: 0
   m_BehaviorType: 0
   m_BehaviorName: PFTAI2
