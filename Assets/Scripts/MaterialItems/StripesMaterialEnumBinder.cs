@@ -20,9 +20,10 @@ namespace MaterialLibrary
 
     public class StripesMaterialEnumBinder : EnumParametersBinder<StripesMaterialProperty>
     {
+        public override string MaterialPathAndName => MaterialPasses.GetStripesMaterialName();
         protected override Material LoadMaterial()
         {
-            var loadedMaterial = Resources.Load<Material>(MaterialPasses.GetStripesMaterialName());
+            var loadedMaterial = Resources.Load<Material>(MaterialPathAndName);
             if (loadedMaterial == null) Debug.LogError("マテリアルのロードに失敗しました。");
             return new Material(loadedMaterial);
         }

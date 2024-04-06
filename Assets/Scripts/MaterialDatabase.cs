@@ -18,6 +18,11 @@ public class MaterialDatabase
         //要素の追加
         blockMaterials.Add(newBlockMaterial);
     }
+
+    public BlockMaterialData GetBlockMaterialData(int blockNum)
+    {
+        return blockMaterials.Find(b => b.blockNumber == blockNum);
+    }
 }
 
 //ブロックごとのMaterial情報をjson形式でセーブ・ロードを行うためのクラス
@@ -26,7 +31,17 @@ public class BlockMaterialData
 {
     public int blockNumber; //データベースでいう主キー
     public string materialPath;
-    public List<ParameterData> parameters;
+    public List<ParameterData> parameters = new List<ParameterData>();
+
+    //パラメーター情報を追加するためのメソッド
+    public void AddParameter(ParameterData newParameterData)
+    {
+        //重複している設定は消去
+        parameters.RemoveAll(p => p.parameterEnumIndex == newParameterData.parameterEnumIndex);
+
+        //新しいパラメーターを追加
+        parameters.Add(newParameterData);
+    }
 }
 
 //マテリアルのシェーダーの各パラメーターの情報をセーブ・ロードするためのクラス
@@ -36,5 +51,9 @@ public class ParameterData
     public int parameterEnumIndex;
     public int type; //パラメーターの型を表す（0: float, 1: Color,）
     public float floatValue;
-    public Color colorValue;
+
+    //色のパラメーター
+    public float redValue;
+    public float greenValue;
+    public float blueValue;
 }
