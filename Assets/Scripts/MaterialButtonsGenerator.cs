@@ -14,10 +14,14 @@ public class MaterialButtonsGenerator : MonoBehaviour
     float[] splitAnchorPoints_x = Helper.CalculateSplitAnchorPoints(EnumParameterBinderManager.bindersCount);
     GameObject materialButtonPrefab;
     ParameterSliderGenerater sliderGenerater;
+    MaterialDatabaseManager materialDatabaseManager;
+    BlockMaterialSelector blockMaterialSelector;
     void Start()
     {
         materialButtonPrefab = Resources.Load("MaterialButton") as GameObject;
         sliderGenerater = GameObject.Find("ParameterSlidersPanel").GetComponent<ParameterSliderGenerater>();
+        materialDatabaseManager = GameObject.Find("MaterialDatabaseManager").GetComponent<MaterialDatabaseManager>();
+        blockMaterialSelector = GameObject.Find("BlockMaterialSelector").GetComponent<BlockMaterialSelector>();
         GenerateMaterialButtons();
     }
 
@@ -58,7 +62,7 @@ public class MaterialButtonsGenerator : MonoBehaviour
         buttonRectTransform.offsetMin = Vector2.zero;
         buttonRectTransform.offsetMax = Vector2.zero;
 
-        //
+        //localScaleやanchoredPosition3Dも初期化しておく
         buttonRectTransform.localScale = Vector2.one;
         buttonRectTransform.anchoredPosition3D = Vector3.zero;
 
@@ -66,7 +70,8 @@ public class MaterialButtonsGenerator : MonoBehaviour
 
         materialButton.GetComponent<Button>().onClick.AddListener(() => {
             sliderGenerater.SetActiveBinder(binder);
-            sliderGenerater.GenerateParameterSliders<TEnum>(); 
+            sliderGenerater.GenerateParameterSliders<TEnum>();
+            materialDatabaseManager.SetBinderToBlock(binder, blockMaterialSelector.NowBlockNum);
         });
     }
 }
