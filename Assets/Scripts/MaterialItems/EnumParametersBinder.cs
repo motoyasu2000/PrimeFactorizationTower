@@ -11,6 +11,7 @@ namespace MaterialLibrary
     //EnumParametersBinderを継承したクラスのリストを作るために、より抽象的なインターフェースを定義しておく。
     public interface IEnumParametersBinder
     {
+        string MaterialPathAndName { get; }
         Type EnumType { get; }
         Material Material { get; set; }
         void SetPropertyColor<TEnum>(TEnum property, Color value) where TEnum : Enum;
@@ -21,6 +22,8 @@ namespace MaterialLibrary
     //enumを持つことを間接的に継承先のクラスに強制させるために、ジェネリックを持たせる
     public abstract class EnumParametersBinder<TEnumGeneral> : IEnumParametersBinder where TEnumGeneral : Enum
     {
+        public abstract string MaterialPathAndName { get; }
+
         public Type EnumType => typeof(TEnumGeneral);
 
         private Material _material = null;

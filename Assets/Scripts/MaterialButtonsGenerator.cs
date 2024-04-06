@@ -31,7 +31,7 @@ public class MaterialButtonsGenerator : MonoBehaviour
             if (methodInfo != null)
             {
                 MethodInfo genericMethod = methodInfo.MakeGenericMethod(binder.EnumType);
-                genericMethod.Invoke(this, new object[] { binder.Material });
+                genericMethod.Invoke(this, new object[] { binder });
             }
             else
             {
@@ -43,7 +43,7 @@ public class MaterialButtonsGenerator : MonoBehaviour
     }
 
     //ジェネリックで指定されたenumに対応するパラメーターを調整できるようにするためのボタンを生成する
-    void GenerateMaterialButton<TEnum>(Material material) where TEnum : Enum
+    void GenerateMaterialButton<TEnum>(IEnumParametersBinder binder) where TEnum : Enum
     {
         GameObject materialButton = Instantiate(materialButtonPrefab);
         materialButton.transform.SetParent(gameObject.transform);
@@ -62,8 +62,11 @@ public class MaterialButtonsGenerator : MonoBehaviour
         buttonRectTransform.localScale = Vector2.one;
         buttonRectTransform.anchoredPosition3D = Vector3.zero;
 
-        materialButton.GetComponent<Image>().material = material;
+        materialButton.GetComponent<Image>().material = binder.Material;
 
-        materialButton.GetComponent<Button>().onClick.AddListener(() => { sliderGenerater.GenerateParameterSliders<TEnum>(); });
+        materialButton.GetComponent<Button>().onClick.AddListener(() => {
+            sliderGenerater.SetActiveBinder(binder);
+            sliderGenerater.GenerateParameterSliders<TEnum>(); 
+        });
     }
 }
