@@ -12,6 +12,8 @@ using UnityEditor.Rendering;
 //マテリアルのパラメーターを調整するスライダーを生成するクラス
 public class ParameterSliderGenerater : MonoBehaviour
 {
+    static readonly float floatSliderScale = 50; //スライダーは0~1までの値をとるので、それをスケーリングするための定数
+    static readonly float floatSliderEpsilon = 0.01f; //スライダーで定めた値はシェーダー内で割り算の式に使う可能性がある。0除算が発生しないようにするために加算する項
     int generateSliderCounter = 0;
     float[] splitAnchorPoints_y = Helper.CalculateSplitAnchorPoints(10); //Start時に反転する
     GameObject parameterSliderCellPrefab;
@@ -107,7 +109,7 @@ public class ParameterSliderGenerater : MonoBehaviour
         //スライダーを動かしたの時のイベントの追加
         parameterSlider.onValueChanged.AddListener((v) => { SetParameterData(v); });
         parameterSlider.onValueChanged.AddListener((v) => { materialDatabaseManager.SetShaderParameter(blockMaterialSelector.NowBlockNum, materialPathAndName,activeBinder ,parameterData); });
-        parameterSlider.onValueChanged.AddListener((v) => { blockMaterialSelector.SetBlockMaterialDataToSingleBlock<TEnum>(materialDatabaseManager.TmpMaterialDatabase); });
+        parameterSlider.onValueChanged.AddListener((v) => { blockMaterialSelector.SetBlockMaterialDataToSingleBlock<TEnum>(); });
 
 
         generateSliderCounter++;
@@ -115,7 +117,7 @@ public class ParameterSliderGenerater : MonoBehaviour
         void SetParameterData(float value)
         {
             //スライダーによる設定
-            if (sliderType == SliderType.floatValue) parameterData.floatValue = value;
+            if (sliderType == SliderType.floatValue) parameterData.floatValue = floatSliderScale*value + floatSliderEpsilon;
             else if (sliderType == SliderType.RedValue) parameterData.redValue = value;
             else if (sliderType == SliderType.GreenValue) parameterData.greenValue = value;
             else if (sliderType == SliderType.BlueValue) parameterData.blueValue = value;
@@ -131,7 +133,7 @@ public class ParameterSliderGenerater : MonoBehaviour
             Destroy(slider.gameObject);
         }
     }
-    //現在どのマテリアル、どのパラメーターがアクティブか設定する
+    //現在どのマテリアルがアクティブか設定する
     public void SetActiveBinder(IEnumParametersBinder binder)
     {
         activeBinder = binder;
@@ -142,16 +144,20 @@ public class ParameterSliderGenerater : MonoBehaviour
     {
         MaterialDatabase materialDatabase = materialDatabaseManager.TmpMaterialDatabase;
         int parameterEnumindex = EnumManager.GetEnumIndexFromString<TEnum>(parameterName);
-        Debug.Log(parameterEnumindex);
+        //Debug.Log(parameterEnumindex);
         //指定したインデックスが含まれていれば
-        if(materialDatabase.blockMaterials.Count >= blockMaterialSelector.NowBlockNum - 1)
+        if(materialDatabase.GetBlockMaterialData(blockMaterialSelector.NowBlockNum).GetParameter(parameterEnumindex)!=null)
         {
+
             return materialDatabase.GetBlockMaterialData(blockMaterialSelector.NowBlockNum).GetParameter(parameterEnumindex);
         }
         else
         {
+            if (materialDatabase.GetBlockMaterialData(blockMaterialSelector.NowBlockNum) == null) Debug.Log("blockdata null");
+            if (materialDatabase.GetBlockMaterialData(blockMaterialSelector.NowBlockNum).GetParameter(parameterEnumindex) == null) Debug.Log("parameter null");
             Debug.LogError("指定したインデックスが存在しませんでした。");
             return new ParameterData();
+
         }
     }
 }

@@ -69,10 +69,11 @@ public class MaterialButtonsGenerator : MonoBehaviour
         materialButton.GetComponent<Image>().material = binder.Material;
 
         materialButton.GetComponent<Button>().onClick.AddListener(() => {
+            materialDatabaseManager.InitializeMaterialDatabase<TEnum>(binder);
             sliderGenerater.SetActiveBinder(binder);
             sliderGenerater.GenerateParameterSliders<TEnum>();
-            materialDatabaseManager.SetBinderToBlock<TEnum>(binder, blockMaterialSelector.NowBlockNum);
-            blockMaterialSelector.SetBlockMaterialDataToSingleBlock<TEnum>(materialDatabaseManager.TmpMaterialDatabase);
+            //materialDatabaseManager.SetBinderToBlock<TEnum>(binder, blockMaterialSelector.NowBlockNum);
+            blockMaterialSelector.SetBlockMaterialDataToSingleBlock<TEnum>();
         });
     }
 }

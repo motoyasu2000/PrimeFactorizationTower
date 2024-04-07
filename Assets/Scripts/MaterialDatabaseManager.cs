@@ -26,11 +26,14 @@ public class MaterialDatabaseManager : MonoBehaviour
     //引数で受け取った情報に合わせて、materialDatabaseの更新処理
     public void SetShaderParameter(int blockNum, string materialPath, IEnumParametersBinder ibinder ,ParameterData parameter)
     {
+        //パラメーターを保存するためため、ブロックデータの取得処理
         BlockMaterialData blockData;
+        //データベース上に既にブロックの情報があれば、そこから取得
         if (tmpMaterialDatabase.blockMaterials.Any(b =>  b.blockNumber == blockNum))
         {
             blockData = tmpMaterialDatabase.GetBlockMaterialData(blockNum);
         }
+        //無ければ生成
         else
         {
             Debug.LogError("指定されたインデックスが見つかりませんでした。");
@@ -38,6 +41,8 @@ public class MaterialDatabaseManager : MonoBehaviour
         }
         blockData.materialPath = materialPath;
         blockData.binderIndex = EnumParameterBinderManager.GetBindersIndex(ibinder);
+
+
         blockData.AddParameter(parameter);
         tmpMaterialDatabase.AddBlockMaterial(blockData);
     }
@@ -45,40 +50,14 @@ public class MaterialDatabaseManager : MonoBehaviour
     void LoadMaterialDatabase()
     {
         //実際にはjsonからよみとるようなしくみにする
-        InitializeMaterialDatabase();
-    }
-
-    //materialDatabaseの初期化　初回起動時に呼ばれる
-    void InitializeMaterialDatabase()
-    {
-        foreach(var prime in GameModeManager.Ins.PrimeNumberPool)
-        {
-            DefaultMaterialEnumBinder defaultBinder = new DefaultMaterialEnumBinder();
-            BlockMaterialData materialData = new BlockMaterialData() {blockNumber = prime, binderIndex=0};
-            for(int i=0; i<Enum.GetValues(defaultBinder.EnumType).Length; i++)
-            {
-                string parameterName = EnumManager.GetStringFromIndex<DefaultBlocksMaterialProperty>(i);
-                materialData.AddParameter(GenerateParameterData(parameterName));
-            }
-            tmpMaterialDatabase.AddBlockMaterial(materialData);
-        }
-    }
-
-    //MaterialDatabase上で、引数で指定したブロックに引数に指定したバインダーを割り当てる マテリアルのボタンのタップ時に呼び出され、そのマテリアルで初期化されるようにする。
-    public void SetBinderToBlock<TEnum>(IEnumParametersBinder ibinder, int blockNumber) where TEnum : Enum
-    {
-        BlockMaterialData materialData = new BlockMaterialData() { blockNumber = blockNumber , binderIndex=EnumParameterBinderManager.GetBindersIndex(ibinder)};
-        for (int i=0; i<Enum.GetValues(ibinder.EnumType).Length; i++)
-        {
-            string parameterName = EnumManager.GetStringFromIndex<TEnum>(i);
-            materialData.AddParameter(GenerateParameterData(parameterName));
-        }
+        InitializeMaterialDatabase<DefaultBlocksMaterialProperty>(new DefaultMaterialEnumBinder());
     }
 
     //パラメーターの文字列に対応するParameterDataを返す
-    ParameterData GenerateParameterData(string parameterName)
+    ParameterData GenerateParameterData<TEnum>(string parameterName) where TEnum:Enum
     {
         ParameterData parameterData = new ParameterData();
+        parameterData.parameterEnumIndex = EnumManager.GetEnumIndexFromString<TEnum>(parameterName);
         if (parameterName.Contains("Color") || parameterName.Contains("color"))
         {
             parameterData.type = 1;
@@ -93,5 +72,32 @@ public class MaterialDatabaseManager : MonoBehaviour
             parameterData.floatValue = initFloatValue;
         }
         return parameterData;
+    }
+
+    //materialDatabaseのマテリアルごとの初期化
+    public void InitializeMaterialDatabase<TEnum>(IEnumParametersBinder ibinder) where TEnum : Enum
+    {
+        foreach(var prime in GameModeManager.Ins.PrimeNumberPool)
+        {
+            BlockMaterialData materialData = new BlockMaterialData() {blockNumber = prime, binderIndex=EnumParameterBinderManager.GetBindersIndex(ibinder)};
+            for(int i=0; i<Enum.GetValues(ibinder.EnumType).Length; i++)
+            {
+                string parameterName = EnumManager.GetStringFromIndex<TEnum>(i);
+                materialData.AddParameter(GenerateParameterData<TEnum>(parameterName));
+                //Debug.Log($"MDB上の 素数: {prime}, パラメーター{parameterName}");
+            }
+            tmpMaterialDatabase.AddBlockMaterial(materialData);
+        }
+    }
+
+    //MaterialDatabase上で、引数で指定したブロックに引数に指定したバインダーを割り当てる マテリアルのボタンのタップ時に呼び出され、そのマテリアルで初期化されるようにする。
+    public void SetBinderToBlock<TEnum>(IEnumParametersBinder ibinder, int blockNumber) where TEnum : Enum
+    {
+        BlockMaterialData materialData = new BlockMaterialData() { blockNumber = blockNumber , binderIndex=EnumParameterBinderManager.GetBindersIndex(ibinder)};
+        for (int i=0; i<Enum.GetValues(ibinder.EnumType).Length; i++)
+        {
+            string parameterName = EnumManager.GetStringFromIndex<TEnum>(i);
+            materialData.AddParameter(GenerateParameterData<TEnum>(parameterName));
+        }
     }
 }

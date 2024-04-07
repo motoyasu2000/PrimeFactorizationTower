@@ -1,7 +1,12 @@
-﻿using System.Collections;
+﻿using Common;
+using MaterialLibrary;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using UnityEngine;
+using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
 
 //全てのブロックの情報を保存するためのクラス
 [System.Serializable]
@@ -22,6 +27,17 @@ public class MaterialDatabase
     public BlockMaterialData GetBlockMaterialData(int blockNum)
     {
         return blockMaterials.Find(b => b.blockNumber == blockNum);
+    }
+
+    public void PrintMaterialDatabase()
+    {
+        foreach (var blockMaterial in blockMaterials)
+        {
+            foreach(var parameter in blockMaterial.parameters)
+            {
+                Debug.Log($"MDB上の 素数: {blockMaterial.blockNumber}, パラメーター{Enum.GetValues(EnumParameterBinderManager.Binders[blockMaterial.binderIndex].EnumType).GetValue(parameter.parameterEnumIndex)}, float: {parameter.floatValue}, Color: ({parameter.redValue}, {parameter.greenValue}, {parameter.blueValue})");
+            }
+        }
     }
 }
 

@@ -14,6 +14,7 @@ public class BlockMaterialSelector : MonoBehaviour
     int[] allprimenumber;
     GameObject singleBlockParent;
     BlockNumberSetter blockNumberSetter;
+    MaterialDatabaseManager materialDatabaseManager;
 
     public int NowBlockNum => allprimenumber[nowBlockIndex];
 
@@ -22,6 +23,7 @@ public class BlockMaterialSelector : MonoBehaviour
         allprimenumber = GameModeManager.Ins.PrimeNumberPool;
         singleBlockParent = GameObject.Find("SingleBlockParent");
         blockNumberSetter = GameObject.Find("BlockNumberText").GetComponent<BlockNumberSetter>();
+        materialDatabaseManager = GameObject.Find("MaterialDatabaseManager").GetComponent<MaterialDatabaseManager>();
         SetSingleBlock();
     }
 
@@ -92,21 +94,23 @@ public class BlockMaterialSelector : MonoBehaviour
         SetSingleBlock() ;
     }
 
-    //特定のマテリアルで単一のブロックを初期化する。materialbuttonの選択時によばれる
-    public void SetBlockMaterialDataToSingleBlock<TEnum>(MaterialDatabase materialDatabase) where TEnum : Enum
+    //特定のマテリアルで単一のブロックを初期化する。
+    public void SetBlockMaterialDataToSingleBlock<TEnum>() where TEnum : Enum
     {
+        MaterialDatabase materialDatabase = materialDatabaseManager.TmpMaterialDatabase;
         BlockMaterialData blockMaterialData = materialDatabase.GetBlockMaterialData(NowBlockNum);
         if (blockMaterialData != null)
         {
-            IEnumParametersBinder binder = EnumParameterBinderManager.Binders[blockMaterialData.binderIndex];
+            IEnumParametersBinder binder = EnumParameterBinderManager.Binders[blockMaterialData.binderIndex];//現在のマテリアル
 
             foreach (ParameterData parameter in blockMaterialData.parameters)
             {
+                //Debug.Log($"パラメータータイプ: {parameter.type}, パラメータープロパティインデックス: {parameter.parameterEnumIndex}");
                 //float型のパラメーター
                 if (parameter.type == 0)
                 {
                     //binderのメソッドと、Enumのインデックス情報を使い、parameterからパラメーターを調整する
-                    binder.SetPropertyFloat<TEnum>(EnumManager.GetEnumValueFromIndex<TEnum>(blockMaterialData.binderIndex), parameter.floatValue);
+                    binder.SetPropertyFloat<TEnum>(EnumManager.GetEnumValueFromIndex<TEnum>(parameter.parameterEnumIndex), parameter.floatValue);
                 }
                 else if (parameter.type == 1)
                 {
@@ -119,11 +123,11 @@ public class BlockMaterialSelector : MonoBehaviour
                 {
                     Debug.LogError($"想定外のtypeが指定されました。: {parameter.type}");
                 }
-                Debug.Log(parameter.type);
+                //Debug.Log($"パラメータータイプ: {parameter.type}, パラメータープロパティインデックス: {parameter.parameterEnumIndex}");
             }
             GameObject singleBlock = GetSingleBlock();
             SpriteRenderer spriteRenderer = singleBlock.GetComponent<SpriteRenderer>();
-            spriteRenderer.material = binder.Material;
+            spriteRenderer.material = new Material(binder.Material);
 
         }
         else
