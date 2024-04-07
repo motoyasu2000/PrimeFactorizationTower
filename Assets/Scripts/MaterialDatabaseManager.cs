@@ -1,4 +1,4 @@
-using Common;
+ï»¿using Common;
 using MaterialLibrary;
 using System;
 using System.Collections;
@@ -11,80 +11,85 @@ using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
 
 public class MaterialDatabaseManager : MonoBehaviour
 {
-    static readonly float initColorValue = 0.8f;
+    static readonly float initColorValue = 0f;
     static readonly float initFloatValue = 10f;
-    MaterialDatabase materialDatabase;
-    public MaterialDatabase MaterialDatabase => materialDatabase;
+
+    //jsonã«ä¿å­˜ã™ã‚‹ã¾ãˆã®ãƒãƒ†ãƒªã‚¢ãƒ«æƒ…å ±ã‚’ä¿å­˜ã™ã‚‹database
+    MaterialDatabase tmpMaterialDatabase = new MaterialDatabase();
+    public MaterialDatabase TmpMaterialDatabase => tmpMaterialDatabase;
 
     private void Start()
     {
         LoadMaterialDatabase();
     }
 
-    //ˆø”‚Åó‚¯æ‚Á‚½î•ñ‚É‡‚í‚¹‚ÄAmaterialDatabase‚ÌXVˆ—
-    public void SetShaderParameter(int blockNum, string materialPath, ParameterData parameter)
+    //å¼•æ•°ã§å—ã‘å–ã£ãŸæƒ…å ±ã«åˆã‚ã›ã¦ã€materialDatabaseã®æ›´æ–°å‡¦ç†
+    public void SetShaderParameter(int blockNum, string materialPath, IEnumParametersBinder ibinder ,ParameterData parameter)
     {
         BlockMaterialData blockData;
-        if (materialDatabase.blockMaterials.Any(b =>  b.blockNumber == blockNum))
+        if (tmpMaterialDatabase.blockMaterials.Any(b =>  b.blockNumber == blockNum))
         {
-            blockData = materialDatabase.GetBlockMaterialData(blockNum);
+            blockData = tmpMaterialDatabase.GetBlockMaterialData(blockNum);
         }
         else
         {
-            Debug.LogError("w’è‚³‚ê‚½ƒCƒ“ƒfƒbƒNƒX‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ‚Å‚µ‚½B");
+            Debug.LogError("æŒ‡å®šã•ã‚ŒãŸã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“ã§ã—ãŸã€‚");
             blockData = new BlockMaterialData() { blockNumber = blockNum };
         }
         blockData.materialPath = materialPath;
+        blockData.binderIndex = EnumParameterBinderManager.GetBindersIndex(ibinder);
         blockData.AddParameter(parameter);
-        materialDatabase.AddBlockMaterial(blockData);
+        tmpMaterialDatabase.AddBlockMaterial(blockData);
     }
 
     void LoadMaterialDatabase()
     {
-        //ÀÛ‚É‚Íjson‚©‚ç‚æ‚İ‚Æ‚é‚æ‚¤‚È‚µ‚­‚İ‚É‚·‚é
-        materialDatabase = new MaterialDatabase();
+        //å®Ÿéš›ã«ã¯jsonã‹ã‚‰ã‚ˆã¿ã¨ã‚‹ã‚ˆã†ãªã—ãã¿ã«ã™ã‚‹
+        InitializeMaterialDatabase();
     }
 
-    //materialDatabase‚Ì‰Šú‰»@‰‰ñ‹N“®‚ÉŒÄ‚Î‚ê‚é
+    //materialDatabaseã®åˆæœŸåŒ–ã€€åˆå›èµ·å‹•æ™‚ã«å‘¼ã°ã‚Œã‚‹
     void InitializeMaterialDatabase()
     {
         foreach(var prime in GameModeManager.Ins.PrimeNumberPool)
         {
             DefaultMaterialEnumBinder defaultBinder = new DefaultMaterialEnumBinder();
-            string parameterName = defaultBinder.MaterialPathAndName;
-            BlockMaterialData materialData = new BlockMaterialData() {blockNumber = prime};
+            BlockMaterialData materialData = new BlockMaterialData() {blockNumber = prime, binderIndex=0};
             for(int i=0; i<Enum.GetValues(defaultBinder.EnumType).Length; i++)
             {
+                string parameterName = EnumManager.GetStringFromIndex<DefaultBlocksMaterialProperty>(i);
                 materialData.AddParameter(GenerateParameterData(parameterName));
             }
-            materialDatabase.AddBlockMaterial(materialData);
+            tmpMaterialDatabase.AddBlockMaterial(materialData);
         }
     }
 
-    //MaterialDatabaseã‚ÅAˆø”‚Åw’è‚µ‚½ƒuƒƒbƒN‚Éˆø”‚Éw’è‚µ‚½ƒoƒCƒ“ƒ_[‚ğŠ„‚è“–‚Ä‚é ƒ}ƒeƒŠƒAƒ‹‚Ìƒ{ƒ^ƒ“‚Ìƒ^ƒbƒv‚ÉŒÄ‚Ño‚³‚êA‚»‚Ìƒ}ƒeƒŠƒAƒ‹‚Å‰Šú‰»‚³‚ê‚é‚æ‚¤‚É‚·‚éB
-    public void SetBinderToBlock(IEnumParametersBinder ibinder, int blockNumber)
+    //MaterialDatabaseä¸Šã§ã€å¼•æ•°ã§æŒ‡å®šã—ãŸãƒ–ãƒ­ãƒƒã‚¯ã«å¼•æ•°ã«æŒ‡å®šã—ãŸãƒã‚¤ãƒ³ãƒ€ãƒ¼ã‚’å‰²ã‚Šå½“ã¦ã‚‹ ãƒãƒ†ãƒªã‚¢ãƒ«ã®ãƒœã‚¿ãƒ³ã®ã‚¿ãƒƒãƒ—æ™‚ã«å‘¼ã³å‡ºã•ã‚Œã€ãã®ãƒãƒ†ãƒªã‚¢ãƒ«ã§åˆæœŸåŒ–ã•ã‚Œã‚‹ã‚ˆã†ã«ã™ã‚‹ã€‚
+    public void SetBinderToBlock<TEnum>(IEnumParametersBinder ibinder, int blockNumber) where TEnum : Enum
     {
-        string parameterName = ibinder.MaterialPathAndName;
-        BlockMaterialData materialData = new BlockMaterialData() { blockNumber = blockNumber };
+        BlockMaterialData materialData = new BlockMaterialData() { blockNumber = blockNumber , binderIndex=EnumParameterBinderManager.GetBindersIndex(ibinder)};
         for (int i=0; i<Enum.GetValues(ibinder.EnumType).Length; i++)
         {
+            string parameterName = EnumManager.GetStringFromIndex<TEnum>(i);
             materialData.AddParameter(GenerateParameterData(parameterName));
         }
     }
 
-    //ƒpƒ‰ƒ[ƒ^[‚Ì•¶š—ñ‚É‘Î‰‚·‚éParameterData‚ğ•Ô‚·
+    //ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ãƒ¼ã®æ–‡å­—åˆ—ã«å¯¾å¿œã™ã‚‹ParameterDataã‚’è¿”ã™
     ParameterData GenerateParameterData(string parameterName)
     {
         ParameterData parameterData = new ParameterData();
         if (parameterName.Contains("Color") || parameterName.Contains("color"))
         {
+            parameterData.type = 1;
             parameterData.redValue = initColorValue;
             parameterData.greenValue = initColorValue;
             parameterData.blueValue = initColorValue;
         }
-        //colorˆÈŠO(¡‚Ì‚Æ‚±‚ëfloat‚Ì‚İ)‚Í‘S‚Ä1‚Â‚¾‚¯¶¬
+        //colorä»¥å¤–(ä»Šã®ã¨ã“ã‚floatã®ã¿)ã¯å…¨ã¦1ã¤ã ã‘ç”Ÿæˆ
         else
         {
+            parameterData.type = 0;
             parameterData.floatValue = initFloatValue;
         }
         return parameterData;

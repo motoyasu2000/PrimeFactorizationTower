@@ -20,5 +20,19 @@ namespace MaterialLibrary
         {
             get { return binders; }
         }
+
+        public static int GetBindersIndex(IEnumParametersBinder ibinder)
+        {
+            int returnIndex = 0;
+            foreach (IEnumParametersBinder binder in binders)
+            {
+                if (binder.GetType() == ibinder.GetType())
+                {
+                    return returnIndex;
+                }
+                returnIndex++;
+            }
+            return -1;
+        }
     }
 }

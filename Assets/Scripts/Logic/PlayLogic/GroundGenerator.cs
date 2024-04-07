@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Common;
+using UnityEngine;
 
 //ブロックを積み木するための土台となる地面を生成するためのクラス。地面を真っ平にしてしまうと。2,5だけひたすら積んでく動きが強すぎになってしまう。
 public class GroundGenerator : MonoBehaviour
@@ -19,7 +20,7 @@ public class GroundGenerator : MonoBehaviour
 
             //回転
             float randomSpinAngle = Random.Range(-20f, 20f);
-            newGround.transform.Rotate(new Vector3(0, 0, randomSpinAngle)); 
+            newGround.transform.Rotate(new Vector3(0, 0, randomSpinAngle));
 
             //親の設定
             newGround.transform.parent = transform;
