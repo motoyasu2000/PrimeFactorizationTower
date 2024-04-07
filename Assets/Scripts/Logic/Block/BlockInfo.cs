@@ -26,7 +26,7 @@ public class BlockInfo : MonoBehaviour
         myCollider = GetComponent<Collider2D>();
         if(SceneManager.GetActiveScene().name =="PlayScene") network = GameObject.Find("Network").GetComponent<Network>();
         SetText();
-        SetShader();
+        //SetShader();
     }
 
     //クリックするとkinematicからdynamicに変化するようにする。
