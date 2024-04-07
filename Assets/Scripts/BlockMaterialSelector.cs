@@ -117,7 +117,7 @@ public class BlockMaterialSelector : MonoBehaviour
                     //parameterから色の生成
                     Color color = new Color(parameter.redValue, parameter.greenValue, parameter.blueValue);
                     //binderのメソッドと、Enumのインデックス情報を使い、上で生成した色を割り当てる。
-                    binder.SetPropertyColor<TEnum>(EnumManager.GetEnumValueFromIndex<TEnum>(blockMaterialData.binderIndex), color);
+                    binder.SetPropertyColor<TEnum>(EnumManager.GetEnumValueFromIndex<TEnum>(parameter.parameterEnumIndex), color);
                 }
                 else
                 {
