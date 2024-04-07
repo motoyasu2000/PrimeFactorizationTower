@@ -89,15 +89,4 @@ public class MaterialDatabaseManager : MonoBehaviour
             tmpMaterialDatabase.AddBlockMaterial(materialData);
         }
     }
-
-    //MaterialDatabase上で、引数で指定したブロックに引数に指定したバインダーを割り当てる マテリアルのボタンのタップ時に呼び出され、そのマテリアルで初期化されるようにする。
-    public void SetBinderToBlock<TEnum>(IEnumParametersBinder ibinder, int blockNumber) where TEnum : Enum
-    {
-        BlockMaterialData materialData = new BlockMaterialData() { blockNumber = blockNumber , binderIndex=EnumParameterBinderManager.GetBindersIndex(ibinder)};
-        for (int i=0; i<Enum.GetValues(ibinder.EnumType).Length; i++)
-        {
-            string parameterName = EnumManager.GetStringFromIndex<TEnum>(i);
-            materialData.AddParameter(GenerateParameterData<TEnum>(parameterName));
-        }
-    }
 }
