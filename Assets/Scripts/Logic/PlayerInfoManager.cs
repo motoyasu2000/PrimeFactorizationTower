@@ -34,7 +34,7 @@ public class PlayerInfoManager : MonoBehaviour
         LoadPlayerInfo();
     }
 
-    public void InputNameProcess(string name)
+    public void SaveName(string name)
     {
         this.name = name;
         SavePlayerInfo();

@@ -30,6 +30,7 @@ public class MaterialDatabase
 public class BlockMaterialData
 {
     public int blockNumber; //データベースでいう主キー
+    public int binderIndex;
     public string materialPath;
     public List<ParameterData> parameters = new List<ParameterData>();
 
@@ -41,6 +42,11 @@ public class BlockMaterialData
 
         //新しいパラメーターを追加
         parameters.Add(newParameterData);
+    }
+
+    public ParameterData GetParameter(int parameterEnumIndex)
+    {
+        return parameters.Find(p => p.parameterEnumIndex == parameterEnumIndex);
     }
 }
 

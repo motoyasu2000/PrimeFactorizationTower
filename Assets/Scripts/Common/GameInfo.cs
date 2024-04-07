@@ -12,6 +12,7 @@ namespace Common
         static readonly float groundHeight = 0.5f; //元の地面の高さ
         static readonly string AIName = "___AI___"; //AIの名前を表す特殊な文字列
         static readonly Color buttonGray = new Color(150f / 255f, 150f / 255f, 150f / 255f, 1);
+        static readonly Color fleezeColor = new Color(23f / 255f, 1f, 1f);
 
         //visual studioでどこから参照されているのかが追跡できるようにするために、プロパティで参照するようにする。
         public static int RankDisplayLimit
@@ -35,6 +36,11 @@ namespace Common
         public static Color ButtonGray
         {
             get { return buttonGray; }
+        }
+
+        public static Color FleezeColor
+        {
+            get { return fleezeColor; }
         }
 
         //ゲーム内で可変の情報

@@ -7,6 +7,14 @@ namespace Common {
     //Enum型を外から便利に扱うためのクラス
     public static class EnumManager
     {
+        public static string GetStringFromIndex<TEnum>(int index) where TEnum : Enum
+        {
+            return $"{(GetEnumValueFromIndex<TEnum>(index))}";
+        }
+        public static TEnum GetEnumValueFromIndex<TEnum>(int index) where TEnum : Enum
+        {
+            return (TEnum)Enum.GetValues(typeof(TEnum)).GetValue(index);
+        }
 
         //Enumの値からインデックスを取得
         public static int GetEnumIndexFromValue<TEnum>(TEnum value) where TEnum : Enum

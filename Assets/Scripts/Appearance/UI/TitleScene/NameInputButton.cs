@@ -28,7 +28,7 @@ public class NameInputButton : MonoBehaviour
         if (CheckError(playerName)) return; //エラーがあれば以降の処理を行わない。
 
         //名前を保存して、画面を非表示。
-        PlayerInfoManager.Ins.InputNameProcess(playerName);
+        PlayerInfoManager.Ins.SaveName(playerName);
         inputNameMenuBackGround.SetActive(false);
     }
 

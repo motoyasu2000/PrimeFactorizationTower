@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UI;
+using Common;
 
 //積み上げれたブロックはブロックがノード、隣接関係がエッジとなるグラフ構造をしており。それを管理するためのクラス。
 public class Network : MonoBehaviour
@@ -188,8 +189,7 @@ public class Network : MonoBehaviour
             rb2d.velocity = Vector3.zero;
             rb2d.angularVelocity = 0;
             rb2d.isKinematic = true;
-            Color fleezeColor = new Color(23f / 255f, 1f, 1f);
-            node.GetComponent<SpriteRenderer>().color = fleezeColor;
+            node.GetComponent<SpriteRenderer>().color = GameInfo.FleezeColor;
         }
         yield break;
     }

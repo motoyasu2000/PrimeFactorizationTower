@@ -62,7 +62,7 @@ public class MaterialButtonsGenerator : MonoBehaviour
         buttonRectTransform.offsetMin = Vector2.zero;
         buttonRectTransform.offsetMax = Vector2.zero;
 
-        //localScaleやanchoredPosition3Dも初期化しておく
+        //スケールやz軸方向のanchorも0に初期化しておく
         buttonRectTransform.localScale = Vector2.one;
         buttonRectTransform.anchoredPosition3D = Vector3.zero;
 
@@ -71,7 +71,8 @@ public class MaterialButtonsGenerator : MonoBehaviour
         materialButton.GetComponent<Button>().onClick.AddListener(() => {
             sliderGenerater.SetActiveBinder(binder);
             sliderGenerater.GenerateParameterSliders<TEnum>();
-            materialDatabaseManager.SetBinderToBlock(binder, blockMaterialSelector.NowBlockNum);
+            materialDatabaseManager.SetBinderToBlock<TEnum>(binder, blockMaterialSelector.NowBlockNum);
+            blockMaterialSelector.SetBlockMaterialDataToSingleBlock<TEnum>(materialDatabaseManager.TmpMaterialDatabase);
         });
     }
 }

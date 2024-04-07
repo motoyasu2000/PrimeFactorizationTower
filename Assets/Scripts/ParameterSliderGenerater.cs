@@ -44,6 +44,7 @@ public class ParameterSliderGenerater : MonoBehaviour
         string[] parameterNames = EnumManager.GetEnumNames<TEnum>();
         foreach (string parameterName in parameterNames)
         {
+            Debug.Log(parameterName);
             if(generateSliderCounter >= 10)
             {
                 Debug.LogError("生成したいスライダーが10個以上生成できません。");
@@ -67,19 +68,24 @@ public class ParameterSliderGenerater : MonoBehaviour
     //与えられた名前に応じたスライダーを生成する
     void GenerateParameterSliderCell<TEnum>(string parameterName, SliderType sliderType) where TEnum : Enum
     {
+        //sliderCellの生成と親の設定
         GameObject parameterSliderCell = Instantiate(parameterSliderCellPrefab);
         parameterSliderCell.transform.SetParent(gameObject.transform);
 
+        //Anchorの設定
         RectTransform sliderCellRectTransform = parameterSliderCell.GetComponent<RectTransform>();
         sliderCellRectTransform.anchorMin = new Vector2(0, splitAnchorPoints_y[generateSliderCounter + 1]);
         sliderCellRectTransform.anchorMax = new Vector2(1, splitAnchorPoints_y[generateSliderCounter]);
 
+        //Anchorとの差を0に
         sliderCellRectTransform.offsetMin = Vector2.zero;
         sliderCellRectTransform.offsetMax = Vector2.zero;
 
+        //スケールやz座標も0に初期化
         sliderCellRectTransform.localScale = Vector2.one;
         sliderCellRectTransform.anchoredPosition3D = Vector3.zero;
 
+        //何を調整するスライダーなのかを説明するテキストの設定
         TextMeshProUGUI parameterSliderText = parameterSliderCell.GetComponentInChildren<TextMeshProUGUI>();
         parameterSliderText.text = parameterName;
 
@@ -88,19 +94,21 @@ public class ParameterSliderGenerater : MonoBehaviour
         int blockNum = blockMaterialSelector.NowBlockNum;
         string materialPathAndName = activeBinder.MaterialPathAndName;
 
+        //今のスライダーがFloatに対するものなのか、colorに対するものなのか
         int parameterType;
         if (sliderType == SliderType.floatValue) parameterType = 0;
-        else if (sliderType == SliderType.RedValue || sliderType == SliderType.GreenValue || sliderType == SliderType.RedValue) parameterType = 1;
-        else parameterType = -1;
+        else if (sliderType == SliderType.RedValue || sliderType == SliderType.GreenValue || sliderType == SliderType.BlueValue) parameterType = 1;
+        else { parameterType = -1; Debug.LogError($"SliderTypeが予期せぬ値になっています。: {sliderType}"); }
 
         //パラメーターデータの生成
         ParameterData parameterData = GetNowStateParameterData<TEnum>(parameterName); //初期化
         parameterData.type = parameterType; //floatかColorか、typeの設定
 
+        //スライダーを動かしたの時のイベントの追加
         parameterSlider.onValueChanged.AddListener((v) => { SetParameterData(v); });
-        parameterSlider.onValueChanged.AddListener((v) => { materialDatabaseManager.SetShaderParameter(blockMaterialSelector.NowBlockNum, materialPathAndName, parameterData); });
+        parameterSlider.onValueChanged.AddListener((v) => { materialDatabaseManager.SetShaderParameter(blockMaterialSelector.NowBlockNum, materialPathAndName,activeBinder ,parameterData); });
+        parameterSlider.onValueChanged.AddListener((v) => { blockMaterialSelector.SetBlockMaterialDataToSingleBlock<TEnum>(materialDatabaseManager.TmpMaterialDatabase); });
 
-        
 
         generateSliderCounter++;
 
@@ -132,13 +140,13 @@ public class ParameterSliderGenerater : MonoBehaviour
     //現在のブロック、現在のスライダーから、parametaerDataを取得する
     ParameterData GetNowStateParameterData<TEnum>(string parameterName) where TEnum : Enum
     {
-        MaterialDatabase materialDatabase = materialDatabaseManager.MaterialDatabase;
+        MaterialDatabase materialDatabase = materialDatabaseManager.TmpMaterialDatabase;
         int parameterEnumindex = EnumManager.GetEnumIndexFromString<TEnum>(parameterName);
         Debug.Log(parameterEnumindex);
         //指定したインデックスが含まれていれば
         if(materialDatabase.blockMaterials.Count >= blockMaterialSelector.NowBlockNum - 1)
         {
-            return materialDatabase.GetBlockMaterialData(blockMaterialSelector.NowBlockNum).parameters[parameterEnumindex];
+            return materialDatabase.GetBlockMaterialData(blockMaterialSelector.NowBlockNum).GetParameter(parameterEnumindex);
         }
         else
         {
