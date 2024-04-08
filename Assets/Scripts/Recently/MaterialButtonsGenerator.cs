@@ -7,6 +7,7 @@ using System;
 using System.Reflection;
 using TMPro;
 using UnityEngine.UI;
+using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
 
 public class MaterialButtonsGenerator : MonoBehaviour
 {
@@ -15,13 +16,13 @@ public class MaterialButtonsGenerator : MonoBehaviour
     GameObject materialButtonPrefab;
     ParameterSliderGenerater sliderGenerater;
     MaterialDatabaseManager materialDatabaseManager;
-    BlockSelector blockMaterialSelector;
+    BlockSelector blockSelector;
     void Start()
     {
         materialButtonPrefab = Resources.Load("MaterialButton") as GameObject;
         sliderGenerater = GameObject.Find("ParameterSlidersPanel").GetComponent<ParameterSliderGenerater>();
         materialDatabaseManager = GameObject.Find("MaterialDatabaseManager").GetComponent<MaterialDatabaseManager>();
-        blockMaterialSelector = GameObject.Find("BlockMaterialSelector").GetComponent<BlockSelector>();
+        blockSelector = GameObject.Find("BlockMaterialSelector").GetComponent<BlockSelector>();
         GenerateMaterialButtons();
     }
 
@@ -47,7 +48,7 @@ public class MaterialButtonsGenerator : MonoBehaviour
     }
 
     //ジェネリックで指定されたenumに対応するパラメーターを調整できるようにするためのボタンを生成する
-    void GenerateMaterialButton<TEnum>(IEnumParametersBinder binder) where TEnum : Enum
+    void GenerateMaterialButton<TEnum>(IEnumParametersBinder ibinder) where TEnum : Enum
     {
         GameObject materialButton = Instantiate(materialButtonPrefab);
         materialButton.transform.SetParent(gameObject.transform);
@@ -66,12 +67,12 @@ public class MaterialButtonsGenerator : MonoBehaviour
         buttonRectTransform.localScale = Vector2.one;
         buttonRectTransform.anchoredPosition3D = Vector3.zero;
 
-        materialButton.GetComponent<Image>().material = new Material(binder.Material);
+        materialButton.GetComponent<Image>().material = new Material(ibinder.Material);
 
         materialButton.GetComponent<Button>().onClick.AddListener(() => {
             materialDatabaseManager.LoadMaterialDatabase(); //TmpMaterialDatabeseの初期化
-            materialDatabaseManager.InitializeBlockMaterial<TEnum>(binder,blockMaterialSelector.NowBlockNum); //TmpMaterialDatabeseの現在のブロック部分を選択したマテリアルのものに変更する
-            sliderGenerater.SetActiveBinder(binder);
+            sliderGenerater.SetActiveBinder(ibinder);
+            materialDatabaseManager.InitializeBlockMaterial<TEnum>(ibinder, blockSelector.NowBlockNum); //TmpMaterialDatabeseの現在のブロック部分を選択したマテリアルのものに変更する;
             sliderGenerater.GenerateParameterSliders<TEnum>();
         });
     }

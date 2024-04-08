@@ -30,7 +30,7 @@ public class ParameterSliderGenerater : MonoBehaviour
         BlueValue,
     }
 
-    void Start()
+    void Awake()
     {
         Array.Reverse(splitAnchorPoints_y);
         parameterSliderCellPrefab = Resources.Load("ParameterSliderCell") as GameObject;
@@ -106,6 +106,8 @@ public class ParameterSliderGenerater : MonoBehaviour
         ParameterData parameterData = GetNowStateParameterData<TEnum>(parameterName); //初期化
         parameterData.type = parameterType; //floatかColorか、typeの設定
 
+        InitializeSliderValue(sliderType, parameterData, parameterSlider);
+
         //スライダーを動かしたの時のイベントの追加
         parameterSlider.onValueChanged.AddListener((v) => { SetParameterData(v); });
         parameterSlider.onValueChanged.AddListener((v) => { materialDatabaseManager.SetShaderParameter(blockMaterialSelector.NowBlockNum, materialPathAndName,activeBinder ,parameterData); });
@@ -123,6 +125,15 @@ public class ParameterSliderGenerater : MonoBehaviour
             else if (sliderType == SliderType.BlueValue) parameterData.blueValue = value;
             else Debug.LogError("予期せぬSlidertypeが呼ばれました。");
         }
+    }
+    void InitializeSliderValue(SliderType sliderType, ParameterData parameterData, Slider slider)
+    {
+        //スライダーによる設定
+        if (sliderType == SliderType.floatValue) slider.value = (parameterData.floatValue-floatSliderEpsilon)/floatSliderScale;
+        else if (sliderType == SliderType.RedValue) slider.value = parameterData.redValue;
+        else if (sliderType == SliderType.GreenValue) slider.value = parameterData.greenValue;
+        else if (sliderType == SliderType.BlueValue) slider.value = parameterData.blueValue;
+        else Debug.LogError("予期せぬSlidertypeが呼ばれました。");
     }
 
     //スライダーを生成する際、あらかじめスライダーがあったら消去する
