@@ -44,7 +44,7 @@ namespace MaterialLibrary
             set { _material = value; }
         }
 
-        //Materialをロードするための抽象メソッド。継承先で実装。※ResourcesからマテリアルをロードしてそのままMaterial変数に設定するのではなく、コピーしてからMaterial変数に設定する。
+        //Materialをロードするための抽象メソッド。継承先で実装。※Resourcesからマテリアルをロードしてそれを参照してMaterial変数に設定するのではなく、コピーしてからMaterial変数に設定する。
         protected abstract Material LoadMaterial();
 
         //-------------------列挙型の要素からシェーダーのプロパティを操作するメソッドたち----------------------
