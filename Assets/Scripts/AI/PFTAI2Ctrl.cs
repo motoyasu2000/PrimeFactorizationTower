@@ -50,10 +50,9 @@ public class PFTAI2Ctrl : MonoBehaviour
 
         if (gameOverManager.IsGameOver)
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             agent.EndEpisode();
         }
-
         preCondition = nowCondition;
         nowCondition = conditionManager.ConditionNumber;
         //条件が変化した→条件達成→報酬を与える

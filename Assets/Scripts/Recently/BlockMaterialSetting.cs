@@ -16,7 +16,8 @@ public class BlockMaterialSetting : MonoBehaviour
         blockInfo = GetComponent<BlockInfo>();
         materialDatabase = PlayerInfoManager.Ins.MaterialDatabase;
         if (materialDatabase == null) return;
-
+        if (materialDatabase.blockMaterials == null) return;
+        if (materialDatabase.blockMaterials.Count == 0) return;
 
         //マテリアルの取得と、その設定を保存していたデータから読み取って、適切に反映する。
         IEnumParametersBinder binder = EnumParameterBinderManager.Binders[materialDatabase.GetBlockMaterialData(blockInfo.GetPrimeNumber()).binderIndex];
