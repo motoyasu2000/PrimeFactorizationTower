@@ -11,12 +11,12 @@ using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
 
 public class MaterialDatabaseManager : MonoBehaviour
 {
-    static readonly float initColorValue = 0f;
+    static readonly float initColorValue = 0.8f;
     static readonly float initFloatValue = 10f;
 
     //jsonに保存するまえのマテリアル情報を保存するdatabase
-    MaterialDatabase tmpMaterialDatabase = new MaterialDatabase();
-    public MaterialDatabase TmpMaterialDatabase => tmpMaterialDatabase;
+    MaterialDatabase middleMaterialDatabase;
+    public MaterialDatabase MiddleMaterialDatabase => middleMaterialDatabase;
 
     private void Start()
     {
@@ -29,9 +29,9 @@ public class MaterialDatabaseManager : MonoBehaviour
         //パラメーターを保存するためため、ブロックデータの取得処理
         BlockMaterialData blockData;
         //データベース上に既にブロックの情報があれば、そこから取得
-        if (tmpMaterialDatabase.blockMaterials.Any(b =>  b.blockNumber == blockNum))
+        if (middleMaterialDatabase.blockMaterials.Any(b =>  b.blockNumber == blockNum))
         {
-            blockData = tmpMaterialDatabase.GetBlockMaterialData(blockNum);
+            blockData = middleMaterialDatabase.GetBlockMaterialData(blockNum);
         }
         //無ければ生成
         else
@@ -44,13 +44,7 @@ public class MaterialDatabaseManager : MonoBehaviour
 
 
         blockData.AddParameter(parameter);
-        tmpMaterialDatabase.AddBlockMaterial(blockData);
-    }
-
-    void LoadMaterialDatabase()
-    {
-        //実際にはjsonからよみとるようなしくみにする
-        InitializeMaterialDatabase<DefaultBlocksMaterialProperty>(new DefaultMaterialEnumBinder());
+        middleMaterialDatabase.AddBlockMaterial(blockData);
     }
 
     //パラメーターの文字列に対応するParameterDataを返す
@@ -74,19 +68,37 @@ public class MaterialDatabaseManager : MonoBehaviour
         return parameterData;
     }
 
-    //materialDatabaseのマテリアルごとの初期化
+    //materialDatabaseの初期化 初回のみ実行されることを想定　
     public void InitializeMaterialDatabase<TEnum>(IEnumParametersBinder ibinder) where TEnum : Enum
     {
-        foreach(var prime in GameModeManager.Ins.PrimeNumberPool)
+        if (middleMaterialDatabase == null) middleMaterialDatabase = new MaterialDatabase() ;
+        foreach (var prime in GameModeManager.Ins.PrimeNumberPool)
         {
-            BlockMaterialData materialData = new BlockMaterialData() {blockNumber = prime, binderIndex=EnumParameterBinderManager.GetBindersIndex(ibinder)};
-            for(int i=0; i<Enum.GetValues(ibinder.EnumType).Length; i++)
-            {
-                string parameterName = EnumManager.GetStringFromIndex<TEnum>(i);
-                materialData.AddParameter(GenerateParameterData<TEnum>(parameterName));
-                //Debug.Log($"MDB上の 素数: {prime}, パラメーター{parameterName}");
-            }
-            tmpMaterialDatabase.AddBlockMaterial(materialData);
+            if (middleMaterialDatabase.GetBlockMaterialData(prime) == null) InitializeBlockMaterial<TEnum>(ibinder, prime);
         }
+    }
+
+    //単一のBlockMaterialを初期化し、tmpMaterialDatabaseに追加 MaterialButtonをタップ時に呼ばれる
+    public void InitializeBlockMaterial<TEnum>(IEnumParametersBinder ibinder, int prime) where TEnum : Enum
+    {
+        BlockMaterialData materialData = new BlockMaterialData() { blockNumber = prime, binderIndex = EnumParameterBinderManager.GetBindersIndex(ibinder) };
+        for (int i = 0; i < Enum.GetValues(ibinder.EnumType).Length; i++)
+        {
+            string parameterName = EnumManager.GetStringFromIndex<TEnum>(i);
+            materialData.AddParameter(GenerateParameterData<TEnum>(parameterName));
+            //Debug.Log($"MDB上の 素数: {prime}, パラメーター{parameterName}");
+        }
+        middleMaterialDatabase.AddBlockMaterial(materialData);
+    }
+
+    public void SaveMaterialDatabase()
+    {
+        PlayerInfoManager.Ins.SaveMaterialDatabase(middleMaterialDatabase);
+    }
+
+    public void LoadMaterialDatabase()
+    {
+        middleMaterialDatabase = PlayerInfoManager.Ins.MaterialDatabase;
+        if (middleMaterialDatabase == null || middleMaterialDatabase.blockMaterials == null || middleMaterialDatabase.blockMaterials.Count == 0) InitializeMaterialDatabase<DefaultBlocksMaterialProperty>(new DefaultMaterialEnumBinder());
     }
 }

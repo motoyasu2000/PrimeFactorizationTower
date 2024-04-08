@@ -43,13 +43,13 @@ Material:
     m_Floats:
     - _EnableExternalAlpha: 0
     - _GlowStrength: 1
-    - _Space: 30
+    - _Space: 10
     - _Spase: 73.59
-    - _Speed: 4
+    - _Speed: 10
     - _Timer: 177.91837
     m_Colors:
     - _AnotherColor: {r: 0, g: 0, b: 0, a: 1}
-    - _Color: {r: 1, g: 0, b: 0, a: 1}
+    - _Color: {r: 1, g: 1, b: 0, a: 1}
     - _Flip: {r: 1, g: 1, b: 1, a: 1}
     - _GlowColor: {r: 0.4716981, g: 0.4716981, b: 0.4716981, a: 1}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}

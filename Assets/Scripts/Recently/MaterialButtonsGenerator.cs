@@ -15,13 +15,13 @@ public class MaterialButtonsGenerator : MonoBehaviour
     GameObject materialButtonPrefab;
     ParameterSliderGenerater sliderGenerater;
     MaterialDatabaseManager materialDatabaseManager;
-    BlockMaterialSelector blockMaterialSelector;
+    BlockSelector blockMaterialSelector;
     void Start()
     {
         materialButtonPrefab = Resources.Load("MaterialButton") as GameObject;
         sliderGenerater = GameObject.Find("ParameterSlidersPanel").GetComponent<ParameterSliderGenerater>();
         materialDatabaseManager = GameObject.Find("MaterialDatabaseManager").GetComponent<MaterialDatabaseManager>();
-        blockMaterialSelector = GameObject.Find("BlockMaterialSelector").GetComponent<BlockMaterialSelector>();
+        blockMaterialSelector = GameObject.Find("BlockMaterialSelector").GetComponent<BlockSelector>();
         GenerateMaterialButtons();
     }
 
@@ -66,14 +66,13 @@ public class MaterialButtonsGenerator : MonoBehaviour
         buttonRectTransform.localScale = Vector2.one;
         buttonRectTransform.anchoredPosition3D = Vector3.zero;
 
-        materialButton.GetComponent<Image>().material = binder.Material;
+        materialButton.GetComponent<Image>().material = new Material(binder.Material);
 
         materialButton.GetComponent<Button>().onClick.AddListener(() => {
-            materialDatabaseManager.InitializeMaterialDatabase<TEnum>(binder);
+            materialDatabaseManager.LoadMaterialDatabase(); //TmpMaterialDatabeseの初期化
+            materialDatabaseManager.InitializeBlockMaterial<TEnum>(binder,blockMaterialSelector.NowBlockNum); //TmpMaterialDatabeseの現在のブロック部分を選択したマテリアルのものに変更する
             sliderGenerater.SetActiveBinder(binder);
             sliderGenerater.GenerateParameterSliders<TEnum>();
-            //materialDatabaseManager.SetBinderToBlock<TEnum>(binder, blockMaterialSelector.NowBlockNum);
-            blockMaterialSelector.SetBlockMaterialDataToSingleBlock<TEnum>();
         });
     }
 }

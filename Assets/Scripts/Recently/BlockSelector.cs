@@ -8,7 +8,7 @@ using UnityEngine;
 using static UnityEngine.Rendering.VolumeComponent;
 
 //今選択中の単一のゲームオブジェクトを管理するクラス
-public class BlockMaterialSelector : MonoBehaviour
+public class BlockSelector : MonoBehaviour
 {
     int nowBlockIndex = 0;
     int[] allprimenumber;
@@ -82,13 +82,15 @@ public class BlockMaterialSelector : MonoBehaviour
 
     public void SetNextBlock()
     {
+        materialDatabaseManager.LoadMaterialDatabase(); //切り替わる前に設定していた情報を消去
         nowBlockIndex++;
         if(nowBlockIndex > allprimenumber.Length-1) nowBlockIndex = 0;
-        SetSingleBlock() ;
+        SetSingleBlock();
     }
 
     public void SetPreviousBlock()
     {
+        materialDatabaseManager.LoadMaterialDatabase();　//切り替わる前に設定していた情報を消去
         nowBlockIndex--;
         if(nowBlockIndex < 0) nowBlockIndex = allprimenumber.Length-1;
         SetSingleBlock() ;
@@ -97,8 +99,13 @@ public class BlockMaterialSelector : MonoBehaviour
     //特定のマテリアルで単一のブロックを初期化する。
     public void SetBlockMaterialDataToSingleBlock<TEnum>() where TEnum : Enum
     {
-        MaterialDatabase materialDatabase = materialDatabaseManager.TmpMaterialDatabase;
+        //保存されているデータベースから直接データを持ってくる。なければ中間のマテリアルを取得
+        MaterialDatabase materialDatabase = PlayerInfoManager.Ins.MaterialDatabase;
+        if(materialDatabase == null) materialDatabase = materialDatabaseManager.MiddleMaterialDatabase;
+
+        //取得したデータベースから現在表示されているブロックのものを取得
         BlockMaterialData blockMaterialData = materialDatabase.GetBlockMaterialData(NowBlockNum);
+
         if (blockMaterialData != null)
         {
             IEnumParametersBinder binder = EnumParameterBinderManager.Binders[blockMaterialData.binderIndex];//現在のマテリアル
