@@ -4,7 +4,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.UI;
 using static UnityEngine.Rendering.VolumeComponent;
 
 //今選択中の単一のゲームオブジェクトを管理するクラス
@@ -12,15 +14,19 @@ public class BlockSelector : MonoBehaviour
 {
     int nowBlockIndex = 0;
     int[] allprimenumber;
+    Transform materialButtonsParent;
     GameObject singleBlockParent;
+    GameObject singleBlock;
     BlockNumberSetter blockNumberSetter;
     MaterialDatabaseManager materialDatabaseManager;
 
     public int NowBlockNum => allprimenumber[nowBlockIndex];
+    public GameObject SingleBlock => singleBlockParent.transform.GetChild(0).gameObject;
 
     private void Start()
     {
         allprimenumber = GameModeManager.Ins.PrimeNumberPool;
+        materialButtonsParent = GameObject.Find("MaterialButtonsPanel").transform;
         singleBlockParent = GameObject.Find("SingleBlockParent");
         blockNumberSetter = GameObject.Find("BlockNumberText").GetComponent<BlockNumberSetter>();
         materialDatabaseManager = GameObject.Find("MaterialDatabaseManager").GetComponent<MaterialDatabaseManager>();
@@ -32,6 +38,7 @@ public class BlockSelector : MonoBehaviour
         InitializeSingleBlockParent();
         GenerateBlock();
         blockNumberSetter.SetBlockNumber(NowBlockNum);
+        InvokeNowBlockMaterialButton();
     }
 
     GameObject GetSingleBlock()
@@ -45,7 +52,6 @@ public class BlockSelector : MonoBehaviour
             Debug.LogError("SingleBlockが取得できませんでした。");
             return null;
         }
-        
     }
 
     void GenerateBlock()
@@ -142,4 +148,18 @@ public class BlockSelector : MonoBehaviour
             Debug.LogError("blockMaterialDataが取得できませんでした。");
         }
     }
+    void InvokeNowBlockMaterialButton()
+    {
+        int nowMaterialIndex = 0;
+        //今表示されているブロックに割り当てられている方のボタンを一度クリックする
+        foreach (var ibinder in EnumParameterBinderManager.Binders)
+        {
+            if (EnumParameterBinderManager.GetBindersIndex(ibinder) == materialDatabaseManager.MiddleMaterialDatabase.GetBlockMaterialData(NowBlockNum).binderIndex)
+            {
+                materialButtonsParent.GetChild(nowMaterialIndex).GetComponent<Button>().onClick.Invoke();
+            }
+            nowMaterialIndex++;
+        }
+    }
+
 }

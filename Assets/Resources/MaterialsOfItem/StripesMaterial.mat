@@ -43,7 +43,7 @@ Material:
     m_Floats:
     - _EnableExternalAlpha: 0
     - _GlowStrength: 1
-    - _Space: 10
+    - _Space: 31.35
     - _Spase: 73.59
     - _Speed: 10
     - _Timer: 177.91837

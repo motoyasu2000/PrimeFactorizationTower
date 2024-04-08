@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using UnityEditor.Experimental.GraphView;
 using UnityEditor.Rendering;
 using UnityEngine;
 using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
@@ -71,24 +72,30 @@ public class MaterialDatabaseManager : MonoBehaviour
     //materialDatabaseの初期化 初回のみ実行されることを想定　
     public void InitializeMaterialDatabase<TEnum>(IEnumParametersBinder ibinder) where TEnum : Enum
     {
-        if (middleMaterialDatabase == null) middleMaterialDatabase = new MaterialDatabase() ;
+        if (middleMaterialDatabase == null) middleMaterialDatabase = PlayerInfoManager.Ins.MaterialDatabase;
+        if(middleMaterialDatabase == null) new MaterialDatabase();
         foreach (var prime in GameModeManager.Ins.PrimeNumberPool)
         {
             if (middleMaterialDatabase.GetBlockMaterialData(prime) == null) InitializeBlockMaterial<TEnum>(ibinder, prime);
         }
     }
 
-    //単一のBlockMaterialを初期化し、tmpMaterialDatabaseに追加 MaterialButtonをタップ時に呼ばれる
+    //現在のマテリアルと押したボタンのマテリアルが一致していなければ単一のBlockMaterialを初期化し、
+    //tmpMaterialDatabaseに追加 MaterialButtonをタップ時に呼ばれる
     public void InitializeBlockMaterial<TEnum>(IEnumParametersBinder ibinder, int prime) where TEnum : Enum
     {
-        BlockMaterialData materialData = new BlockMaterialData() { blockNumber = prime, binderIndex = EnumParameterBinderManager.GetBindersIndex(ibinder) };
-        for (int i = 0; i < Enum.GetValues(ibinder.EnumType).Length; i++)
+        //もし、押されたボタンのbinderが、現在の数字のブロックのbinderと等しくなければ 初期化
+        if (EnumParameterBinderManager.GetBindersIndex(ibinder) != MiddleMaterialDatabase.GetBlockMaterialData(prime).binderIndex)
         {
-            string parameterName = EnumManager.GetStringFromIndex<TEnum>(i);
-            materialData.AddParameter(GenerateParameterData<TEnum>(parameterName));
-            //Debug.Log($"MDB上の 素数: {prime}, パラメーター{parameterName}");
+            BlockMaterialData materialData = new BlockMaterialData() { blockNumber = prime, binderIndex = EnumParameterBinderManager.GetBindersIndex(ibinder) };
+            for (int i = 0; i < Enum.GetValues(ibinder.EnumType).Length; i++)
+            {
+                string parameterName = EnumManager.GetStringFromIndex<TEnum>(i);
+                materialData.AddParameter(GenerateParameterData<TEnum>(parameterName));
+                //Debug.Log($"MDB上の 素数: {prime}, パラメーター{parameterName}");
+            }
+            middleMaterialDatabase.AddBlockMaterial(materialData);
         }
-        middleMaterialDatabase.AddBlockMaterial(materialData);
     }
 
     public void SaveMaterialDatabase()
