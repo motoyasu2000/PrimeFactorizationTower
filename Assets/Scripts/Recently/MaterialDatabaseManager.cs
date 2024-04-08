@@ -15,7 +15,7 @@ public class MaterialDatabaseManager : MonoBehaviour
     static readonly float initColorValue = 0.8f;
     static readonly float initFloatValue = 10f;
 
-    //jsonに保存するまえのマテリアル情報を保存するdatabase
+    //MaterialScene上で設定中の情報を保存するマテリアルデータベース。
     MaterialDatabase middleMaterialDatabase;
     public MaterialDatabase MiddleMaterialDatabase => middleMaterialDatabase;
 

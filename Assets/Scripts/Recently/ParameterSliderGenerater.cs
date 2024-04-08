@@ -14,6 +14,7 @@ public class ParameterSliderGenerater : MonoBehaviour
 {
     static readonly float floatSliderScale = 50; //スライダーは0~1までの値をとるので、それをスケーリングするための定数
     static readonly float floatSliderEpsilon = 0.01f; //スライダーで定めた値はシェーダー内で割り算の式に使う可能性がある。0除算が発生しないようにするために加算する項
+    static readonly float minusAlpha = 0.8f; //スライダーセルのalphaに減算するための定数 1-minusAlphaがスライダーセルのアルファ値として設定される。
     int generateSliderCounter = 0;
     float[] splitAnchorPoints_y = Helper.CalculateSplitAnchorPoints(10); //Start時に反転する
     GameObject parameterSliderCellPrefab;
@@ -107,6 +108,7 @@ public class ParameterSliderGenerater : MonoBehaviour
         parameterData.type = parameterType; //floatかColorか、typeの設定
 
         InitializeSliderValue(sliderType, parameterData, parameterSlider);
+        SetSliderCellColor(sliderType, parameterSliderCell);
 
         //スライダーを動かしたの時のイベントの追加
         parameterSlider.onValueChanged.AddListener((v) => { SetParameterData(v); });
@@ -116,6 +118,7 @@ public class ParameterSliderGenerater : MonoBehaviour
 
         generateSliderCounter++;
 
+        //引数で単一のfloatの変数だけを持つように、GenerateParameterSliderCellメソッド内部に定義。
         void SetParameterData(float value)
         {
             //スライダーによる設定
@@ -126,6 +129,8 @@ public class ParameterSliderGenerater : MonoBehaviour
             else Debug.LogError("予期せぬSlidertypeが呼ばれました。");
         }
     }
+
+    //スライダーのバーの値を現在のマテリアルデータベースの情報で初期化
     void InitializeSliderValue(SliderType sliderType, ParameterData parameterData, Slider slider)
     {
         //スライダーによる設定
@@ -133,6 +138,33 @@ public class ParameterSliderGenerater : MonoBehaviour
         else if (sliderType == SliderType.RedValue) slider.value = parameterData.redValue;
         else if (sliderType == SliderType.GreenValue) slider.value = parameterData.greenValue;
         else if (sliderType == SliderType.BlueValue) slider.value = parameterData.blueValue;
+        else Debug.LogError("予期せぬSlidertypeが呼ばれました。");
+    }
+
+    void SetSliderCellColor(SliderType sliderType, GameObject parameterSliderCell)
+    {
+        Image cellImage = parameterSliderCell.GetComponent<Image>();
+        //スライダーによる設定
+        if (sliderType == SliderType.floatValue)
+        {
+            cellImage.color = Color.black;
+            cellImage.color = cellImage.color - new Color(0, 0, 0, minusAlpha);
+        }
+        else if (sliderType == SliderType.RedValue)
+        {
+            cellImage.color= Color.red;
+            cellImage.color = cellImage.color - new Color(0, 0, 0, minusAlpha);
+        }
+        else if (sliderType == SliderType.GreenValue)
+        {
+            cellImage.color= Color.green;
+            cellImage.color = cellImage.color - new Color(0, 0, 0, minusAlpha);
+        }
+        else if (sliderType == SliderType.BlueValue)
+        {
+            cellImage.color = Color.blue;
+            cellImage.color = cellImage.color - new Color(0, 0, 0, minusAlpha);
+        }
         else Debug.LogError("予期せぬSlidertypeが呼ばれました。");
     }
 
@@ -150,7 +182,7 @@ public class ParameterSliderGenerater : MonoBehaviour
         activeBinder = binder;
     }
 
-    //現在のブロック、現在のスライダーから、parametaerDataを取得する
+    //現在のスライダー、現在のブロックに合ったparametaerDataをmaterialDatabaseから取得する
     ParameterData GetNowStateParameterData<TEnum>(string parameterName) where TEnum : Enum
     {
         MaterialDatabase materialDatabase = materialDatabaseManager.MiddleMaterialDatabase;
@@ -168,7 +200,8 @@ public class ParameterSliderGenerater : MonoBehaviour
             if (materialDatabase.GetBlockMaterialData(blockMaterialSelector.NowBlockNum).GetParameter(parameterEnumindex) == null) Debug.Log("parameter null");
             Debug.LogError("指定したインデックスが存在しませんでした。");
             return new ParameterData();
-
         }
     }
+
+
 }
