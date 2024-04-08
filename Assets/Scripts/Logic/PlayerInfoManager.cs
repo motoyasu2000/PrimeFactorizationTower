@@ -19,6 +19,7 @@ public class PlayerInfoManager : MonoBehaviour
 
     //プロパティ
     public string Name => name;
+    public MaterialDatabase MaterialDatabase => materialDatabase;
 
 
     void Awake()
@@ -37,6 +38,12 @@ public class PlayerInfoManager : MonoBehaviour
     public void SaveName(string name)
     {
         this.name = name;
+        SavePlayerInfo();
+    }
+
+    public void SaveMaterialDatabase(MaterialDatabase md)
+    {
+        materialDatabase = md;
         SavePlayerInfo();
     }
 
@@ -66,6 +73,7 @@ public class PlayerInfoManager : MonoBehaviour
         reader.Close();
         var obj = JsonUtility.FromJson<PlayerInfo>(datastr); //Monobehaviorを継承したクラスではJsonファイルを読み込むことができないため、他のクラスを生成し読み込む
         instance.name = obj.name;
+        instance.materialDatabase = obj.materialDatabase;
     }
 
     class PlayerInfo

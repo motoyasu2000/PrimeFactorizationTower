@@ -19,7 +19,7 @@ public class ParameterSliderGenerater : MonoBehaviour
     GameObject parameterSliderCellPrefab;
     IEnumParametersBinder activeBinder;
     MaterialDatabaseManager materialDatabaseManager;
-    BlockMaterialSelector blockMaterialSelector;
+    BlockSelector blockMaterialSelector;
 
     //ParameterDataのvalue達と同じ並び順だと好ましい
     enum SliderType
@@ -35,7 +35,7 @@ public class ParameterSliderGenerater : MonoBehaviour
         Array.Reverse(splitAnchorPoints_y);
         parameterSliderCellPrefab = Resources.Load("ParameterSliderCell") as GameObject;
         materialDatabaseManager = GameObject.Find("MaterialDatabaseManager").GetComponent<MaterialDatabaseManager>();
-        blockMaterialSelector = GameObject.Find("BlockMaterialSelector").GetComponent<BlockMaterialSelector>();
+        blockMaterialSelector = GameObject.Find("BlockMaterialSelector").GetComponent<BlockSelector>();
     }
 
     //与えられた列挙型に応じて必要な数だけスライダーを生成する
@@ -142,7 +142,7 @@ public class ParameterSliderGenerater : MonoBehaviour
     //現在のブロック、現在のスライダーから、parametaerDataを取得する
     ParameterData GetNowStateParameterData<TEnum>(string parameterName) where TEnum : Enum
     {
-        MaterialDatabase materialDatabase = materialDatabaseManager.TmpMaterialDatabase;
+        MaterialDatabase materialDatabase = materialDatabaseManager.MiddleMaterialDatabase;
         int parameterEnumindex = EnumManager.GetEnumIndexFromString<TEnum>(parameterName);
         //Debug.Log(parameterEnumindex);
         //指定したインデックスが含まれていれば
