@@ -15,13 +15,13 @@ public class MaterialButtonsGenerator : MonoBehaviour
     int generateButtonCounter = 0;
     float[] splitAnchorPoints_x = Helper.CalculateSplitAnchorPoints(EnumParameterBinderManager.BindersCount);
     GameObject materialButtonPrefab;
-    ParameterSliderGenerater sliderGenerater;
+    ParameterSliderGenerator sliderGenerater;
     MaterialDatabaseManager materialDatabaseManager;
     BlockSelector blockSelector;
     void Start()
     {
         materialButtonPrefab = Resources.Load("MaterialButton") as GameObject;
-        sliderGenerater = GameObject.Find("ParameterSlidersPanel").GetComponent<ParameterSliderGenerater>();
+        sliderGenerater = GameObject.Find("ParameterSlidersPanel").GetComponent<ParameterSliderGenerator>();
         materialDatabaseManager = GameObject.Find("MaterialDatabaseManager").GetComponent<MaterialDatabaseManager>();
         blockSelector = GameObject.Find("BlockMaterialSelector").GetComponent<BlockSelector>();
         GenerateMaterialButtons();

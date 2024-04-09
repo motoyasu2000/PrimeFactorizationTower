@@ -10,7 +10,7 @@ using MaterialLibrary;
 using UnityEditor.Rendering;
 
 //マテリアルのパラメーターを調整するスライダーを生成するクラス
-public class ParameterSliderGenerater : MonoBehaviour
+public class ParameterSliderGenerator : MonoBehaviour
 {
     static readonly float floatSliderScale = 50; //スライダーは0~1までの値をとるので、それをスケーリングするための定数(float型のsliderに使用)
     static readonly float floatSliderEpsilon = 0.01f; //スライダーで定めた値はシェーダー内で割り算の式に使う可能性がある。0除算が発生しないようにするために加算する項
