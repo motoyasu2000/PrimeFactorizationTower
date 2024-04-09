@@ -6,14 +6,15 @@ using UnityEngine;
 public class SingleGenerateManager : MonoBehaviour
 {
     const float dropHeightAbovePeak = 3f; //積み木の最高地点から見た相対的な高さ
-    ScoreManager scoreManager;
     GameObject singleBlock;
     Vector3 defaultPoint; //初期位置
+    ScoreManager scoreManager;
     public GameObject SingleBlock => singleBlock;
+    public Vector3 GeneratingPoint => new Vector3(defaultPoint.x, scoreManager.NowHeight + dropHeightAbovePeak, defaultPoint.z);
     private void Awake()
     {
         defaultPoint = transform.position;
-        scoreManager = ScoreManager.ScoreManagerInstance;
+        scoreManager = ScoreManager.Ins;
     }
     private void Update()
     {
@@ -61,7 +62,7 @@ public class SingleGenerateManager : MonoBehaviour
     //ブロックの生成地点をゲームの実行中に変更するメソッド
     void MoveSingleGameObjectPoint()
     {
-        if(scoreManager.NowHeight < Info.CameraTrackingStartHeight) return;
-        transform.position = new Vector3(defaultPoint.x,scoreManager.NowHeight + dropHeightAbovePeak, defaultPoint.z); //最も高いブロックよりより一定数(dropHeightAbovePeak)上にブロックを生成
+        if(scoreManager.NowHeight < GameInfo.CameraTrackingStartHeight) return;
+        transform.position = GeneratingPoint; //最も高いブロックよりより一定数(dropHeightAbovePeak)上にブロックを生成
     }
 }

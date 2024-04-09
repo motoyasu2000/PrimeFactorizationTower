@@ -9,6 +9,7 @@ public class BlockGenerator : MonoBehaviour
     GameObject primeNumberGeneratingPoint;
     GameObject blockField;
     GameObject beforeField;
+    AllBlocksManager allBlocksManager;
     SingleGenerateManager singleGenerateManager;
     TextMeshProUGUI buttonText;
     GameManager gameManager;
@@ -17,16 +18,20 @@ public class BlockGenerator : MonoBehaviour
     {
         primeNumberGeneratingPoint = GameObject.Find("PrimeNumberGeneratingPoint");
         singleGenerateManager = primeNumberGeneratingPoint.GetComponent<SingleGenerateManager>();
-        buttonText = transform.Find("Text").GetComponent<TextMeshProUGUI>();
-        buttonText.text = primeNumber.ToString();
         blockField = GameObject.Find("BlockField");
         beforeField = blockField.transform.Find("BeforeField").gameObject;
+        allBlocksManager = GameObject.Find("AllBlocksManager").GetComponent<AllBlocksManager>();
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        if (transform.Find("Text") != null)
+        {
+            buttonText = transform.Find("Text").GetComponent<TextMeshProUGUI>();
+            buttonText.text = primeNumber.ToString();
+        }
     }
     //ブロックを生成する関数の引数を制御する関数。
     public void GenerateBlock()
     {
-        if (gameManager.GetCompleteNumberFlag()) return; //素数が揃えられている状態であればリターン
+        if (gameManager.IsDropBlockNowTurn) return; //既に現在のターンでブロックがドロップされていたらリターン
         HundleGenerateBlock(primeNumber);
     }
 
@@ -35,6 +40,7 @@ public class BlockGenerator : MonoBehaviour
     {
         //ゲームオブジェクトの生成とその情報をもつインスタンスの取得
         GameObject generateObject = Instantiate(GetPrimeNumberBlock(primeNumber), primeNumberGeneratingPoint.transform.position, GetPrimeNumberBlock(primeNumber).transform.rotation, beforeField.transform);
+        singleGenerateManager.SetSingleGameObject(generateObject);//生成したゲームオブジェクトの情報を、生成できるゲームオブジェクトが常に単一であるように管理するメソッドに入れる。
         BlockInfo blockInfo = generateObject.GetComponent<BlockInfo>();
 
         //ブロックの持つ素数の設定とテキストの切り替え
@@ -45,13 +51,15 @@ public class BlockGenerator : MonoBehaviour
         blockInfo.SetID(IDCounter);
         generateObject.name = $"Block{primeNumber}_{IDCounter}";
         IDCounter++;
+    }
 
-        singleGenerateManager.SetSingleGameObject(generateObject);//生成したゲームオブジェクトの情報を、生成できるゲームオブジェクトが常に単一であるように管理するメソッドに入れる。
+    public void GenerateBlock_HundleAI(int primeNumber)
+    {
+        HundleGenerateBlock(primeNumber);
     }
     GameObject GetPrimeNumberBlock(int primeNumber)
     {
-        //Debug.Log("Block" + primeNumber.ToString());
-        return (GameObject)Resources.Load("Block" + primeNumber.ToString());
+        return allBlocksManager.BlocksDict[primeNumber];
     }
 
     public void SetPrimeNumber(int newPrimeNumber)

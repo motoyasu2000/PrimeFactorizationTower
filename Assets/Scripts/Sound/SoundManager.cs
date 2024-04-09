@@ -11,7 +11,7 @@ public class SoundManager : MonoBehaviour
 {
     //インスタンス
     private static SoundManager instance;
-    public static SoundManager SoundManagerInstance => instance;
+    public static SoundManager Ins => instance;
 
     //保存を行う変数たち、スライダーの値によって変更する
     [SerializeField] float volume_BGM;
@@ -37,6 +37,7 @@ public class SoundManager : MonoBehaviour
     AudioSource bgm_play;
     AudioSource bgm_title;
 
+    //音声データのプロパティ
     public AudioSource VOICE_DONE => voice_done;
     public AudioSource VOICE_CRITERIAMAT => voice_criteriaMet;
     public AudioSource VOICE_FREEZE => voice_freeze;
@@ -171,6 +172,7 @@ public class SoundManager : MonoBehaviour
     //Json形式の音声設定データ(BGM音量・SE音量・ボイス音量)をロードする
     public static void LoadSoundSettingData()
     {
+        //ロード時にデータが存在しなければ、初期値で生成する。
         if (!File.Exists(Application.persistentDataPath + "/SoundSetting.json"))
         {
             float defaultVolume = 0.5f;
@@ -182,7 +184,7 @@ public class SoundManager : MonoBehaviour
         StreamReader reader = new StreamReader(Application.persistentDataPath + "/SoundSetting.json");
         string datastr = reader.ReadToEnd();
         reader.Close();
-        var obj = JsonUtility.FromJson<JsonLoadSoundManager>(datastr); //Monobehaviorを継承したクラスではJsonファイルを読み込むことができないため、他のクラスを生成し読み込む
+        var obj = JsonUtility.FromJson<SoundSettingData>(datastr); //Monobehaviorを継承したクラスではJsonファイルを読み込むことができないため、他のクラスを生成し読み込む
         instance.volume_BGM = obj.volume_BGM;
         instance.volume_SE = obj.volume_SE;
         instance.volume_Voice = obj.volume_Voice;
@@ -190,7 +192,7 @@ public class SoundManager : MonoBehaviour
 }
 
 //Jsonからインスタンスを生成するためのクラス
-class JsonLoadSoundManager
+class SoundSettingData
 {
     public float volume_BGM;
     public float volume_SE;

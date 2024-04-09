@@ -10,6 +10,7 @@ TagManager:
   - UppestUI
   - UnderClickable
   - Button
+  - AICamera
   layers:
   - Default
   - TransparentFX
@@ -17,12 +18,12 @@ TagManager:
   - 
   - Water
   - UI
-  - 
+  - AIBackGround
   - PrimeNumberOrigin
   - PrimeNumberBlock
   - TapEffect
-  - 
-  - 
+  - Ground
+  - CriteriaMet
   - 
   - 
   - 

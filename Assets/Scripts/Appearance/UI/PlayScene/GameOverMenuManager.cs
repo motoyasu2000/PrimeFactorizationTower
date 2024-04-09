@@ -1,0 +1,84 @@
+﻿using TMPro;
+using UnityEngine;
+using Common;
+
+namespace UI
+{
+    //ゲームオーバー時のメニューを管理するクラス
+    public class GameOverMenuManager : MonoBehaviour
+    {
+        int oldMaxScore;
+        int newScore;
+        GameModeManager gameModeManager;
+        GameOverManager gameOverManager;
+        TextMeshProUGUI gameOverReason;
+        GameObject nonUpdateRecord; //スコアを更新しなかった場合のレコードの表示UI
+        GameObject updateRecord; //スコアを更新た場合のレコードの表示UI
+        void Awake()
+        {
+            gameModeManager = GameModeManager.Ins;
+            gameOverManager = GameObject.Find("GameOverManager").GetComponent<GameOverManager>();
+            gameOverReason = GameObject.Find("GameOverReason").GetComponent<TextMeshProUGUI>();
+            //非アクティブなのでtransform.Findで取得
+            nonUpdateRecord = transform.Find("Scores_NonUpdateRecord").gameObject;
+            updateRecord = transform.Find("Scores_UpdateRecord").gameObject;
+
+            PrintGameOverReason();
+            DisplayScoreMenu();
+        }
+
+        //ゲームオーバー時の画面にて、ゲームオーバーになった理由を表示するメソッド
+        void PrintGameOverReason()
+        {
+            switch (gameModeManager.NowGameMode)
+            {
+                //ゲームモードがPileUpであるとき、素因数分解を間違えた場合は、自分の選んだ数字で合成数を割った場合どうなるのかの表示、落下してしまった場合はFellDownと表示をする
+                case GameModeManager.GameMode.PileUp:
+                    if (gameOverManager.BlockNumberAtGameOver != 0) gameOverReason.text = 
+                            $"{gameOverManager.CompositeNumberAtGameOver} " +
+                            $"/ {gameOverManager.BlockNumberAtGameOver} " +
+                            $"= {gameOverManager.CompositeNumberAtGameOver / gameOverManager.BlockNumberAtGameOver}" +
+                            $"...{gameOverManager.CompositeNumberAtGameOver % gameOverManager.BlockNumberAtGameOver}";
+                    else gameOverReason.text = "Fell Down";
+                    break;
+            }
+        }
+
+        //ゲームオーバー時のスコアを表示させるメソッド 最高スコアを更新したか否かで異なるスコアの表示の仕方をする
+        void DisplayScoreMenu()
+        {
+            oldMaxScore = GameInfo.Variables.GetOldMaxScore();
+            newScore = GameInfo.Variables.GetNowScore();
+
+            if (!gameOverManager.IsBreakScore)
+            {
+                nonUpdateRecord.SetActive(true);
+                DisplayNonBreakRecord();
+            }
+            else
+            {
+                updateRecord.SetActive(true);
+                DisplayBreakRecord();
+            }
+
+        }
+
+        //スコアを更新しなかった場合のスコアの表示
+        void DisplayNonBreakRecord()
+        {
+            TextMeshProUGUI newScoreText = nonUpdateRecord.transform.Find("NewScore").GetComponent<TextMeshProUGUI>();
+            TextMeshProUGUI oldScoreText = nonUpdateRecord.transform.Find("OldScore").GetComponent<TextMeshProUGUI>();
+            newScoreText.text = "New Score: " + newScore.ToString();
+            oldScoreText.text = "Max Score: " + oldMaxScore.ToString();
+        }
+
+        //スコアを更新した場合のスコアの表示
+        void DisplayBreakRecord()
+        {
+            TextMeshProUGUI newScoreText = updateRecord.transform.Find("NewScore").GetComponent<TextMeshProUGUI>();
+            TextMeshProUGUI oldScoreText = updateRecord.transform.Find("OldScore").GetComponent<TextMeshProUGUI>();
+            newScoreText.text = newScore.ToString();
+            oldScoreText.text = "Old Max: " + oldMaxScore.ToString();
+        }
+    }
+}

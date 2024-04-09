@@ -200,6 +200,7 @@ GameObject:
   - component: {fileID: 8752291938880664593}
   - component: {fileID: 6720849813796048538}
   - component: {fileID: 428747088044473298}
+  - component: {fileID: 8337498983530687311}
   m_Layer: 7
   m_Name: PrimeNumberOriginOrigin
   m_TagString: PrimeNumberOrigin
@@ -388,5 +389,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5caa9e4ba6715fe41920e7fdc212c771, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8337498983530687311
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 398697902959395074}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3dbec160f0b82224c8997a2ad35d6cb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

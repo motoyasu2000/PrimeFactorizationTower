@@ -22,20 +22,20 @@ public class CamerasManager : MonoBehaviour
         downerUITransform = GameObject.Find("DownerUI").GetComponent<RectTransform>();
         downerUI_MAXY = downerUITransform.anchorMax.y;
         position_defo = transform.position;
-        scoreManager = ScoreManager.ScoreManagerInstance;
+        scoreManager = ScoreManager.Ins;
         mainCamera = Camera.main;
         UICamera = transform.Find("UICamera").GetComponent<Camera>();
         orthographicSize_defo = mainCamera.orthographicSize;
 
-        Debug.Log(downerUI_MAXY);
+        //Debug.Log(downerUI_MAXY);
     }
     void Update()
     {
         //playSceneでなかったり、特定の高さ以上になっていない場合は処理を行わない。
         if (SceneManager.GetActiveScene().name != "PlayScene") return;
-        if (Info.CameraTrackingStartHeight > scoreManager.NowHeight) return;
+        if (GameInfo.CameraTrackingStartHeight > scoreManager.NowHeight) return;
 
-        float moveingDistance = scoreManager.NowHeight - Info.CameraTrackingStartHeight; //開始高度からの移動距離
+        float moveingDistance = scoreManager.NowHeight - GameInfo.CameraTrackingStartHeight; //開始高度からの移動距離
         float newOrthographicSize = moveingDistance + orthographicSize_defo; //新たなカメラの大きさ
         mainCamera.orthographicSize = newOrthographicSize;
         UICamera.orthographicSize = newOrthographicSize; //UICameraの大きさも変更しないと、mainCameraが大きくなるにつれ、UIが相対的に小さくなっていってしまう。

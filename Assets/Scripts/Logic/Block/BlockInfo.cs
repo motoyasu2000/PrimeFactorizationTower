@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System.Collections;
+using UnityEngine.SceneManagement;
 
 //素数ブロックに関わる情報や、操作を行うクラス。素数ブロックにアタッチされている。
 public class BlockInfo : MonoBehaviour
@@ -22,9 +24,9 @@ public class BlockInfo : MonoBehaviour
         primeNumberText = transform.Find("PrimeNumberText").GetComponent<TextMeshPro>();
         rb2D = GetComponent<Rigidbody2D>();
         myCollider = GetComponent<Collider2D>();
-        network = GameObject.Find("Network").GetComponent<Network>();
+        if(SceneManager.GetActiveScene().name =="PlayScene") network = GameObject.Find("Network").GetComponent<Network>();
         SetText();
-        SetShader();
+        //SetShader();
     }
 
     //クリックするとkinematicからdynamicに変化するようにする。
@@ -38,6 +40,14 @@ public class BlockInfo : MonoBehaviour
     public void SetText()
     {
         primeNumberText.text = myPrimeNumber.ToString();
+    }
+
+    //シェーダーのMainColorをこのスプライトの色に変更する
+    public void SetShader()
+    {
+        SpriteRenderer renderer = GetComponent<SpriteRenderer>();
+        //if(もし初期設定であれば)
+        renderer.material.SetColor("_Color", renderer.color);
     }
 
     //自分自身の番号を設定するクラス。ブロックを生成するボタンによって指定される。
@@ -66,8 +76,9 @@ public class BlockInfo : MonoBehaviour
         neighborEdge = null;
     }
 
-    public void EnableCollider()
+    public IEnumerator EnableCollider()
     {
+        yield return new WaitForEndOfFrame();
         myCollider.enabled = true;
     }
 
@@ -133,14 +144,6 @@ public class BlockInfo : MonoBehaviour
         {
             return false;
         }
-    }
-
-    private void SetShader()
-    {
-        Color myColor = GetComponent<SpriteRenderer>().color;
-        GetComponent<SpriteRenderer>().material.SetColor("_GlowColor", myColor);
-        GetComponent<SpriteRenderer>().material.SetColor("_Color", myColor);
-        //Debug.Log($"{GetComponent<SpriteRenderer>().material.GetColor("_GlowColor")}");
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
