@@ -18,11 +18,13 @@ namespace MaterialLibrary {
             return $"{materialsPass}/{materialName}";
         }
 
+
+
+        //特定のマテリアルのパスを返す
         public static string GetStripesMaterialName()
         {
             return GetMaterialPass(stripesMaterialName);
         }
-
         public static string GetDefaultBlocksMaterialName()
         {
             return GetMaterialPass(defaultBlocksMaterialItem);

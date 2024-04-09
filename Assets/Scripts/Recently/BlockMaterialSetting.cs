@@ -1,10 +1,11 @@
-using Common;
+ï»¿using Common;
 using MaterialLibrary;
 using System;
 using System.Reflection;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+//å…¨ã¦ã®ãƒ–ãƒ­ãƒƒã‚¯ã«ã‚¢ã‚¿ãƒƒãƒã•ã‚Œã¦ã„ã‚‹ã‚¯ãƒ©ã‚¹ã€‚Startã§materialDatabaseã‹ã‚‰ãƒãƒ†ãƒªã‚¢ãƒ«æƒ…å ±ã‚’ãƒ­ãƒ¼ãƒ‰ã—ã¦è‡ªèº«ã®ãƒãƒ†ãƒªã‚¢ãƒ«ã«å‰²ã‚Šå½“ã¦ã‚‹ã€‚
 public class BlockMaterialSetting : MonoBehaviour
 {
     MaterialDatabase materialDatabase;
@@ -12,18 +13,18 @@ public class BlockMaterialSetting : MonoBehaviour
 
     void Start()
     {
-        //\ƒ}ƒeƒŠƒAƒ‹ƒf[ƒ^[ƒx[ƒX‚ğplayerinfo‚©‚çæ“¾
+        //\ãƒãƒ†ãƒªã‚¢ãƒ«ãƒ‡ãƒ¼ã‚¿ãƒ¼ãƒ™ãƒ¼ã‚¹ã‚’playerinfoã‹ã‚‰å–å¾—
         blockInfo = GetComponent<BlockInfo>();
         materialDatabase = PlayerInfoManager.Ins.MaterialDatabase;
         if (materialDatabase == null) return;
         if (materialDatabase.blockMaterials == null) return;
         if (materialDatabase.blockMaterials.Count == 0) return;
 
-        //ƒ}ƒeƒŠƒAƒ‹‚Ìæ“¾‚ÆA‚»‚Ìİ’è‚ğ•Û‘¶‚µ‚Ä‚¢‚½ƒf[ƒ^‚©‚ç“Ç‚İæ‚Á‚ÄA“KØ‚É”½‰f‚·‚éB
+        //ãƒãƒ†ãƒªã‚¢ãƒ«ã®å–å¾—ã¨ã€ãã®è¨­å®šã‚’ä¿å­˜ã—ã¦ã„ãŸãƒ‡ãƒ¼ã‚¿ã‹ã‚‰èª­ã¿å–ã£ã¦ã€é©åˆ‡ã«åæ˜ ã™ã‚‹ã€‚
         IEnumParametersBinder binder = EnumParameterBinderManager.Binders[materialDatabase.GetBlockMaterialData(blockInfo.GetPrimeNumber()).binderIndex];
         Type dynamicEnumType = binder.EnumType;
 
-        //ƒWƒFƒlƒŠƒbƒN‚Å—ñ‹“Œ^‚ğw’è‚·‚éƒƒ\ƒbƒh‚ğƒŠƒtƒŒƒNƒVƒ‡ƒ“‚Åæ“¾‚µAƒWƒFƒlƒŠƒbƒN‚ğ“®“I‚Éw’è
+        //ã‚¸ã‚§ãƒãƒªãƒƒã‚¯ã§åˆ—æŒ™å‹ã‚’æŒ‡å®šã™ã‚‹ãƒ¡ã‚½ãƒƒãƒ‰ã‚’ãƒªãƒ•ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³ã§å–å¾—ã—ã€ã‚¸ã‚§ãƒãƒªãƒƒã‚¯ã‚’å‹•çš„ã«æŒ‡å®š
         MethodInfo setPropertyFloatMethod = typeof(IEnumParametersBinder).GetMethod("SetPropertyFloat");
         MethodInfo setPropertyColorMethod = typeof(IEnumParametersBinder).GetMethod("SetPropertyColor");
         MethodInfo getEnumValueFromIndexMethod = typeof(EnumManager).GetMethod("GetEnumValueFromIndex");
@@ -31,14 +32,14 @@ public class BlockMaterialSetting : MonoBehaviour
         MethodInfo genericSetPropertyColorMethod = setPropertyColorMethod.MakeGenericMethod(dynamicEnumType);
         MethodInfo genericGetEnumValueFromIndexMethod = getEnumValueFromIndexMethod.MakeGenericMethod(dynamicEnumType);
 
-        //‘S‚Ä‚Ìƒpƒ‰ƒ[ƒ^[‚ğƒf[ƒ^[ƒx[ƒX‚©‚çó‚¯æ‚Á‚½‚à‚Ì‚É•ÏX
+        //å…¨ã¦ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ãƒ¼ã‚’ãƒ‡ãƒ¼ã‚¿ãƒ¼ãƒ™ãƒ¼ã‚¹ã‹ã‚‰å—ã‘å–ã£ãŸã‚‚ã®ã«å¤‰æ›´
         foreach (var parameter in materialDatabase.GetBlockMaterialData(blockInfo.GetPrimeNumber()).parameters)
         {
             object enumValue = null;
-            //Enum‚ÌƒCƒ“ƒfƒbƒNƒX‚©‚çEnum‚Ì’l‚ğ“®“I‚Éæ“¾
+            //Enumã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‹ã‚‰Enumã®å€¤ã‚’å‹•çš„ã«å–å¾—
             enumValue = genericGetEnumValueFromIndexMethod.Invoke(null, new object[] { parameter.parameterEnumIndex });
 
-            //“Ç‚İæ‚Á‚½ƒ}ƒeƒŠƒAƒ‹ƒf[ƒ^ƒx[ƒX‚Ìî•ñ‚©‚çbinder‚Ìƒ}ƒeƒŠƒAƒ‹‚ÌXVB
+            //èª­ã¿å–ã£ãŸãƒãƒ†ãƒªã‚¢ãƒ«ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ã®æƒ…å ±ã‹ã‚‰binderã®ãƒãƒ†ãƒªã‚¢ãƒ«ã®æ›´æ–°ã€‚
             if (parameter.type == 0)
             {
                 genericSetPropertyFloatMethod.Invoke(binder, new object[] { enumValue, parameter.floatValue });
@@ -50,7 +51,7 @@ public class BlockMaterialSetting : MonoBehaviour
             }
             else
             {
-                Debug.LogError($"‘z’èŠO‚Ìtype‚ªw’è‚³‚ê‚Ü‚µ‚½B: {parameter.type}");
+                Debug.LogError($"æƒ³å®šå¤–ã®typeãŒæŒ‡å®šã•ã‚Œã¾ã—ãŸã€‚: {parameter.type}");
             }
         }
         GetComponent<SpriteRenderer>().material = new Material(binder.Material);

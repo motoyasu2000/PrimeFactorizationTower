@@ -6,19 +6,18 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-//今選択中の単一のゲームオブジェクトを管理するクラス
+//マテリアルを設定するシーン内で、どのブロックを選択するのかを指定したり、そのブロックに対して色を割り当てたりするクラス。
 public class BlockSelector : MonoBehaviour
 {
     int nowBlockIndex = 0;
     int[] allprimenumber;
     Transform materialButtonsParent;
     GameObject singleBlockParent;
-    GameObject singleBlock;
     BlockNumberSetter blockNumberSetter;
     MaterialDatabaseManager materialDatabaseManager;
 
+    //現在選ばれているブロックの数値
     public int NowBlockNum => allprimenumber[nowBlockIndex];
-    public GameObject SingleBlock => singleBlockParent.transform.GetChild(0).gameObject;
 
     private void Start()
     {
@@ -27,9 +26,10 @@ public class BlockSelector : MonoBehaviour
         singleBlockParent = GameObject.Find("SingleBlockParent");
         blockNumberSetter = GameObject.Find("BlockNumberText").GetComponent<BlockNumberSetter>();
         materialDatabaseManager = GameObject.Find("MaterialDatabaseManager").GetComponent<MaterialDatabaseManager>();
-        SetSingleBlock();
+        SetSingleBlock(); //実行時にブロックを配置
     }
 
+    //今何のブロックが選ばれているのかを指定するメソッド。
     void SetSingleBlock()
     {
         InitializeSingleBlockParent();
@@ -38,6 +38,7 @@ public class BlockSelector : MonoBehaviour
         InvokeNowBlockMaterialButton();
     }
 
+    //現在選ばれているブロックを戻す
     GameObject GetSingleBlock()
     {
         if (singleBlockParent.transform.GetChild(0).gameObject)
@@ -51,6 +52,7 @@ public class BlockSelector : MonoBehaviour
         }
     }
 
+    //NowBlockNumに対応するブロックを生成する。
     void GenerateBlock()
     {
         GameObject resourcesBlock = Resources.Load($"Block{NowBlockNum}") as GameObject;
@@ -71,10 +73,12 @@ public class BlockSelector : MonoBehaviour
         blockInfo.SetPrimeNumber(NowBlockNum);
         blockInfo.SetText();
 
+        //親の設定と位置の調整
         nowBlock.transform.SetParent(singleBlockParent.transform);
         nowBlock.transform.localPosition = Vector3.zero;
     }
 
+    //単一のゲームオブジェクトが入る親オブジェクトの子要素を全部消去する。子オブジェクトの追加の際に初期化のために実行される。
     void InitializeSingleBlockParent()
     {
         foreach (Transform block in singleBlockParent.transform) 
@@ -83,6 +87,7 @@ public class BlockSelector : MonoBehaviour
         }
     }
 
+    //次の素数のブロックを生成
     public void SetNextBlock()
     {
         materialDatabaseManager.LoadMaterialDatabase(); //切り替わる前に設定していた情報を消去
@@ -91,6 +96,7 @@ public class BlockSelector : MonoBehaviour
         SetSingleBlock();
     }
 
+    //前の素数のブロックを生成
     public void SetPreviousBlock()
     {
         materialDatabaseManager.LoadMaterialDatabase();　//切り替わる前に設定していた情報を消去
@@ -99,11 +105,10 @@ public class BlockSelector : MonoBehaviour
         SetSingleBlock() ;
     }
 
-    //特定のマテリアルで単一のブロックを初期化する。
+    //現在選択中のブロックのマテリアルを設定する
     public void SetBlockMaterialDataToSingleBlock<TEnum>() where TEnum : Enum
     {
         //中間のマテリアルを取得
-
         MaterialDatabase materialDatabase = materialDatabaseManager.MiddleMaterialDatabase;
 
         //取得したデータベースから現在表示されているブロックのものを取得
@@ -115,7 +120,6 @@ public class BlockSelector : MonoBehaviour
 
             foreach (ParameterData parameter in blockMaterialData.parameters)
             {
-                //Debug.Log($"パラメータータイプ: {parameter.type}, パラメータープロパティインデックス: {parameter.parameterEnumIndex}");
                 //float型のパラメーター
                 if (parameter.type == 0)
                 {
@@ -133,26 +137,30 @@ public class BlockSelector : MonoBehaviour
                 {
                     Debug.LogError($"想定外のtypeが指定されました。: {parameter.type}");
                 }
-                //Debug.Log($"パラメータータイプ: {parameter.type}, パラメータープロパティインデックス: {parameter.parameterEnumIndex}");
             }
+
+            //現在選択されているブロックを取得して、実際にマテリアルを適用する
             GameObject singleBlock = GetSingleBlock();
             SpriteRenderer spriteRenderer = singleBlock.GetComponent<SpriteRenderer>();
             spriteRenderer.material = new Material(binder.Material);
-
         }
         else
         {
             Debug.LogError("blockMaterialDataが取得できませんでした。");
         }
     }
+    //初期化のために現在選択中のブロックに割り当てられているマテリアルに対応したMaterialButtonをクリックする。
     void InvokeNowBlockMaterialButton()
     {
         int nowMaterialIndex = 0;
-        //今表示されているブロックに割り当てられている方のボタンを一度クリックする
+
+        //全てのマテリアルを検索して
         foreach (var ibinder in EnumParameterBinderManager.Binders)
         {
+            //現在の選択中のブロックのマテリアルのMaterialButtonがあれば
             if (EnumParameterBinderManager.GetBindersIndex(ibinder) == materialDatabaseManager.MiddleMaterialDatabase.GetBlockMaterialData(NowBlockNum).binderIndex)
             {
+                //そのMaterialButtonをクリックする。
                 Button materialButton = materialButtonsParent.GetChild(nowMaterialIndex).GetComponent<Button>();
                 materialButton.onClick.Invoke();
             }

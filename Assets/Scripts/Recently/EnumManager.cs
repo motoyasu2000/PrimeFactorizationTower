@@ -7,10 +7,13 @@ namespace Common {
     //Enum型を外から便利に扱うためのクラス
     public static class EnumManager
     {
+        //インデックスからEnum型の値の文字列を取得
         public static string GetStringFromIndex<TEnum>(int index) where TEnum : Enum
         {
             return $"{(GetEnumValueFromIndex<TEnum>(index))}";
         }
+
+        //インデックスからEnum型の値を取得
         public static TEnum GetEnumValueFromIndex<TEnum>(int index) where TEnum : Enum
         {
             return (TEnum)Enum.GetValues(typeof(TEnum)).GetValue(index);

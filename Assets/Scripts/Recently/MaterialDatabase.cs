@@ -8,7 +8,7 @@ using System.Reflection;
 using UnityEngine;
 using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
 
-//全てのブロックの情報を保存するためのクラス
+//全てのブロックのに割り当てるマテリアルや、そのパラメーターの情報を保存するためのクラス
 [System.Serializable]
 public class MaterialDatabase
 {
@@ -23,7 +23,7 @@ public class MaterialDatabase
             blockMaterials.Add(new BlockMaterialData(blockMaterial));
         }
     }
-    //ブロックマテリアルを追加するためのメソッド
+    //BlockMaterialDataを追加する
     public void AddBlockMaterial(BlockMaterialData newBlockMaterial)
     {
         //重複している要素があれば削除
@@ -33,11 +33,13 @@ public class MaterialDatabase
         blockMaterials.Add(newBlockMaterial);
     }
 
+    //BlockMaterialDataをブロックの番号から取得する
     public BlockMaterialData GetBlockMaterialData(int blockNum)
     {
         return blockMaterials.Find(b => b.blockNumber == blockNum);
     }
 
+    //中身の表示
     public void PrintMaterialDatabase()
     {
         foreach (var blockMaterial in blockMaterials)
@@ -72,7 +74,7 @@ public class BlockMaterialData
         }
     }
 
-    //パラメーター情報を追加するためのメソッド
+    //ParameterData情報の追加
     public void AddParameter(ParameterData newParameterData)
     {
         //重複している設定は消去
@@ -82,6 +84,7 @@ public class BlockMaterialData
         parameters.Add(newParameterData);
     }
 
+    //ParameterDataをparameterEnumIndexを使って取得
     public ParameterData GetParameter(int parameterEnumIndex)
     {
         return parameters.Find(p => p.parameterEnumIndex == parameterEnumIndex);
@@ -92,7 +95,7 @@ public class BlockMaterialData
 [System.Serializable]
 public class ParameterData
 {
-    public int parameterEnumIndex;
+    public int parameterEnumIndex;//BlocksMaterialPropertyの値
     public int type; //パラメーターの型を表す（0: float, 1: Color,）
     public float floatValue;
 

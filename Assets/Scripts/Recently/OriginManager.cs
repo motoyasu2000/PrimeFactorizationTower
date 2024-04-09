@@ -5,17 +5,21 @@ using TMPro;
 using UI;
 using UnityEngine;
 
+//画面上部に表示される数字、Originを管理するクラス
 public class OriginManager : MonoBehaviour
 {
+    //初めての生成かどうか(初めての生成の場合はNextも生成するために、2回生成する必要がある。)
     bool isFirstGeneration = true;
 
-    //キーが素数、バリューがその素数の数の辞書の生成
-    Dictionary<int, int> startOriginNumberDict = new Dictionary<int, int>();
-    Dictionary<int, int> currentOriginNumberDict = new Dictionary<int, int>();
-    Dictionary<int, int> originNextNumberDict = new Dictionary<int, int>();
+    //キーが素数、バリューがその素数の数の辞書
+    Dictionary<int, int> startOriginNumberDict = new Dictionary<int, int>(); //生成されたときの初めのもの
+    Dictionary<int, int> currentOriginNumberDict = new Dictionary<int, int>(); //ブロックを生成してその分減少したもの
+    Dictionary<int, int> originNextNumberDict = new Dictionary<int, int>(); //ネクストのもの
     public Dictionary<int, int> StartoriginNumberDict => startOriginNumberDict;
     public Dictionary<int,int> CurrentOriginNumberDict => currentOriginNumberDict;
     public Dictionary<int, int> OriginNextNumberDict => originNextNumberDict;
+
+    //上の辞書を数値に変換したもの
     public int OriginNumber => Helper.CalculateCompsiteNumberForDict(startOriginNumberDict);
     public int CurrentOriginNumber => Helper.CalculateCompsiteNumberForDict(currentOriginNumberDict);
     public int OriginNextNumber => Helper.CalculateCompsiteNumberForDict(originNextNumberDict);
@@ -33,7 +37,8 @@ public class OriginManager : MonoBehaviour
 
     private void Update()
     {
-        if(upperUIManager.OriginNumberText.text == "1")
+        //今の数値が1なら、つまり素因数分解し終えたなら
+        if(CurrentOriginNumber == 1)
         {
             GenerateOrigin();
         }
@@ -77,6 +82,7 @@ public class OriginManager : MonoBehaviour
         }
     }
 
+    //現在のOriginを扱う辞書をから引数で指定したprimeNumberを一つ減らす
     public void RemovePrimeCurrentOriginNumberDict(int primeNumber)
     {
         if (currentOriginNumberDict.ContainsKey(primeNumber))

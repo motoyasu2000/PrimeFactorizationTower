@@ -9,10 +9,11 @@ using TMPro;
 using UnityEngine.UI;
 using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
 
+//MaterialSceneでマテリアルを選択するためのボタンを生成するクラス
 public class MaterialButtonsGenerator : MonoBehaviour
 {
     int generateButtonCounter = 0;
-    float[] splitAnchorPoints_x = Helper.CalculateSplitAnchorPoints(EnumParameterBinderManager.bindersCount);
+    float[] splitAnchorPoints_x = Helper.CalculateSplitAnchorPoints(EnumParameterBinderManager.BindersCount);
     GameObject materialButtonPrefab;
     ParameterSliderGenerater sliderGenerater;
     MaterialDatabaseManager materialDatabaseManager;

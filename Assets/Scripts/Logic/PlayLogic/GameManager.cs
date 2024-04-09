@@ -222,7 +222,7 @@ public class GameManager : MonoBehaviour
         if(allBlocksStandingStillTimer > changeTurnTime && isDropBlockNowTurn)
         {
             //ターンを切り替えて
-            TurnMangaer.NextTurn();
+            TurnMangaer.ChangeNextTurn();
 
             //初期化
             allBlocksStandingStillTimer = 0;
