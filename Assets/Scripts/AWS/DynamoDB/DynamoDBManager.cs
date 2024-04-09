@@ -28,12 +28,17 @@ namespace AWS
         string playerID;
         AmazonDynamoDBClient client;
         DynamoDBContext context;
-        public void Initialize(AmazonDynamoDBClient client, CognitoAWSCredentials cognitoAWSCredentials)
+        public async void Initialize(AmazonDynamoDBClient client, CognitoAWSCredentials cognitoAWSCredentials)
         {
             context = new DynamoDBContext(client);
             this.client = client;
             playerID = cognitoAWSCredentials.GetCachedIdentityId();
-            //Debug.Log(playerID);
+            //Debug.Log(playerID)
+
+            //テスト用
+            //await SaveScoreAsync($"PileUp_Normal", 1000, "aa", "aiueo");
+            //await SaveScoreAsync($"PileUp_Normal", 2000, "bb", "kakikukeko");
+            //await SaveScoreAsync($"PileUp_Normal", 3000, "bb", "kakikukeko");
         }
 
          public async Task SaveScoreAsyncHandler(string modeAndLevel, int newScore)
@@ -47,7 +52,7 @@ namespace AWS
             try
             {
                 int oldScore = 0;
-                PlayerScoreRecord playerScoreRecord = await GetRecordAsync(modeAndLevel);
+                PlayerScoreRecord playerScoreRecord = await GetRecordAsync(modeAndLevel,playerID);
                 oldScore = playerScoreRecord.Score;
                 //新しいスコアが既存のスコアを上回っていたら、スコアを更新する。
                 if (newScore > oldScore)
@@ -91,7 +96,7 @@ namespace AWS
 
         //引数で指定されたモードに対するrecordをDynamoDBから非同期で取得する。(Task型で戻す)
         //SaveScoreAsyncメソッドによってスコア更新の際に呼び出される。
-        public Task<PlayerScoreRecord> GetRecordAsync(string modeAndLevel)
+        public Task<PlayerScoreRecord> GetRecordAsync(string modeAndLevel, string playerID)
         {
             var tcs = new TaskCompletionSource<PlayerScoreRecord>();
 

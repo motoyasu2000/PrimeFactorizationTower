@@ -1,13 +1,10 @@
 ﻿using Common;
 using MaterialLibrary;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Reflection;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
-using static UnityEngine.Rendering.VolumeComponent;
 
 //今選択中の単一のゲームオブジェクトを管理するクラス
 public class BlockSelector : MonoBehaviour
@@ -105,9 +102,9 @@ public class BlockSelector : MonoBehaviour
     //特定のマテリアルで単一のブロックを初期化する。
     public void SetBlockMaterialDataToSingleBlock<TEnum>() where TEnum : Enum
     {
-        //保存されているデータベースから直接データを持ってくる。なければ中間のマテリアルを取得
-        MaterialDatabase materialDatabase = PlayerInfoManager.Ins.MaterialDatabase;
-        if(materialDatabase == null) materialDatabase = materialDatabaseManager.MiddleMaterialDatabase;
+        //中間のマテリアルを取得
+
+        MaterialDatabase materialDatabase = materialDatabaseManager.MiddleMaterialDatabase;
 
         //取得したデータベースから現在表示されているブロックのものを取得
         BlockMaterialData blockMaterialData = materialDatabase.GetBlockMaterialData(NowBlockNum);
@@ -156,7 +153,8 @@ public class BlockSelector : MonoBehaviour
         {
             if (EnumParameterBinderManager.GetBindersIndex(ibinder) == materialDatabaseManager.MiddleMaterialDatabase.GetBlockMaterialData(NowBlockNum).binderIndex)
             {
-                materialButtonsParent.GetChild(nowMaterialIndex).GetComponent<Button>().onClick.Invoke();
+                Button materialButton = materialButtonsParent.GetChild(nowMaterialIndex).GetComponent<Button>();
+                materialButton.onClick.Invoke();
             }
             nowMaterialIndex++;
         }

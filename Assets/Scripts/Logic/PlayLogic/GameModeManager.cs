@@ -80,6 +80,18 @@ public class GameModeManager : MonoBehaviour
         return null;
     }
 
+    //引数で与えられた素数から、その素数のインデックスを返す　見つからなければ-1
+    public int GetPrimeNumberPoolIndex(int primeNumber)
+    {
+        int primeNumberPoolIndex = 0;
+        foreach(var nowPrimeNumber in primeNumberPool)
+        {
+            if(nowPrimeNumber == primeNumber) return primeNumberPoolIndex;
+        }
+        primeNumberPoolIndex++;
+        return -1;
+    }
+
     public void ChangeDifficultyLevel(DifficultyLevel newDifficultyLevel)
     {
         instance.nowDifficultyLevel = newDifficultyLevel;
