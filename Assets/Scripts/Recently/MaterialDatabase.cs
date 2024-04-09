@@ -14,6 +14,15 @@ public class MaterialDatabase
 {
     public List<BlockMaterialData> blockMaterials = new List<BlockMaterialData>();
 
+    public MaterialDatabase() { }
+    public MaterialDatabase(MaterialDatabase materialDatabase)
+    {
+        this.blockMaterials = new List<BlockMaterialData>();
+        foreach(var blockMaterial in materialDatabase.blockMaterials)
+        {
+            blockMaterials.Add(new BlockMaterialData(blockMaterial));
+        }
+    }
     //ブロックマテリアルを追加するためのメソッド
     public void AddBlockMaterial(BlockMaterialData newBlockMaterial)
     {
@@ -50,6 +59,19 @@ public class BlockMaterialData
     public string materialPath;
     public List<ParameterData> parameters = new List<ParameterData>();
 
+    public BlockMaterialData() { }
+    public BlockMaterialData(BlockMaterialData other)
+    {
+        this.blockNumber = other.blockNumber;
+        this.binderIndex = other.binderIndex;
+        this.materialPath = other.materialPath;
+        this.parameters = new List<ParameterData>();
+        foreach(var parameter in other.parameters)
+        {
+            this.parameters.Add(new ParameterData(parameter));
+        }
+    }
+
     //パラメーター情報を追加するためのメソッド
     public void AddParameter(ParameterData newParameterData)
     {
@@ -78,4 +100,15 @@ public class ParameterData
     public float redValue;
     public float greenValue;
     public float blueValue;
+
+    public ParameterData() { }
+    public ParameterData(ParameterData other)
+    {
+        this.parameterEnumIndex = other.parameterEnumIndex;
+        this.type = other.type;
+        this.floatValue = other.floatValue;
+        this.redValue = other.redValue;
+        this.greenValue = other.greenValue;
+        this.blueValue = other.blueValue;
+    }
 }

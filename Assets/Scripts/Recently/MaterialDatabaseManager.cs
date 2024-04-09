@@ -1,14 +1,8 @@
 ﻿using Common;
 using MaterialLibrary;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using UnityEditor.Experimental.GraphView;
-using UnityEditor.Rendering;
 using UnityEngine;
-using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
 
 public class MaterialDatabaseManager : MonoBehaviour
 {
@@ -84,8 +78,8 @@ public class MaterialDatabaseManager : MonoBehaviour
     //tmpMaterialDatabaseに追加 MaterialButtonをタップ時に呼ばれる
     public void InitializeBlockMaterial<TEnum>(IEnumParametersBinder ibinder, int prime) where TEnum : Enum
     {
-        //もし、押されたボタンのbinderが、現在の数字のブロックのbinderと等しくなければ 初期化
-        if (EnumParameterBinderManager.GetBindersIndex(ibinder) != MiddleMaterialDatabase.GetBlockMaterialData(prime).binderIndex)
+        //もし、押されたボタンのbinderが、現在の数字のブロックのbinderと等しくなければ、もしくはそもそも現在の数字がMiddleMaterialDatabase上に存在しなければ 初期化
+        if ((MiddleMaterialDatabase.GetBlockMaterialData(prime) == null) || (EnumParameterBinderManager.GetBindersIndex(ibinder) != MiddleMaterialDatabase.GetBlockMaterialData(prime).binderIndex))
         {
             BlockMaterialData materialData = new BlockMaterialData() { blockNumber = prime, binderIndex = EnumParameterBinderManager.GetBindersIndex(ibinder) };
             for (int i = 0; i < Enum.GetValues(ibinder.EnumType).Length; i++)
@@ -105,7 +99,7 @@ public class MaterialDatabaseManager : MonoBehaviour
 
     public void LoadMaterialDatabase()
     {
-        middleMaterialDatabase = PlayerInfoManager.Ins.MaterialDatabase;
+        middleMaterialDatabase = new MaterialDatabase(PlayerInfoManager.Ins.MaterialDatabase);
         if (middleMaterialDatabase == null || middleMaterialDatabase.blockMaterials == null || middleMaterialDatabase.blockMaterials.Count == 0) InitializeMaterialDatabase<DefaultBlocksMaterialProperty>(new DefaultMaterialEnumBinder());
     }
 }

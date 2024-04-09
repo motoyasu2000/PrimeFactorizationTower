@@ -74,6 +74,7 @@ public class MaterialButtonsGenerator : MonoBehaviour
             sliderGenerater.SetActiveBinder(ibinder);
             materialDatabaseManager.InitializeBlockMaterial<TEnum>(ibinder, blockSelector.NowBlockNum); //TmpMaterialDatabeseの現在のブロック部分を選択したマテリアルのものに変更する;
             sliderGenerater.GenerateParameterSliders<TEnum>();
+            blockSelector.SetBlockMaterialDataToSingleBlock<TEnum>();
         });
     }
 }
