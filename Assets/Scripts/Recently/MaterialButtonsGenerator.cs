@@ -1,13 +1,9 @@
 ﻿using Common;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using MaterialLibrary;
 using System;
 using System.Reflection;
-using TMPro;
 using UnityEngine.UI;
-using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
 
 //MaterialSceneでマテリアルを選択するためのボタンを生成するクラス
 public class MaterialButtonsGenerator : MonoBehaviour

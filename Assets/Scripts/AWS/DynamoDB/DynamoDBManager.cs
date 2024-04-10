@@ -6,9 +6,6 @@ using System.Threading.Tasks;
 using UnityEngine;
 using Amazon.DynamoDBv2.Model;
 using Amazon.CognitoIdentity;
-using static Unity.VisualScripting.Member;
-using UnityEngine.SocialPlatforms.Impl;
-using System.Linq;
 //※dynamoDBのapiをたたくのは初めてでデータベースの操作も不慣れのため、勉強のメモ用のコメントが多くなっております。
 //コメントがぐちゃぐちゃで読みにくかったらごめんなさい。
 

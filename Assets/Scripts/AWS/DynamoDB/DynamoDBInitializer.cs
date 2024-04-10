@@ -2,12 +2,8 @@
 using Amazon.CognitoIdentity;
 using Amazon.DynamoDBv2;
 using Amazon.Runtime;
-using System;
-using System.Collections;
 using System.Threading.Tasks;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.SocialPlatforms.Impl;
 namespace AWS
 {
     public class DynamoDBInitializer : MonoBehaviour

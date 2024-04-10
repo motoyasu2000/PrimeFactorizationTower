@@ -3,7 +3,6 @@ using MaterialLibrary;
 using System;
 using System.Reflection;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 //全てのブロックにアタッチされているクラス。StartでmaterialDatabaseからマテリアル情報をロードして自身のマテリアルに割り当てる。
 public class BlockMaterialSetting : MonoBehaviour

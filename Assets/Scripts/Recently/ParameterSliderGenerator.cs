@@ -1,13 +1,9 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Common;
 using UnityEngine.UI;
 using TMPro;
-using System.Linq;
 using MaterialLibrary;
-using UnityEditor.Rendering;
 
 //マテリアルのパラメーターを調整するスライダーを生成するクラス
 public class ParameterSliderGenerator : MonoBehaviour

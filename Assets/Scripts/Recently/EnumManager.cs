@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 namespace Common {
     //Enum型を外から便利に扱うためのクラス
     public static class EnumManager

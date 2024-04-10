@@ -1,8 +1,5 @@
 ﻿using Common;
-using System.Collections;
 using System.Collections.Generic;
-using TMPro;
-using UI;
 using UnityEngine;
 
 //画面上部に表示される数字、Originを管理するクラス

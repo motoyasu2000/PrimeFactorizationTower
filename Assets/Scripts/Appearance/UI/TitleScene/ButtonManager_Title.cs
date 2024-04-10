@@ -1,11 +1,9 @@
 ﻿using AWS;
 using Common;
 using System;
-using System.Collections;
 using System.Linq;
 using System.Threading.Tasks;
 using TMPro;
-using Unity.Sentis.Layers;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;

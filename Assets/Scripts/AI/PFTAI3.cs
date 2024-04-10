@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+ï»¿using System.Collections.Generic;
 using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;
@@ -7,8 +6,9 @@ using UnityEngine;
 
 public class PFTAI3 : Agent
 {
-    static readonly float posXScale = 5.0f; //x•ûŒü‚É‚Ç‚Ì‚­‚ç‚¢L‚­w’è‚Å‚«‚é‚©(-posXScale~posXScale)
-    //Œ»İ‚Ìó‹µ‚Å‘I‚Ô‚×‚«‘f”‚ÌƒXƒRƒAB‚½‚¾‚µƒQ[ƒ€‘¤‚Ì§ŒÀ‚Å‘S‚Ä‚ÌƒL[‚ª¶¬‚Å‚«‚é‚í‚¯‚Å‚Í‚È‚¢‚Ì‚ÅA¶¬‚Å‚«‚é’†‚ÅÅ‚àƒXƒRƒA‚Ì‚‚¢‚à‚Ì‚ğ‘I‘ğ‚·‚éƒƒWƒbƒN‚É‚·‚éB
+    static readonly float posXScale = 5.0f; //xæ–¹å‘ã«ã©ã®ãã‚‰ã„åºƒãæŒ‡å®šã§ãã‚‹ã‹(-posXScale~posXScale)
+    int generatedPrimeNumber; //ç”Ÿæˆã—ãŸç´ æ•°ãŒä½•ã‹
+    //ç¾åœ¨ã®çŠ¶æ³ã§é¸ã¶ã¹ãç´ æ•°ã®ã‚¹ã‚³ã‚¢ã€‚ãŸã ã—ã‚²ãƒ¼ãƒ å´ã®åˆ¶é™ã§å…¨ã¦ã®ã‚­ãƒ¼ãŒç”Ÿæˆã§ãã‚‹ã‚ã‘ã§ã¯ãªã„ã®ã§ã€ç”Ÿæˆã§ãã‚‹ä¸­ã§æœ€ã‚‚ã‚¹ã‚³ã‚¢ã®é«˜ã„ã‚‚ã®ã‚’é¸æŠã™ã‚‹ãƒ­ã‚¸ãƒƒã‚¯ã«ã™ã‚‹ã€‚
     Dictionary<int, float> primeNumberScores = new Dictionary<int, float>();
     AIActions actions;
     OriginManager originManager;
@@ -24,12 +24,18 @@ public class PFTAI3 : Agent
 
     public override void CollectObservations(VectorSensor sensor)
     {
+        //originã®æƒ…å ±ã¨conditionã®æƒ…å ±ã‚’è¦³å¯Ÿ
         AddObservationsOderindependent(conditionManager.ConditionNumberDict, sensor);
         AddObservationsOderindependent(originManager.CurrentOriginNumberDict, sensor);
-        sensor.AddObservation(generateManager.GeneratingPoint);
+
+        //ãƒ–ãƒ­ãƒƒã‚¯ãŒç”Ÿæˆã•ã‚Œã‚‹é«˜ã•ã€ç”Ÿæˆã—ãŸç´ æ•°ã€ãã®ç´ æ•°ã®ç¢ºç‡ã‚’è¦³å¯Ÿã¨ã—ã¦å—ã‘å–ã‚‹
+        sensor.AddObservation(generateManager.GeneratingPoint.y);
+        sensor.AddObservation(generatedPrimeNumber);
+        if(primeNumberScores.ContainsKey(0))sensor.AddObservation(primeNumberScores[actions.GeneratedPrimeNumberIndex]);
+        //Debug.Log(sensor.m_Observations.Count);
     }
 
-    //‚ ‚é‘f”‚É‘Î‰‚·‚éObservation‚Ì”Ô†‚É‚»‚Ì‘f”‚Ì”‚ğ“ü‚ê‚é‚æ‚¤‚É‚µ‚½B
+    //ã‚ã‚‹ç´ æ•°ã«å¯¾å¿œã™ã‚‹Observationã®ç•ªå·ã«ãã®ç´ æ•°ã®æ•°ã‚’å…¥ã‚Œã‚‹ã‚ˆã†ã«ã—ãŸã€‚
     void AddObservationsOderindependent(Dictionary<int, int> dict, VectorSensor sensor)
     {
         foreach (int prime in GameModeManager.Ins.PrimeNumberPool)
@@ -45,20 +51,21 @@ public class PFTAI3 : Agent
         }
     }
 
-    //actionBuffers0~8A‘f”‚Ì‘I‘ğ  actionBuffers9A—‰ºˆÊ’u‚Ì‘I‘ğ
+    //actionBuffers0~8ã€ç´ æ•°ã®é¸æŠ  actionBuffers9ã€è½ä¸‹ä½ç½®ã®é¸æŠ
     public override void OnActionReceived(ActionBuffers actionBuffers)
     {
         for (int i = 0; i < GameModeManager.Ins.PrimeNumberPool.Length; i++)
         {
-            if (i >= 9) Debug.LogError("9ŒÂˆÈã‚Ì‘f”‚ğ¶¬‚µ‚æ‚¤‚Æ‚µ‚Ä‚¢‚Ü‚·‚ªAã‘‚«‚³‚ê‚Ü‚·B");
+            if (i >= 9) Debug.LogError("9å€‹ä»¥ä¸Šã®ç´ æ•°ã‚’ç”Ÿæˆã—ã‚ˆã†ã¨ã—ã¦ã„ã¾ã™ãŒã€ä¸Šæ›¸ãã•ã‚Œã¾ã™ã€‚");
             int primeNumber = GameModeManager.Ins.PrimeNumberPool[i];
             primeNumberScores[primeNumber] = actionBuffers.ContinuousActions[i];
         }
-        //‘S‚Ä‚Ì‘f”‚É‘Î‚µ‚ÄA-1~1‚Ü‚Å‚Ì’l‚ğ‚ ‚Ä‚Í‚ßA¶¬‰Â”\‚È‚à‚Ì‚Ì’†‚ÅAÅ‚à‚‚¢‚à‚Ì‚ğ¶¬‚·‚é
+        //å…¨ã¦ã®ç´ æ•°ã«å¯¾ã—ã¦ã€-1~1ã¾ã§ã®å€¤ã‚’ã‚ã¦ã¯ã‚ã€ç”Ÿæˆå¯èƒ½ãªã‚‚ã®ã®ä¸­ã§ã€æœ€ã‚‚é«˜ã„ã‚‚ã®ã‚’ç”Ÿæˆã™ã‚‹
         actions.GenerateBlock(primeNumberScores);
 
-        //0~315‹‰ñ“]‚·‚éB(0*45‹,1*45‹,2*45‹,...,7*45‹)
-        int spin45Count = actionBuffers.DiscreteActions[GameModeManager.Ins.GetPrimeNumberPoolIndex(actions.GeneratedPrimeNumber)];
+        //0~315Â°å›è»¢ã™ã‚‹ã€‚(0*45Â°,1*45Â°,2*45Â°,...,7*45Â°)
+        generatedPrimeNumber = GameModeManager.Ins.GetPrimeNumberPoolIndex(actions.GeneratedPrimeNumberIndex);
+        int spin45Count = actionBuffers.DiscreteActions[generatedPrimeNumber];
         actions.SpinBlock45SeveralTimes(spin45Count);
 
         //-5.0~5.0
@@ -67,6 +74,6 @@ public class PFTAI3 : Agent
 
         Debug.Log("PrimeNumberScores: " + string.Join(", ", primeNumberScores));
         Debug.Log("Spin45Count: " + spin45Count);
-        Debug.Log("PosX: " + "blockPosX");
+        Debug.Log("PosX: " + blockPosX);
     }
 }

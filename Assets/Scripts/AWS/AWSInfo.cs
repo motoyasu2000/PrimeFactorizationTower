@@ -1,10 +1,5 @@
 ﻿using Amazon;
-using Amazon.CognitoIdentity;
-using Amazon.Runtime;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 //認証に必要な情報やregionの情報、Cognitoの情報など、AWSの操作で用いるための静的な変数を書いとく場所
 namespace AWS

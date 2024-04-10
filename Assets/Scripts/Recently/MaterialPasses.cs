@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-namespace MaterialLibrary {
+﻿namespace MaterialLibrary {
     public static class MaterialPasses
     {
         //マテリアルのパス

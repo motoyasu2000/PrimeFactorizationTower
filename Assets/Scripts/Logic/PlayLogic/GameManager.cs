@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System.IO;
-using Random = UnityEngine.Random;
-using AWS;
 using Common;
 
 //ゲームを管理するクラス。Originの生成や表示、生成されたブロックが条件を満たすかの判定、ゲームオーバーの判定、ターンの管理などなど。
