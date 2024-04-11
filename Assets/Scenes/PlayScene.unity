@@ -133,11 +133,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3459455716592861588, guid: a9ca25860f060f4428a29e3693c49c64, type: 3}
       propertyPath: names.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3459455716592861588, guid: a9ca25860f060f4428a29e3693c49c64, type: 3}
       propertyPath: names.Array.data[1]
-      value: ___AI___
+      value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 7166181246097463014, guid: a9ca25860f060f4428a29e3693c49c64, type: 3}
       propertyPath: m_Name
