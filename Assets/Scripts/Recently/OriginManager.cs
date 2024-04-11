@@ -60,7 +60,7 @@ public class OriginManager : MonoBehaviour
                 break;
 
             case GameModeManager.DifficultyLevel.Insane:
-                originNextNumberDict = Helper.GenerateCompositeNumberDictCustom(gameModeManager.InsanePool, int.MaxValue, 10, 10);
+                originNextNumberDict = Helper.GenerateCompositeNumberDictCustom(gameModeManager.InsanePool, int.MaxValue, 3, 5);
                 break;
         }
 

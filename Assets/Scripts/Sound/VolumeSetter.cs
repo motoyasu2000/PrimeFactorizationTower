@@ -12,6 +12,7 @@ public class VolumeSetter : MonoBehaviour
         sliders[1] = GameObject.Find("SE_Volume").transform.GetChild(0).GetComponent<Slider>(); //SE音量調整スライダー
         sliders[2] = GameObject.Find("Voice_Volume").transform.GetChild(0).GetComponent<Slider>(); //ボイス音量調整スライダー
 
+        //スライダーのvalueの初期化
         if (sliders[0] != null) sliders[0].value = SoundManager.Ins.Volume_BGM;
         if (sliders[1] != null) sliders[1].value = SoundManager.Ins.Volume_SE;
         if (sliders[2] != null) sliders[2].value = SoundManager.Ins.Volume_Voice;
