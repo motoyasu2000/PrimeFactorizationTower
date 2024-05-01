@@ -87,8 +87,9 @@ public class GameModeManager : MonoBehaviour
         foreach(var nowPrimeNumber in primeNumberPool)
         {
             if(nowPrimeNumber == primeNumber) return primeNumberPoolIndex;
+            primeNumberPoolIndex++;
         }
-        primeNumberPoolIndex++;
+
         return -1;
     }
 

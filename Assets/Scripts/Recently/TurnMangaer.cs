@@ -63,12 +63,17 @@ public static class TurnMangaer
             Debug.LogError($"現在のターン数{nowTurn} 上限ターン数{maxTurn}");
             nowTurn = 0;
         }
-        Debug.Log(GetNowTurn());
+        //Debug.Log(GetNowTurn());
     }
 
     //現在のターンを取得
     public static int GetNowTurn()
     {
         return nowTurn;
+    }
+
+    public static int GetTotalTurn()
+    {
+        return totalTurn;
     }
 }

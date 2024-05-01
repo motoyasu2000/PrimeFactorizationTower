@@ -1,5 +1,6 @@
 ﻿using Common;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 //画面上部に表示される数字、Originを管理するクラス
@@ -60,7 +61,7 @@ public class OriginManager : MonoBehaviour
                 break;
 
             case GameModeManager.DifficultyLevel.Insane:
-                originNextNumberDict = Helper.GenerateCompositeNumberDictCustom(gameModeManager.InsanePool, int.MaxValue, 3, 5);
+                originNextNumberDict = Helper.GenerateCompositeNumberDictCustom(gameModeManager.InsanePool, int.MaxValue, 12, 12);
                 break;
         }
 
@@ -94,5 +95,11 @@ public class OriginManager : MonoBehaviour
         {
             Debug.LogError("存在しないキーを選択しています。");
         }
+    }
+
+    public HashSet<int> GetCurrentOriginSet()
+    {
+        //Debug.Log(string.Join(",", CurrentOriginNumberDict.Keys));
+        return new HashSet<int>( CurrentOriginNumberDict.Keys.Select(key => GameModeManager.Ins.GetPrimeNumberPoolIndex(key)));
     }
 }

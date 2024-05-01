@@ -6,7 +6,7 @@ using System.Linq;
 //AIの行動をまとめたクラス
 public class AIActions : MonoBehaviour
 {
-    public int GeneratedPrimeNumberIndex;
+    public int GeneratedPrimeNumber;
     GameObject beforeField;
     OriginManager originManager;
     BlockGenerator blockGenerator;
@@ -47,7 +47,12 @@ public class AIActions : MonoBehaviour
             .First()
             .Key;
         blockGenerator.GenerateBlock_HundleAI(highestProbKey);
-        GeneratedPrimeNumberIndex = highestProbKey;
+        GeneratedPrimeNumber = highestProbKey;
+    }
+
+    public void GenerateBlock(int primeKey)
+    {
+        blockGenerator.GenerateBlock_HundleAI(primeKey);
     }
 
 

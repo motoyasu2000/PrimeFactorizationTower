@@ -20,8 +20,12 @@ public class GameOverManager : MonoBehaviour
     public int CompositeNumberAtGameOver => compositeNumberAtGameOver;
     public int BlockNumberAtGameOver => blockNumberAtGameOver;
     public bool IsGameOver => isGameOver;  
-
     public bool IsBreakScore => (GameInfo.Variables.GetOldMaxScore() < GameInfo.Variables.GetNowScore()); //スコアを更新したかを判定するフラグ
+
+
+
+    [SerializeField] bool __RunReinforcementLearning__; //強化学習中にはこのフラグがtrueになるようにする。(jsonファイルの書き込みやデータベースの更新を行わないように)
+
 
     private void Awake()
     {
@@ -36,6 +40,8 @@ public class GameOverManager : MonoBehaviour
         //このメソッドが1度しか呼ばれないように
         if (isGameOver) return;
         else isGameOver = true;
+
+        if (__RunReinforcementLearning__) return; //isGameOverの値に応じてエピソードを再実行するかを決定するため、isGameOverの更新のあとでreturn
 
         Debug.Log("GameOver");
 
@@ -69,6 +75,7 @@ public class GameOverManager : MonoBehaviour
         SoundManager.LoadSoundSettingData();
     }
 
+    //ゲームオーバー時の、ブロックの合成数の計算
     int CalculateBlocksCompositNumberAtGameOver()
     {
         int blocksCompositNumberAtGameOver = 1;

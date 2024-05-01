@@ -31,7 +31,7 @@ public class PFTAI3 : Agent
         //ブロックが生成される高さ、生成した素数、その素数の確率を観察として受け取る
         sensor.AddObservation(generateManager.GeneratingPoint.y);
         sensor.AddObservation(generatedPrimeNumber);
-        if(primeNumberScores.ContainsKey(0))sensor.AddObservation(primeNumberScores[actions.GeneratedPrimeNumberIndex]);
+        if(primeNumberScores.ContainsKey(actions.GeneratedPrimeNumber))sensor.AddObservation(primeNumberScores[actions.GeneratedPrimeNumber]);
         //Debug.Log(sensor.m_Observations.Count);
     }
 
@@ -64,7 +64,7 @@ public class PFTAI3 : Agent
         actions.GenerateBlock(primeNumberScores);
 
         //0~315°回転する。(0*45°,1*45°,2*45°,...,7*45°)
-        generatedPrimeNumber = GameModeManager.Ins.GetPrimeNumberPoolIndex(actions.GeneratedPrimeNumberIndex);
+        generatedPrimeNumber = GameModeManager.Ins.GetPrimeNumberPoolIndex(actions.GeneratedPrimeNumber);
         int spin45Count = actionBuffers.DiscreteActions[generatedPrimeNumber];
         actions.SpinBlock45SeveralTimes(spin45Count);
 
