@@ -20,7 +20,7 @@ using Amazon.CognitoIdentity;
 namespace AWS
 {
     //staticなクラスにしたいが、Debug.LogErrorを使用したいため、MonoBehaviorを継承させる
-    public class DynamoDBManager : MonoBehaviour
+    public class OldDynamoDBManager : MonoBehaviour
     {
         string playerID;
         AmazonDynamoDBClient client;

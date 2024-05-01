@@ -15,7 +15,7 @@ public class GameOverManager : MonoBehaviour
     GameObject gameOverBlock; //ゲームオーバーの引き金となったブロック
     BloomManager bloomManager; //ゲームオーバー時の演出用
     OriginManager originManager;
-    DynamoDBManager ddbManager;
+    OldDynamoDBManager ddbManager;
 
     public int CompositeNumberAtGameOver => compositeNumberAtGameOver;
     public int BlockNumberAtGameOver => blockNumberAtGameOver;
@@ -30,7 +30,7 @@ public class GameOverManager : MonoBehaviour
     private void Awake()
     {
         originManager = GameObject.Find("OriginManager").GetComponent<OriginManager>();
-        ddbManager = GameObject.Find("DynamoDBManager").GetComponent<DynamoDBManager>();
+        ddbManager = GameObject.Find("DynamoDBManager").GetComponent<OldDynamoDBManager>();
         primeNumberCheckField = GameObject.Find("PrimeNumberCheckField");
         gameOverMenu = GameObject.Find("Canvas").transform.Find("GameOverMenu").gameObject;
         bloomManager = GameObject.Find("GlobalVolume").GetComponent<BloomManager>();
@@ -60,7 +60,7 @@ public class GameOverManager : MonoBehaviour
         ScoreManager.Ins.SaveScoreData();
         SoundManager.Ins.FadeOutVolume();
         //スコアを更新していれば、データベースの更新
-        if (IsBreakScore) await ddbManager.SaveScoreAsyncHandler(GameModeManager.Ins.ModeAndLevel, GameInfo.Variables.GetNowScore());
+        if (IsBreakScore) await ddbManager.SaveScoreAsyncHandler(GameModeManager.Ins.NowModeAndLevel, GameInfo.Variables.GetNowScore());
 
         StartCoroutine(PostGameOver(delayTime));
     }

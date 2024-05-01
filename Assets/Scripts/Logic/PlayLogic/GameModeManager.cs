@@ -36,7 +36,7 @@ public class GameModeManager : MonoBehaviour
     [SerializeField] DifficultyLevel nowDifficultyLevel = DifficultyLevel.Difficult; //Json形式で保存するために、シリアライズ可能にしておく
 
     //プロパティ
-    public string ModeAndLevel => $"{nowGameMode}_{nowDifficultyLevel}";
+    public string NowModeAndLevel => $"{nowGameMode}_{nowDifficultyLevel}";
     public int[] PrimeNumberPool => primeNumberPool;
     public List<int> NormalPool => normalPool;
     public List<int> DifficultPool => difficultPool;

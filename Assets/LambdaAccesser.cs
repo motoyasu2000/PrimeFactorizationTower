@@ -1,8 +1,12 @@
 using Google.Protobuf.WellKnownTypes;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using System.Runtime.Serialization.Json;
+using System.IO;
+using System.Text;
 
 public class LambdaAccesser : MonoBehaviour
 {
@@ -13,11 +17,9 @@ public class LambdaAccesser : MonoBehaviour
     {
         getRankingUrl = apiUrl + "/ranking/query";
         saveRankingUrl = apiUrl + "/ranking/update";
-        StartCoroutine(GetScoreTop10("test"));
-        StartCoroutine(SaveScore("abc", 1000, "id", "ottoseiuchi2"));
     }
 
-    IEnumerator GetScoreTop10(string modeAndLevel)
+    public IEnumerator GetScoreTop10(string modeAndLevel, Action<List<PlayerScoreRecord>> callback)
     {
         //POSTリクエストを作成
         using (UnityWebRequest request = new UnityWebRequest(getRankingUrl, "POST"))
@@ -34,14 +36,17 @@ public class LambdaAccesser : MonoBehaviour
             {
                 Debug.LogError("エラー: " + request.error);
             }
-            else
+
+            //デシリアライズ
+            var serializer = new DataContractJsonSerializer(typeof(List<PlayerScoreRecord>));
+            using (var ms = new MemoryStream(Encoding.UTF8.GetBytes(request.downloadHandler.text)))
             {
-                Debug.Log("受け取った値: " + request.downloadHandler.text);
+                var scores = (List<PlayerScoreRecord>)serializer.ReadObject(ms);
             }
         }
     }
 
-    IEnumerator SaveScore(string modeAndLevel, int newScore, string playerID, string name)
+    public IEnumerator SaveScore(string modeAndLevel, int newScore, string playerID, string name)
     {
         PlayerScoreRecord newScoreRecord = new PlayerScoreRecord
         {
@@ -75,12 +80,5 @@ public class LambdaAccesser : MonoBehaviour
         }
     }
 
-    [System.Serializable]
-    public class PlayerScoreRecord
-    {
-        public string ModeAndLevel;
-        public int Score;
-        public string PlayerID;
-        public string Name;
-    }
+
 }

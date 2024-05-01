@@ -39,12 +39,12 @@ namespace UI
         Button[] rankButtons_gameMode = new Button[1];
         Button[] rankButtons_difficultyLevel = new Button[3];
 
-        DynamoDBManager ddbManager;
+        OldDynamoDBManager ddbManager;
 
         void Awake()
         {
             rankingCell = Resources.Load("RankingCell") as GameObject;
-            ddbManager = GameObject.Find("DynamoDBManager").GetComponent<DynamoDBManager>();
+            ddbManager = GameObject.Find("DynamoDBManager").GetComponent<OldDynamoDBManager>();
             InitializeMenus();
             if (ranking) {
                 ranking_transform = ranking.transform.Find("RankingTable");

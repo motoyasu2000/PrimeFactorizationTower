@@ -8,7 +8,7 @@ namespace AWS
 {
     public class DynamoDBInitializer : MonoBehaviour
     {
-        DynamoDBManager ddbManager;
+        OldDynamoDBManager ddbManager;
 
         private void Awake()
         {
@@ -17,7 +17,7 @@ namespace AWS
 
         private async Task InitializeAWSAsync()
         {
-            ddbManager = transform.parent.GetComponent<DynamoDBManager>();
+            ddbManager = transform.parent.GetComponent<OldDynamoDBManager>();
 
             //DynamoDBに必要な情報の初期化
             if (ddbManager.WaitInitialize())
@@ -38,7 +38,7 @@ namespace AWS
                 AmazonDynamoDBClient client = new AmazonDynamoDBClient(credentials, config);
                 ddbManager.Initialize(client, cognitoAWSCredentials);
 
-                var records = await ddbManager.GetTop10Scores(GameModeManager.Ins.ModeAndLevel);
+                var records = await ddbManager.GetTop10Scores(GameModeManager.Ins.NowModeAndLevel);
                 foreach (var record in records)
                 {
                     //Debug.Log(record.Score);
