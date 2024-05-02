@@ -21,8 +21,9 @@ public class GameManager : MonoBehaviour
     public bool WereAllBlocksGroundedLastFrame => wereAllBlocksGroundedLastFrame;
 
     //画面中央の合成数の管理や、素因数分解ができているかのチェック
-    OriginManager originManager;
     int prePrimeNumberCheckFieldCount = -1; //primeNumberCheckFieldの子オブジェクト数の変化に応じて処理を行うため
+    OriginManager originManager;
+    EarthQuakeManager earthQuakeManager; //素因数分解に失敗した際、ペナルティとして地震を発生させるクラス
 
     //ブロックの親オブジェクト候補
     GameObject blockField; //下二つの様なブロックの親オブジェクトをまとめる親オブジェクト
@@ -55,6 +56,7 @@ public class GameManager : MonoBehaviour
         scoreManager = ScoreManager.Ins;
         gameModeManager = GameModeManager.Ins;
         originManager = GameObject.Find("OriginManager").GetComponent<OriginManager>();
+        earthQuakeManager = GameObject.Find("EarthQuakeManager").GetComponent<EarthQuakeManager>();
         explainPileUp = GameObject.Find("Canvas").transform.Find("ExplainPileUp").gameObject;
         gameOverManager = GameObject.Find("GameOverManager").GetComponent<GameOverManager>();
     }
@@ -119,17 +121,17 @@ public class GameManager : MonoBehaviour
         if (primeNumberCheckField.transform.childCount <= 0) return;
         Transform lastBlock = primeNumberCheckField.transform.GetChild(primeNumberCheckField.transform.childCount - 1);
         int lastBlockNumber = lastBlock.GetComponent<BlockInfo>().GetPrimeNumber();
-        //もし、画面上部の合成数がprimeNumberCheckField内の素数の積で割り切れるなら、割った値を表示、割り切れなかったらEと表示
+        //もし、画面上部の合成数がprimeNumberCheckField内の素数の積で割り切れるなら、割った値を表示
         if (originManager.CurrentOriginNumberDict.ContainsKey(lastBlockNumber))
         {
             originManager.RemovePrimeCurrentOriginNumberDict(lastBlockNumber);
             upperUIManager.ChangeDisplayText(UpperUIManager.KindOfUI.Origin, originManager.CurrentOriginNumber.ToString());
         }
+        //素因数分解を間違えてしまった場合は地震を発生させ、ブロックの積を計算し、素因数分解を計算するフィールドから最後に生成したブロックを取り除く
         else
         {
-            upperUIManager.ChangeDisplayText(UpperUIManager.KindOfUI.Origin, "E");
-            upperUIManager.ChangeDisplayColor(UpperUIManager.KindOfUI.Origin, Color.red);
-            gameOverManager.GameOver(true);
+            earthQuakeManager.TriggerEarthQuake();
+            primeNumberCheckField.transform.GetChild(0).SetParent(completedField.transform);
         }
         prePrimeNumberCheckFieldCount = primeNumberCheckField.transform.childCount;
     }

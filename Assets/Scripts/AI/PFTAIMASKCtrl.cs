@@ -48,7 +48,7 @@ public class PFTAIMASKCtrl : MonoBehaviour
 
         if (gameOverManager.IsGameOver)
         {
-            //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             agent.EndEpisode();
         }
         preCondition = nowCondition;
@@ -56,7 +56,7 @@ public class PFTAIMASKCtrl : MonoBehaviour
         //条件が変化した→条件達成→報酬を与える
         if (preCondition != nowCondition)
         {
-            agent.AddReward(80);
+            agent.AddReward(20);
         }
     }
 
