@@ -1,6 +1,5 @@
+using Amazon;
 using Amazon.CognitoIdentity;
-using AWS;
-using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -14,29 +13,30 @@ public class DynamoDBManager : MonoBehaviour
 
     private void Start()
     {
+        UnityInitializer.AttachToGameObject(this.gameObject);
         CognitoAWSCredentials cognitoAWSCredentials = new CognitoAWSCredentials(identityPoolId, Amazon.RegionEndpoint.APNortheast1);
         playerID = cognitoAWSCredentials.GetIdentityId();
         lambdaAccesser = GetComponent<LambdaAccesser>();
     }
 
-    public async Task<List<PlayerScoreRecord>> GetScoreTop10()
+    public async Task<List<PlayerScoreRecord>> GetScoreTop10(string modeAndLevel)
     {
         var tcs = new TaskCompletionSource<List<PlayerScoreRecord>>();
-        StartCoroutine(lambdaAccesser.GetScoreTop10(GameModeManager.Ins.NowModeAndLevel, (result) => tcs.SetResult(result)));
+        StartCoroutine(lambdaAccesser.GetScoreTop10(modeAndLevel, (result) => tcs.SetResult(result)));
         return await tcs.Task;
     }
 
     public void SaveScore(int newScore)
     {
-        StartCoroutine(lambdaAccesser.SaveScore(GameModeManager.Ins.NowModeAndLevel, newScore, playerID, PlayerInfoManager.Ins.name));
+        StartCoroutine(lambdaAccesser.SaveScore(playerID, GameModeManager.Ins.NowModeAndLevel, newScore, PlayerInfoManager.Ins.PlayerName));
     }
 }
 
 [System.Serializable]
 public class PlayerScoreRecord
 {
+    public string PlayerID;
     public string ModeAndLevel;
     public int Score;
-    public string PlayerID;
-    public string Name;
+    public string PlayerName;
 }

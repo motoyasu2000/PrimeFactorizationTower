@@ -9,14 +9,14 @@ public class PlayerInfoManager : MonoBehaviour
     public static PlayerInfoManager Ins => instance;
 
     //保存する情報
-    [SerializeField] string name;
+    [SerializeField] string playerName;
     [SerializeField] MaterialDatabase materialDatabase;
 
     //名前を入力させるUI　nameがjsonで保存されていなかった場合に、使う
     GameObject inputNameMenuBackGround;
 
     //プロパティ
-    public string Name => name;
+    public string PlayerName => playerName;
     public MaterialDatabase MaterialDatabase => materialDatabase;
 
 
@@ -35,7 +35,7 @@ public class PlayerInfoManager : MonoBehaviour
 
     public void SaveName(string name)
     {
-        this.name = name;
+        this.playerName = name;
         SavePlayerInfo();
     }
 
@@ -70,13 +70,13 @@ public class PlayerInfoManager : MonoBehaviour
         string datastr = reader.ReadToEnd();
         reader.Close();
         var obj = JsonUtility.FromJson<PlayerInfo>(datastr); //Monobehaviorを継承したクラスではJsonファイルを読み込むことができないため、他のクラスを生成し読み込む
-        instance.name = obj.name;
+        instance.playerName = obj.playerName;
         instance.materialDatabase = obj.materialDatabase;
     }
 
     class PlayerInfo
     {
-        public string name;
+        public string playerName;
         public MaterialDatabase materialDatabase;
     }
 }

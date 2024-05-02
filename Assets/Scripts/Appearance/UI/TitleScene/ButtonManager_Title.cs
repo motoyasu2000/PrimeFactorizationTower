@@ -1,5 +1,4 @@
-﻿using AWS;
-using Common;
+﻿using Common;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -39,12 +38,12 @@ namespace UI
         Button[] rankButtons_gameMode = new Button[1];
         Button[] rankButtons_difficultyLevel = new Button[3];
 
-        OldDynamoDBManager ddbManager;
+        DynamoDBManager ddbManager;
 
         void Awake()
         {
             rankingCell = Resources.Load("RankingCell") as GameObject;
-            ddbManager = GameObject.Find("DynamoDBManager").GetComponent<OldDynamoDBManager>();
+            ddbManager = GameObject.Find("DynamoDBManager").GetComponent<DynamoDBManager>();
             InitializeMenus();
             if (ranking) {
                 ranking_transform = ranking.transform.Find("RankingTable");
@@ -206,12 +205,12 @@ namespace UI
             {
                 string modeAndLevel = $"{(GameModeManager.GameMode)gameMode}_{(GameModeManager.DifficultyLevel)diffLevel}";
 
-                var records = await ddbManager.GetTop10Scores(modeAndLevel);
+                var records = await ddbManager.GetScoreTop10(modeAndLevel);
                 {
                     for (int i = 0; i < records.Count(); i++)
                     {
                         scores[i] = records[i].Score;
-                        names[i] = records[i].Name;
+                        names[i] = records[i].PlayerName;
                         Debug.Log($"{i+1}位のスコア: {scores[i]} 名前: {names[i]}");
                     }
                 };
@@ -220,7 +219,7 @@ namespace UI
             //ローカルランキングを表示させる場合。
             else if(localOrGlobal == LocalOrGlobal.local)
             {
-                names = Enumerable.Repeat<string>(PlayerInfoManager.Ins.Name, 10).ToArray(); //ローカルランキングでは全て自分の名前。
+                names = Enumerable.Repeat<string>(PlayerInfoManager.Ins.PlayerName, 10).ToArray(); //ローカルランキングでは全て自分の名前。
                 switch ((GameModeManager.GameMode)gameMode)
                 {
                     case GameModeManager.GameMode.PileUp:

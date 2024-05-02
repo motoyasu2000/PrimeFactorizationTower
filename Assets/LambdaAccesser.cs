@@ -42,18 +42,19 @@ public class LambdaAccesser : MonoBehaviour
             using (var ms = new MemoryStream(Encoding.UTF8.GetBytes(request.downloadHandler.text)))
             {
                 var scores = (List<PlayerScoreRecord>)serializer.ReadObject(ms);
+                callback(scores);
             }
         }
     }
 
-    public IEnumerator SaveScore(string modeAndLevel, int newScore, string playerID, string name)
+    public IEnumerator SaveScore(string playerID, string modeAndLevel, int newScore, string playerName)
     {
         PlayerScoreRecord newScoreRecord = new PlayerScoreRecord
         {
             ModeAndLevel = modeAndLevel,
             Score = newScore,
             PlayerID = playerID,
-            Name = name
+            PlayerName = playerName
         };
 
         string json = JsonUtility.ToJson(newScoreRecord);
