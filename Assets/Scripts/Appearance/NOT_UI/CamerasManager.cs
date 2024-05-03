@@ -9,19 +9,19 @@ using UnityEngine.SceneManagement;
 public class CamerasManager : MonoBehaviour
 {
     float downerUI_MAXY; //画面下部のUIの最高点。この高さを軸に拡大していく。
-    float nowCamerasHeight; //新たに変更されるカメラの高さ
+    float newCameraHeight; //新たに変更されるカメラの高さ
     float orthographicSize_defo; //初期のカメラの大きさ
     Vector3 position_defo; //初期のカメラの座標
     Vector3 oldCameraPosition; //1フレーム前のカメラの位置
-    Vector3 nowCameraPosition; //現在のカメラの位置(ブロックが高くなるごとにカメラが上に行く)
+    Vector3 newCameraPosition; //現在のカメラの位置(ブロックが高くなるごとにカメラが上に行く)
     RectTransform downerUITransform; //画面下部のUI
     ScoreManager scoreManager;
     Camera mainCamera;
     Camera UICamera;
 
-    public bool changeCameraPosition => oldCameraPosition != nowCameraPosition; 
+    public bool changeCameraPosition => oldCameraPosition != newCameraPosition; 
 
-    public Vector3 NowCameraPosition => nowCameraPosition;
+    public Vector3 NowCameraPosition => newCameraPosition;
     void Start()
     {
         //プレイシーンであれば初期化
@@ -47,9 +47,9 @@ public class CamerasManager : MonoBehaviour
         mainCamera.orthographicSize = newOrthographicSize;
         UICamera.orthographicSize = newOrthographicSize; //UICameraの大きさも変更しないと、mainCameraが大きくなるにつれ、UIが相対的に小さくなっていってしまう。
 
-        oldCameraPosition = nowCameraPosition;
-        nowCamerasHeight = position_defo.y + moveingDistance * downerUI_MAXY; //中心が画面下UIの最大点になるようにする。
-        nowCameraPosition = new Vector3(position_defo.x, nowCamerasHeight, position_defo.z);
-        if(changeCameraPosition) mainCamera.transform.position = nowCameraPosition;
+        oldCameraPosition = newCameraPosition;
+        newCameraHeight = position_defo.y + moveingDistance * downerUI_MAXY; //中心が画面下UIの最大点になるようにする。
+        newCameraPosition = new Vector3(position_defo.x, newCameraHeight, position_defo.z);
+        if(changeCameraPosition) mainCamera.transform.position = newCameraPosition;
     }
 }

@@ -36,6 +36,8 @@ public class GameManager : MonoBehaviour
     const float changeTurnTime = 0.4f; //全てのゲームオブジェクトがどれだけの時間静止すればターンが切り替わるのか
     const float stillStandingScale = 0.05f; //ゲームオブジェクトの速度がどのくらいなら静止しているとみなすか
     public bool IsDropBlockNowTurn => isDropBlockNowTurn;
+    //全てのゲームオブジェクトの静止時間が基準を超えており、かつ、このターン内にブロックが生成されていればターンを切り替える
+    bool ChengeNextTurnFlag => (allBlocksStandingStillTimer > changeTurnTime) && isDropBlockNowTurn;
 
     //その他
     int nowPhase = 0; //現在いくつの合成数を素因数分解し終えたか　これが増えると上に表示される合成数の値が大きくなるなどすることが可能。
@@ -78,14 +80,11 @@ public class GameManager : MonoBehaviour
         //Originを適切に素因数分解できていれば、PrimeNumberCheckFieldのブロックをすべてCompletedFieldに送る
         MoveToCompletedField();
 
-        //スコアを計算し、UIを更新
-        CalculateScore();
-
         //全てのブロックが静止している時間(allBlocksStandingStillTimer)を計算
         CountAllBlocksStandingStillTime();
 
         //ターンの切り替え条件をチェックし、必要であればターンを切り替える
-        CheckNextTurnChangeable();
+        ChangeNextTurnAndCalculateScore();
     }
 
     //全てのゲームオブジェクトが地面に設置しているかのチェック
@@ -126,7 +125,7 @@ public class GameManager : MonoBehaviour
         {
             originManager.RemovePrimeCurrentOriginNumberDict(lastBlockNumber);
             upperUIManager.ChangeDisplayText(UpperUIManager.KindOfUI.Origin, originManager.CurrentOriginNumber.ToString());
-            prePrimeNumberCheckFieldCount = primeNumberCheckField.transform.childCount;
+            prePrimeNumberCheckFieldCount = primeNumberCheckField.transform.childCount;//新しいブロックを正しく追加した場合のみ、1フレーム前のブロックの数を保存する
         }
         //素因数分解を間違えてしまった場合は地震を発生させ、最後に生成したブロックを生成しなかったことにする
         else
@@ -144,23 +143,6 @@ public class GameManager : MonoBehaviour
         if (originManager.CurrentOriginNumberDict == null || originManager.CurrentOriginNumberDict.Count == 0)
         {
             SoundManager.Ins.PlayAudio(SoundManager.Ins.SE_DONE); //doneの再生
-        }
-    }
-
-    //各ゲームモードでのスコア計算
-    void CalculateScore()
-    {
-       
-        switch (gameModeManager.NowGameMode)
-        {
-            //もし積み上げモードで、すべてのブロックが地面に設置しており、ターン切り替わり後であればスコアの更新。
-            case GameModeManager.GameMode.PileUp:
-                if (areAllBlocksGrounded && !isDropBlockNowTurn)
-                {
-                    GameInfo.Variables.SetNowScore(scoreManager.CalculatePileUpScore());
-                    nowScoreText.text = GameInfo.Variables.GetNowScore().ToString();
-                }
-                break;
         }
     }
 
@@ -218,17 +200,36 @@ public class GameManager : MonoBehaviour
     }
 
     //次のターンに進んでよいか判断し、進んでよければ進んで初期化
-    void CheckNextTurnChangeable()
+    void ChangeNextTurnAndCalculateScore()
     {
-        //全てのゲームオブジェクトの静止時間が基準を超えており、かつ、このターン内にブロックが生成されていれば
-        if((allBlocksStandingStillTimer > changeTurnTime) && isDropBlockNowTurn)
+        if(ChengeNextTurnFlag)
         {
+            //スコアを計算し、UIを更新
+            CalculateScore();
+
             //ターンを切り替えて
             TurnMangaer.ChangeNextTurn();
 
             //初期化
             allBlocksStandingStillTimer = 0;
             isDropBlockNowTurn = false;
+        }
+    }
+
+    //各ゲームモードでのスコア計算
+    void CalculateScore()
+    {
+
+        switch (gameModeManager.NowGameMode)
+        {
+            //もし積み上げモードで、すべてのブロックが地面に設置しており、ターンのチェンジ時であればスコアの更新。
+            case GameModeManager.GameMode.PileUp:
+                if (areAllBlocksGrounded)
+                {
+                    GameInfo.Variables.SetNowScore(scoreManager.CalculatePileUpScore());
+                    nowScoreText.text = GameInfo.Variables.GetNowScore().ToString();
+                }
+                break;
         }
     }
 

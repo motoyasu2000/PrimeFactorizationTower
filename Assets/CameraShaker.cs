@@ -5,7 +5,7 @@ using UnityEngine;
 //mainカメラを振動させるスクリプト
 public class CameraShaker : MonoBehaviour
 {
-    public float shakePower = 0.1f; //振動の強さ(揺れる範囲)
+    public float shakePower = 0.001f; //振動の強さ(揺れる範囲)
 
     //引数で受け取ったmagnitudeに合わせて、カメラを動かす強さも調整する(1を加算するのはmagnitudeが0の時にも地震を発生させるため)
     public void MoveRandomCamera(float magnitude)

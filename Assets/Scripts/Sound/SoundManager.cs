@@ -34,6 +34,7 @@ public class SoundManager : MonoBehaviour
     AudioSource se_done;
     AudioSource se_freeze;
     AudioSource se_tap;
+    AudioSource se_warning;
     AudioSource bgm_play;
     AudioSource bgm_title;
 
@@ -44,6 +45,7 @@ public class SoundManager : MonoBehaviour
     public AudioSource SE_DONE => se_done;
     public AudioSource SE_FREEZE => se_freeze;
     public AudioSource SE_TAP => se_tap;
+    public AudioSource SE_Warning => se_warning;
     public AudioSource BGM_PLAY => bgm_play;
     public AudioSource BGM_TITLE => bgm_title;
 
@@ -63,7 +65,8 @@ public class SoundManager : MonoBehaviour
         voice_freeze = transVoices.Find("Freeze").GetComponent<AudioSource>();
         se_done = transSEs.Find("Done").GetComponent<AudioSource>();
         se_freeze = transSEs.Find("Freeze").GetComponent<AudioSource>();
-        se_tap = transSEs.Find("Tap").GetComponent <AudioSource>();
+        se_tap = transSEs.Find("Tap").GetComponent<AudioSource>();
+        se_warning = transSEs.Find("Warning").GetComponent<AudioSource>();
         bgm_play = transBGMs.Find("Play").GetComponent <AudioSource>();
         bgm_title = transBGMs.Find("Title").GetComponent<AudioSource>();
 
@@ -74,6 +77,7 @@ public class SoundManager : MonoBehaviour
         SEs.Add(se_done);
         SEs.Add(se_freeze);
         SEs.Add(se_tap);
+        SEs.Add(se_warning);
         BGMs.Add(bgm_play);
         BGMs.Add(bgm_title);
 

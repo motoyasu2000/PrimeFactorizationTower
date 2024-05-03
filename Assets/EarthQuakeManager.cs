@@ -52,6 +52,7 @@ public class EarthQuakeManager : MonoBehaviour
         StartCoroutine(UpdateElapsedIime());
         StartCoroutine(SwayUpAndDown());
         StartCoroutine(ShakeCamera());
+        StartCoroutine(PlayWarningSound());
     }
 
     //地震終了後に様々な初期化を行うメソッド
@@ -68,7 +69,7 @@ public class EarthQuakeManager : MonoBehaviour
     //地震発生時のテキストを表示させる
     void DisplayText()
     {
-        effectTextManager.DisplayEffectText($"MISS\nMAGNITUDE{magnitude}", earthQuakeTime, Color.red);
+        effectTextManager.DisplayEffectText($"MISS{magnitude+1}", earthQuakeTime, Color.red);
     }
 
     //一定時間地震時間を管理
@@ -104,4 +105,14 @@ public class EarthQuakeManager : MonoBehaviour
         }
     }
 
+    //警告音を再生
+    IEnumerator PlayWarningSound()
+    {
+        SoundManager.Ins.PlayAudio(SoundManager.Ins.SE_Warning);
+        while (isEarthquakeHappening)
+        {
+            yield return new WaitForEndOfFrame();
+        }
+        SoundManager.Ins.StopAudio(SoundManager.Ins.SE_Warning);
+    }
 }

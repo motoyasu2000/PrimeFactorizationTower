@@ -131,9 +131,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2709563647373692692, guid: 390ad338d9f3e95459dbff9880a17862, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3857751247113981986, guid: 390ad338d9f3e95459dbff9880a17862, type: 3}
       propertyPath: m_Name
       value: TitleScene
+      objectReference: {fileID: 0}
+    - target: {fileID: 4059879272987320889, guid: 390ad338d9f3e95459dbff9880a17862, type: 3}
+      propertyPath: m_Text
+      value: "\u97F3\u697D\u63D0\u4F9B:\r\n\u63D0\u4F9B\u8005:\u306E\u308B\u3055\u3093(Dova-Syndrome)\r\nURL1:https://dova-s.jp/bgm/play19531.html\r\nURL2:https://dova-s.jp/bgm/play19818.html\n\r\n\u52B9\u679C\u97F3\u63D0\u4F9B:\r\n\u63D0\u4F9B\u8005:\u52B9\u679C\u97F3\u30E9\u30DC\r\nURL:https://soundeffect-lab.info/
+        (\u6C7A\u5B9A\u30DC\u30BF\u30F3\u3092\u62BC\u305933,\u6C37\u9B54\u6CD5\u3067\u51CD\u7D50,\u8B66\u544A\u97F32)\r\n\r\n\u97F3\u58F0\u63D0\u4F9B:\r\n\u63D0\u4F9B\u8005:\u97F3\u8AAD\u3055\u3093\r\nURL:https://ondoku3.com/ja/\n\n\u88FD\u4F5C\u8005:\u30AA\u30C3\u30C8\u30BB\u30A4\u30A6\u30C1\nXID:@ottoseiuchi777\n\u554F\u3044\u5408\u308F\u305B\u5148:\nottoseiuchi777kaihatsu@gmail.com"
       objectReference: {fileID: 0}
     - target: {fileID: 8354504171607043444, guid: 390ad338d9f3e95459dbff9880a17862, type: 3}
       propertyPath: m_LocalPosition.x
