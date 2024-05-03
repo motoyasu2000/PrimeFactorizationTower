@@ -8,6 +8,8 @@ using Common;
 //積み上げれたブロックはブロックがノード、隣接関係がエッジとなるグラフ構造をしており。それを管理するためのクラス。
 public class Network : MonoBehaviour
 {
+    static readonly float freezeDelayTime = 1.5f;
+
     //ネットワークの構造や基本機能に使用するもの
     static int[] primeNumberPool; //ゲーム内で扱う全ての素数
     List<GameObject> wholeNetwork = new List<GameObject>(); //全ノードのリスト、ネットワーク全体
@@ -202,10 +204,10 @@ public class Network : MonoBehaviour
             case GameModeManager.GameMode.PileUp:
                 SetCriteriaMetLayerAndMaterial(nodes);
                 FreezeNodes(nodes);
-                effectTextManager.PrintEffectText("Criteria Met");
+                effectTextManager.DisplayEffectText("Criteria Met", freezeDelayTime, GameInfo.FleezeColor);
                 soundManager.PlayAudio(soundManager.VOICE_CRITERIAMAT);
-                const float delayTime = 1.5f;
-                DelayProcessFreeze(nodes, delayTime);
+
+                DelayProcessFreeze(nodes, freezeDelayTime);
                 break;
         }
         //後処理
@@ -216,14 +218,14 @@ public class Network : MonoBehaviour
     }
 
     //第二引数で指定した時間後、Freezeの文字、サウンド、エフェクトを出力し、第一引数で指定したGameObjectのリストを空中に固定する
-    private void DelayProcessFreeze(List<GameObject> nodes, float delayTime)
+    private void DelayProcessFreeze(List<GameObject> nodes, float freezeDelayTime)
     {
         Vector3 nodesCenter = CaluculateCenter(nodes);
-        StartCoroutine(FreezeBlocks(nodes, delayTime));
-        StartCoroutine(soundManager.PlayAudio(soundManager.VOICE_FREEZE, delayTime));
-        StartCoroutine(soundManager.PlayAudio(soundManager.SE_FREEZE, delayTime));
-        StartCoroutine(effectTextManager.PrintEffectText("Freeze", delayTime));
-        StartCoroutine(InstantiateEffect(freezeEffect, nodesCenter, delayTime));
+        StartCoroutine(FreezeBlocks(nodes, freezeDelayTime));
+        StartCoroutine(soundManager.PlayAudio(soundManager.VOICE_FREEZE, freezeDelayTime));
+        StartCoroutine(soundManager.PlayAudio(soundManager.SE_FREEZE, freezeDelayTime));
+        StartCoroutine(effectTextManager.DisplayEffectText("Freeze", freezeDelayTime, 0, GameInfo.FleezeColor));
+        StartCoroutine(InstantiateEffect(freezeEffect, nodesCenter, freezeDelayTime));
     }
 
     //引数で与えられたゲームオブジェクトたちの重心を計算して返すメソッド

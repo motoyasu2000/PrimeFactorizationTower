@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 using TMPro;
+using Amazon.CognitoSync.Model;
 
 namespace UI
 {
@@ -8,33 +9,32 @@ namespace UI
     public class EffectTextManager : MonoBehaviour
     {
         TextMeshProUGUI effectText;
-        const float displayTime = 1.2f;//テキストを表示してから非表示にするまでの時間。
+
         private void Start()
         {
             effectText = GetComponent<TextMeshProUGUI>();
         }
 
         //引数で受けった文字列をeffectTextに表示させる。
-        public void PrintEffectText(string str)
+        public void DisplayEffectText(string displayText, float durationTime, Color displayColor)
         {
             effectText.gameObject.SetActive(true);
-            effectText.text = str;
-            StartCoroutine(HiddenEffectText());
+            effectText.text = displayText;
+            effectText.color = displayColor;    
+            StartCoroutine(HiddenEffectText(durationTime));
         }
 
         //第一引数で受け取ったテキストを第二引数で受け取った時間後にeffectTextに表示させる
-        public IEnumerator PrintEffectText(string str, float seconds)
+        public IEnumerator DisplayEffectText(string displayText, float durationTime, float displayStartTime, Color displayColor)
         {
-            yield return new WaitForSeconds(seconds);
-            effectText.gameObject.SetActive(true);
-            effectText.text = str;
-            StartCoroutine(HiddenEffectText());
+            yield return new WaitForSeconds(displayStartTime);
+            DisplayEffectText(displayText, durationTime, displayColor);
             yield return null;
         }
         //1.2秒経過後にeffectTextを非表示にする
-        IEnumerator HiddenEffectText()
+        IEnumerator HiddenEffectText(float durationTime)
         {
-            yield return new WaitForSeconds(displayTime);
+            yield return new WaitForSeconds(durationTime);
             effectText.gameObject.SetActive(false);
             yield return null;
         }

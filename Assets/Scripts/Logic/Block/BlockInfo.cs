@@ -10,7 +10,9 @@ public class BlockInfo : MonoBehaviour
     //ブロックの情報
     int ID = -1;
     int myPrimeNumber; //自分の持つ数字。合成数とかの計算はこれを利用する
-    bool isGround = false;
+    bool onGround = false;
+    bool onBlock = false;
+    bool IsGround => onGround || onBlock;
     TextMeshPro primeNumberText;
     Rigidbody2D rb2D;
     Collider2D myCollider;
@@ -63,7 +65,7 @@ public class BlockInfo : MonoBehaviour
 
     public bool CheckIsGround()
     {
-        return isGround;
+        return IsGround;
     }
 
     public List<GameObject> GetNeighborEdge()
@@ -146,12 +148,16 @@ public class BlockInfo : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnCollisionStay2D(Collision2D collision)
     {
         //地面との設置判定
-        if((collision.gameObject.CompareTag("Ground")) || (collision.gameObject.CompareTag("PrimeNumberBlock"))){
-            isGround = true;
+        if(collision.gameObject.CompareTag("Ground")){
+           onGround = true;
         }
+        if (collision.gameObject.CompareTag("PrimeNumberBlock")){
+            onBlock = true;
+        }
+
         //もし二つのブロック(ノード)が接触したなら、その二つのノード間にエッジを設定、サブグラフの探索
         if ((collision.gameObject.CompareTag("PrimeNumberBlock")) && (collision.gameObject.GetComponent<BlockInfo>() != null) && (IsUpOrRight(gameObject, collision.gameObject)))
         {
@@ -162,6 +168,15 @@ public class BlockInfo : MonoBehaviour
     }
     private void OnCollisionExit2D(Collision2D collision)
     {
+        //地面との設置判定
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            onGround = false;
+        }
+        if (collision.gameObject.CompareTag("PrimeNumberBlock")){
+            onBlock = false;
+        }
+
         //もし二つのブロック(ノード)が離れたなら、その二つのノード間のエッジを消去
         if (collision.gameObject.CompareTag("PrimeNumberBlock"))
         {
@@ -169,5 +184,4 @@ public class BlockInfo : MonoBehaviour
             //Debug.Log($"DetachNode: {gameObject.name} ------ {collision.gameObject.name}");
         }
     }
-
 }

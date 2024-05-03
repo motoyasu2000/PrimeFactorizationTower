@@ -105,7 +105,7 @@ public class GameManager : MonoBehaviour
         foreach (Transform block in fieldTransform)
         {
             BlockInfo blockInfo = block.GetComponent<BlockInfo>();
-            if (!blockInfo.CheckIsGround()) //一つでも地面に接地してなければ
+            if (blockInfo.enabled && !blockInfo.CheckIsGround()) //一つでも地面に接地してなければ
             {
                 areAllBlocksGrounded = false; //isGroundAllはfalse
             }
@@ -150,9 +150,9 @@ public class GameManager : MonoBehaviour
        
         switch (gameModeManager.NowGameMode)
         {
-            //もし積み上げモードで、すべてのブロックが地面に設置しており、地震発生中でなければ高さを計算する。
+            //もし積み上げモードで、すべてのブロックが地面に設置しており、ターン切り替わり後であればスコアの更新。
             case GameModeManager.GameMode.PileUp:
-                if (areAllBlocksGrounded && !earthQuakeManager.IsEarthquakeHappening)
+                if (areAllBlocksGrounded && !isDropBlockNowTurn)
                 {
                     GameInfo.Variables.SetNowScore(scoreManager.CalculatePileUpScore());
                     nowScoreText.text = GameInfo.Variables.GetNowScore().ToString();
@@ -218,7 +218,7 @@ public class GameManager : MonoBehaviour
     void CheckNextTurnChangeable()
     {
         //全てのゲームオブジェクトの静止時間が基準を超えており、かつ、このターン内にブロックが生成されていれば
-        if(allBlocksStandingStillTimer > changeTurnTime && isDropBlockNowTurn)
+        if((allBlocksStandingStillTimer > changeTurnTime) && isDropBlockNowTurn)
         {
             //ターンを切り替えて
             TurnMangaer.ChangeNextTurn();

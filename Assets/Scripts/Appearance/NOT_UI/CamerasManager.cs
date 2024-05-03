@@ -3,7 +3,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 //ブロックが積みあがっていき、高くなりすぎるとブロックがカメラにとらえられなくなる恐れがある。
-//そこでブロックの最高点からカメラを範囲を計算し、拡大する必要がある。カメラの範囲を変更してもUIが正常に保たれるようにする。
+//そこでブロックの最高点からメインカメラを範囲を計算し、拡大する必要がある。
+//また、メインカメラの範囲を変更してもUIが正常に保たれるようにする。
 //これらを行うクラス
 public class CamerasManager : MonoBehaviour
 {
@@ -18,7 +19,7 @@ public class CamerasManager : MonoBehaviour
     Camera mainCamera;
     Camera UICamera;
 
-    public bool isChangeCameraPosition => oldCameraPosition != nowCameraPosition; 
+    public bool changeCameraPosition => oldCameraPosition != nowCameraPosition; 
 
     public Vector3 NowCameraPosition => nowCameraPosition;
     void Start()
@@ -49,6 +50,6 @@ public class CamerasManager : MonoBehaviour
         oldCameraPosition = nowCameraPosition;
         nowCamerasHeight = position_defo.y + moveingDistance * downerUI_MAXY; //中心が画面下UIの最大点になるようにする。
         nowCameraPosition = new Vector3(position_defo.x, nowCamerasHeight, position_defo.z);
-        if(isChangeCameraPosition) mainCamera.transform.position = nowCameraPosition;
+        if(changeCameraPosition) mainCamera.transform.position = nowCameraPosition;
     }
 }
