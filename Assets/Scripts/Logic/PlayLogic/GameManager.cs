@@ -117,21 +117,24 @@ public class GameManager : MonoBehaviour
     {
         if (primeNumberCheckField.transform.childCount == prePrimeNumberCheckFieldCount) return;
         if (primeNumberCheckField.transform.childCount <= 0) return;
+        if (!isDropBlockNowTurn) return;
         Transform lastBlock = primeNumberCheckField.transform.GetChild(primeNumberCheckField.transform.childCount - 1);
         int lastBlockNumber = lastBlock.GetComponent<BlockInfo>().GetPrimeNumber();
+        
         //もし、画面上部の合成数がprimeNumberCheckField内の素数の積で割り切れるなら、割った値を表示
         if (originManager.CurrentOriginNumberDict.ContainsKey(lastBlockNumber))
         {
             originManager.RemovePrimeCurrentOriginNumberDict(lastBlockNumber);
             upperUIManager.ChangeDisplayText(UpperUIManager.KindOfUI.Origin, originManager.CurrentOriginNumber.ToString());
+            prePrimeNumberCheckFieldCount = primeNumberCheckField.transform.childCount;
         }
-        //素因数分解を間違えてしまった場合は地震を発生させ、ブロックの積を計算し、素因数分解を計算するフィールドから最後に生成したブロックを取り除く
+        //素因数分解を間違えてしまった場合は地震を発生させ、最後に生成したブロックを生成しなかったことにする
         else
         {
             earthQuakeManager.TriggerEarthQuake();
-            primeNumberCheckField.transform.GetChild(0).SetParent(completedField.transform);
+            Destroy(lastBlock.gameObject);
+            isDropBlockNowTurn = false;
         }
-        prePrimeNumberCheckFieldCount = primeNumberCheckField.transform.childCount;
     }
 
     //素数ブロックの積が、画面上部の合成数と一致しているかのチェック。一致していたら上の数字の消去
