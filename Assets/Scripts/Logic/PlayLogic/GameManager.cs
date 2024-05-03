@@ -39,7 +39,6 @@ public class GameManager : MonoBehaviour
 
     //その他
     int nowPhase = 0; //現在いくつの合成数を素因数分解し終えたか　これが増えると上に表示される合成数の値が大きくなるなどすることが可能。
-    GameOverManager gameOverManager;
     GameModeManager gameModeManager; //難易度ごとに生成する合成数が異なるので、現在の難易度の情報を持つGameModeManagerの情報が必要
                                      //また、スコアを保存する際、どの難易度のスコアを更新するかの情報も必要なので、そこでも使う。
 
@@ -58,7 +57,6 @@ public class GameManager : MonoBehaviour
         originManager = GameObject.Find("OriginManager").GetComponent<OriginManager>();
         earthQuakeManager = GameObject.Find("EarthQuakeManager").GetComponent<EarthQuakeManager>();
         explainPileUp = GameObject.Find("Canvas").transform.Find("ExplainPileUp").gameObject;
-        gameOverManager = GameObject.Find("GameOverManager").GetComponent<GameOverManager>();
     }
 
     private void Start()
@@ -149,11 +147,12 @@ public class GameManager : MonoBehaviour
     //各ゲームモードでのスコア計算
     void CalculateScore()
     {
-        //もし積み上げモードで、地面に設置しているなら高さを計算する。
+       
         switch (gameModeManager.NowGameMode)
         {
+            //もし積み上げモードで、すべてのブロックが地面に設置しており、地震発生中でなければ高さを計算する。
             case GameModeManager.GameMode.PileUp:
-                if (areAllBlocksGrounded)
+                if (areAllBlocksGrounded && !earthQuakeManager.IsEarthquakeHappening)
                 {
                     GameInfo.Variables.SetNowScore(scoreManager.CalculatePileUpScore());
                     nowScoreText.text = GameInfo.Variables.GetNowScore().ToString();

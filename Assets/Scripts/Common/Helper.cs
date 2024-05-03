@@ -58,13 +58,13 @@ namespace Common
             primeNumberDict[primeNumber]++;
         }
 
-        //指定した素数プールから合成数を辞書型として生成する。合成数の上限値や、素数の数も乱数の上限値を書くことで指定することができる。
+        //指定した素数プールから合成数を辞書型として生成する。合成数の上限値や、素数の数も下限と上限を指定することができる。
         public static Dictionary<int, int> GenerateCompositeNumberDictCustom(List<int> primeNumberPool, int maxCompositeNumber, int minRand, int maxRand)
         {
             int randomIndex;
             int nowCompositeNumber = 1;
             int randomPrimeNumber;
-            int numberOfPrimeNumber = UnityEngine.Random.Range(minRand, maxRand);
+            int numberOfPrimeNumber = UnityEngine.Random.Range(minRand, maxRand+1);
             Dictionary<int, int> compositeNumbersDict = new Dictionary<int, int>();
             for (int i = 0; i < numberOfPrimeNumber; i++)
             {

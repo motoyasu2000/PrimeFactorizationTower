@@ -1,53 +1,60 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
-//‘fˆö”•ª‰ğ‚ğŠÔˆá‚¦‚½ê‡‚ÉAƒyƒiƒ‹ƒeƒB‚Æ‚µ‚Ä’nk‚ğ”­¶‚³‚¹‚éƒNƒ‰ƒXB
+//ç´ å› æ•°åˆ†è§£ã‚’é–“é•ãˆãŸå ´åˆã«ã€ãƒšãƒŠãƒ«ãƒ†ã‚£ã¨ã—ã¦åœ°éœ‡ã‚’ç™ºç”Ÿã•ã›ã‚‹ã‚¯ãƒ©ã‚¹ã€‚
 public class EarthQuakeManager : MonoBehaviour
 {
-    static readonly float earthQuakeScale = 1f; //’nk‚ÌU•‚ÌƒXƒP[ƒ‹
-    static readonly float timeScale = 3f; //’nk‚Ì”g’·‚ÌƒXƒP[ƒ‹
-    static readonly float earthQuakeTime = 1f; //’nk‚Ì’·‚³
+    static readonly float earthQuakeScale = 1f; //åœ°éœ‡ã®æŒ¯å¹…ã®ã‚¹ã‚±ãƒ¼ãƒ«
+    static readonly float timeScale = 2f; //åœ°éœ‡ã®æ³¢é•·ã®ã‚¹ã‚±ãƒ¼ãƒ«
+    static readonly float earthQuakeTime = 0.5f; //åœ°éœ‡ã®é•·ã•
 
-    bool isEarthquakeHappening = false; //¡’nk‚ª‹N‚«‚Ä‚¢‚é‚©
-    int magnitude = 1; //’nk‚Ì‘å‚«‚³Aƒ~ƒX‚·‚é‚²‚Æ‚É‘å‚«‚­‚È‚Á‚Ä‚¢‚­B‚±‚Ì”’l•ª‚¾‚¯Aw”ŠÖ”“I‚É©g‚ª‘å‚«‚­‚È‚é
-    float elapsedEarthQuakeTime = 0; //’nk‚ÌŒo‰ßŠÔ
+    bool isEarthquakeHappening = false; //ä»Šåœ°éœ‡ãŒèµ·ãã¦ã„ã‚‹ã‹
+    int magnitude = 0; //åœ°éœ‡ã®å¤§ãã•ã€ãƒŸã‚¹ã™ã‚‹ã”ã¨ã«å¤§ãããªã£ã¦ã„ãã€‚ã“ã®æ•°å€¤åˆ†ã ã‘ã€æŒ‡æ•°é–¢æ•°çš„ã«è‡ªèº«ãŒå¤§ãããªã‚‹ æœ€åˆã¯æ¼”å‡ºã®ã¿ã§æºã‚‰ã•ãªã„ã€‚
+    float elapsedEarthQuakeTime = 0; //åœ°éœ‡ã®çµŒéæ™‚é–“
 
     GameObject ground;
     Rigidbody2D groundRb;
+    CameraShaker cameraShaker;
 
-    //‘‡“I‚È”g’·ƒXƒP[ƒ‹B2ƒÎ‚ğ‚©‚¯‚é‚±‚Æ‚ÅAearthQuakeTime*timeScale‚ª®”’l‚Å‚ ‚ê‚ÎˆÚ“®ˆÊ’u‚Å~‚Ü‚é‚æ‚¤‚É‚·‚éB
+    //ä»ŠæŒ¯å‹•ä¸­ã‹ã©ã†ã‹
+    public bool IsEarthquakeHappening => isEarthquakeHappening;
+
+    //ç·åˆçš„ãªæ³¢é•·ã‚¹ã‚±ãƒ¼ãƒ«ã€‚2Ï€ã‚’ã‹ã‘ã‚‹ã“ã¨ã§ã€earthQuakeTime*timeScaleãŒæ•´æ•°å€¤ã§ã‚ã‚Œã°ç§»å‹•é–‹å§‹åœ°ç‚¹ã§æ­¢ã¾ã‚‹ã‚ˆã†ã«ã™ã‚‹ã€‚
     float ComprehensiveTimeScale => timeScale * Mathf.PI * 2;
 
-    //¸”s‚²‚Æ‚É‰ÁZ‚³‚ê‚émagnitude‚ğ2æ‚·‚é‚±‚Æ‚ÅAƒyƒiƒ‹ƒeƒB‚ÌƒŠƒXƒN‚ğ‚‚ß‚éB
+    //å¤±æ•—ã”ã¨ã«åŠ ç®—ã•ã‚Œã‚‹magnitudeã‚’2ä¹—ã™ã‚‹ã“ã¨ã§ã€ãƒšãƒŠãƒ«ãƒ†ã‚£ã®ãƒªã‚¹ã‚¯ã‚’é«˜ã‚ã‚‹ã€‚
     float ComprehensiveEarthQuakeScale => earthQuakeScale * magnitude * magnitude;
 
     void Start()
     {
         ground = GameObject.Find("GroundGenerator");
         groundRb = ground.GetComponent<Rigidbody2D>();
+        cameraShaker = Camera.main.GetComponent<CameraShaker>();
     }
 
-    //’nk‚ğ”­¶‚³‚¹‚éƒƒ\ƒbƒh
+    //åœ°éœ‡ã‚’ç™ºç”Ÿã•ã›ã‚‹ãƒ¡ã‚½ãƒƒãƒ‰
     public void TriggerEarthQuake()
     {
         isEarthquakeHappening = true;
         StartCoroutine(SwayUpAndDown());
         StartCoroutine(UpdateElapsedIime());
+        StartCoroutine(ShakeCamera());
     }
 
-    //’nkI—¹Œã‚É—lX‚È‰Šú‰»‚ğs‚¤ƒƒ\ƒbƒh
+    //åœ°éœ‡çµ‚äº†å¾Œã«æ§˜ã€…ãªåˆæœŸåŒ–ã‚’è¡Œã†ãƒ¡ã‚½ãƒƒãƒ‰
     void InitializeEarthQuake()
     {
         isEarthquakeHappening = false;
         elapsedEarthQuakeTime = 0;
         groundRb.velocity = Vector2.zero;
         groundRb.rotation = 0;
+        cameraShaker.InitCameraPosition();
         magnitude++;
     }
 
-    //’n–Ê‚ğã‰º‚É—h‚ç‚·
+    //ä¸€å®šæ™‚é–“åœ°é¢ã‚’ä¸Šä¸‹ã«æºã‚‰ã™
     IEnumerator SwayUpAndDown()
     {
         while (isEarthquakeHappening)
@@ -58,13 +65,24 @@ public class EarthQuakeManager : MonoBehaviour
         }
     }
 
-    //’nkŠÔ‚ğŠÇ—
+    //ä¸€å®šæ™‚é–“åœ°éœ‡æ™‚é–“ã‚’ç®¡ç†
     IEnumerator UpdateElapsedIime()
     {
         while (isEarthquakeHappening)
         {
             elapsedEarthQuakeTime += Time.deltaTime;
             if (elapsedEarthQuakeTime > earthQuakeTime) InitializeEarthQuake();
+            yield return new WaitForEndOfFrame();
+        }
+    }
+
+    //ã‚«ãƒ¡ãƒ©ã‚’æŒ¯å‹•ã•ã›ã‚‹ã€‚
+    IEnumerator ShakeCamera()
+    {
+        Vector3 originalPosition = Camera.main.transform.position;
+        while (isEarthquakeHappening)
+        {
+            cameraShaker.MoveRandomCamera(magnitude);
             yield return new WaitForEndOfFrame();
         }
     }
