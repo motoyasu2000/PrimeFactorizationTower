@@ -1,10 +1,10 @@
-using Amazon;
+ï»¿using Amazon;
 using Amazon.CognitoIdentity;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 
-//ƒXƒRƒAƒ‰ƒ“ƒLƒ“ƒO‚Ì“üo—Í‚ğs‚¤ƒNƒ‰ƒX
+//ã‚¹ã‚³ã‚¢ãƒ©ãƒ³ã‚­ãƒ³ã‚°ã®å…¥å‡ºåŠ›ã‚’è¡Œã†ã‚¯ãƒ©ã‚¹
 public class DynamoDBManager : MonoBehaviour
 {
     static readonly string identityPoolId = "ap-northeast-1:749fa680-9001-4214-aa6f-dfa0c5edc588";

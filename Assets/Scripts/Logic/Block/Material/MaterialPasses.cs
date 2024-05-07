@@ -2,11 +2,11 @@
     public static class MaterialPasses
     {
         //マテリアルのパス
-        static readonly string materialsPass = "MaterialsOfItem";
+        static readonly string materialsPass = "BlockMaterials";
 
         //マテリアルの名前
         static readonly string stripesMaterialName = "StripesMaterial";
-        static readonly string defaultBlocksMaterialItem = "DefaultBlocksMaterial";
+        static readonly string defaultBlocksMaterialName = "DefaultBlocksMaterial";
 
         //パスを取得するメソッド
         static string GetMaterialPass(string materialName)
@@ -23,7 +23,7 @@
         }
         public static string GetDefaultBlocksMaterialName()
         {
-            return GetMaterialPass(defaultBlocksMaterialItem);
+            return GetMaterialPass(defaultBlocksMaterialName);
         }
     }
 }

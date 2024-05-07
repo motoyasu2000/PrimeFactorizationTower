@@ -19,14 +19,14 @@ public class BlockInfo : MonoBehaviour
     
     //ネットワーク情報
     List<GameObject> neighborEdge = new List<GameObject>(); //隣接するゲームオブジェクトを格納
-    Network network;
+    BlocksGraph blocksGraph;
 
     private void Awake()
     {
         primeNumberText = transform.Find("PrimeNumberText").GetComponent<TextMeshPro>();
         rb2D = GetComponent<Rigidbody2D>();
         myCollider = GetComponent<Collider2D>();
-        if(SceneManager.GetActiveScene().name =="PlayScene") network = GameObject.Find("Network").GetComponent<Network>();
+        if(SceneManager.GetActiveScene().name =="PlayScene") blocksGraph = GameObject.Find("BlocksGraph").GetComponent<BlocksGraph>();
         SetText();
         //SetShader();
     }
@@ -161,8 +161,8 @@ public class BlockInfo : MonoBehaviour
         //もし二つのブロック(ノード)が接触したなら、その二つのノード間にエッジを設定、サブグラフの探索
         if ((collision.gameObject.CompareTag("PrimeNumberBlock")) && (collision.gameObject.GetComponent<BlockInfo>() != null) && (IsUpOrRight(gameObject, collision.gameObject)))
         {
-            network.AttachNode(gameObject, collision.gameObject);
-            network.AddStartExpandNetworks(new HashSet<GameObject> {gameObject, collision.gameObject});
+            blocksGraph.AttachNode(gameObject, collision.gameObject);
+            blocksGraph.AddStartExpandNetworks(new HashSet<GameObject> {gameObject, collision.gameObject});
             //Debug.Log($"myself:{gameObject.name} ------ other:{collision.gameObject.name}");
         }
     }
@@ -180,7 +180,7 @@ public class BlockInfo : MonoBehaviour
         //もし二つのブロック(ノード)が離れたなら、その二つのノード間のエッジを消去
         if (collision.gameObject.CompareTag("PrimeNumberBlock"))
         {
-            network.DetachNode(gameObject, collision.gameObject);
+            blocksGraph.DetachNode(gameObject, collision.gameObject);
             //Debug.Log($"DetachNode: {gameObject.name} ------ {collision.gameObject.name}");
         }
     }

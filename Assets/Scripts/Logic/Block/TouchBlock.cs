@@ -13,7 +13,7 @@ public class TouchBlock : MonoBehaviour
                                     //選択するゲームオブジェクトが変更されないようにドラッグ中のオブジェクトのみを取得するようにしている。
     //ブロックの処理
     BlockInfo blockInfo;
-    Network network;
+    BlocksGraph blocksGraph;
     GraphicRaycaster graphicRaycaster;
     SingleGenerateManager singleGenerateManager; //ゲームオブジェクトが単一であることを保証するためのクラス
     GameObject primeNumberGeneratingPoint; //ゲームオブジェクトを生成する場所を示すゲームオブジェクト  
@@ -126,7 +126,7 @@ public class TouchBlock : MonoBehaviour
         blockInfo.ChangeDynamic(); //重力の影響を受けるようにする。
         StartCoroutine(blockInfo.EnableCollider()); //ゲームオブジェクトの落下地点を視覚化する線の描画の際に一時的にコライダーを非活性化するので、ここでコライダーを復活させる。
         gameObject.transform.parent = primeNumberCheckField.transform;
-        network.AddNode(gameObject);
+        blocksGraph.AddNode(gameObject);
         gameManager.DropBlockProcess();
     }
 
@@ -145,7 +145,7 @@ public class TouchBlock : MonoBehaviour
         singleGenerateManager = primeNumberGeneratingPoint.GetComponent<SingleGenerateManager>();
         blockField = GameObject.Find("BlockField");
         primeNumberCheckField = blockField.transform.Find("PrimeNumberCheckField").gameObject;
-        network = GameObject.Find("Network").GetComponent<Network>();
+        blocksGraph = GameObject.Find("BlocksGraph").GetComponent<BlocksGraph>();
         canvas = GameObject.Find("Canvas");
         eventSystem = FindObjectOfType<EventSystem>();
         graphicRaycaster = canvas.GetComponent<GraphicRaycaster>();

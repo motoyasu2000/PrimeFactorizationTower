@@ -1,4 +1,4 @@
-using Common;
+ï»¿using Common;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
@@ -42,23 +42,23 @@ public class TripleAICtrl : MonoBehaviour
     }
     void Update()
     {
-        //Œ»İAI‚Ìƒ^[ƒ“‚ÅA‚©‚ÂƒuƒƒbƒN‚ª—‰º‚µ‚Ä‚¢‚È‚¢‚È‚ç
+        //ç¾åœ¨AIã®ã‚¿ãƒ¼ãƒ³ã§ã€ã‹ã¤ãƒ–ãƒ­ãƒƒã‚¯ãŒè½ä¸‹ã—ã¦ã„ãªã„ãªã‚‰
         if (TurnMangaer.GetPlayerNames_NowTurn() == GameInfo.GetAIName && !gameManager.IsDropBlockNowTurn)
         {
             if (!wasActedNowFrame)
             {
-                getRewardFlag = false;//AI‚Ìƒ^[ƒ“‚É‚È‚Á‚½‚Î‚©‚è‚È‚Ì‚ÅA‚±‚±‚Å‚Í‚Ü‚¾•ñV‚Íó‚¯æ‚Á‚Ä‚¢‚È‚¢
+                getRewardFlag = false;//AIã®ã‚¿ãƒ¼ãƒ³ã«ãªã£ãŸã°ã‹ã‚Šãªã®ã§ã€ã“ã“ã§ã¯ã¾ã å ±é…¬ã¯å—ã‘å–ã£ã¦ã„ãªã„
                 wasActedNowFrame = true;
                 StartCoroutine(RunActionSequence());
             }
         }
 
-        //‘O‚Ìƒ^[ƒ“‚ªAI‚ÅƒQ[ƒ€‚ªŒp‘±‚µ‚Ä‚¢‚ê‚ÎA•ñV‚ğó‚¯æ‚é‚×‚«
+        //å‰ã®ã‚¿ãƒ¼ãƒ³ãŒAIã§ã‚²ãƒ¼ãƒ ãŒç¶™ç¶šã—ã¦ã„ã‚Œã°ã€å ±é…¬ã‚’å—ã‘å–ã‚‹ã¹ã
         if (TurnMangaer.GetPlayerNames_BeforeTurn() == GameInfo.GetAIName)
         {
             if (!getRewardFlag)
             {
-                //Œ»İ‚ÌƒuƒƒbƒN”‚Ì“ñæ/2‚¾‚¯•ñV‚ª‚à‚ç‚¦‚é
+                //ç¾åœ¨ã®ãƒ–ãƒ­ãƒƒã‚¯æ•°ã®äºŒä¹—/2ã ã‘å ±é…¬ãŒã‚‚ã‚‰ãˆã‚‹
                 float totalBlocks = CalculateTotalBlocksCount();
                 float reward = totalBlocks * totalBlocks * rewardScale;
 
@@ -81,7 +81,7 @@ public class TripleAICtrl : MonoBehaviour
 
         preCondition = nowCondition;
         nowCondition = conditionManager.ConditionNumber;
-        //ğŒ‚ª•Ï‰»‚µ‚½¨ğŒ’B¬¨•ñV‚ğ—^‚¦‚é
+        //æ¡ä»¶ãŒå¤‰åŒ–ã—ãŸâ†’æ¡ä»¶é”æˆâ†’å ±é…¬ã‚’ä¸ãˆã‚‹
         if (preCondition != nowCondition)
         {
             foreach (var agent in agents)
@@ -105,7 +105,7 @@ public class TripleAICtrl : MonoBehaviour
     {
         if (isRunningActionSequence)
         {
-            Debug.LogWarning("’ZŠúŠÔ‚ÅƒAƒNƒVƒ‡ƒ“ƒV[ƒPƒ“ƒX‚ª˜A‘±‚ÅŒÄ‚Ño‚³‚ê‚Ü‚µ‚½B");
+            Debug.LogWarning("çŸ­æœŸé–“ã§ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ã‚·ãƒ¼ã‚±ãƒ³ã‚¹ãŒé€£ç¶šã§å‘¼ã³å‡ºã•ã‚Œã¾ã—ãŸã€‚");
             yield break;
         }
 

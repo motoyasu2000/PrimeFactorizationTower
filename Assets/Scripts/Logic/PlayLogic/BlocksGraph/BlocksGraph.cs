@@ -6,13 +6,13 @@ using UI;
 using Common;
 
 //積み上げれたブロックはブロックがノード、隣接関係がエッジとなるグラフ構造をしており。それを管理するためのクラス。
-public class Network : MonoBehaviour
+public class BlocksGraph : MonoBehaviour
 {
     static readonly float freezeDelayTime = 1.5f;
 
     //ネットワークの構造や基本機能に使用するもの
     static int[] primeNumberPool; //ゲーム内で扱う全ての素数
-    List<GameObject> wholeNetwork = new List<GameObject>(); //全ノードのリスト、ネットワーク全体
+    List<GameObject> wholeGraph = new List<GameObject>(); //全ノードのリスト、ネットワーク全体
     Dictionary<int, List<GameObject>> nodesDict = new Dictionary<int, List<GameObject>>();
 
     //サブグラフの探索
@@ -66,10 +66,10 @@ public class Network : MonoBehaviour
 
     }
 
-    //ノードの追加、wholeNetworkとnodesDictの更新を行う。
+    //ノードの追加、wholeGraphとnodesDictの更新を行う。
     public void AddNode(GameObject node)
     {
-        wholeNetwork.Add(node);
+        wholeGraph.Add(node);
         BlockInfo info = node.GetComponent<BlockInfo>();
         if (System.Array.Exists(primeNumberPool, element => element == info.GetPrimeNumber()))
         {
@@ -137,7 +137,7 @@ public class Network : MonoBehaviour
         {
             DetachNode(neighborNode, originNode);
         }
-        wholeNetwork.Remove(originNode);
+        wholeGraph.Remove(originNode);
         nodesDict[originNode.GetComponent<BlockInfo>().GetPrimeNumber()].Remove(originNode);
         originNode.GetComponent<BlockInfo>().enabled = false;
     }
@@ -213,7 +213,7 @@ public class Network : MonoBehaviour
         //後処理
         startExpandNetworks = new Queue<ExpandNetwork>(); //探索が完了したらもうネットワーク内に条件を満たすものが存在しないと考えられるので、キューをリセットしておく。(あるとバグが発生する)
         nowCriteriaMetChecking = true;
-        CheckConditionAllNetwork();
+        CheckConditionBlocksGraph();
         conditionGenerator.GenerateCondition();
     }
 
@@ -248,11 +248,11 @@ public class Network : MonoBehaviour
     }
 
     ////////////////////////////////////
-    //以下ネットワーク内の探索で使うメソッド//
+    //以下グラフ全体内部の探索で使うメソッド//
     ////////////////////////////////////
 
-    //ネットワーク全体に条件にマッチするものがないかを探索するためのメソッド 条件に存在する素数のうち、ネットワーク全体で最小個数の素数を探し、そのノードから探索を始める
-    void CheckConditionAllNetwork()
+    //グラフ全体に条件にマッチするものがないかを探索するためのメソッド 条件に存在する素数のうち、ネットワーク全体で最小個数の素数を探し、そのノードから探索を始める
+    void CheckConditionBlocksGraph()
     {
         int minNode = -1; //最小個数の素数
         int minNodeNum = int.MaxValue; //最小個数の素数の数
@@ -274,13 +274,13 @@ public class Network : MonoBehaviour
     }
 
     //第二引数で指定した条件を満たすサブグラフの条件を、第一引数で指定したネットワークが満たしているかをチェックするメソッド
-    bool ContainsAllRequiredNodes(List<GameObject> myNetwork, Dictionary<int, int> requiredNodesDict)
+    bool ContainsAllRequiredNodes(List<GameObject> blocksGraph, Dictionary<int, int> requiredNodesDict)
     {
         Dictionary<int, int> requiredCounts = new Dictionary<int, int>(requiredNodesDict);
         //Debug.Log(string.Join(", ", requiredCounts));
 
         //現在のネットワーク内のノードの出現回数をカウント
-        foreach (var node in myNetwork)
+        foreach (var node in blocksGraph)
         {
             int nodeValue = node.GetComponent<BlockInfo>().GetPrimeNumber();
             if (requiredCounts.ContainsKey(nodeValue))
@@ -329,7 +329,7 @@ public class Network : MonoBehaviour
             {
                 conditionGenerator.GenerateCondition();
                 nowCriteriaMetChecking = true;
-                CheckConditionAllNetwork();
+                CheckConditionBlocksGraph();
                 Debug.Log("再生成");
                 return;
             }
