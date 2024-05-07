@@ -53,7 +53,7 @@ public class OriginManager : MonoBehaviour
         switch (GameModeManager.Ins.NowDifficultyLevel)
         {
             case GameModeManager.DifficultyLevel.Normal:
-                originNextNumberDict = Helper.GenerateCompositeNumberDictCustom(gameModeManager.NormalPool, 5000, 3, 5);
+                originNextNumberDict = Helper.GenerateCompositeNumberDictCustom(gameModeManager.NormalPool, 5000, 3, 3);
                 break;
 
             case GameModeManager.DifficultyLevel.Difficult:
@@ -61,7 +61,7 @@ public class OriginManager : MonoBehaviour
                 break;
 
             case GameModeManager.DifficultyLevel.Insane:
-                originNextNumberDict = Helper.GenerateCompositeNumberDictCustom(gameModeManager.InsanePool, int.MaxValue, 12, 12);
+                originNextNumberDict = Helper.GenerateCompositeNumberDictCustom(gameModeManager.InsanePool, int.MaxValue, 3, 5);
                 break;
         }
 

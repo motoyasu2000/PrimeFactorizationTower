@@ -131,18 +131,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 3459455716592861588, guid: a9ca25860f060f4428a29e3693c49c64, type: 3}
-      propertyPath: names.Array.data[0]
-      value: ___AI__
-      objectReference: {fileID: 0}
-    - target: {fileID: 3609215110058480839, guid: a9ca25860f060f4428a29e3693c49c64, type: 3}
-      propertyPath: m_Model
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 6588475618235982171, guid: a9ca25860f060f4428a29e3693c49c64, type: 3}
-      propertyPath: m_CullingMask.m_Bits
-      value: 32
-      objectReference: {fileID: 0}
     - target: {fileID: 7166181246097463014, guid: a9ca25860f060f4428a29e3693c49c64, type: 3}
       propertyPath: m_Name
       value: PlayScene
@@ -190,29 +178,8 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 5834465684676325469, guid: a9ca25860f060f4428a29e3693c49c64, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 4950645296136800979}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a9ca25860f060f4428a29e3693c49c64, type: 3}
---- !u!1 &4950645296136800978 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5834465684676325469, guid: a9ca25860f060f4428a29e3693c49c64, type: 3}
-  m_PrefabInstance: {fileID: 4950645296136800977}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &4950645296136800979
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4950645296136800978}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6711afa8d9127744eb6da32d31347b12, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shakePower: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

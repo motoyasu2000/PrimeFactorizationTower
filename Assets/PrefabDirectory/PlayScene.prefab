@@ -3793,7 +3793,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 797605872a6ac7f4ca516456c57ef400, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  __RunReinforcementLearning__: 1
+  __RunReinforcementLearning__: 0
 --- !u!1 &3364524232265114320
 GameObject:
   m_ObjectHideFlags: 0
@@ -9176,7 +9176,7 @@ Camera:
   m_Enabled: 0
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.5943396, g: 0.5943396, b: 0.5943396, a: 0}
+  m_BackGroundColor: {r: 0.04905659, g: 0.04905659, b: 0.04905659, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -9268,7 +9268,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6611480842595725360}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 959b86b4f6a8c1d45b5da0c273b51450, type: 3}
   m_Name: 
@@ -12107,7 +12107,7 @@ MonoBehaviour:
     VectorActionDescriptions: []
     VectorActionSpaceType: 1
     hasUpgradedBrainParametersWithActionSpec: 1
-  m_Model: {fileID: 0}
+  m_Model: {fileID: 5022602860645237092, guid: 4acd8d3dd6324864681afad50c4e6fcc, type: 3}
   m_InferenceDevice: 0
   m_BehaviorType: 0
   m_BehaviorName: PFTAIMASK
@@ -13617,7 +13617,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   names:
-  - AI
+  - ___AI___
+  - Player
 --- !u!1 &8831407456440062971
 GameObject:
   m_ObjectHideFlags: 0
@@ -14297,8 +14298,29 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4206924537865674823, guid: 55df50a43ae53b64cb662e9aa04cc9e1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4737694727528848321}
   m_SourcePrefab: {fileID: 100100000, guid: 55df50a43ae53b64cb662e9aa04cc9e1, type: 3}
+--- !u!1 &5834465684676325469 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4206924537865674823, guid: 55df50a43ae53b64cb662e9aa04cc9e1, type: 3}
+  m_PrefabInstance: {fileID: 7681399558144593946}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4737694727528848321
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5834465684676325469}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6711afa8d9127744eb6da32d31347b12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shakePower: 1
 --- !u!20 &6588475618235982171 stripped
 Camera:
   m_CorrespondingSourceObject: {fileID: 3600389968096801089, guid: 55df50a43ae53b64cb662e9aa04cc9e1, type: 3}
