@@ -48,11 +48,11 @@
 
             fixed4 frag (v2f i) : SV_Target {
                 fixed4 texColor = tex2D(_MainTex, i.uv);
-                float wave = sin(i.uv.x * _WaveFrequency + _Time.y * _WaveSpeed) * _WaveAmplitude / 25.0 + 0.5 + (_WaveHeight-25.0)/25.0;
+                float wave = sin(i.uv.x * _WaveFrequency + _Time.y * _WaveSpeed) * _WaveAmplitude / 25.0 + 0.5 + (_WaveHeight-25.0)/10.0;
                 float2 wavedUV = i.uv;
 
                 fixed4 color = _AnotherColor;
-                if(i.uv.y - wave < 0.1)color = _Color;
+                if(i.uv.y - wave < 0)color = _Color;
 
                 color.a = texColor.a;
                 if(color.a == 0) discard;
