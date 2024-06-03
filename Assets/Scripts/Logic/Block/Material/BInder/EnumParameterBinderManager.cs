@@ -8,6 +8,7 @@
         {
             new DefaultMaterialEnumBinder(),
             new StripesMaterialEnumBinder(),
+            new WaveMaterialEnumBinder(),
         };
 
         public static int BindersCount => binders.Length;

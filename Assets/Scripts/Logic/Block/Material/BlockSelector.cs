@@ -36,17 +36,12 @@ public class BlockSelector : MonoBehaviour
         InvokeNowBlockMaterialButton();
     }
 
-    //現在選ばれているブロックを戻す
-    GameObject GetSingleBlock()
+    //単一のゲームオブジェクトが入る親オブジェクトの子要素を全部消去する。子オブジェクトの追加の際に初期化のために実行される。
+    void InitializeSingleBlockParent()
     {
-        if (singleBlockParent.transform.GetChild(0).gameObject)
+        foreach (Transform block in singleBlockParent.transform)
         {
-            return singleBlockParent.transform.GetChild(0).gameObject;
-        }
-        else
-        {
-            Debug.LogError("SingleBlockが取得できませんでした。");
-            return null;
+            Destroy(block.gameObject);
         }
     }
 
@@ -54,7 +49,7 @@ public class BlockSelector : MonoBehaviour
     void GenerateBlock()
     {
         GameObject resourcesBlock = Resources.Load($"Block{NowBlockNum}") as GameObject;
-        if(resourcesBlock == null)
+        if (resourcesBlock == null)
         {
             Debug.LogError($"指定されたブロックがResourcesから見つかりませんでした。: {NowBlockNum}");
             return;
@@ -76,12 +71,17 @@ public class BlockSelector : MonoBehaviour
         nowBlock.transform.localPosition = Vector3.zero;
     }
 
-    //単一のゲームオブジェクトが入る親オブジェクトの子要素を全部消去する。子オブジェクトの追加の際に初期化のために実行される。
-    void InitializeSingleBlockParent()
+    //現在選ばれているブロックを戻す
+    GameObject GetSingleBlock()
     {
-        foreach (Transform block in singleBlockParent.transform) 
+        if (singleBlockParent.transform.GetChild(0).gameObject)
         {
-            Destroy(block.gameObject);
+            return singleBlockParent.transform.GetChild(0).gameObject;
+        }
+        else
+        {
+            Debug.LogError("SingleBlockが取得できませんでした。");
+            return null;
         }
     }
 

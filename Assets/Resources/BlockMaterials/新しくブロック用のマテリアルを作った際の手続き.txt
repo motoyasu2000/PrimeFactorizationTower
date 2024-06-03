@@ -1,0 +1,8 @@
+MaterialPassesに新しいマテリアルの名前を追加する
+binderを定義する
+EnumParameterBinderManagerのbindersの要素にあらたなbinderを追加する
+
+この3つの処理を行えばゲーム内でマテリアルの設定ができるようになる。
+
+
+※binder:ゲーム内でマテリアルとパラメーターを結びつけるクラスのこと。binderを扱うことで、ゲーム内からマテリアルのパラメーターが調整できるようにしている。
