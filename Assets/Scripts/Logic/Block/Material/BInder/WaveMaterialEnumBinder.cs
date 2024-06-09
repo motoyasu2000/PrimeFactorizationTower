@@ -24,7 +24,7 @@ namespace MaterialLibrary
         protected override Material LoadMaterial()
         {
             var loadedMaterial = Resources.Load<Material>(MaterialPathAndName);
-            if (loadedMaterial == null) Debug.LogError("ƒ}ƒeƒŠƒAƒ‹‚Ìƒ[ƒh‚É¸”s‚µ‚Ü‚µ‚½B");
+            if (loadedMaterial == null) Debug.LogError("ãƒãƒ†ãƒªã‚¢ãƒ«ã®ãƒ­ãƒ¼ãƒ‰ã«å¤±æ•—ã—ã¾ã—ãŸã€‚");
             return new Material(loadedMaterial);
         }
     }

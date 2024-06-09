@@ -10252,9 +10252,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 277870579162272836}
-  - component: {fileID: 2324725247480789587}
+  - component: {fileID: 4202130807556330252}
   m_Layer: 0
-  m_Name: Network
+  m_Name: BlocksGraph
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10275,7 +10275,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 8370085127610974085}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2324725247480789587
+--- !u!114 &4202130807556330252
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -10284,7 +10284,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7642828504649718081}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9e85b677aa2ab3241946197584ac195a, type: 3}
+  m_Script: {fileID: 11500000, guid: fa7fa47605f5c3147a113f6d0c6e5182, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   CriteriaMetMaterial: {fileID: 2100000, guid: 5be8600b203160c4c99b5f64f1d3c54f, type: 2}

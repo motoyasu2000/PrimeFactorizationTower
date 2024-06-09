@@ -1,4 +1,4 @@
-﻿using Common;
+using Common;
 using MaterialLibrary;
 using System;
 using System.Reflection;

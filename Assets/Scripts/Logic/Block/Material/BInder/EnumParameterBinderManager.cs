@@ -1,4 +1,4 @@
-﻿namespace MaterialLibrary
+namespace MaterialLibrary
 {
     //EnumParameterBinderを継承したクラスの情報を管理するクラス
     public static class EnumParameterBinderManager
