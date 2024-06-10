@@ -31,7 +31,7 @@ public class PFTAI6Ctrl : MonoBehaviour
     void Update()
     {
         //現在AIのターンで、かつブロックが落下していないなら
-        if (TurnMangaer.GetPlayerNames_NowTurn() == GameInfo.GetAIName && !gameManager.IsDropBlockNowTurn)
+        if (TurnMangaer.GetPlayerNames_NowTurn() == GameInfo.AIName && !gameManager.IsDropBlockNowTurn)
         {
             if (!wasActedNowFrame)
             {
@@ -42,7 +42,7 @@ public class PFTAI6Ctrl : MonoBehaviour
         }
 
         //前のターンがAIでゲームが継続していれば、報酬を受け取るべき
-        if (TurnMangaer.GetPlayerNames_BeforeTurn() == GameInfo.GetAIName)
+        if (TurnMangaer.GetPlayerNames_BeforeTurn() == GameInfo.AIName)
         {
             if (!getRewardFlag)
             {

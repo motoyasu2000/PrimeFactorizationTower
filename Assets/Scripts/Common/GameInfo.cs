@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 namespace Common
 {
@@ -9,7 +9,7 @@ namespace Common
         static readonly int rankDisplayLimit = 10; //表示するランキングの上限値
         static readonly int cameraTrackingStartHeight = 4; //どこまで高く積んだらカメラが動き出すか
         static readonly float groundHeight = 0.5f; //元の地面の高さ
-        static readonly string AIName = "___AI___"; //AIの名前を表す特殊な文字列
+        static readonly string aiName = "___AI___"; //AIの名前を表す特殊な文字列
         static readonly Color buttonGray = new Color(150f / 255f, 150f / 255f, 150f / 255f, 1);
         static readonly Color fleezeColor = new Color(23f / 255f, 1f, 1f);
 
@@ -27,9 +27,9 @@ namespace Common
             get { return groundHeight; }
         }
 
-        public static string GetAIName
+        public static string AIName
         {
-            get { return AIName; }
+            get { return aiName; }
         }
 
         public static Color ButtonGray

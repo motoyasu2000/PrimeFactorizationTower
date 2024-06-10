@@ -1,5 +1,6 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
+using Common;
 
 //ターンを管理するクラス
 public static class TurnMangaer

@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 //各シングルトンを生成するためのクラス。このスクリプトがアタッチされたゲームオブジェクトがシーン内にあるだけで、必要なインスタンスが無ければすべて生成されるようにする。
 public class SingletonGenerator : MonoBehaviour
@@ -26,6 +26,12 @@ public class SingletonGenerator : MonoBehaviour
             GameObject playerInfoManager = new GameObject("PlayerInfoManager");
             PlayerInfoManager playerInfoManagerScript = playerInfoManager.AddComponent<PlayerInfoManager>();
             playerInfoManagerScript.enabled = true;
+        }
+        if(TurnSetter.Ins == null)
+        {
+            GameObject turnSetter = new GameObject("TurnSetter");
+            TurnSetter turnSetterScript = turnSetter.AddComponent<TurnSetter>();
+            turnSetterScript.enabled = true;
         }
     }
 }

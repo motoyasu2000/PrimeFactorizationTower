@@ -1,4 +1,4 @@
-﻿using Common;
+using Common;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -286,5 +286,17 @@ namespace UI
             }
         }
         //----------------ランキングの表示---------------------
+
+        //------------------参加者の設定-----------------------
+        //参加者の名前をプレイヤー一人にすることで、シングルで遊べるようにする。
+        public void SetSinglePlay()
+        {
+            TurnSetter.Ins.SetNames_Single();
+        }
+        //参加者の名前をプレイヤーとAIにすることで、参加者とAIで対戦できるようにする。
+        public void SetAIButtle()
+        {
+            TurnSetter.Ins.SetNames_AI();
+        }
     }
 }

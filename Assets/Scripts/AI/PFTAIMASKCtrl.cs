@@ -1,4 +1,4 @@
-﻿using Common;
+using Common;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -28,14 +28,14 @@ public class PFTAIMASKCtrl : MonoBehaviour
     void Update()
     {
         //現在AIのターンで、かつブロックが落下していないなら
-        if (TurnMangaer.GetPlayerNames_NowTurn() == GameInfo.GetAIName && !gameManager.IsDropBlockNowTurn)
+        if (TurnMangaer.GetPlayerNames_NowTurn() != null && TurnMangaer.GetPlayerNames_NowTurn() == GameInfo.AIName && !gameManager.IsDropBlockNowTurn)
         {
             getRewardFlag = false;//AIのターンになったばかりなので、ここではまだ報酬は受け取っていない
             agent.RequestDecision();
         }
 
         //前のターンがAIでゲームが継続していれば、報酬を受け取るべき
-        if (TurnMangaer.GetPlayerNames_BeforeTurn() == GameInfo.GetAIName)
+        if (TurnMangaer.GetPlayerNames_BeforeTurn() == GameInfo.AIName)
         {
             if (!getRewardFlag)
             {
