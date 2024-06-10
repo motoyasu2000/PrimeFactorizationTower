@@ -48,7 +48,7 @@ public class PFTAIMASKCtrl : MonoBehaviour
 
         if (gameOverManager.IsGameOver)
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             agent.EndEpisode();
         }
         preCondition = nowCondition;

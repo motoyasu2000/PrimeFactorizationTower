@@ -1,4 +1,4 @@
-﻿
+
 using Common;
 using System.Collections;
 using UnityEngine;
@@ -35,7 +35,7 @@ public class GameOverManager : MonoBehaviour
         gameOverMenu = GameObject.Find("Canvas").transform.Find("GameOverMenu").gameObject;
         bloomManager = GameObject.Find("GlobalVolume").GetComponent<BloomManager>();
     }
-    public async void GameOver(bool isFactorizationIncorrect)
+    public void GameOver(bool isFactorizationIncorrect)
     {
         //このメソッドが1度しか呼ばれないように
         if (isGameOver) return;
