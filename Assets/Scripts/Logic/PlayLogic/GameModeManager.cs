@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using static GameModeManager;
@@ -14,6 +14,7 @@ public class GameModeManager : MonoBehaviour
     public enum GameMode
     {
         PileUp, //積み上げモード
+        Battle, //対戦モード(AI含む)
     }
     GameMode nowGameMode = GameMode.PileUp; //初期値は積み上げモード
     public GameMode NowGameMode => nowGameMode;

@@ -10742,7 +10742,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 6089190688212829243}
         m_TargetAssemblyTypeName: UI.ButtonManager_Title, Assembly-CSharp
-        m_MethodName: SetAIButtle
+        m_MethodName: SetAIBattle
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -14039,7 +14039,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 878377870940427364}
         m_TargetAssemblyTypeName: UI.ButtonManager_Title, Assembly-CSharp
-        m_MethodName: SetSinglePlay
+        m_MethodName: SetPileUp
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

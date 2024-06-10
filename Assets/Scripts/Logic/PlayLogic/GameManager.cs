@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
 {
     //UI
     TextMeshProUGUI nowScoreText;
+    TextMeshProUGUI maxScoreText;
     GameObject explainPileUp; //チュートリアル時のテキスト
     UpperUIManager upperUIManager;
 
@@ -51,6 +52,7 @@ public class GameManager : MonoBehaviour
     {
         upperUIManager = GameObject.Find("UpperUIManager").GetComponent<UpperUIManager>();
         nowScoreText = GameObject.Find("NowScoreText").GetComponent<TextMeshProUGUI>();
+        maxScoreText = GameObject.Find("MaxScoreText").GetComponent<TextMeshProUGUI>();
         blockField = GameObject.Find("BlockField");
         primeNumberCheckField = blockField.transform.Find("PrimeNumberCheckField").gameObject;
         completedField = blockField.transform.Find("CompletedField").gameObject;
@@ -59,6 +61,7 @@ public class GameManager : MonoBehaviour
         originManager = GameObject.Find("OriginManager").GetComponent<OriginManager>();
         earthQuakeManager = GameObject.Find("EarthQuakeManager").GetComponent<EarthQuakeManager>();
         explainPileUp = GameObject.Find("Canvas").transform.Find("ExplainPileUp").gameObject;
+        DisplayerMaxScore();
     }
 
     private void Start()
@@ -205,7 +208,7 @@ public class GameManager : MonoBehaviour
         if(ChengeNextTurnFlag)
         {
             //スコアを計算し、UIを更新
-            CalculateScore();
+            CalculateAndDisplayScore();
 
             //ターンを切り替えて
             TurnMangaer.ChangeNextTurn();
@@ -217,9 +220,8 @@ public class GameManager : MonoBehaviour
     }
 
     //各ゲームモードでのスコア計算
-    void CalculateScore()
+    void CalculateAndDisplayScore()
     {
-
         switch (gameModeManager.NowGameMode)
         {
             //もし積み上げモードで、すべてのブロックが地面に設置しており、ターンのチェンジ時であればスコアの更新。
@@ -229,6 +231,17 @@ public class GameManager : MonoBehaviour
                     GameInfo.Variables.SetNowScore(scoreManager.CalculatePileUpScore());
                     nowScoreText.text = GameInfo.Variables.GetNowScore().ToString();
                 }
+                break;
+        }
+    }
+
+    //各ゲームモードでの最大スコアの表示(Awakeで呼ばれる。)
+    void DisplayerMaxScore()
+    {
+        switch (gameModeManager.NowGameMode)
+        {
+            case GameModeManager.GameMode.PileUp:
+                maxScoreText.text = ScoreManager.Ins.PileUpScores[GameModeManager.Ins.NowDifficultyLevel][0].ToString();
                 break;
         }
     }

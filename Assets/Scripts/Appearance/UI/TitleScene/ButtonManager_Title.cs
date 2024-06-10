@@ -130,13 +130,26 @@ namespace UI
         public void MovePlayScene()
         {
             Helper.LoadScene("PlayScene");
-            GameModeManager.Ins.SetGameMode(GameModeManager.GameMode.PileUp);
         }
         public void MoveMaterialScene()
         {
             Helper.LoadScene("MaterialScene");
         }
         //----------------シーンの推移---------------------
+
+        //------------------PlaySceneの設定-----------------------
+        public void SetPileUp()
+        {
+            GameModeManager.Ins.SetGameMode(GameModeManager.GameMode.PileUp);
+            TurnSetter.Ins.SetNames_Single();//参加者の名前をプレイヤー一人にすることで、シングルで遊べるようにする。
+        }
+
+        public void SetAIBattle()
+        {
+            GameModeManager.Ins.SetGameMode(GameModeManager.GameMode.Battle); //ゲームモードを非シングルに
+            TurnSetter.Ins.SetNames_AI();//参加者の名前をプレイヤーとAIにすることで、参加者とAIで対戦できるようにする。
+        }
+        //------------------PlaySceneの設定-----------------------
 
         //----------------ランキングのタブボタンの操作---------------------
         public void DisplayRankingByLocalOrGlobal(int isGrobal)
@@ -286,17 +299,5 @@ namespace UI
             }
         }
         //----------------ランキングの表示---------------------
-
-        //------------------参加者の設定-----------------------
-        //参加者の名前をプレイヤー一人にすることで、シングルで遊べるようにする。
-        public void SetSinglePlay()
-        {
-            TurnSetter.Ins.SetNames_Single();
-        }
-        //参加者の名前をプレイヤーとAIにすることで、参加者とAIで対戦できるようにする。
-        public void SetAIButtle()
-        {
-            TurnSetter.Ins.SetNames_AI();
-        }
     }
 }

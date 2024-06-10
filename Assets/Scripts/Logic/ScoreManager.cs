@@ -1,4 +1,4 @@
-﻿using Common;
+using Common;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -110,10 +110,8 @@ public class ScoreManager : MonoBehaviour
         instance.blockField = GameObject.Find("BlockField");
         instance.primeNumberCheckField = blockField.transform.Find("PrimeNumberCheckField").gameObject;
         instance.completedField = blockField.transform.Find("CompletedField").gameObject;
-        instance.maxScore = GameObject.Find("MaxScoreText").GetComponent<TextMeshProUGUI>();
         instance.nowHeight = 0;
-        //表示する最高スコアの更新
-        instance.maxScore.text = instance.pileUpScores[GameModeManager.Ins.NowDifficultyLevel][0].ToString();
+
         //Debug.Log(instance.pileUpScores[GameModeManager.GameModemanagerInstance.NowDifficultyLevel][0]);
     }
 

@@ -28,7 +28,9 @@ public class TurnSetter : MonoBehaviour
 
     private void InitializeTurnSettings()
     {
-        if (names.Count == 0) return;
+        //namesに何もない場合、とりあえずソロプレイに設定。(PlayerSceneを直接実行した場合など)
+        if (names.Count == 0) SetNames_Single();
+
         TurnMangaer.SetNumberOfPlayer(names.Count);
         TurnMangaer.SetPlayerNames(names);
     }
