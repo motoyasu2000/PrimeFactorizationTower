@@ -21,11 +21,11 @@ public class LambdaAccesser : MonoBehaviour
 
     public IEnumerator GetScoreTop10(string modeAndLevel, Action<List<PlayerScoreRecord>> callback)
     {
-        //POSTƒŠƒNƒGƒXƒg‚ğì¬
+        //POSTãƒªã‚¯ã‚¨ã‚¹ãƒˆã‚’ä½œæˆ
         using (UnityWebRequest request = new UnityWebRequest(getRankingUrl, "POST"))
         {
             byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(modeAndLevel);
-            //body‚Æhead‚Ìİ’è
+            //bodyã¨headã®è¨­å®š
             request.uploadHandler = new UploadHandlerRaw(bodyRaw);
             request.downloadHandler = new DownloadHandlerBuffer();
             request.SetRequestHeader("Content-Type", "text/plain");
@@ -34,10 +34,10 @@ public class LambdaAccesser : MonoBehaviour
 
             if (request.result != UnityWebRequest.Result.Success)
             {
-                Debug.LogError("ƒGƒ‰[: " + request.error);
+                Debug.LogError("ã‚¨ãƒ©ãƒ¼: " + request.error);
             }
 
-            //ƒfƒVƒŠƒAƒ‰ƒCƒY
+            //ãƒ‡ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚º
             var serializer = new DataContractJsonSerializer(typeof(List<PlayerScoreRecord>));
             using (var ms = new MemoryStream(Encoding.UTF8.GetBytes(request.downloadHandler.text)))
             {
@@ -61,22 +61,22 @@ public class LambdaAccesser : MonoBehaviour
 
         using (UnityWebRequest request = new UnityWebRequest(saveRankingUrl, "POST"))
         {
-            // SONƒf[ƒ^‚ğƒoƒCƒg”z—ñ‚É•ÏŠ·
+            // SONãƒ‡ãƒ¼ã‚¿ã‚’ãƒã‚¤ãƒˆé…åˆ—ã«å¤‰æ›
             byte[] sendingJsonData = new System.Text.UTF8Encoding().GetBytes(json);
             request.uploadHandler = new UploadHandlerRaw(sendingJsonData);
             request.downloadHandler = new DownloadHandlerBuffer();
             request.SetRequestHeader("Content-Type", "application/json");
 
-            //ƒŠƒNƒGƒXƒg‚ğ‘—M
+            //ãƒªã‚¯ã‚¨ã‚¹ãƒˆã‚’é€ä¿¡
             yield return request.SendWebRequest();
 
             if (request.result != UnityWebRequest.Result.Success)
             {
-                Debug.LogError("ƒGƒ‰[: " + request.error);
+                Debug.LogError("ã‚¨ãƒ©ãƒ¼: " + request.error);
             }
             else
             {
-                Debug.Log("ó‚¯æ‚Á‚½’l: " + request.downloadHandler.text);
+                Debug.Log("å—ã‘å–ã£ãŸå€¤: " + request.downloadHandler.text);
             }
         }
     }
