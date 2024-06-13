@@ -8,11 +8,11 @@ using System.Text.RegularExpressions;
 
 public class NameInputButton : MonoBehaviour
 {
-    TMP_InputField nameText; //–¼‘O‚ğ“ü—Í‚·‚é—“
-    TextMeshProUGUI errorText; //ƒGƒ‰[——R‚ğ•\¦‚·‚éƒeƒLƒXƒg
-    GameObject inputNameMenuBackGround; //–¼‘O‚ğ“ü—Í‚·‚é‰æ–Ê‚Ì‘S‘ÌB‚±‚ê‚ğŒ©‚¦‚é‚æ‚¤‚É‚·‚é‚±‚Æ‚ÅA–¼‘O“ü—Í‚Ì‰æ–Ê‚ğ•\¦‚³‚¹‚éB
+    TMP_InputField nameText; //åå‰ã‚’å…¥åŠ›ã™ã‚‹æ¬„
+    TextMeshProUGUI errorText; //ã‚¨ãƒ©ãƒ¼ç†ç”±ã‚’è¡¨ç¤ºã™ã‚‹ãƒ†ã‚­ã‚¹ãƒˆ
+    GameObject inputNameMenuBackGround; //åå‰ã‚’å…¥åŠ›ã™ã‚‹ç”»é¢ã®å…¨ä½“ã€‚ã“ã‚Œã‚’è¦‹ãˆã‚‹ã‚ˆã†ã«ã™ã‚‹ã“ã¨ã§ã€åå‰å…¥åŠ›ã®ç”»é¢ã‚’è¡¨ç¤ºã•ã›ã‚‹ã€‚
 
-    //‰Šú‰»
+    //åˆæœŸåŒ–
     private void Start()
     {
         nameText = GameObject.Find("NameInputField").GetComponent<TMP_InputField>();
@@ -20,28 +20,28 @@ public class NameInputButton : MonoBehaviour
         inputNameMenuBackGround = GameObject.Find("InputNameMenuBackGround");
     }
 
-    //–¼‘O‚Ì“o˜^ˆ—
+    //åå‰ã®ç™»éŒ²å‡¦ç†
     public void ConfirmName()
     {
-        string playerName = nameText.text.Trim(); //“ü—Í‚³‚ê‚½–¼‘O‚Ìæ“¾
+        string playerName = nameText.text.Trim(); //å…¥åŠ›ã•ã‚ŒãŸåå‰ã®å–å¾—
 
-        if (CheckError(playerName)) return; //ƒGƒ‰[‚ª‚ ‚ê‚ÎˆÈ~‚Ìˆ—‚ğs‚í‚È‚¢B
+        if (CheckError(playerName)) return; //ã‚¨ãƒ©ãƒ¼ãŒã‚ã‚Œã°ä»¥é™ã®å‡¦ç†ã‚’è¡Œã‚ãªã„ã€‚
 
-        //–¼‘O‚ğ•Û‘¶‚µ‚ÄA‰æ–Ê‚ğ”ñ•\¦B
+        //åå‰ã‚’ä¿å­˜ã—ã¦ã€ç”»é¢ã‚’éè¡¨ç¤ºã€‚
         PlayerInfoManager.Ins.SaveName(playerName);
         inputNameMenuBackGround.SetActive(false);
     }
 
-    //ˆø”‚Åó‚¯æ‚Á‚½•¶š—ñ‚ª—˜—p‰Â”\‚È–¼‘O‰»‚ğ’²¸‚·‚éBƒGƒ‰[‚ª‚ ‚ê‚Îtrue‚ğ•Ô‚·B
+    //å¼•æ•°ã§å—ã‘å–ã£ãŸæ–‡å­—åˆ—ãŒåˆ©ç”¨å¯èƒ½ãªåå‰åŒ–ã‚’èª¿æŸ»ã™ã‚‹ã€‚ã‚¨ãƒ©ãƒ¼ãŒã‚ã‚Œã°trueã‚’è¿”ã™ã€‚
     bool CheckError(string playerName)
     {
-        //‚à‚µ16•¶š‚æ‚è‘½‚¯‚ê‚ÎƒGƒ‰[
+        //ã‚‚ã—16æ–‡å­—ã‚ˆã‚Šå¤šã‘ã‚Œã°ã‚¨ãƒ©ãƒ¼
         if (playerName.Count() > 16)
         {
             errorText.text = "too long";
             return true;
         }
-        //‚à‚µƒAƒ‹ƒtƒ@ƒxƒbƒg•¶š—ñˆÈŠO‚ªg‚í‚ê‚Ä‚¢‚½‚çƒGƒ‰[
+        //ã‚‚ã—ã‚¢ãƒ«ãƒ•ã‚¡ãƒ™ãƒƒãƒˆæ–‡å­—åˆ—ä»¥å¤–ãŒä½¿ã‚ã‚Œã¦ã„ãŸã‚‰ã‚¨ãƒ©ãƒ¼
         if (!IsAlphanumeric(playerName))
         {
             errorText.text = "alphanumeric characters only";
@@ -50,7 +50,7 @@ public class NameInputButton : MonoBehaviour
         return false;
     }
 
-    //ƒAƒ‹ƒtƒ@ƒxƒbƒg•¶š—ñ‚Å‚ ‚ê‚Îtrue
+    //ã‚¢ãƒ«ãƒ•ã‚¡ãƒ™ãƒƒãƒˆæ–‡å­—åˆ—ã§ã‚ã‚Œã°true
     static bool IsAlphanumeric(string input)
     {
         return Regex.IsMatch(input, @"^[a-zA-Z0-9]+$");

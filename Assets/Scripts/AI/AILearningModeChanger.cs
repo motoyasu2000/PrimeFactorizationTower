@@ -1,6 +1,4 @@
 using Common;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 //GameinfoのAILearningがtrueの場合に、AIが学習するための環境を整えるクラス
