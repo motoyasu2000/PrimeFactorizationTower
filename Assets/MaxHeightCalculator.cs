@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//ブロックの最高地点の高さを計算するクラス
 public class MaxHeightCalculator : MonoBehaviour
 {
     float nowHeight = 0;
