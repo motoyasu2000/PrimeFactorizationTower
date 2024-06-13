@@ -1,4 +1,4 @@
-﻿using Common;
+using Common;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -15,9 +15,10 @@ public class CamerasManager : MonoBehaviour
     Vector3 oldCameraPosition; //1フレーム前のカメラの位置
     Vector3 newCameraPosition; //現在のカメラの位置(ブロックが高くなるごとにカメラが上に行く)
     RectTransform downerUITransform; //画面下部のUI
-    ScoreManager scoreManager;
     Camera mainCamera;
     Camera UICamera;
+    ScoreManager scoreManager;
+    MaxHeightCalculator maxHeightCalculator;
 
     public bool changeCameraPosition => oldCameraPosition != newCameraPosition; 
 
@@ -33,6 +34,7 @@ public class CamerasManager : MonoBehaviour
         mainCamera = Camera.main;
         UICamera = transform.Find("UICamera").GetComponent<Camera>();
         orthographicSize_defo = mainCamera.orthographicSize;
+        maxHeightCalculator = GameObject.Find("MaxHeightCalculator").GetComponent<MaxHeightCalculator>();
 
         //Debug.Log(downerUI_MAXY);
     }
@@ -40,9 +42,9 @@ public class CamerasManager : MonoBehaviour
     {
         //playSceneでなかったり、特定の高さ以上になっていない場合は処理を行わない。
         if (SceneManager.GetActiveScene().name != "PlayScene") return;
-        if (GameInfo.CameraTrackingStartHeight > scoreManager.NowHeight) return;
+        if (GameInfo.CameraTrackingStartHeight > maxHeightCalculator.NowHeight) return;
 
-        float moveingDistance = scoreManager.NowHeight - GameInfo.CameraTrackingStartHeight; //開始高度からの移動距離
+        float moveingDistance = maxHeightCalculator.NowHeight - GameInfo.CameraTrackingStartHeight; //開始高度からの移動距離
         float newOrthographicSize = moveingDistance + orthographicSize_defo; //新たなカメラの大きさ
         mainCamera.orthographicSize = newOrthographicSize;
         UICamera.orthographicSize = newOrthographicSize; //UICameraの大きさも変更しないと、mainCameraが大きくなるにつれ、UIが相対的に小さくなっていってしまう。

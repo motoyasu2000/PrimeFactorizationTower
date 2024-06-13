@@ -1,20 +1,20 @@
-﻿using Common;
+using Common;
 using UnityEngine;
 
 //ブロックの生成が単一であることを保証するクラス
 //複数のブロックが同時に生成されないよう、異なるブロックを生成仕様としたとき、初めにあったブロックの方が削除され、上書きされるようにする。
 public class SingleGenerateManager : MonoBehaviour
 {
-    const float dropHeightAbovePeak = 3f; //積み木の最高地点から見た相対的な高さ
-    GameObject singleBlock;
+    static readonly float dropHeightAbovePeak = 3f; //積み木の最高地点から見た相対的な高さ
     Vector3 defaultPoint; //初期位置
-    ScoreManager scoreManager;
+    GameObject singleBlock;
+    MaxHeightCalculator maxHeightCalculator; //高さの計算を行う
     public GameObject SingleBlock => singleBlock;
-    public Vector3 GeneratingPoint => new Vector3(defaultPoint.x, scoreManager.NowHeight + dropHeightAbovePeak, defaultPoint.z);
+    public Vector3 GeneratingPoint => new Vector3(defaultPoint.x, maxHeightCalculator.NowHeight + dropHeightAbovePeak, defaultPoint.z);
     private void Awake()
     {
         defaultPoint = transform.position;
-        scoreManager = ScoreManager.Ins;
+        maxHeightCalculator = GameObject.Find("MaxHeightCalculator").GetComponent<MaxHeightCalculator>();
     }
     private void Update()
     {
@@ -62,7 +62,7 @@ public class SingleGenerateManager : MonoBehaviour
     //ブロックの生成地点をゲームの実行中に変更するメソッド
     void MoveSingleGameObjectPoint()
     {
-        if(scoreManager.NowHeight < GameInfo.CameraTrackingStartHeight) return;
+        if(maxHeightCalculator.NowHeight < GameInfo.CameraTrackingStartHeight) return;
         transform.position = GeneratingPoint; //最も高いブロックよりより一定数(dropHeightAbovePeak)上にブロックを生成
     }
 }

@@ -10,15 +10,10 @@ using UnityEngine.SceneManagement;
 //ゲーム中のスコア計算、保存・読み込み、シーン間でのスコアデータの保持を行う。
 public class ScoreManager : MonoBehaviour
 {
-    float nowHeight = 0; //現在のゲームオブジェクトのブロックの高さが入る変数
-    GameObject blockField;
-    GameObject primeNumberCheckField;
-    GameObject completedField;
-    TextMeshProUGUI maxScore;
+    MaxHeightCalculator maxHeightCalculator;
 
     //各レベルのスコアは要素数11の配列として保存される。0~9番目が過去のランキング、10番目に最新のスコアが入り、ソートされるという仕組み
     [SerializeField] Dictionary<GameModeManager.DifficultyLevel, int[]> pileUpScores = new Dictionary<GameModeManager.DifficultyLevel,int[]>();　//Json形式で保存するために、シリアライズ可能にしておく
-    public float NowHeight => nowHeight;
     public Dictionary<GameModeManager.DifficultyLevel, int[]> PileUpScores => pileUpScores;
 
     //インスタンス
@@ -47,44 +42,11 @@ public class ScoreManager : MonoBehaviour
     public int CalculatePileUpScore()
     {
         const int scoreMultiplier = 1000; //高さにかかるスコア倍率
-        float height = CalculateAllGameObjectsMaxHeight();
+        float height = maxHeightCalculator.NowHeight;
         return (int)(height * scoreMultiplier);
     }
 
-    //全ゲームオブジェクトの頂点から最も高い頂点のy座標を返すメソッド(GameObjectのpivotではなく、頂点レベルで高さを計算する。)
-    float CalculateAllGameObjectsMaxHeight()
-    {
-        List<Vector3> allVertices = new List<Vector3>();
-        if (primeNumberCheckField != null)
-        {
-            foreach (Transform block in primeNumberCheckField.transform)
-            {
-                nowHeight = Mathf.Max(nowHeight, CalculateGameObjectMaxHeight(block.gameObject)); //現在見ているゲームオブジェクトの最も高い頂点とmaxの比較                                                                          //Debug.Log(block.gameObject.name);
-            }
-        }
-        if (completedField != null)
-        {
-            foreach (Transform block in completedField.transform)
-            {
-                nowHeight = Mathf.Max(nowHeight, CalculateGameObjectMaxHeight(block.gameObject)); //現在見ているゲームオブジェクトの最も高い頂点とmaxの比較
-            }
-        }
-        return nowHeight;
-    }
 
-    //指定されたゲームオブジェクトの全頂点の中で、最も高い頂点のy座標を計算し、返す
-    float CalculateGameObjectMaxHeight(GameObject block)
-    {
-        Vector2[] vertices = block.GetComponent<SpriteRenderer>().sprite.vertices;
-        float max = 0;
-        foreach(Vector2 vartex in vertices)
-        {
-            Vector2 worldPoint = block.transform.TransformPoint(vartex);
-            max = Mathf.Max(max, worldPoint.y);
-            //Debug.Log(worldPoint.y);
-        }
-        return max-GameInfo.GroundHeight; //初めの高さを0にするために元の高さ分引く
-    }
 
     //シーンのロード時に実行されるメソッド
     void SceneLoadProcess(Scene scene, LoadSceneMode mode)
@@ -95,7 +57,6 @@ public class ScoreManager : MonoBehaviour
     //シーンロード時に呼ばれる初期化メソッド
     void InitializeFields()
     {
-        nowHeight = 0;
         //列挙型DifficultyLevelで定義されているのに、辞書のキー内に存在しない難易度があったら、その難易度のキーを追加する。
         foreach (GameModeManager.DifficultyLevel level in Enum.GetValues(typeof(GameModeManager.DifficultyLevel)))
         {
@@ -107,11 +68,7 @@ public class ScoreManager : MonoBehaviour
 
         //ゲームシーンにあるゲームオブジェクト名を使って変数を作っているので 現在PlayScene以外ならこの後の処理を行わない。
         if (SceneManager.GetActiveScene() != SceneManager.GetSceneByName("PlayScene")) return;
-        instance.blockField = GameObject.Find("BlockField");
-        instance.primeNumberCheckField = blockField.transform.Find("PrimeNumberCheckField").gameObject;
-        instance.completedField = blockField.transform.Find("CompletedField").gameObject;
-        instance.nowHeight = 0;
-
+        instance.maxHeightCalculator = GameObject.Find("MaxHeightCalculator").GetComponent<MaxHeightCalculator>();
         //Debug.Log(instance.pileUpScores[GameModeManager.GameModemanagerInstance.NowDifficultyLevel][0]);
     }
 

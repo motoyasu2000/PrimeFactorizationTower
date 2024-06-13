@@ -55,7 +55,7 @@ public static class TurnMangaer
             Debug.LogError($"現在のターン数{nowNamesIndex} 上限ターン数{maxNamesIndex}");
             nowNamesIndex = 0;
         }
-        Debug.Log(GetNowNamesIndex());
+        //Debug.Log(GetNowNamesIndex());
     }
 
     //現在のターンを取得

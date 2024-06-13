@@ -43,10 +43,7 @@ public class GameManager : MonoBehaviour
 
     //その他
     int nowPhase = 0; //現在いくつの合成数を素因数分解し終えたか　これが増えると上に表示される合成数の値が大きくなるなどすることが可能。
-    GameModeManager gameModeManager; //難易度ごとに生成する合成数が異なるので、現在の難易度の情報を持つGameModeManagerの情報が必要
-                                     //また、スコアを保存する際、どの難易度のスコアを更新するかの情報も必要なので、そこでも使う。
-
-
+    MaxHeightCalculator maxHeightCalculator; //高さの計算を行う
 
     //初期化処理
     private void Awake()
@@ -59,10 +56,10 @@ public class GameManager : MonoBehaviour
         primeNumberCheckField = blockField.transform.Find("PrimeNumberCheckField").gameObject;
         completedField = blockField.transform.Find("CompletedField").gameObject;
         scoreManager = ScoreManager.Ins;
-        gameModeManager = GameModeManager.Ins;
         originManager = GameObject.Find("OriginManager").GetComponent<OriginManager>();
         earthQuakeManager = GameObject.Find("EarthQuakeManager").GetComponent<EarthQuakeManager>();
         explainPileUp = GameObject.Find("Canvas").transform.Find("ExplainPileUp").gameObject;
+        maxHeightCalculator = GameObject.Find("MaxHeightCalculator").GetComponent<MaxHeightCalculator>();
         DisplayerMaxScore();
     }
 
@@ -89,7 +86,7 @@ public class GameManager : MonoBehaviour
         CountAllBlocksStandingStillTime();
 
         //ターンの切り替え条件をチェックし、必要であればターンを切り替える
-        ChangeNextTurnAndCalculateScore();
+        ChangeNextTurnProcess();
     }
 
     //全てのゲームオブジェクトが地面に設置しているかのチェック
@@ -208,12 +205,17 @@ public class GameManager : MonoBehaviour
             return false;
     }
 
-    //次のターンに進んでよいか判断し、進んでよければ進んで初期化
-    void ChangeNextTurnAndCalculateScore()
+    //次のターンに進んでよいか判断し、進んでよければ進んで初期化。また、高さの更新やスコアの更新も行う
+    void ChangeNextTurnProcess()
     {
         if(ChengeNextTurnFlag)
         {
+            //高さの更新
+            maxHeightCalculator.
+
             //スコアを計算し、UIを更新
+            CalculateAllGameObjectsMaxHeight();
+
             CalculateAndDisplayScore();
 
             //ターンを切り替えて
@@ -228,7 +230,7 @@ public class GameManager : MonoBehaviour
     //各ゲームモードでのスコア計算
     void CalculateAndDisplayScore()
     {
-        switch (gameModeManager.NowGameMode)
+        switch (GameModeManager.Ins.NowGameMode)
         {
             //もし積み上げモードで、すべてのブロックが地面に設置しており、ターンのチェンジ時であればスコアの更新。
             case GameModeManager.GameMode.PileUp:
@@ -244,7 +246,7 @@ public class GameManager : MonoBehaviour
     //各ゲームモードでの最大スコアの表示(Awakeで呼ばれる。)
     void DisplayerMaxScore()
     {
-        switch (gameModeManager.NowGameMode)
+        switch (GameModeManager.Ins.NowGameMode)
         {
             case GameModeManager.GameMode.PileUp:
                 maxScoreText.text = ScoreManager.Ins.PileUpScores[GameModeManager.Ins.NowDifficultyLevel][0].ToString();
