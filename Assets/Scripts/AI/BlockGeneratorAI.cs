@@ -7,15 +7,15 @@ using UnityEngine;
 
 public class BlockGeneratorAI : Agent
 {
-    static readonly float posXScale = 5.0f; //x•ûŒü‚É‚Ç‚Ì‚­‚ç‚¢L‚­w’è‚Å‚«‚é‚©(-posXScale~posXScale)
+    static readonly float posXScale = 5.0f; //xæ–¹å‘ã«ã©ã®ãã‚‰ã„åºƒãæŒ‡å®šã§ãã‚‹ã‹(-posXScale~posXScale)
     public bool isRunningSingleAction = false;
     bool isRunningActionSequence = false;
-    int actionID = 0; //(0:¶¬A1:‰ñ“]A2:—‰º)
-    int generatedPrimeNumber; //¶¬‚µ‚½‘f”‚ª‰½‚©
+    int actionID = 0; //(0:ç”Ÿæˆã€1:å›è»¢ã€2:è½ä¸‹)
+    int generatedPrimeNumber; //ç”Ÿæˆã—ãŸç´ æ•°ãŒä½•ã‹
     int generatedPrimeNumberIndex;
-    int spin45Count; //‰ñ“]”
-    float blockPosX; //—‰ºˆÊ’u
-    //Œ»İ‚Ìó‹µ‚Å‘I‚Ô‚×‚«‘f”‚ÌƒXƒRƒAB‚½‚¾‚µƒQ[ƒ€‘¤‚Ì§ŒÀ‚Å‘S‚Ä‚ÌƒL[‚ª¶¬‚Å‚«‚é‚í‚¯‚Å‚Í‚È‚¢‚Ì‚ÅA¶¬‚Å‚«‚é’†‚ÅÅ‚àƒXƒRƒA‚Ì‚‚¢‚à‚Ì‚ğ‘I‘ğ‚·‚éƒƒWƒbƒN‚É‚·‚éB
+    int spin45Count; //å›è»¢æ•°
+    float blockPosX; //è½ä¸‹ä½ç½®
+    //ç¾åœ¨ã®çŠ¶æ³ã§é¸ã¶ã¹ãç´ æ•°ã®ã‚¹ã‚³ã‚¢ã€‚ãŸã ã—ã‚²ãƒ¼ãƒ å´ã®åˆ¶é™ã§å…¨ã¦ã®ã‚­ãƒ¼ãŒç”Ÿæˆã§ãã‚‹ã‚ã‘ã§ã¯ãªã„ã®ã§ã€ç”Ÿæˆã§ãã‚‹ä¸­ã§æœ€ã‚‚ã‚¹ã‚³ã‚¢ã®é«˜ã„ã‚‚ã®ã‚’é¸æŠã™ã‚‹ãƒ­ã‚¸ãƒƒã‚¯ã«ã™ã‚‹ã€‚
     Dictionary<int, float> primeNumberScores = new Dictionary<int, float>();
     AIActions actions;
     OriginManager originManager;
@@ -31,11 +31,11 @@ public class BlockGeneratorAI : Agent
 
     public override void CollectObservations(VectorSensor sensor)
     {
-        Vector3 actionVector = new Vector3(generatedPrimeNumberIndex, spin45Count, blockPosX/posXScale); //s“®‚Ìî•ñ‚ğŠÏ@‚É“n‚·B—‰ºˆÊ’u‚ÍƒXƒP[ƒŠƒ“ƒO‚ğs‚¤
+        Vector3 actionVector = new Vector3(generatedPrimeNumberIndex, spin45Count, blockPosX/posXScale); //è¡Œå‹•ã®æƒ…å ±ã‚’è¦³å¯Ÿã«æ¸¡ã™ã€‚è½ä¸‹ä½ç½®ã¯ã‚¹ã‚±ãƒ¼ãƒªãƒ³ã‚°ã‚’è¡Œã†
         sensor.AddObservation(actionVector);
     }
 
-    //‚ ‚é‘f”‚É‘Î‰‚·‚éObservation‚Ì”Ô†‚É‚»‚Ì‘f”‚Ì”‚ğ“ü‚ê‚é‚æ‚¤‚É‚µ‚½B
+    //ã‚ã‚‹ç´ æ•°ã«å¯¾å¿œã™ã‚‹Observationã®ç•ªå·ã«ãã®ç´ æ•°ã®æ•°ã‚’å…¥ã‚Œã‚‹ã‚ˆã†ã«ã—ãŸã€‚
     void AddObservationsOderindependent(Dictionary<int, int> dict, VectorSensor sensor)
     {
         foreach (int prime in GameModeManager.Ins.PrimeNumberPool)
@@ -51,24 +51,24 @@ public class BlockGeneratorAI : Agent
         }
     }
 
-    //actionBuffers0~8A‘f”‚Ì‘I‘ğ  actionBuffers9A—‰ºˆÊ’u‚Ì‘I‘ğ
+    //actionBuffers0~8ã€ç´ æ•°ã®é¸æŠ  actionBuffers9ã€è½ä¸‹ä½ç½®ã®é¸æŠ
     public override void OnActionReceived(ActionBuffers actionBuffers)
     {
         GenerateBlock(actionBuffers);
         isRunningSingleAction = false;
     }
 
-    //¶¬‚·‚éƒuƒƒbƒN‚ğ‘I‘ğ‚·‚é1
+    //ç”Ÿæˆã™ã‚‹ãƒ–ãƒ­ãƒƒã‚¯ã‚’é¸æŠã™ã‚‹1
     void GenerateBlock(ActionBuffers actionBuffers)
     {
-        Debug.Log("ƒuƒƒbƒN¶¬");
+        Debug.Log("ãƒ–ãƒ­ãƒƒã‚¯ç”Ÿæˆ");
         for (int i = 0; i < GameModeManager.Ins.PrimeNumberPool.Length; i++)
         {
-            if (i >= 9) Debug.LogError("9ŒÂˆÈã‚Ì‘f”‚ğ¶¬‚µ‚æ‚¤‚Æ‚µ‚Ä‚¢‚Ü‚·B");
+            if (i >= 9) Debug.LogError("9å€‹ä»¥ä¸Šã®ç´ æ•°ã‚’ç”Ÿæˆã—ã‚ˆã†ã¨ã—ã¦ã„ã¾ã™ã€‚");
             int primeNumber = GameModeManager.Ins.PrimeNumberPool[i];
             primeNumberScores[primeNumber] = actionBuffers.ContinuousActions[i];
         }
-        //‘S‚Ä‚Ì‘f”‚É‘Î‚µ‚ÄA-1~1‚Ü‚Å‚Ì’l‚ğ‚ ‚Ä‚Í‚ßA¶¬‰Â”\‚È‚à‚Ì‚Ì’†‚ÅAÅ‚à‚‚¢‚à‚Ì‚ğ¶¬‚·‚é
+        //å…¨ã¦ã®ç´ æ•°ã«å¯¾ã—ã¦ã€-1~1ã¾ã§ã®å€¤ã‚’ã‚ã¦ã¯ã‚ã€ç”Ÿæˆå¯èƒ½ãªã‚‚ã®ã®ä¸­ã§ã€æœ€ã‚‚é«˜ã„ã‚‚ã®ã‚’ç”Ÿæˆã™ã‚‹
         actions.GenerateBlock(primeNumberScores);
         generatedPrimeNumber = actions.GeneratedPrimeNumber;
         generatedPrimeNumberIndex = GameModeManager.Ins.GetPrimeNumberPoolIndex(generatedPrimeNumber);

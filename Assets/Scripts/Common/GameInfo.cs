@@ -6,6 +6,7 @@ namespace Common
     public static class GameInfo
     {
         //ゲーム内で不変の情報
+        static bool aiLearning = true; //強化学習中にはこのフラグがtrueになるようにする。(jsonファイルの書き込みやデータベースの更新を行わないように)
         static readonly int rankDisplayLimit = 10; //表示するランキングの上限値
         static readonly int cameraTrackingStartHeight = 4; //どこまで高く積んだらカメラが動き出すか
         static readonly float groundHeight = 0.5f; //元の地面の高さ
@@ -14,6 +15,10 @@ namespace Common
         static readonly Color fleezeColor = new Color(23f / 255f, 1f, 1f);
 
         //visual studioでどこから参照されているのかが追跡できるようにするために、プロパティで参照するようにする。
+        public static bool AILearning
+        {
+            get { return aiLearning; }
+        }
         public static int RankDisplayLimit
         {
             get { return rankDisplayLimit; }
@@ -47,6 +52,7 @@ namespace Common
         {
             static int nowScore = 0;
             static int oldMaxScore = 0;
+            
             public static void SetNowScore(int newScore)
             {
                 nowScore = newScore;

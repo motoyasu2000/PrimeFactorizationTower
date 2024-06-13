@@ -35,16 +35,25 @@ public class TurnSetter : MonoBehaviour
         TurnMangaer.SetPlayerNames(names);
     }
 
+    //プレイヤーのみ
     public void SetNames_Single()
     {
         names.Clear();
         names.Add(PlayerInfoManager.Ins.PlayerName);
     }
 
+    //プレイヤーVSAI
     public void SetNames_AI()
     {
         names.Clear();
         names.Add(PlayerInfoManager.Ins.PlayerName);
+        names.Add(GameInfo.AIName);
+    }
+
+    //AIのみ(学習用)
+    public void SetNames_AILearning()
+    {
+        names.Clear();
         names.Add(GameInfo.AIName);
     }
 }

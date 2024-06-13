@@ -35,7 +35,7 @@ public class GameManager : MonoBehaviour
     bool isDropBlockNowTurn = false;
     float allBlocksStandingStillTimer = 0; //全てのゲームオブジェクトが連続で静止している時間
     const float changeTurnTime = 0.4f; //全てのゲームオブジェクトがどれだけの時間静止すればターンが切り替わるのか
-    const float stillStandingScale = 0.05f; //ゲームオブジェクトの速度がどのくらいなら静止しているとみなすか
+    const float judgeStillStanding = 0.05f; //ゲームオブジェクトの速度がどのくらいなら静止しているとみなすか
     public bool IsDropBlockNowTurn => isDropBlockNowTurn;
     //全てのゲームオブジェクトの静止時間が基準を超えており、かつ、このターン内にブロックが生成されていればターンを切り替える
     bool ChengeNextTurnFlag => (allBlocksStandingStillTimer > changeTurnTime) && isDropBlockNowTurn;
@@ -196,7 +196,7 @@ public class GameManager : MonoBehaviour
     //引数で受け取ったblock(Transform型)がほぼ静止していればtrue
     bool CheckBlockStandStill(Transform block)
     {
-        if (block.GetComponent<Rigidbody2D>().velocity.magnitude < stillStandingScale)
+        if (block.GetComponent<Rigidbody2D>().velocity.magnitude < judgeStillStanding)
             return true;
         else
             return false;

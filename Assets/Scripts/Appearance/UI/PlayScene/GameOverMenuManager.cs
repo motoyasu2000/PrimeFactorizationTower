@@ -10,8 +10,8 @@ namespace UI
         int oldMaxScore;
         int newScore;
         GameOverManager gameOverManager;
-        GameObject UI_TextFellDown;
         GameObject UI_TextGameOver;
+        GameObject UI_TextFellDown;
         GameObject UI_nonUpdate; //スコアを更新しなかった場合のレコードの表示UI
         GameObject UI_updateRecord; //スコアを更新た場合のレコードの表示UI
         GameObject UI_winOrLose; //対戦モードで勝敗が決まった時に表示するUI
@@ -34,7 +34,6 @@ namespace UI
             else
             {
                 UI_TextGameOver.SetActive(true);
-                UI_TextFellDown.SetActive(true);
                 UI_TextFellDown.SetActive(true);
                 DisplayScoreMenu();
             }

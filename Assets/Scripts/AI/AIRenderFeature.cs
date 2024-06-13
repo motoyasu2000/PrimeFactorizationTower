@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
-//AI‚ªˆµ‚¤ƒJƒƒ‰‚É—˜—p‚·‚éRenderFeature
+//AIãŒæ‰±ã†ã‚«ãƒ¡ãƒ©ã«åˆ©ç”¨ã™ã‚‹RenderFeature
 public class AIRenderFeature : ScriptableRendererFeature
 {
     [SerializeField] Material blackBlockMaterial;

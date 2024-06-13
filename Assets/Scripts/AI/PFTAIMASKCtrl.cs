@@ -23,7 +23,6 @@ public class PFTAIMASKCtrl : MonoBehaviour
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         gameOverManager = GameObject.Find("GameOverManager").GetComponent<GameOverManager>();
         nowCondition = conditionManager.ConditionNumber;
-        preCondition = conditionManager.ConditionNumber;
     }
     void Update()
     {
@@ -46,11 +45,13 @@ public class PFTAIMASKCtrl : MonoBehaviour
             }
         }
 
-        if (gameOverManager.IsGameOver)
+        //ゲームオーバーになり、強化学習中であればエピソードリセット
+        if (gameOverManager.IsGameOver && GameInfo.AILearning)
         {
-            //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             agent.EndEpisode();
         }
+
         preCondition = nowCondition;
         nowCondition = conditionManager.ConditionNumber;
         //条件が変化した→条件達成→報酬を与える

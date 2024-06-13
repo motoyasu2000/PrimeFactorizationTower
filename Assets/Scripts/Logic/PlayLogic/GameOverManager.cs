@@ -6,10 +6,10 @@ using UnityEngine;
 public class GameOverManager : MonoBehaviour
 {
     const float delayTime = 1.2f;
-    int compositeNumberAtGameOver; //ゲームオーバー時の合成数
-    int blockNumberAtGameOver; //ゲームオーバーの引き金となったブロックの素数
 
     bool isGameOver = false; //ゲームオーバーになったらこのフラグをtrueにし、falseの時のみゲームオーバーの処理を実行するようにすることで、ゲームオーバーの処理が1度しか呼ばれないようにする。
+    int compositeNumberAtGameOver; //ゲームオーバー時の合成数
+    int blockNumberAtGameOver; //ゲームオーバーの引き金となったブロックの素数
     GameObject primeNumberCheckField; //ブロックを落下させた瞬間、そのブロックは、このゲームオブジェクトの子要素となる
     GameObject gameOverMenu;
     GameObject gameOverBlock; //ゲームオーバーの引き金となったブロック
@@ -21,10 +21,6 @@ public class GameOverManager : MonoBehaviour
     public int BlockNumberAtGameOver => blockNumberAtGameOver;
     public bool IsGameOver => isGameOver;  
     public bool IsBreakScore => (GameInfo.Variables.GetOldMaxScore() < GameInfo.Variables.GetNowScore()); //スコアを更新したかを判定するフラグ
-
-
-
-    [SerializeField] bool __RunReinforcementLearning__; //強化学習中にはこのフラグがtrueになるようにする。(jsonファイルの書き込みやデータベースの更新を行わないように)
 
 
     private void Awake()
@@ -41,7 +37,7 @@ public class GameOverManager : MonoBehaviour
         if (isGameOver) return;
         else isGameOver = true;
 
-        if (__RunReinforcementLearning__) return; //isGameOverの値に応じてエピソードを再実行するかを決定するため、isGameOverの更新のあとでreturn
+        if (GameInfo.AILearning) return; //isGameOverの値に応じてエピソードを再実行するかを決定するため、isGameOverの更新のあとでreturn
 
         Debug.Log("GameOver");
 

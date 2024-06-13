@@ -8,6 +8,7 @@ using System.Runtime.Serialization.Json;
 using System.IO;
 using System.Text;
 
+//AWSのapi gatewayを使用し、HTTPリクエストを送り、DynamoDBを操作するLambdaにアクセスするクラス
 public class LambdaAccesser : MonoBehaviour
 {
     private string apiUrl = "https://3tbzpdw367.execute-api.ap-northeast-1.amazonaws.com/dev/";
