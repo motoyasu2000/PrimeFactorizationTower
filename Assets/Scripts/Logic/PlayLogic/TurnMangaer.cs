@@ -7,8 +7,8 @@ public static class TurnMangaer
 {
     static int nowNamesIndex = 0; //今何番目の人か
     static int maxNamesIndex = 0; //何番目の人までいるか
-    static List<string> names = new List<string>(); //すべての名前を保存するリスト
     static int totalTurn = 0;
+    static List<string> names = new List<string>(); //すべての名前を保存するリスト
 
     //プレイヤーの名前を設定する
     public static void SetPlayerNames(List<string> playerNames)
@@ -55,11 +55,11 @@ public static class TurnMangaer
             Debug.LogError($"現在のターン数{nowNamesIndex} 上限ターン数{maxNamesIndex}");
             nowNamesIndex = 0;
         }
-        Debug.Log(GetNowTurn());
+        Debug.Log(GetNowNamesIndex());
     }
 
     //現在のターンを取得
-    public static int GetNowTurn()
+    public static int GetNowNamesIndex()
     {
         return nowNamesIndex;
     }

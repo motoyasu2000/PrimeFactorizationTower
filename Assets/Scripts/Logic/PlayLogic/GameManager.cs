@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     TextMeshProUGUI maxScoreText;
     GameObject explainPileUp; //チュートリアル時のテキスト
     UpperUIManager upperUIManager;
+    StandingStillTimerVisualizer standingStillTimerVisualizer; //ブロックが静止している間に表示するUIを管理するクラス
 
     //スコアの管理
     bool areAllBlocksGrounded = false; //全てのブロックが地面に設置しているか。スコア計算の条件やターンの切り替えの条件で使う
@@ -33,12 +34,12 @@ public class GameManager : MonoBehaviour
 
     //ターンの切り替え
     bool isDropBlockNowTurn = false;
-    float allBlocksStandingStillTimer = 0; //全てのゲームオブジェクトが連続で静止している時間
-    const float changeTurnTime = 0.4f; //全てのゲームオブジェクトがどれだけの時間静止すればターンが切り替わるのか
-    const float judgeStillStanding = 0.05f; //ゲームオブジェクトの速度がどのくらいなら静止しているとみなすか
+    float standingStillTimer = 0; //全てのゲームオブジェクトが連続で静止している時間
+    static readonly float changeTurnTime = 1f; //全てのゲームオブジェクトがどれだけの時間静止すればターンが切り替わるのか
+    static readonly float judgeStillStanding = 0.01f; //ゲームオブジェクトの速度がどのくらいなら静止しているとみなすか
     public bool IsDropBlockNowTurn => isDropBlockNowTurn;
     //全てのゲームオブジェクトの静止時間が基準を超えており、かつ、このターン内にブロックが生成されていればターンを切り替える
-    bool ChengeNextTurnFlag => (allBlocksStandingStillTimer > changeTurnTime) && isDropBlockNowTurn;
+    bool ChengeNextTurnFlag => (standingStillTimer > changeTurnTime) && isDropBlockNowTurn;
 
     //その他
     int nowPhase = 0; //現在いくつの合成数を素因数分解し終えたか　これが増えると上に表示される合成数の値が大きくなるなどすることが可能。
@@ -53,6 +54,7 @@ public class GameManager : MonoBehaviour
         upperUIManager = GameObject.Find("UpperUIManager").GetComponent<UpperUIManager>();
         nowScoreText = GameObject.Find("NowScoreText").GetComponent<TextMeshProUGUI>();
         maxScoreText = GameObject.Find("MaxScoreText").GetComponent<TextMeshProUGUI>();
+        standingStillTimerVisualizer = GameObject.Find("StandingStillTimerVisualizer").GetComponent<StandingStillTimerVisualizer>();
         blockField = GameObject.Find("BlockField");
         primeNumberCheckField = blockField.transform.Find("PrimeNumberCheckField").gameObject;
         completedField = blockField.transform.Find("CompletedField").gameObject;
@@ -172,14 +174,18 @@ public class GameManager : MonoBehaviour
     //全てのゲームオブジェクトが連続で静止した時間をカウントする
     void CountAllBlocksStandingStillTime()
     {
-        //全てのゲームオブジェクトが動いておらず、地面にくっついていればTimerをカウント
-        if (CheckAllBlocksStandingStill() && areAllBlocksGrounded)
+
+        //ブロックの落下したターンであり、全てのゲームオブジェクトが動いておらず、地面にくっついていればTimerをカウント
+        if (isDropBlockNowTurn && CheckAllBlocksStandingStill() && areAllBlocksGrounded)
         {
-            allBlocksStandingStillTimer += Time.deltaTime;
+            standingStillTimer += Time.deltaTime;
+            standingStillTimerVisualizer.SetActiveUI(true);
+            standingStillTimerVisualizer.UpdateTimer(standingStillTimer);
         }
         else
         {
-            allBlocksStandingStillTimer = 0;
+            standingStillTimer = 0;
+            standingStillTimerVisualizer.SetActiveUI(false);
         }
     }
 
@@ -214,7 +220,7 @@ public class GameManager : MonoBehaviour
             TurnMangaer.ChangeNextTurn();
 
             //初期化
-            allBlocksStandingStillTimer = 0;
+            standingStillTimer = 0;
             isDropBlockNowTurn = false;
         }
     }
