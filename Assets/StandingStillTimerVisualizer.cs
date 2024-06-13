@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-//ブロックの落下後、ブロックが静止していた場合に、どのくらいの間操作ができないかをUIで表示するクラス
+//ブロックの落下後、ブロックが静止していた場合に、どのくらいの間ターンの切り替わりを待つかを表示するクラス
 public class StandingStillTimerVisualizer : MonoBehaviour
 {
     GameObject standingStillTimerUI;
