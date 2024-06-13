@@ -30,6 +30,6 @@ public class AILearningModeChanger : MonoBehaviour
     void SetAITurnOnly()
     {
         GameModeManager.Ins.SetGameMode(GameModeManager.GameMode.Battle); //ゲームモードを非シングルに
-        TurnSetter.Ins.SetNames_AILearning();//AIのみにすることで、AIのみで学習ができるようにする。
+        TurnNameSetter.Ins.SetNames_AILearning();//AIのみにすることで、AIのみで学習ができるようにする。
     }
 }

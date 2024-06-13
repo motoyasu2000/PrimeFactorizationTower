@@ -141,13 +141,13 @@ namespace UI
         public void SetPileUp()
         {
             GameModeManager.Ins.SetGameMode(GameModeManager.GameMode.PileUp);
-            TurnSetter.Ins.SetNames_Single();//参加者の名前をプレイヤー一人にすることで、シングルで遊べるようにする。
+            TurnNameSetter.Ins.SetNames_Single();//参加者の名前をプレイヤー一人にすることで、シングルで遊べるようにする。
         }
 
         public void SetAIBattle()
         {
             GameModeManager.Ins.SetGameMode(GameModeManager.GameMode.Battle); //ゲームモードを非シングルに
-            TurnSetter.Ins.SetNames_AI();//参加者の名前をプレイヤーとAIにすることで、参加者とAIで対戦できるようにする。
+            TurnNameSetter.Ins.SetNames_AI();//参加者の名前をプレイヤーとAIにすることで、参加者とAIで対戦できるようにする。
         }
         //------------------PlaySceneの設定-----------------------
 

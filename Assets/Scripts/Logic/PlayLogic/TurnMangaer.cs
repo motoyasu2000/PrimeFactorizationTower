@@ -10,21 +10,11 @@ public static class TurnMangaer
     static List<string> names = new List<string>();
     static int totalTurn = 0;
 
-    //プレイヤーの人数を設定する
-    public static void SetNumberOfPlayer(int numberOfPleyer)
-    {
-        if (numberOfPleyer <= 0) Debug.LogError("プレイヤーは1人以上必要です");
-        maxTurn = numberOfPleyer - 1;
-    }
-
     //プレイヤーの名前を設定する
     public static void SetPlayerNames(List<string> playerNames)
     {
-        names = new List<string>(); //初期化
-        for(int i=0; i<=maxTurn; i++)
-        {
-            names[i] = playerNames[i];
-        }
+        names = playerNames;
+        maxTurn = names.Count - 1;
     }
 
     //現在のターンの人の名前を取得する

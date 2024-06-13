@@ -27,10 +27,10 @@ public class SingletonGenerator : MonoBehaviour
             PlayerInfoManager playerInfoManagerScript = playerInfoManager.AddComponent<PlayerInfoManager>();
             playerInfoManagerScript.enabled = true;
         }
-        if(TurnSetter.Ins == null)
+        if(TurnNameSetter.Ins == null)
         {
             GameObject turnSetter = new GameObject("TurnSetter");
-            TurnSetter turnSetterScript = turnSetter.AddComponent<TurnSetter>();
+            TurnNameSetter turnSetterScript = turnSetter.AddComponent<TurnNameSetter>();
             turnSetterScript.enabled = true;
         }
     }
