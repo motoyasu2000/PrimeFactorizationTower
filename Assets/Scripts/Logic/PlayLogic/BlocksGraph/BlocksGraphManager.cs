@@ -6,7 +6,7 @@ using UI;
 using Common;
 using static BlocksGraphData;
 
-//積み上げれたブロックはブロックがノード、隣接関係がエッジとなるグラフ構造をしており。それを管理するためのクラス。
+//ブロックのネットワーク全体を管理するクラス
 public class BlocksGraphManager : MonoBehaviour
 {
    //サブグラフの探索

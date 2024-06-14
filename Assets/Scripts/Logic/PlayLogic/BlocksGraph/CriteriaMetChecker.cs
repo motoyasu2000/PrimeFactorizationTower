@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEngine;
 using static BlocksGraphData;
 
+//条件が満たしているのかチェックするクラス
 public class CriteriaMetChecker : MonoBehaviour
 {
     //条件の生成

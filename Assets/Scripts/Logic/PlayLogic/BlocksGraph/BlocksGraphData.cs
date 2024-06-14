@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//ネットワーク全体のデータとそれを操作するメソッドと定義した静的なクラス
 public static class BlocksGraphData
 {
     static bool newConditionGenerating; //新たな条件を生成するフェーズであることを表す。 条件を達成してから、新たに条件を生成しおえるまでの間はtrueになる

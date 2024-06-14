@@ -5,6 +5,8 @@ using UI;
 using UnityEngine;
 using static BlocksGraphData;
 
+
+//条件が満たされた場合に行う行動を定義したクラス
 public class CriteriaMetProcessor : MonoBehaviour
 {
     static readonly float freezeDelayTime = 1.5f;
