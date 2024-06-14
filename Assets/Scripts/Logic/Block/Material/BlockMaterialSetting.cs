@@ -4,7 +4,11 @@ using System;
 using System.Reflection;
 using UnityEngine;
 
-//全てのブロックにアタッチされているクラス。StartでmaterialDatabaseからマテリアル情報をロードして自身のマテリアルに割り当てる。
+
+/// <summary>
+/// StartでmaterialDatabaseからマテリアル情報をロードして自身のマテリアルに割り当てるクラス。
+/// 全てのブロックにアタッチされている。
+/// </summary>
 public class BlockMaterialSetting : MonoBehaviour
 {
     MaterialDatabase materialDatabase;
@@ -20,12 +24,12 @@ public class BlockMaterialSetting : MonoBehaviour
         if (materialDatabase.blockMaterials.Count == 0) return;
 
         //マテリアルの取得と、その設定を保存していたデータから読み取って、適切に反映する。
-        IEnumParametersBinder binder = EnumParameterBinderManager.Binders[materialDatabase.GetBlockMaterialData(blockInfo.GetPrimeNumber()).binderIndex];
+        IBinder binder = BinderManager.Binders[materialDatabase.GetBlockMaterialData(blockInfo.GetPrimeNumber()).binderIndex];
         Type dynamicEnumType = binder.EnumType;
 
         //ジェネリックで列挙型を指定するメソッドをリフレクションで取得し、ジェネリックを動的に指定
-        MethodInfo setPropertyFloatMethod = typeof(IEnumParametersBinder).GetMethod("SetPropertyFloat");
-        MethodInfo setPropertyColorMethod = typeof(IEnumParametersBinder).GetMethod("SetPropertyColor");
+        MethodInfo setPropertyFloatMethod = typeof(IBinder).GetMethod("SetPropertyFloat");
+        MethodInfo setPropertyColorMethod = typeof(IBinder).GetMethod("SetPropertyColor");
         MethodInfo getEnumValueFromIndexMethod = typeof(EnumManager).GetMethod("GetEnumValueFromIndex");
         MethodInfo genericSetPropertyFloatMethod = setPropertyFloatMethod.MakeGenericMethod(dynamicEnumType);
         MethodInfo genericSetPropertyColorMethod = setPropertyColorMethod.MakeGenericMethod(dynamicEnumType);

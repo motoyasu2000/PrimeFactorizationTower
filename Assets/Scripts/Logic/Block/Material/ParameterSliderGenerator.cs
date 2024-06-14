@@ -5,7 +5,9 @@ using UnityEngine.UI;
 using TMPro;
 using MaterialLibrary;
 
-//マテリアルのパラメーターを調整するスライダーを生成するクラス
+/// <summary>
+/// MaterialScene内で、マテリアルのパラメーターを調整するスライダーを生成するクラス
+/// </summary>
 public class ParameterSliderGenerator : MonoBehaviour
 {
     static readonly float floatSliderScale = 50; //スライダーは0~1までの値をとるので、それをスケーリングするための定数(float型のsliderに使用)
@@ -14,7 +16,7 @@ public class ParameterSliderGenerator : MonoBehaviour
     int generateSliderCounter = 0;
     float[] splitAnchorPoints_y = Helper.CalculateSplitAnchorPoints(10); //Start時に反転する
     GameObject parameterSliderCellPrefab;
-    IEnumParametersBinder activeBinder;
+    IBinder activeBinder;
     MaterialDatabaseManager materialDatabaseManager;
     BlockSelector blockMaterialSelector;
 
@@ -35,7 +37,10 @@ public class ParameterSliderGenerator : MonoBehaviour
         blockMaterialSelector = GameObject.Find("BlockMaterialSelector").GetComponent<BlockSelector>();
     }
 
-    //与えられた列挙型に応じて必要な数だけスライダーを生成する
+    /// <summary>
+    /// 与えられた列挙型に応じて必要な数だけスライダーを生成する
+    /// </summary>
+    /// <typeparam name="TEnum">どの列挙型(シェーダー)か</typeparam>
     public void GenerateParameterSliders<TEnum>() where TEnum : Enum
     {
         InitializeSlider();
@@ -64,7 +69,12 @@ public class ParameterSliderGenerator : MonoBehaviour
         generateSliderCounter = 0; //GenerateParameterSliderCell関数の呼び出しごとにgenerateSliderCounterが増えるのでここで初期化
     }
 
-    //与えられた名前に応じたスライダーを生成する
+    /// <summary>
+    /// 与えられた名前に応じたスライダーを生成する
+    /// </summary>
+    /// <typeparam name="TEnum">どの列挙型(シェーダー)か</typeparam>
+    /// <param name="parameterName">パラメーターの名前</param>
+    /// <param name="sliderType">スライダーのタイプ(r,g,b,float)</param>
     void GenerateParameterSliderCell<TEnum>(string parameterName, SliderType sliderType) where TEnum : Enum
     {
         //sliderCellの生成と親の設定
@@ -165,7 +175,7 @@ public class ParameterSliderGenerator : MonoBehaviour
         else Debug.LogError("予期せぬSlidertypeが呼ばれました。");
     }
 
-    //スライダーを生成する際、あらかじめスライダーがあったら消去する
+    //今あるスライダーの全消去
     public void InitializeSlider()
     {
         foreach(Transform slider in gameObject.transform)
@@ -173,13 +183,21 @@ public class ParameterSliderGenerator : MonoBehaviour
             Destroy(slider.gameObject);
         }
     }
-    //現在どのマテリアルがアクティブか設定する
-    public void SetActiveBinder(IEnumParametersBinder binder)
+    /// <summary>
+    /// 現在どのマテリアルがアクティブか設定する
+    /// </summary>
+    /// <param name="binder">アクティブなマテリアルに対応するBinder</param>
+    public void SetActiveBinder(IBinder binder)
     {
         activeBinder = binder;
     }
 
-    //現在のスライダー、現在のブロックに合ったparametaerDataを中間のmaterialDatabaseから取得する
+    /// <summary>
+    /// 現在のスライダー、現在のブロックに合ったparametaerDataを中間のmaterialDatabaseから取得する
+    /// </summary>
+    /// <typeparam name="TEnum">どの列挙型(シェーダーか)</typeparam>
+    /// <param name="parameterName">パラメーターの名前</param>
+    /// <returns>指定したパラメーターのParameterData</returns>
     ParameterData GetNowStateParameterData<TEnum>(string parameterName) where TEnum : Enum
     {
         MaterialDatabase materialDatabase = materialDatabaseManager.MiddleMaterialDatabase;

@@ -1,13 +1,16 @@
-﻿using TMPro;
+using TMPro;
 using UnityEngine;
 
 namespace UI
 {
-    //チュートリアルでのUIの説明の際に、今説明しているUIがを点滅させるクラス。これにより今どこの説明をしているのかがわかりやすくなる。
+    /// <summary>
+    /// チュートリアルでのUIの説明の際に、今どのUIについて説明しているか、説明中のUIを点滅させるクラス。
+    /// これにより、視覚的な理解ができるようにする。
+    /// 対応するUIを点滅させるべき時に、そのUIを点滅させるためのこのスクリプトがアタッチされたゲームオブジェクトのenableがtrueになる。
+    /// </summary>
     public class ExplainUpNumbers : MonoBehaviour
     {
-
-        const float blinkSpeedCoefficient = 1.4f; // 時間当たりにどのくらい点滅するのかを調整するための値
+        static readonly float blinkSpeedCoefficient = 1.4f; // 時間当たりにどのくらい点滅するのかを調整するための値
         float timeCounter = 0;
         Color startColor;
         GameObject originNumber;
@@ -17,7 +20,6 @@ namespace UI
         TextMeshProUGUI nextUpNumberText;
         TextMeshProUGUI conditionNumberText;
         TextMeshProUGUI nowText;
-
 
         void Start()
         {

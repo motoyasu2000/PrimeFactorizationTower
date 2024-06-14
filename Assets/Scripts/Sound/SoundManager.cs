@@ -1,11 +1,14 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-//音声を管理するクラス
+/// <summary>
+/// 音声を管理するクラス
+/// シングルトンパターンを使用している
+/// </summary>
 [Serializable]
 public class SoundManager : MonoBehaviour
 {

@@ -1,9 +1,12 @@
-﻿using UnityEngine;
+using UnityEngine;
 using Common;
 
 namespace UI
 {
-    //Playシーン用のボタンの機能を提供するクラス
+    /// <summary>
+    /// PlayScene用のボタンによって呼ばれる機能を提供するクラス
+    /// </summary>
+
     public class ButtonManager_Play : MonoBehaviour
     {
         GameObject canvas;
@@ -43,6 +46,8 @@ namespace UI
         {
             Helper.LoadScene("PlayScene");
         }
+
+        //画面の説明
         public void ExplainHowToPlay()
         {
             settingMenu.SetActive(false);

@@ -1,14 +1,22 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 namespace MaterialLibrary
 {
+    /// <summary>
+    /// 初期のマテリアルのプロパティ
+    /// 単色
+    /// </summary>
     public enum DefaultBlocksMaterialProperty
     {
         [ShaderProperty("_Color")]
         MainColor,
     }
 
-    public class DefaultMaterialEnumBinder : EnumParametersBinder<DefaultBlocksMaterialProperty>
+    /// <summary>
+    /// 初期のマテリアルのBinder
+    /// 単色
+    /// </summary>
+    public class DefaultMaterialBinder : AbstBinder<DefaultBlocksMaterialProperty>
     {
         public override string MaterialPathAndName => MaterialPasses.GetDefaultBlocksMaterialName();
         protected override Material LoadMaterial()

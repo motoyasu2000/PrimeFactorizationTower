@@ -1,7 +1,9 @@
-﻿using TMPro;
+using TMPro;
 using UnityEngine;
 
-//今マテリアルの設定を行っているブロックの数字を表示するクラス
+/// <summary>
+/// MaterialScene内で選択されているブロックの数値を設定するクラス
+/// </summary>
 public class BlockNumberSetter : MonoBehaviour
 {
     TextMeshProUGUI blockNumText;

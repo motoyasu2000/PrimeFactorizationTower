@@ -9,7 +9,9 @@ using UnityEngine.UI;
 
 namespace UI
 {
-    //タイトルシーンで扱うボタンが呼び出すメソッドを持つクラス
+    /// <summary>
+    /// TitleScene用のボタンによって呼ばれる機能を提供するクラス
+    /// </summary>
     public class ButtonManager_Title : MonoBehaviour
     {
         //Titleで扱うメニュー

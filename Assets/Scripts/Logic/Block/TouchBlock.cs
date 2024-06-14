@@ -3,7 +3,10 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-//ブロックをタップやスライドによって操作できるようにする関数。ユーザーとのインタラクション部分。
+/// <summary>
+/// ブロックをタップやスライドによって操作できるようにするクラス。
+/// ユーザーとのインタラクション部分。
+/// </summary>
 public class TouchBlock : MonoBehaviour
 {
     //入力管理
@@ -126,7 +129,7 @@ public class TouchBlock : MonoBehaviour
         blockInfo.ChangeDynamic(); //重力の影響を受けるようにする。
         StartCoroutine(blockInfo.EnableCollider()); //ゲームオブジェクトの落下地点を視覚化する線の描画の際に一時的にコライダーを非活性化するので、ここでコライダーを復活させる。
         gameObject.transform.parent = primeNumberCheckField.transform;
-        BlocksGraphData.AddNode(gameObject);
+        BlocksGraphData.AddBlock(gameObject);
         gameManager.DropBlockProcess();
     }
 

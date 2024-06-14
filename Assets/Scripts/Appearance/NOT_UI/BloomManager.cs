@@ -1,8 +1,12 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
-//isLightUpStartがtrueになると、bloomの値が上昇し続けて画面がまぶしくなっていくようにするクラス。ゲームオーバー時に呼ばれる演出。
+/// <summary>
+/// bloomの値を上昇し続けて画面が明るくなっていくようにするクラス。
+/// ゲームオーバー時に呼ばれる演出。
+/// 外部からisLightUpStartをtrueにすることで、Update内で明るくする処理を行う
+/// </summary>
 public class BloomManager : MonoBehaviour
 {
     const float lightUpPowerCoefficient = 30f; //時間当たりにどのくらいbloomの値を大きくするのかを決定する値

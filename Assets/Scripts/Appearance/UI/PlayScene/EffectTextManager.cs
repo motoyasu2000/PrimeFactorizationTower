@@ -1,11 +1,12 @@
-﻿using System.Collections;
+using System.Collections;
 using UnityEngine;
 using TMPro;
-using Amazon.CognitoSync.Model;
 
 namespace UI
 {
-    //文字を表示させるクラス。現状だと条件達成やfreezeの表示
+    /// <summary>
+    /// 何らかの出来事が起こった時に文字を表示させるクラス。現状だと条件達成やfreezeの表示
+    /// </summary>
     public class EffectTextManager : MonoBehaviour
     {
         TextMeshProUGUI effectText;

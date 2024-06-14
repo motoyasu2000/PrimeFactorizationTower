@@ -3,7 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//ブロックの最高地点の高さを計算するクラス
+/// <summary>
+/// ブロックの最高地点の高さを計算するクラス
+/// 一定以上の高さになるとカメラの範囲が大きくなって上に行く必要があり、スコアを計算するためにも高さの情報は必要となる。
+/// </summary>
 public class MaxHeightCalculator : MonoBehaviour
 {
     float nowHeight = 0;
@@ -20,7 +23,10 @@ public class MaxHeightCalculator : MonoBehaviour
         completedField = blockField.transform.Find("CompletedField").gameObject;
     }
 
-    //全ゲームオブジェクトの頂点から最も高い頂点のy座標を返すメソッド(GameObjectのpivotではなく、頂点レベルで高さを計算する。)
+    /// <summary>
+    /// 全Blockの頂点から最も高い頂点のy座標を返すメソッド(GameObjectのpivotではなく、頂点レベルで高さを計算する。)
+    /// </summary>
+    /// <returns>最も高いBlockの頂点</returns>
     public float CalculateAllGameObjectsMaxHeight()
     {
         List<Vector3> allVertices = new List<Vector3>();
@@ -41,7 +47,11 @@ public class MaxHeightCalculator : MonoBehaviour
         return nowHeight;
     }
 
-    //指定されたゲームオブジェクトの全頂点の中で、最も高い頂点のy座標を計算し、返す
+    /// <summary>
+    /// 指定されたBlockの全頂点の中で、最も高い頂点のy座標を計算し、返す
+    /// </summary>
+    /// <param name="block">どのブロックの最も高い頂点を計算するか</param>
+    /// <returns>引数で受け取ったブロックの最も高い頂点</returns>
     float CalculateGameObjectMaxHeight(GameObject block)
     {
         Vector2[] vertices = block.GetComponent<SpriteRenderer>().sprite.vertices;

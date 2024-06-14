@@ -1,8 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-//mainカメラを振動させるスクリプト
+/// <summary>
+/// mainカメラを振動させるスクリプト
+/// 素因数分解をミスした際の演出に使用する
+/// </summary>
 public class CameraShaker : MonoBehaviour
 {
     public float shakePower = 0.001f; //振動の強さ(揺れる範囲)
@@ -13,9 +14,8 @@ public class CameraShaker : MonoBehaviour
         transform.localPosition = Random.insideUnitSphere * shakePower *(magnitude+1);
     }
 
-
     //カメラ位置を初期化
-    public void InitCameraPosition()
+    public void InitializeCameraPosition()
     {
         transform.localPosition = Vector3.zero;
     }

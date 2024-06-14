@@ -1,12 +1,14 @@
-﻿using System;
+using System;
 using System.Reflection;
 using UnityEngine;
 
 //リフレクションやジェネリックや属性、Lazyパターンなど慣れていないことが多いため、メモ用のコメントが多くなっております。
 namespace MaterialLibrary
 {
-    //EnumParametersBinderを継承したクラスのリストを作るために、より抽象的なインターフェースを定義しておく。
-    public interface IEnumParametersBinder
+    /// <summary>
+    /// EnumParametersBinderを継承したクラスのリストを作るために、より抽象的なインターフェースを定義しておく。
+    /// </summary>
+    public interface IBinder
     {
         string MaterialPathAndName { get; }
         Type EnumType { get; }
@@ -15,9 +17,13 @@ namespace MaterialLibrary
         void SetPropertyFloat<TEnum>(TEnum property, float value) where TEnum : Enum;
     }
 
-    //マテリアルのシェーダーのプロパティを列挙型で指定できるようにするためのクラス
-    //enumを持つことを間接的に継承先のクラスに強制させるために、ジェネリックを持たせる
-    public abstract class EnumParametersBinder<TEnumGeneral> : IEnumParametersBinder where TEnumGeneral : Enum
+    /// <summary>
+    /// マテリアルのシェーダーのプロパティを列挙型で指定できるようにするためのクラス
+    /// enumを持つことを間接的に継承先のクラスに強制させるために、ジェネリックを持たせる
+    /// </summary>
+    /// <typeparam name="TEnumGeneral">継承先のクラスのもつ列挙型</typeparam>
+
+    public abstract class AbstBinder<TEnumGeneral> : IBinder where TEnumGeneral : Enum
     {
         public abstract string MaterialPathAndName { get; }
 
@@ -45,19 +51,30 @@ namespace MaterialLibrary
         protected abstract Material LoadMaterial();
 
         //-------------------列挙型の要素からシェーダーのプロパティを操作するメソッドたち----------------------
-        //float型のプロパティの操作
-        public void SetPropertyColor<TEnumSpecific>(TEnumSpecific property, Color value) where TEnumSpecific : Enum
+        /// <summary>
+        /// Color型のプロパティを操作する
+        /// </summary>
+        /// <typeparam name="TEnumSpecific">どの列挙型のプロパティを変更するか</typeparam>
+        /// <param name="property">どのプロパティを変更するか</param>
+        /// <param name="color">どのような色にするか</param>
+        public void SetPropertyColor<TEnumSpecific>(TEnumSpecific property, Color color) where TEnumSpecific : Enum
         {
             if (typeof(TEnumGeneral) == typeof(TEnumSpecific))
             {
-                SetProperty<Color>(property, value, Material.SetColor);
+                SetProperty<Color>(property, color, Material.SetColor);
             }
             else
             {
                 throw new InvalidOperationException("Enumの型が不一致です。");
             }
         }
-        //Color型のプロパティの操作
+
+        /// <summary>
+        /// float型のプロパティを操作する
+        /// </summary>
+        /// <typeparam name="TEnumSpecific">どの列挙型のプロパティを変更するか</typeparam>
+        /// <param name="property">どのプロパティを変更するか</param>
+        /// <param name="value">どのくらいの値にするか</param>
         public void SetPropertyFloat<TEnumSpecific>(TEnumSpecific property, float value) where TEnumSpecific : Enum
         {
             if (typeof(TEnumGeneral) == typeof(TEnumSpecific))
@@ -70,6 +87,13 @@ namespace MaterialLibrary
             }
         }
 
+        /// <summary>
+        /// 指定されたプロパティに対して実際に値を設定する
+        /// </summary>
+        /// <typeparam name="TEnumSpecific">どの列挙型のプロパティを変更するか</typeparam>
+        /// <param name="property">どのプロパティを変更するか</param>
+        /// <param name="value">どのくらいの値にするか</param>
+        /// <param name="action">プロパティの名前と値を受け取り、実際に値を設定するアクション</param>
         void SetProperty<TEnumSpecific>(Enum property, TEnumSpecific value, Action<string, TEnumSpecific> action)
         {
             var propertyInfo = property.GetType().GetField(property.ToString());
@@ -86,7 +110,9 @@ namespace MaterialLibrary
         //----------------------------------------------------------------------------------------------------
     }
 
-    //enum内で列挙型の値とシェーダーのプロパティ名のマッピングを行えるようにする。
+    /// <summary>
+    /// enum内で列挙型の値とシェーダーのプロパティ名のマッピングを行えるようにする。
+    /// </summary>
     [AttributeUsage(AttributeTargets.Field)]
     public class ShaderPropertyAttribute : Attribute
     {

@@ -1,10 +1,12 @@
-﻿using Common;
+using Common;
 using MaterialLibrary;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-//マテリアルを設定するシーン内で、どのブロックを選択するのかを指定したり、そのブロックに対して色を割り当てたりするクラス。
+/// <summary>
+/// MaterialScene内で、どのブロックを選択するのかを指定したり、そのブロックに対して色を割り当てたりするクラス。
+/// </summary>
 public class BlockSelector : MonoBehaviour
 {
     int nowBlockIndex = 0;
@@ -27,7 +29,9 @@ public class BlockSelector : MonoBehaviour
         SetSingleBlock(); //実行時にブロックを配置
     }
 
-    //今何のブロックが選ばれているのかを指定するメソッド。
+    /// <summary>
+    /// 今何のブロックが選ばれているのかを指定するメソッド。
+    /// </summary>
     void SetSingleBlock()
     {
         InitializeSingleBlockParent();
@@ -36,7 +40,10 @@ public class BlockSelector : MonoBehaviour
         InvokeNowBlockMaterialButton();
     }
 
-    //単一のゲームオブジェクトが入る親オブジェクトの子要素を全部消去する。子オブジェクトの追加の際に初期化のために実行される。
+    /// <summary>
+    /// 単一のゲームオブジェクトが入る親オブジェクトの子要素を全部消去する。
+    /// 子オブジェクトの追加の際に初期化のために実行される。
+    /// </summary>
     void InitializeSingleBlockParent()
     {
         foreach (Transform block in singleBlockParent.transform)
@@ -45,7 +52,9 @@ public class BlockSelector : MonoBehaviour
         }
     }
 
-    //NowBlockNumに対応するブロックを生成する。
+    /// <summary>
+    /// NowBlockNumに対応するブロックを生成する。
+    /// </summary>
     void GenerateBlock()
     {
         GameObject resourcesBlock = Resources.Load($"Block{NowBlockNum}") as GameObject;
@@ -103,7 +112,10 @@ public class BlockSelector : MonoBehaviour
         SetSingleBlock() ;
     }
 
-    //現在選択中のブロックのマテリアルを設定する
+    /// <summary>
+    /// 現在選択中のブロックのマテリアルを設定する
+    /// </summary>
+    /// <typeparam name="TEnum">どの列挙型からプロパティを設定するか</typeparam>
     public void SetBlockMaterialDataToSingleBlock<TEnum>() where TEnum : Enum
     {
         //中間のマテリアルを取得
@@ -114,7 +126,7 @@ public class BlockSelector : MonoBehaviour
 
         if (blockMaterialData != null)
         {
-            IEnumParametersBinder binder = EnumParameterBinderManager.Binders[blockMaterialData.binderIndex];//現在のマテリアル
+            IBinder binder = BinderManager.Binders[blockMaterialData.binderIndex];//現在のマテリアル
 
             foreach (ParameterData parameter in blockMaterialData.parameters)
             {
@@ -153,10 +165,10 @@ public class BlockSelector : MonoBehaviour
         int nowMaterialIndex = 0;
 
         //全てのマテリアルを検索して
-        foreach (var ibinder in EnumParameterBinderManager.Binders)
+        foreach (var ibinder in BinderManager.Binders)
         {
             //現在の選択中のブロックのマテリアルのMaterialButtonがあれば
-            if (EnumParameterBinderManager.GetBindersIndex(ibinder) == materialDatabaseManager.MiddleMaterialDatabase.GetBlockMaterialData(NowBlockNum).binderIndex)
+            if (BinderManager.GetBindersIndex(ibinder) == materialDatabaseManager.MiddleMaterialDatabase.GetBlockMaterialData(NowBlockNum).binderIndex)
             {
                 //そのMaterialButtonをクリックする。
                 Button materialButton = materialButtonsParent.GetChild(nowMaterialIndex).GetComponent<Button>();

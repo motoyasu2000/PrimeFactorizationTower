@@ -1,7 +1,10 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.UI;
 
-//音声設定データ(BGM音量・SE音量・ボイス音量)を設定するクラス、音量を調節するバーによって操作される。
+/// <summary>
+/// 音声設定データ(BGM音量・SE音量・ボイス音量)を設定するクラス
+/// 音量を調節するバーによって操作される。
+/// </summary>
 public class VolumeSetter : MonoBehaviour
 {
     Slider[] sliders = new Slider[3];

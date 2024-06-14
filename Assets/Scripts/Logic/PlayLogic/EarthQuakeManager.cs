@@ -1,9 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.IO;
+using System.Collections;
 using UI;
 using UnityEngine;
-using UnityEngine.SocialPlatforms;
 
 //素因数分解を間違えた場合に、ペナルティとして地震を発生させるクラス。
 public class EarthQuakeManager : MonoBehaviour
@@ -62,7 +59,7 @@ public class EarthQuakeManager : MonoBehaviour
         elapsedEarthQuakeTime = 0;
         groundRb.velocity = Vector2.zero;
         groundRb.rotation = 0;
-        cameraShaker.InitCameraPosition();
+        cameraShaker.InitializeCameraPosition();
         magnitude++;
     }
 

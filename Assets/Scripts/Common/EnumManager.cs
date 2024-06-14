@@ -1,6 +1,8 @@
-﻿using System;
+using System;
 namespace Common {
-    //Enum型を外から便利に扱うためのクラス
+    /// <summary>
+    /// Enum型の便利機能を提供するクラス
+    /// </summary>
     public static class EnumManager
     {
         //インデックスからEnum型の値の文字列を取得

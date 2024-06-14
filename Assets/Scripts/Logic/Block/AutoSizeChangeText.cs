@@ -1,8 +1,10 @@
-﻿using UnityEngine;
+using UnityEngine;
 
-//ブロックに表示される文字のサイズを調整するクラス
-//文字はブロックの子要素となっており、ブロックのScaleに応じて文字サイズを小さくする。
-//具体的には親ブロックのScaleの逆数をとる。
+/// <summary>
+/// ブロックに表示される文字のサイズを調整するクラス
+/// 文字はブロックの子要素となっており、ブロックのScaleに応じて文字サイズを小さくする。
+/// 具体的には親ブロックのScaleの逆数をとる。
+/// </summary>
 public class AutoSizeChangeText : MonoBehaviour
 {
     void Start()

@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using UnityEngine;
-using System;
-using Random = UnityEngine.Random;
 using Common;
 
-//左上に表示される条件を生成するためのクラス
+/// <summary>
+/// 左上に表示される条件を生成するためのクラス
+/// </summary>
 public class ConditionManager : MonoBehaviour
 {
     //キーが素数、バリューがその素数の数の辞書の生成

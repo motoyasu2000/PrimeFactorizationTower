@@ -3,7 +3,10 @@ using System.IO;
 using UnityEngine;
 using static GameModeManager;
 
-//ゲームモードや、難易度を管理するクラス。シングルトンパターンを扱っている。
+/// <summary>
+/// ゲームモードや、難易度を管理するクラス。
+/// シングルトンパターンを扱っている。
+/// </summary>
 public class GameModeManager : MonoBehaviour
 {
     //シングルトンのインスタンス

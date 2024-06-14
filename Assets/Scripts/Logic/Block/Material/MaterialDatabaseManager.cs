@@ -1,10 +1,13 @@
-﻿using Common;
+using Common;
 using MaterialLibrary;
 using System;
 using System.Linq;
 using UnityEngine;
 
-//実際にブロックに設定するためのMaterialDatabaseの他に、マテリアル設定のためのシーン内で使う用の中間MaterialDatabaseを管理するためのクラス
+/// <summary>
+/// 実際にブロックに設定するためのMaterialDatabaseを設定する前に、
+/// マテリアル設定のためのシーン内で使う用の中間MaterialDatabaseを管理するためのクラス
+/// </summary>
 public class MaterialDatabaseManager : MonoBehaviour
 {
     static readonly float initColorValue = 0.8f; //R,G,Bの初期化色、明るめのグレー
@@ -20,8 +23,15 @@ public class MaterialDatabaseManager : MonoBehaviour
         LoadMaterialDatabase();
     }
 
-    //materialDatabaseの更新処理　どのブロックにどのマテリアルのどの様なパラメーターを設定するかを指定できる。
-    public void SetShaderParameter(int blockNum, string materialPath, IEnumParametersBinder ibinder ,ParameterData parameter)
+    /// <summary>
+    /// middleMaterialDatabaseの更新処理　
+    /// どのブロックにどのマテリアルのどの様なパラメーターを設定するかを指定できる。
+    /// </summary>
+    /// <param name="blockNum">どのブロックか</param>
+    /// <param name="materialPath">どのマテリアルか</param>
+    /// <param name="ibinder">どのバインダーか</param>
+    /// <param name="parameter">どの様なパラメーターか</param>
+    public void SetShaderParameter(int blockNum, string materialPath, IBinder ibinder ,ParameterData parameter)
     {
         //パラメーターを保存するためため、ブロックデータの取得処理
         BlockMaterialData blockData;
@@ -37,14 +47,19 @@ public class MaterialDatabaseManager : MonoBehaviour
             blockData = new BlockMaterialData() { blockNumber = blockNum };
         }
         blockData.materialPath = materialPath;
-        blockData.binderIndex = EnumParameterBinderManager.GetBindersIndex(ibinder);
+        blockData.binderIndex = BinderManager.GetBindersIndex(ibinder);
 
 
         blockData.AddParameter(parameter);
         middleMaterialDatabase.AddBlockMaterial(blockData);
     }
 
-    //文字列で与えられたパラメーターを受け取り、その文字列に応じて、ParameterDataを返す
+    /// <summary>
+    /// 文字列で与えられたパラメーターを受け取り、その文字列に応じて、初期化されたParameterDataを返す
+    /// </summary>
+    /// <typeparam name="TEnum">どの列挙型のパラメーターを初期化するか</typeparam>
+    /// <param name="parameterName">どのパラメーターか</param>
+    /// <returns>初期化されたParameterData</returns>
     ParameterData InitializeParameterData<TEnum>(string parameterName) where TEnum:Enum
     {
         ParameterData parameterData = new ParameterData();
@@ -66,8 +81,12 @@ public class MaterialDatabaseManager : MonoBehaviour
         return parameterData;
     }
 
-    //materialDatabaseの初期化 初回のみ実行されることを想定　
-    public void InitializeMaterialDatabase<TEnum>(IEnumParametersBinder ibinder) where TEnum : Enum
+    /// <summary>
+    /// materialDatabaseの初期化 初回のみ実行されることを想定　
+    /// </summary>
+    /// <typeparam name="TEnum">どの列挙型のパラメーターを初期化するか</typeparam>
+    /// <param name="ibinder">どのバインダーか(現在ではデフォルトのバインダーが呼ばれる)</param>
+    public void InitializeMaterialDatabase<TEnum>(IBinder ibinder) where TEnum : Enum
     {
         if (middleMaterialDatabase == null) middleMaterialDatabase = PlayerInfoManager.Ins.MaterialDatabase;
         if(middleMaterialDatabase == null) new MaterialDatabase();
@@ -77,14 +96,21 @@ public class MaterialDatabaseManager : MonoBehaviour
         }
     }
 
-    //現在のマテリアルと押したボタンのマテリアルが一致していなければ単一のBlockMaterialを初期化を行い、
-    //さらにBlockMaterialを中間のMaterialDatabaseに追加 MaterialButtonのタップ時に呼ばれる
-    public void InitializeBlockMaterial<TEnum>(IEnumParametersBinder ibinder, int prime) where TEnum : Enum
+    /// <summary>
+    /// 現在のマテリアルと押したボタンのマテリアルが一致していなければ単一のBlockMaterialを初期化を行い、
+    /// さらにBlockMaterialを中間のmiddleMaterialDatabaseに追加 
+    /// MaterialButtonのタップ時に呼ばれる
+    /// </summary>
+    /// <typeparam name="TEnum">どの列挙型のパラメーターを初期化するか</typeparam>
+    /// <param name="ibinder">どのバインダーか</param>
+    /// <param name="prime">どのブロックのパラメーターか</param>
+
+    public void InitializeBlockMaterial<TEnum>(IBinder ibinder, int prime) where TEnum : Enum
     {
         //もし、押されたボタンのbinderが、現在の数字のブロックのbinderと等しくなければ、もしくはそもそも現在の数字がMiddleMaterialDatabase上に存在しなければ 初期化して中間のMaterialDatabaseを更新
-        if ((MiddleMaterialDatabase.GetBlockMaterialData(prime) == null) || (EnumParameterBinderManager.GetBindersIndex(ibinder) != MiddleMaterialDatabase.GetBlockMaterialData(prime).binderIndex))
+        if ((MiddleMaterialDatabase.GetBlockMaterialData(prime) == null) || (BinderManager.GetBindersIndex(ibinder) != MiddleMaterialDatabase.GetBlockMaterialData(prime).binderIndex))
         {
-            BlockMaterialData materialData = new BlockMaterialData() { blockNumber = prime, binderIndex = EnumParameterBinderManager.GetBindersIndex(ibinder) };
+            BlockMaterialData materialData = new BlockMaterialData() { blockNumber = prime, binderIndex = BinderManager.GetBindersIndex(ibinder) };
             for (int i = 0; i < Enum.GetValues(ibinder.EnumType).Length; i++)
             {
                 string parameterName = EnumManager.GetStringFromIndex<TEnum>(i);
@@ -105,6 +131,6 @@ public class MaterialDatabaseManager : MonoBehaviour
     public void LoadMaterialDatabase()
     {
         middleMaterialDatabase = new MaterialDatabase(PlayerInfoManager.Ins.MaterialDatabase);
-        if (middleMaterialDatabase == null || middleMaterialDatabase.blockMaterials == null || middleMaterialDatabase.blockMaterials.Count == 0) InitializeMaterialDatabase<DefaultBlocksMaterialProperty>(new DefaultMaterialEnumBinder());
+        if (middleMaterialDatabase == null || middleMaterialDatabase.blockMaterials == null || middleMaterialDatabase.blockMaterials.Count == 0) InitializeMaterialDatabase<DefaultBlocksMaterialProperty>(new DefaultMaterialBinder());
     }
 }

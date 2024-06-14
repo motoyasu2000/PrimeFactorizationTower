@@ -2,6 +2,10 @@ using UnityEngine;
 
 namespace MaterialLibrary
 {
+    /// <summary>
+    /// 波が表示されるマテリアルのプロパティ。
+    /// 波の上下の2色と、波の移動速度や物理的な値を設定できる。
+    /// </summary>
     public enum WaveMaterialProperty
     {
         [ShaderProperty("_Color")]
@@ -18,7 +22,10 @@ namespace MaterialLibrary
         height,
     }
 
-    public class WaveMaterialEnumBinder : EnumParametersBinder<WaveMaterialProperty>
+    /// <summary>
+    /// 波マテリアルのBinder
+    /// </summary>
+    public class WaveMaterialBinder : AbstBinder<WaveMaterialProperty>
     {
         public override string MaterialPathAndName => MaterialPasses.GetWaveMaterialName();
         protected override Material LoadMaterial()

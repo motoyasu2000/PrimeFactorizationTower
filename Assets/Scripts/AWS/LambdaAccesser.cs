@@ -1,4 +1,3 @@
-using Google.Protobuf.WellKnownTypes;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,7 +7,9 @@ using System.Runtime.Serialization.Json;
 using System.IO;
 using System.Text;
 
-//AWSのapi gatewayを使用し、HTTPリクエストを送り、DynamoDBを操作するLambdaにアクセスするクラス
+/// <summary>
+/// AWSのapi gatewayを使用し、HTTPリクエストを送り、DynamoDBを操作するLambdaにアクセスするクラス
+/// </summary>
 public class LambdaAccesser : MonoBehaviour
 {
     private string apiUrl = "https://3tbzpdw367.execute-api.ap-northeast-1.amazonaws.com/dev/";
@@ -20,6 +21,12 @@ public class LambdaAccesser : MonoBehaviour
         saveRankingUrl = apiUrl + "/ranking/update";
     }
 
+    /// <summary>
+    /// 非同期でDynamoDBからTop10のレコードを取得、各レコードをリストとしてコールバックで返す。
+    /// </summary>
+    /// <param name="modeAndLevel">[mode]_[lebel]</param>
+    /// <param name="callback">Top10の各レコードのリスト</param>
+    /// <returns></returns>
     public IEnumerator GetScoreTop10(string modeAndLevel, Action<List<PlayerScoreRecord>> callback)
     {
         //POSTリクエストを作成

@@ -1,7 +1,9 @@
-﻿using Common;
 using UnityEngine;
 
-//ブロックを積み木するための土台となる地面を生成するためのクラス。地面を真っ平にしてしまうと。2,5だけひたすら積んでく動きが強すぎになってしまう。
+/// <summary>
+/// ブロックを積み木するための土台となる地面を生成するためのクラス。
+/// 地面を真っ平にしてしまうと。2,5だけひたすら積んでく動きが強すぎになってしまう。
+/// </summary>
 public class GroundGenerator : MonoBehaviour
 {
     GameObject groundToken;

@@ -1,11 +1,12 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System.IO;
 using Common;
 
-//ゲームを管理するクラス。Originの生成や表示、生成されたブロックが条件を満たすかの判定、ゲームオーバーの判定、ターンの管理などなど。
+/// <summary>
+/// ゲームを管理するクラス。Originの生成や表示、生成されたブロックが条件を満たすかの判定、ゲームオーバーの判定、ターンの管理などなど。
+/// </summary>
 public class GameManager : MonoBehaviour
 {
     //UI
@@ -76,7 +77,7 @@ public class GameManager : MonoBehaviour
         //PrimeNumberCheckField内部の合成数を計算。Originの条件を満たしていなければゲームオーバー
         CheckMatchingOrigin();
 
-        //PrimeNumberCheckField内部の合成数の積が画面上部の数値と一致していたらいるかのチェック。
+        //素数ブロックの積が、画面上部の合成数と一致しているかのチェック。一致していたら上の数字の消去
         CheckFactorizationPerfect();
 
         //Originを適切に素因数分解できていれば、PrimeNumberCheckFieldのブロックをすべてCompletedFieldに送る
@@ -89,7 +90,9 @@ public class GameManager : MonoBehaviour
         ChangeNextTurnProcess();
     }
 
-    //全てのゲームオブジェクトが地面に設置しているかのチェック
+    /// <summary>
+    /// 全てのゲームオブジェクトが地面に設置しているかのチェック
+    /// </summary>
     void CheckAllBlocksOnGround()
     {
         wereAllBlocksGroundedLastFrame = areAllBlocksGrounded; //1フレーム前のisGroundAllの保存
@@ -100,7 +103,10 @@ public class GameManager : MonoBehaviour
         CheckSingleFieldBlocksOnGround(completedField.transform);
     }
 
-    //引数で指定されたTransform上の子要素のすべてが、地面に設置しているのかをチェックする
+    /// <summary>
+    /// 引数で指定されたTransform上の子要素のすべてが、地面に設置しているのかをチェックする
+    /// </summary>
+    /// <param name="fieldTransform">どの親のtransformか</param>
     void CheckSingleFieldBlocksOnGround(Transform fieldTransform)
     {
         foreach (Transform block in fieldTransform)
@@ -148,7 +154,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    //primeNumberCheckField内のブロックを全てcompletedFieldに移動させる。
+    //primeNumberCheckField内のブロックを全てcompletedFieldに移動させる。originの素因数分解が終了したときに呼ばれる
     void MoveToCompletedField()
     {
         if (originManager.CurrentOriginNumberDict == null || originManager.CurrentOriginNumberDict.Count == 0)
@@ -205,7 +211,10 @@ public class GameManager : MonoBehaviour
             return false;
     }
 
-    //次のターンに進んでよいか判断し、進んでよければ進んで初期化。また、高さの更新やスコアの更新も行う
+    /// <summary>
+    /// 次のターンに進んでよいか判断し、進んでよければ進んで初期化。
+    /// また、高さの更新やスコアの更新も行う
+    /// </summary>
     void ChangeNextTurnProcess()
     {
         if(ChengeNextTurnFlag)

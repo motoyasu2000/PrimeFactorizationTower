@@ -1,9 +1,11 @@
-﻿using MaterialLibrary;
+using MaterialLibrary;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-//全てのブロックのに割り当てるマテリアルや、そのパラメーターの情報を保存するためのクラス
+/// <summary>
+/// 全てのブロックのに割り当てるマテリアルや、そのパラメーターの情報を保存するためのクラス
+/// </summary>
 [System.Serializable]
 public class MaterialDatabase
 {
@@ -41,13 +43,15 @@ public class MaterialDatabase
         {
             foreach(var parameter in blockMaterial.parameters)
             {
-                Debug.Log($"MDB上の 素数: {blockMaterial.blockNumber}, パラメーター{Enum.GetValues(EnumParameterBinderManager.Binders[blockMaterial.binderIndex].EnumType).GetValue(parameter.parameterEnumIndex)}, float: {parameter.floatValue}, Color: ({parameter.redValue}, {parameter.greenValue}, {parameter.blueValue})");
+                Debug.Log($"MDB上の 素数: {blockMaterial.blockNumber}, パラメーター{Enum.GetValues(BinderManager.Binders[blockMaterial.binderIndex].EnumType).GetValue(parameter.parameterEnumIndex)}, float: {parameter.floatValue}, Color: ({parameter.redValue}, {parameter.greenValue}, {parameter.blueValue})");
             }
         }
     }
 }
 
-//ブロックごとのMaterial情報をjson形式でセーブ・ロードを行うためのクラス
+/// <summary>
+/// ブロックごとのMaterial情報をjson形式でセーブ・ロードを行うためのクラス
+/// </summary>
 [System.Serializable]
 public class BlockMaterialData
 {
@@ -86,7 +90,9 @@ public class BlockMaterialData
     }
 }
 
-//マテリアルのシェーダーの各パラメーターの情報をセーブ・ロードするためのクラス
+/// <summary>
+/// マテリアルのシェーダーの各パラメーターの情報をセーブ・ロードするためのクラス
+/// </summary>
 [System.Serializable]
 public class ParameterData
 {

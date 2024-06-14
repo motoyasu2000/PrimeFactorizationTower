@@ -5,7 +5,9 @@ using UnityEngine.SceneManagement;
 
 namespace Common
 {
-    //様々なクラスで扱うメソッドを持つクラス
+    /// <summary>
+    /// 様々な機能を提供するヘルパークラス 
+    /// </summary>
     public static class Helper
     {
         //シーンを推移すると同時に、BGMをシーンに合わせて適切に変更する
@@ -18,7 +20,12 @@ namespace Common
             else if (sceneName == "TitleScene") soundManager.PlayAudio(SoundManager.Ins.BGM_TITLE);
         }
 
-        //引数で分割数を指定し、その分割数にあったアンカーポイントの集合を返す。(ビューポート座標)
+
+        /// <summary>
+        /// 引数で分割数を指定し、その分割数にあったアンカーポイントのfloat配列をビューポート座標で返す。
+        /// </summary>
+        /// <param name="numOfDiv">分割数</param>
+        /// <returns>分割されたアンカーポイントのfloat配列</returns>
         public static float[] CalculateSplitAnchorPoints(int numOfDiv)
         {
             float[] splitAnchorPoints = new float[numOfDiv+1];
@@ -47,8 +54,8 @@ namespace Common
             return compositNumber;
         }
 
-        //第一引数で受け取った各素数の数をカウントする辞書に、第二引数の素数を追加する場合の処理
-        public static void AddPrimeNumberDict(ref Dictionary<int,int> primeNumberDict, int primeNumber)
+        //第一引数で受け取った各素数の数をカウントする辞書に、第二引数の素数を追加する処理
+        static void AddPrimeNumberDict(ref Dictionary<int,int> primeNumberDict, int primeNumber)
         {
             //追加したいキーが存在しなければ初期化。
             if (!primeNumberDict.ContainsKey(primeNumber))
@@ -59,7 +66,15 @@ namespace Common
             primeNumberDict[primeNumber]++;
         }
 
-        //指定した素数プールから合成数を辞書型として生成する。合成数の上限値や、素数の数も下限と上限を指定することができる。
+        /// <summary>
+        /// 合成数を辞書型として生成する。
+        /// 引数で様々なカスタムが可能。
+        /// </summary>
+        /// <param name="primeNumberPool">合成数生成のもととなる素数リスト</param>
+        /// <param name="maxCompositeNumber">合成数の上限値</param>
+        /// <param name="minRand">合成数を構成する素数の最小個数</param>
+        /// <param name="maxRand">合成数を構成する素数の最大個数</param>
+        /// <returns>生成した素数辞書</returns>
         public static Dictionary<int, int> GenerateCompositeNumberDictCustom(List<int> primeNumberPool, int maxCompositeNumber, int minRand, int maxRand)
         {
             int randomIndex; //素数のインデックス(乱数によって生成)

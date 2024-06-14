@@ -1,6 +1,8 @@
-﻿using UnityEngine;
+using UnityEngine;
 
-//タップエフェクトが、パーティクルの再生が終了したら自動的にDestroyされるようにするクラス。
+/// <summary>
+/// タップエフェクトが、パーティクルの再生が終了したら自動的にDestroyされるようにするためのクラス。
+/// </summary>
 public class TapEffectDestroyer : MonoBehaviour
 {
     void Start()

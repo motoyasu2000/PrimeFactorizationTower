@@ -1,7 +1,9 @@
-﻿using UnityEngine;
+using UnityEngine;
 using TMPro;
 
-//ブロックを生成するクラス。ブロックを生成するボタンにアタッチされている。
+/// <summary>
+/// ブロックを生成するクラス。ブロックを生成するボタンにアタッチされている。
+/// </summary>
 public class BlockGenerator : MonoBehaviour
 {
     static int IDCounter = 0;
@@ -35,7 +37,11 @@ public class BlockGenerator : MonoBehaviour
         HundleGenerateBlock(primeNumber);
     }
 
-    //引数で与えられた数値に合わせてブロックを生成する関数。そのブロックの情報(IDや素数など)も追加する。
+    /// <summary>
+    /// 引数で与えられた数値に合わせてブロックを生成する関数。
+    /// そのブロックの情報(IDや素数など)も追加する。
+    /// </summary>
+    /// <param name="primeNumber">どの素数を生成するか</param>
     void HundleGenerateBlock(int primeNumber)
     {
         //ゲームオブジェクトの生成とその情報をもつインスタンスの取得

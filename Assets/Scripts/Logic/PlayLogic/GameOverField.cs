@@ -1,6 +1,8 @@
-﻿using UnityEngine;
+using UnityEngine;
 
-//ブロックが地面から落下したかの判定を行うためのクラス。
+/// <summary>
+/// ブロックが地面から落下したかの判定を行うためのクラス。
+/// </summary>
 public class GameOverField : MonoBehaviour
 {
     GameOverManager gameOverManager;

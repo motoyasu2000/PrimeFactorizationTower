@@ -1,9 +1,12 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 namespace UI
 {
-    //画面上部左側に表示される条件のサイズや位置を適切に修正するためのクラス
-    public class LeftZoneSize : MonoBehaviour
+    /// <summary>
+    /// 画面上部左側に表示される条件のサイズや位置を適切に修正するためのクラス
+    /// </summary>
+
+    public class LeftZoneSizeFixer : MonoBehaviour
     {
         RectTransform myTransform;
         RectTransform originNumberTransform;
@@ -20,6 +23,7 @@ namespace UI
         {
             Resize();
         }
+
         void Resize()
         {
             //アンカーポイントを左に設定

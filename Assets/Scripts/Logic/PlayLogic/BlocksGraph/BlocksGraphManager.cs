@@ -1,16 +1,14 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-using UI;
-using Common;
 using static BlocksGraphData;
 
-//ブロックのネットワーク全体を管理するクラス
+/// <summary>
+/// ブロックのネットワーク全体を管理するクラス
+/// </summary>
 public class BlocksGraphManager : MonoBehaviour
 {
    //サブグラフの探索
-    int CheckNumParFrame = 20; //1フレーム当たりにキューから取り出す数
+    int CheckNumParFrame = 20; //1フレーム当たりに、条件を満たす可能性のあるネットワークをどのくらい調査するか
 
     //条件のチェックに使用
     ConditionManager conditionGenerator;
@@ -40,7 +38,11 @@ public class BlocksGraphManager : MonoBehaviour
 
     }
 
-    //ネットワークからサブグラフを探索する拡張前のExpandNetworkを、拡張するネットワークを格納するキューに追加する。Update内でこのキューから要素が取り出され、自動で探索が始まる。
+    /// <summary>
+    /// ネットワークからサブグラフを探索する拡張前のExpandNetworkを、拡張するネットワークを格納するキューに追加する。
+    /// Update内でこのキューから要素が取り出され、自動で探索が始まる。
+    /// </summary>
+    /// <param name="neiborSet">条件を満たしている可能性のある隣接するBlockのセット</param>
     public void AddStartExpandNetworks(HashSet<GameObject> neiborSet)
     {
         if (NewConditionGenerating) return; //条件をチェックしている最中には、ブロックの接触による条件をチェックするキューへの追加は行わない

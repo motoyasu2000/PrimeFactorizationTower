@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
-using Common;
 
-//ターンを管理するクラス
+/// <summary>
+/// ターンを管理する静的クラス
+/// </summary>
 public static class TurnMangaer
 {
     static int nowNamesIndex = 0; //今何番目の人か
@@ -58,7 +59,6 @@ public static class TurnMangaer
         //Debug.Log(GetNowNamesIndex());
     }
 
-    //現在のターンを取得
     public static int GetNowNamesIndex()
     {
         return nowNamesIndex;

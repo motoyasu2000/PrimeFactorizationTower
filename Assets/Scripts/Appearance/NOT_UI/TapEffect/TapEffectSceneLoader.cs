@@ -1,8 +1,11 @@
-﻿using System.Collections;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.SceneManagement;
 
+/// <summary>
+/// TapEffectSceneを非同期でロードするクラス。TapEffectCameraの設定も行う
+/// </summary>
 public class TapEffectSceneLoader : MonoBehaviour
 {
     IEnumerator Start()

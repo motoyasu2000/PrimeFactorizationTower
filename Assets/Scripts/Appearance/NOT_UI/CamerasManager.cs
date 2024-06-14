@@ -2,10 +2,11 @@ using Common;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-//ブロックが積みあがっていき、高くなりすぎるとブロックがカメラにとらえられなくなる恐れがある。
-//そこでブロックの最高点からメインカメラを範囲を計算し、拡大する必要がある。
-//また、メインカメラの範囲を変更してもUIが正常に保たれるようにする。
-//これらを行うクラス
+/// <summary>
+///ブロックの最高点からメインカメラを範囲を計算し、拡大するためのクラス。
+///ブロックが積みあがっていき、高くなりすぎるとブロックがカメラにとらえられなくなる恐れがあるため。
+///また、メインカメラを拡大してもUIが正常に保たれるようにする。
+/// </summary>
 public class CamerasManager : MonoBehaviour
 {
     float downerUI_MAXY; //画面下部のUIの最高点。この高さを軸に拡大していく。
@@ -17,7 +18,6 @@ public class CamerasManager : MonoBehaviour
     RectTransform downerUITransform; //画面下部のUI
     Camera mainCamera;
     Camera UICamera;
-    ScoreManager scoreManager;
     MaxHeightCalculator maxHeightCalculator;
 
     public bool changeCameraPosition => oldCameraPosition != newCameraPosition; 
@@ -30,7 +30,6 @@ public class CamerasManager : MonoBehaviour
         downerUITransform = GameObject.Find("DownerUI").GetComponent<RectTransform>();
         downerUI_MAXY = downerUITransform.anchorMax.y;
         position_defo = transform.position;
-        scoreManager = ScoreManager.Ins;
         mainCamera = Camera.main;
         UICamera = transform.Find("UICamera").GetComponent<Camera>();
         orthographicSize_defo = mainCamera.orthographicSize;

@@ -1,6 +1,11 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
+/// <summary>
+/// タップした位置にタップエフェクトを表示するためのクラス。
+/// 指を話した時のSEの再生も行う。
+/// TapEffectScene内に存在するゲームオブジェクトにアタッチされている。
+/// </summary>
 public class TapEffectSpawner : MonoBehaviour
 {
     GameObject tapEffect;

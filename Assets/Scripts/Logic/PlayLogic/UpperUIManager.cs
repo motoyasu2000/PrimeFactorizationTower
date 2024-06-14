@@ -1,10 +1,14 @@
-﻿using System.Collections;
 using TMPro;
 using UnityEngine;
 
-//条件を表示するテキストを管理するためのクラス
+/// <summary>
+/// conditionやoriginを表示するテキストを管理するためのクラス
+/// </summary>
 public class UpperUIManager : MonoBehaviour
 {
+    /// <summary>
+    /// Condition,Origin,NextOrigin
+    /// </summary>
     public enum KindOfUI{
         Condition,
         Origin,

@@ -1,7 +1,11 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 namespace MaterialLibrary
 {
+    /// <summary>
+    /// しましまのマテリアルのプロパティ。
+    /// しましまを構成する2色としましまの感覚、しましまの流れる速度を指定できる。
+    /// </summary>
     public enum StripesMaterialProperty
     {
         [ShaderProperty("_Color")]
@@ -14,7 +18,10 @@ namespace MaterialLibrary
         Speed,
     }
 
-    public class StripesMaterialEnumBinder : EnumParametersBinder<StripesMaterialProperty>
+    /// <summary>
+    /// しましまのマテリアルのBinder
+    /// </summary>
+    public class StripesMaterialBinder : AbstBinder<StripesMaterialProperty>
     {
         public override string MaterialPathAndName => MaterialPasses.GetStripesMaterialName();
         protected override Material LoadMaterial()

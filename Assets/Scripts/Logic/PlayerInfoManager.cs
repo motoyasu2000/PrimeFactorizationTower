@@ -1,7 +1,11 @@
-﻿using System.IO;
+using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+/// <summary>
+/// プレイヤーにかかわる情報を管理するクラス
+/// シングルトンパターンを使用している
+/// </summary>
 public class PlayerInfoManager : MonoBehaviour
 {
     //シングルトンのインスタンス

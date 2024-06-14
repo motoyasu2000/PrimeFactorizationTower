@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-//TurnManagerのnamesの設定を行うクラス、異なるシーン間で設定を引き継ぎたいので、シングルトンパターンを使っている。
+/// <summary>
+/// TurnManagerのnamesの設定を行うクラス、異なるシーン間で設定を引き継ぎたいので、シングルトンパターンを使っている。
+/// </summary>
 public class TurnNameSetter : MonoBehaviour
 {
     //シングルトンのインスタンス

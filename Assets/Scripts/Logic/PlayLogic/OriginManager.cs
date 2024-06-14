@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-//画面上部に表示される数字、Originを管理するクラス
+/// <summary>
+/// 画面上部に表示される数字、Originを管理するクラス
+/// </summary>
 public class OriginManager : MonoBehaviour
 {
     //初めての生成かどうか(初めての生成の場合はNextも生成するために、2回生成する必要がある。)
@@ -101,6 +103,7 @@ public class OriginManager : MonoBehaviour
         }
     }
 
+    //Originに存在する素数を集合として返す
     public HashSet<int> GetCurrentOriginSet()
     {
         //Debug.Log(string.Join(",", CurrentOriginNumberDict.Keys));

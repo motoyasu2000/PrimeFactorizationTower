@@ -1,10 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace UI
 {
-    //チュートリアルのテキストをトグルするクラス
+    /// <summary>
+    /// チュートリアルのテキストをトグルするクラス
+    /// </summary>
     public class ToggleExplainText : MonoBehaviour
     {
         int toggleCounter = 0; //toggleした回数を数える変数

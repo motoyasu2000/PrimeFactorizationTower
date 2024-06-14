@@ -4,7 +4,9 @@ using Common;
 
 namespace UI
 {
-    //ゲームオーバー時のメニューを管理するクラス
+    /// <summary>
+    /// ゲームオーバー時に表示されるメニューを管理するクラス
+    /// </summary>
     public class GameOverMenuManager : MonoBehaviour
     {
         int oldMaxScore;
@@ -26,6 +28,7 @@ namespace UI
             UI_updateRecord = transform.Find("Scores_UpdateRecord").gameObject;
             UI_winOrLose = transform.Find("WinOrLose").gameObject;
 
+            //Battleモードなら勝敗を表示、そうでなければスコアを表示
             if (GameModeManager.Ins.NowGameMode == GameModeManager.GameMode.Battle)
             {
                 UI_winOrLose.SetActive(true);
@@ -39,6 +42,7 @@ namespace UI
             }
         }
 
+        //勝敗を表示する
         void PrintWinOrLose()
         {
             TextMeshProUGUI text = UI_winOrLose.GetComponent<TextMeshProUGUI>();

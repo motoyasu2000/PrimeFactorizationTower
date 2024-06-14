@@ -1,10 +1,12 @@
-﻿using Amazon;
+using Amazon;
 using Amazon.CognitoIdentity;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 
-//スコアランキングの入出力を行うクラス
+/// <summary>
+/// 世界ランキングを実装しているDynamoDBを管理するためのクラス
+/// </summary>
 public class DynamoDBManager : MonoBehaviour
 {
     static readonly string identityPoolId = "ap-northeast-1:749fa680-9001-4214-aa6f-dfa0c5edc588";
@@ -32,6 +34,12 @@ public class DynamoDBManager : MonoBehaviour
     }
 }
 
+/// <summary>
+/// PlayerID(string), 
+/// ModeAndLevel(string), 
+/// Score(int), 
+/// PlayerName(string)
+/// </summary>
 [System.Serializable]
 public class PlayerScoreRecord
 {

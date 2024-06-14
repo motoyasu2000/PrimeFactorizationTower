@@ -4,7 +4,10 @@ using TMPro;
 using System.Collections;
 using UnityEngine.SceneManagement;
 
-//素数ブロックに関わる情報や、操作を行うクラス。素数ブロックにアタッチされている。
+/// <summary>
+/// 素数ブロックに関わる情報や、操作を行うクラス。
+/// 各ブロックにアタッチされている。
+/// </summary>
 public class BlockInfo : MonoBehaviour
 {
     //ブロックの情報
@@ -31,7 +34,10 @@ public class BlockInfo : MonoBehaviour
         //SetShader();
     }
 
-    //クリックするとkinematicからdynamicに変化するようにする。
+    /// <summary>
+    /// kinematicからdynamicに変化するようにする。drag(抵抗)を2に
+    /// ブロック落下時に呼ばれる
+    /// </summary>
     public void ChangeDynamic()
     {
         rb2D.bodyType = RigidbodyType2D.Dynamic;
@@ -42,14 +48,6 @@ public class BlockInfo : MonoBehaviour
     public void SetText()
     {
         primeNumberText.text = myPrimeNumber.ToString();
-    }
-
-    //シェーダーのMainColorをこのスプライトの色に変更する
-    public void SetShader()
-    {
-        SpriteRenderer renderer = GetComponent<SpriteRenderer>();
-        //if(もし初期設定であれば)
-        renderer.material.SetColor("_Color", renderer.color);
     }
 
     //自分自身の番号を設定するクラス。ブロックを生成するボタンによって指定される。
@@ -114,16 +112,14 @@ public class BlockInfo : MonoBehaviour
         }
     }
 
-    //サブグラフに使うメソッド、patternにマッチしないエッジを消去する。
-    public void DeleteMissNeighberBlock(HashSet<int> subNetPattern)
+    /// <summary>
+    /// 他のブロックと衝突した際、自分のブロックが相手のブロックの上にあるならtrueを返す関数。
+    /// 2つのブロックが衝突した際、エッジの情報をネットワークに追加するが、それが2回呼ばれないように、trueになったゲームオブジェクトのみがネットワークにノードを追加する処理を呼び出すようにする。
+    /// <param name="other">衝突した相手のGameObject</param>
+    /// <returns>上か否か</returns>
+    private bool IsUpOrRight(GameObject other)
     {
-        neighborEdge.RemoveAll(item => item!=null && !subNetPattern.Contains(item.GetComponent<BlockInfo>().GetPrimeNumber()));
-    }
-
-    //他のブロックと衝突した際、自分のブロックが相手のブロックの上にあるならtrueを返す関数。
-    //2つのブロックが衝突した際、エッジの情報をネットワークに追加するが、それが2回呼ばれないように、trueになったゲームオブジェクトのみがネットワークにノードを追加する処理を呼び出すようにする。
-    private bool IsUpOrRight(GameObject myself, GameObject other)
-    {
+        GameObject myself = gameObject;
         if(myself.transform.position == other.transform.position)
         {
             Debug.LogError("衝突した二つのゲームオブジェクトは同じ座標にあります。");
@@ -159,7 +155,7 @@ public class BlockInfo : MonoBehaviour
         }
 
         //もし二つのブロック(ノード)が接触したなら、その二つのノード間にエッジを設定、サブグラフの探索
-        if ((collision.gameObject.CompareTag("PrimeNumberBlock")) && (collision.gameObject.GetComponent<BlockInfo>() != null) && (IsUpOrRight(gameObject, collision.gameObject)))
+        if ((collision.gameObject.CompareTag("PrimeNumberBlock")) && (collision.gameObject.GetComponent<BlockInfo>() != null) && (IsUpOrRight(collision.gameObject)))
         {
             BlocksGraphData.AttachNode(gameObject, collision.gameObject);
             blocksGraphManager.AddStartExpandNetworks(new HashSet<GameObject> {gameObject, collision.gameObject});

@@ -2,7 +2,10 @@ using UnityEngine;
 
 namespace Common
 {
-    //ゲーム内の情報。複数のクラスから参照される可能性がある定数を集めたクラス
+    /// <summary>
+    /// 複数のクラスから参照される可能性がある定数を集めたクラス。
+    /// Variablesは可変の情報を提供する
+    /// </summary>
     public static class GameInfo
     {
         //ゲーム内で不変の情報
@@ -17,13 +20,19 @@ namespace Common
         //visual studioでどこから参照されているのかが追跡できるようにするために、プロパティで参照するようにする。
         public static bool AILearning => aiLearning;
         public static int RankDisplayLimit => rankDisplayLimit;
+        /// <summary>
+        /// カメラが一定の高さに到達すると、カメラはすべてのブロックが見えるように拡大し、上に移動し始める。
+        /// その一定の高さがいくつであるのかを提供する定数
+        /// </summary>
         public static int CameraTrackingStartHeight => cameraTrackingStartHeight;
         public static float GroundHeight => groundHeight;
         public static string AIName => aiName;
         public static Color ButtonGray => buttonGray;
         public static Color FleezeColor => fleezeColor;
 
-        //ゲーム内で可変の情報
+        /// <summary>
+        /// 可変の情報の提供と操作を行うクラス
+        /// </summary>
         public static class Variables
         {
             static int nowScore = 0;

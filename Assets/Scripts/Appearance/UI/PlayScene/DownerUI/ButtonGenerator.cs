@@ -1,9 +1,11 @@
-﻿using UnityEngine;
+using UnityEngine;
 using Common;
 
 namespace UI
 {
-    //画面下部にあるボタンUIを生成するクラス
+    /// <summary>
+    /// 画面下部にあるブロック生成ボタンを生成するクラス
+    /// </summary>
     public class ButtonGenerator : MonoBehaviour
     {
         static readonly int splitCount = 3;

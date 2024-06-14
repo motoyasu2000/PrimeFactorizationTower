@@ -1,4 +1,8 @@
-﻿namespace MaterialLibrary {
+namespace MaterialLibrary {
+
+    /// <summary>
+    /// マテリアルのパスを保持する静的クラス
+    /// </summary>
     public static class MaterialPasses
     {
         //マテリアルのパス

@@ -66,7 +66,10 @@ public class CriteriaMetProcessor : MonoBehaviour
         yield break;
     }
 
-    //条件を満たしたノードに対して、Freeze処理を行う
+    /// <summary>
+    /// 条件を満たしたノードに対して、Freeze処理を行う
+    /// </summary>
+    /// <param name="nodes">条件を満たしたノード</param>
     public void ProcessFreeze(List<GameObject> nodes)
     {
         SetCriteriaMetLayerAndMaterial(nodes); //条件を満たしたブロックの色を変更
@@ -110,7 +113,7 @@ public class CriteriaMetProcessor : MonoBehaviour
             DetachNode(neighborNode, originNode);
         }
         WholeGraphRemove(originNode);
-        NodesDictRemoveSingleBlock(originNode);
+        BlocksDictRemoveSingleBlock(originNode);
         originNode.GetComponent<BlockInfo>().enabled = false;
     }
 

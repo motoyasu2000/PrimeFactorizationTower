@@ -1,15 +1,17 @@
-﻿using Common;
+using Common;
 using UnityEngine;
 using MaterialLibrary;
 using System;
 using System.Reflection;
 using UnityEngine.UI;
 
-//MaterialSceneでマテリアルを選択するためのボタンを生成するクラス
+/// <summary>
+/// MaterialSceneでマテリアルを選択するためのボタンを生成するクラス
+/// </summary>
 public class MaterialButtonsGenerator : MonoBehaviour
 {
     int generateButtonCounter = 0;
-    float[] splitAnchorPoints_x = Helper.CalculateSplitAnchorPoints(EnumParameterBinderManager.BindersCount);
+    float[] splitAnchorPoints_x = Helper.CalculateSplitAnchorPoints(BinderManager.BindersCount);
     GameObject materialButtonPrefab;
     ParameterSliderGenerator sliderGenerater;
     MaterialDatabaseManager materialDatabaseManager;
@@ -24,10 +26,10 @@ public class MaterialButtonsGenerator : MonoBehaviour
     }
 
 
-    //EnumParameterBinderManager.Bindersに定義されている全てのマテリアルを操作するためのボタンを生成する。リフレクションを使ってGenerateMaterialBlockのジェネリックのenumを指定できるようにしている。
+    //BinderManager.Bindersに定義されている全てのマテリアルを操作するためのボタンを生成する。リフレクションを使ってGenerateMaterialBlockのジェネリックのenumを指定できるようにしている。
     void GenerateMaterialButtons()
     {
-        foreach (var binder in EnumParameterBinderManager.Binders)
+        foreach (var binder in BinderManager.Binders)
         {
             MethodInfo methodInfo = typeof(MaterialButtonsGenerator).GetMethod(nameof(GenerateMaterialButton), BindingFlags.NonPublic | BindingFlags.Instance);
             if (methodInfo != null)
@@ -45,7 +47,7 @@ public class MaterialButtonsGenerator : MonoBehaviour
     }
 
     //ジェネリックで指定されたenumに対応するパラメーターを調整できるようにするためのボタンを生成する
-    void GenerateMaterialButton<TEnum>(IEnumParametersBinder ibinder) where TEnum : Enum
+    void GenerateMaterialButton<TEnum>(IBinder ibinder) where TEnum : Enum
     {
         GameObject materialButton = Instantiate(materialButtonPrefab);
         materialButton.transform.SetParent(gameObject.transform);

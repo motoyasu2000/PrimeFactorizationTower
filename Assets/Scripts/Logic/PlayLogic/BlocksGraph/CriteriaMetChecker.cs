@@ -1,10 +1,11 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using static BlocksGraphData;
 
-//条件が満たしているのかチェックするクラス
+/// <summary>
+/// 条件が満たしているのかチェックするクラス
+/// </summary>
 public class CriteriaMetChecker : MonoBehaviour
 {
     //条件の生成
@@ -21,7 +22,10 @@ public class CriteriaMetChecker : MonoBehaviour
     }
 
 
-    //グラフ全体に条件にマッチするものがないかを探索するためのメソッド 条件に存在する素数のうち、ネットワーク全体で最小個数の素数を探し、そのノードから探索を始める
+    /// <summary>
+    /// グラフ全体に条件にマッチするものがないかを探索するためのメソッド
+    /// 条件に存在する素数のうち、ネットワーク全体で最小個数の素数を探し、そのノードを条件のチェックを行うキューであるstartExpandNetworksに追加
+    /// </summary>
     void CheckConditionBlocksGraph()
     {
         if (!NewConditionGenerating) return;
@@ -32,14 +36,14 @@ public class CriteriaMetChecker : MonoBehaviour
         //条件に存在する素数を全探索し、最小個数のものを探す
         foreach (int conditionKey in conditionManager.ConditionNumberDict.Keys)
         {
-            if (minNodeNum > NodesDict[conditionKey].Count)
+            if (minNodeNum > BlocksDict[conditionKey].Count)
             {
-                minNodeNum = NodesDict[conditionKey].Count;
+                minNodeNum = BlocksDict[conditionKey].Count;
                 minNode = conditionKey;
             }
         }
         //最小個数の素数はすでに求まっているので、それに対してfor分を回して探索を行う
-        foreach (var node in NodesDict[minNode])
+        foreach (var node in BlocksDict[minNode])
         {
              EnqueueStartExpandNetworks(new ExpandNetwork(null, node, conditionManager.ConditionNumberDict));
         }
@@ -71,7 +75,10 @@ public class CriteriaMetChecker : MonoBehaviour
         return requiredCounts.Count == 0; //必要なノードがすべて含まれていればtrue
     }
 
-    //ネットワークを拡張しながらサブグラフを探索する再帰的メソッド
+    /// <summary>
+    /// ネットワークを拡張しながらサブグラフを探索する独自のアルゴリズム
+    /// </summary>
+    /// <param name="currentNetwork">現在のExpandNetwork</param>
     public void ExpandAndSearch(ExpandNetwork currentNetwork)
     {
         //拡張したネットワークが条件を満たしていたら
@@ -118,7 +125,7 @@ public class CriteriaMetChecker : MonoBehaviour
     }
 
     //条件を満たしたときの処理
-    public void CompleteConditionsProcess(List<GameObject> nodes)
+    void CompleteConditionsProcess(List<GameObject> nodes)
     {
         switch (GameModeManager.Ins.NowGameMode)
         {

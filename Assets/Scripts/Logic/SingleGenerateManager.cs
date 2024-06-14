@@ -1,8 +1,10 @@
 using Common;
 using UnityEngine;
 
-//ブロックの生成が単一であることを保証するクラス
-//複数のブロックが同時に生成されないよう、異なるブロックを生成仕様としたとき、初めにあったブロックの方が削除され、上書きされるようにする。
+/// <summary>
+/// ブロックの生成が単一であることを保証するクラス
+/// </summary>
+
 public class SingleGenerateManager : MonoBehaviour
 {
     static readonly float dropHeightAbovePeak = 3f; //積み木の最高地点から見た相対的な高さ
@@ -21,7 +23,10 @@ public class SingleGenerateManager : MonoBehaviour
         MoveSingleGameObjectPoint();
     }
 
-    //単一のブロックのみが格納されることを保証する。
+    /// <summary>
+    /// 複数のブロックが同時に生成されないよう、異なるブロックを生成仕様としたとき、初めにあったブロックの方が削除され、上書きされるようにする。
+    /// </summary>
+    /// <param name="newBlock">新たに生成したいブロック</param>
     public void SetSingleGameObject(GameObject newBlock)
     {
         //引数がnullならsingleGameObjectをnullにして処理を終了
@@ -59,7 +64,7 @@ public class SingleGenerateManager : MonoBehaviour
         return singleBlock;
     }
 
-    //ブロックの生成地点をゲームの実行中に変更するメソッド
+    //ブロックの生成地点をブロックの高さに合わせて変更する
     void MoveSingleGameObjectPoint()
     {
         if(maxHeightCalculator.NowHeight < GameInfo.CameraTrackingStartHeight) return;

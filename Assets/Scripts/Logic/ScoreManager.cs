@@ -2,12 +2,15 @@ using Common;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-//スコア管理を担当するクラス。
-//ゲーム中のスコア計算、保存・読み込み、シーン間でのスコアデータの保持を行う。
+/// <summary>
+/// スコア管理を担当するクラス。
+/// ゲーム中のスコア計算、保存・読み込み、シーン間でのスコアデータの保持を行う。
+/// シングルトンパターンを使用している
+/// </summary>
+
 public class ScoreManager : MonoBehaviour
 {
     MaxHeightCalculator maxHeightCalculator;
@@ -105,12 +108,15 @@ public class ScoreManager : MonoBehaviour
     }
 
 
-    
+
     //////////////////////////////////////////
     //以下、シリアライズを行うための一時的なクラス//
     //////////////////////////////////////////
 
-    //他次元配列や辞書はシリアライズできないので、複雑な構造でもシリアライズを行うために、シリアライズ可能な配列を持ったクラスを用意しておく。
+    /// <summary>
+    /// シリアライズ可能な配列を持ったシリアライズ可能なクラス
+    /// 他次元配列や辞書はシリアライズできないため必要
+    /// </summary>
     [Serializable]
     public class Top10Score
     {
@@ -122,10 +128,13 @@ public class ScoreManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// シリアライズ可能なクラスのリストを持ったシリアライズ可能なクラス(辞書をシリアライズ化しているイメージ)
+    /// </summary>
     [Serializable]
     class ScoreData
     {
-        //シリアライズ可能なリストを使用 ※他次元配列や辞書はシリアライズできない
+        //シリアライズ可能なクラスのリストを使用 ※他次元配列や辞書はシリアライズできない
         [SerializeField] private List<Top10Score> pileUpScores_Serializable = new List<Top10Score>();
 
         public ScoreData()
