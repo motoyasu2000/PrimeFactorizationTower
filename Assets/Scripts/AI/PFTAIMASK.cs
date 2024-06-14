@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;
@@ -52,7 +52,7 @@ public class PFTAIMASK : Agent
             if (!originManager.GetCurrentOriginSet().Contains(i))
             {
                 actionMask.SetActionEnabled(0, i, false);
-                Debug.Log($"{i}はfalse");
+                //Debug.Log($"{i}はfalse");
             }
 
         }
@@ -63,7 +63,7 @@ public class PFTAIMASK : Agent
     {
         //全ての素数に対して、-1~1までの値をあてはめ、生成可能なものの中で、最も高いものを生成する
         int choosePrimeNumberIndex = actionBuffers.DiscreteActions[0];
-        Debug.Log(choosePrimeNumberIndex);
+        //Debug.Log(choosePrimeNumberIndex);
         actions.GenerateBlock(GameModeManager.Ins.PrimeNumberPool[choosePrimeNumberIndex]);
 
         //0~315°回転する。(0*45°,1*45°,2*45°,...,7*45°)
@@ -74,8 +74,8 @@ public class PFTAIMASK : Agent
         float blockPosX = actionBuffers.ContinuousActions[0] * posXScale;
         actions.MoveBlockXAndRelease(blockPosX);
 
-        Debug.Log("ChoosePrimeNumberIndex: " + string.Join(", ", choosePrimeNumberIndex));
-        Debug.Log("Spin45Count: " + spin45Count);
-        Debug.Log("PosX: " + blockPosX);
+        //Debug.Log("ChoosePrimeNumberIndex: " + string.Join(", ", choosePrimeNumberIndex));
+        //Debug.Log("Spin45Count: " + spin45Count);
+        //Debug.Log("PosX: " + blockPosX);
     }
 }

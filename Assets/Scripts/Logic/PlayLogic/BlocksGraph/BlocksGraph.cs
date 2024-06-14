@@ -16,7 +16,7 @@ public class BlocksGraph : MonoBehaviour
     Dictionary<int, List<GameObject>> nodesDict = new Dictionary<int, List<GameObject>>();
 
     //サブグラフの探索
-    int CheckNumParFrame = 5; //1フレーム当たりにキューから取り出す数
+    int CheckNumParFrame = 20; //1フレーム当たりにキューから取り出す数
     Queue<ExpandNetwork> startExpandNetworks = new Queue<ExpandNetwork>(); //ネットワークの拡張を開始する最初のサブネットワークをリストとして保存しておく。非同期の処理を一つずつ実行するため、タプルの２つ目の要素は条件の辞書
 
     //条件の生成
@@ -198,12 +198,10 @@ public class BlocksGraph : MonoBehaviour
         switch (gameModeManager.NowGameMode)
         {
             case GameModeManager.GameMode.PileUp:
-                SetCriteriaMetLayerAndMaterial(nodes);
-                FreezeNodes(nodes);
-                effectTextManager.DisplayEffectText("Criteria Met", freezeDelayTime, GameInfo.FleezeColor);
-                soundManager.PlayAudio(soundManager.VOICE_CRITERIAMAT);
-
-                DelayProcessFreeze(nodes, freezeDelayTime);
+                ProcessFreeze(nodes);
+                break;
+            case GameModeManager.GameMode.Battle:
+                ProcessFreeze(nodes);
                 break;
         }
         //後処理
@@ -211,6 +209,17 @@ public class BlocksGraph : MonoBehaviour
         newConditionChecking = true;
         CheckConditionBlocksGraph();
         conditionGenerator.GenerateCondition();
+    }
+
+    //条件を満たしたノードに対して、Freeze処理を行う
+    private void ProcessFreeze(List<GameObject> nodes)
+    {
+        SetCriteriaMetLayerAndMaterial(nodes); //条件を満たしたブロックの色を変更
+        FreezeNodes(nodes); //凍らせる
+        effectTextManager.DisplayEffectText("Criteria Met", freezeDelayTime, GameInfo.FleezeColor); //条件達成時のUIを表示
+        soundManager.PlayAudio(soundManager.VOICE_CRITERIAMAT); //条件達成時のSEを再生
+
+        DelayProcessFreeze(nodes, freezeDelayTime); //Freezeの後処理。(こっちで空中に固定する)
     }
 
     //第二引数で指定した時間後、Freezeの文字、サウンド、エフェクトを出力し、第一引数で指定したGameObjectのリストを空中に固定する

@@ -24,7 +24,7 @@ public class GameModeManager : MonoBehaviour
     {
         Normal,
         Difficult,
-        Insane
+        Insane,
     }
 
     int[] primeNumberPool = new int[9]

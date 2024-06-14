@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 using System;
 using Random = UnityEngine.Random;
@@ -25,19 +25,23 @@ public class ConditionManager : MonoBehaviour
     //条件を生成するメソッド(難易度ごとに異なる素数プール、異なる素数の数、異なる値の範囲で提供)
     public void GenerateCondition()
     {
-        switch (GameModeManager.Ins.NowDifficultyLevel)
+        if (GameInfo.AILearning) conditionNumberDict = Helper.GenerateCompositeNumberDictCustom(gameModeManager.InsanePool, int.MaxValue, 2, 3);
+        else
         {
-            case GameModeManager.DifficultyLevel.Normal:
-                conditionNumberDict = Helper.GenerateCompositeNumberDictCustom(gameModeManager.NormalPool,int.MaxValue,3,3);
-                break;
+            switch (GameModeManager.Ins.NowDifficultyLevel)
+            {
+                case GameModeManager.DifficultyLevel.Normal:
+                    conditionNumberDict = Helper.GenerateCompositeNumberDictCustom(gameModeManager.NormalPool, int.MaxValue, 3, 3);
+                    break;
 
-            case GameModeManager.DifficultyLevel.Difficult:
-                conditionNumberDict = Helper.GenerateCompositeNumberDictCustom(gameModeManager.DifficultPool, int.MaxValue, 2, 3);
-                break;
+                case GameModeManager.DifficultyLevel.Difficult:
+                    conditionNumberDict = Helper.GenerateCompositeNumberDictCustom(gameModeManager.DifficultPool, int.MaxValue, 2, 3);
+                    break;
 
-            case GameModeManager.DifficultyLevel.Insane:
-                conditionNumberDict = Helper.GenerateCompositeNumberDictCustom(gameModeManager.InsanePool, 600, 2, 3);
-                break;
+                case GameModeManager.DifficultyLevel.Insane:
+                    conditionNumberDict = Helper.GenerateCompositeNumberDictCustom(gameModeManager.InsanePool, int.MaxValue, 2, 2);
+                    break;
+            }
         }
         
         //合成数の計算と表示

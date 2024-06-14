@@ -1,4 +1,4 @@
-﻿using Common;
+using Common;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -49,20 +49,24 @@ public class OriginManager : MonoBehaviour
         startOriginNumberDict = new Dictionary<int, int>(originNextNumberDict);
         currentOriginNumberDict = new Dictionary<int, int>(originNextNumberDict);
 
-        //nextOriginの更新
-        switch (GameModeManager.Ins.NowDifficultyLevel)
+        //nextOriginの更新 
+        if (GameInfo.AILearning) originNextNumberDict = Helper.GenerateCompositeNumberDictCustom(gameModeManager.InsanePool, int.MaxValue, 7, 13);
+        else
         {
-            case GameModeManager.DifficultyLevel.Normal:
-                originNextNumberDict = Helper.GenerateCompositeNumberDictCustom(gameModeManager.NormalPool, 5000, 3, 3);
-                break;
+            switch (GameModeManager.Ins.NowDifficultyLevel)
+            {
+                case GameModeManager.DifficultyLevel.Normal:
+                    originNextNumberDict = Helper.GenerateCompositeNumberDictCustom(gameModeManager.NormalPool, 5000, 3, 3);
+                    break;
 
-            case GameModeManager.DifficultyLevel.Difficult:
-                originNextNumberDict = Helper.GenerateCompositeNumberDictCustom(gameModeManager.DifficultPool, 20000, 3, 5);
-                break;
+                case GameModeManager.DifficultyLevel.Difficult:
+                    originNextNumberDict = Helper.GenerateCompositeNumberDictCustom(gameModeManager.DifficultPool, 10000, 3, 5);
+                    break;
 
-            case GameModeManager.DifficultyLevel.Insane:
-                originNextNumberDict = Helper.GenerateCompositeNumberDictCustom(gameModeManager.InsanePool, int.MaxValue, 3, 5);
-                break;
+                case GameModeManager.DifficultyLevel.Insane:
+                    originNextNumberDict = Helper.GenerateCompositeNumberDictCustom(gameModeManager.InsanePool, int.MaxValue, 3, 5);
+                    break;
+            }
         }
 
         //合成数の計算と表示
