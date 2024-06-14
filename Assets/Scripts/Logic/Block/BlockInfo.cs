@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System.Collections;
@@ -19,14 +19,14 @@ public class BlockInfo : MonoBehaviour
     
     //ネットワーク情報
     List<GameObject> neighborEdge = new List<GameObject>(); //隣接するゲームオブジェクトを格納
-    BlocksGraph blocksGraph;
+    BlocksGraphManager blocksGraphManager;
 
     private void Awake()
     {
         primeNumberText = transform.Find("PrimeNumberText").GetComponent<TextMeshPro>();
         rb2D = GetComponent<Rigidbody2D>();
         myCollider = GetComponent<Collider2D>();
-        if(SceneManager.GetActiveScene().name =="PlayScene") blocksGraph = GameObject.Find("BlocksGraph").GetComponent<BlocksGraph>();
+        if(SceneManager.GetActiveScene().name =="PlayScene") blocksGraphManager = GameObject.Find("BlocksGraphManager").GetComponent<BlocksGraphManager>();
         SetText();
         //SetShader();
     }
@@ -161,8 +161,8 @@ public class BlockInfo : MonoBehaviour
         //もし二つのブロック(ノード)が接触したなら、その二つのノード間にエッジを設定、サブグラフの探索
         if ((collision.gameObject.CompareTag("PrimeNumberBlock")) && (collision.gameObject.GetComponent<BlockInfo>() != null) && (IsUpOrRight(gameObject, collision.gameObject)))
         {
-            blocksGraph.AttachNode(gameObject, collision.gameObject);
-            blocksGraph.AddStartExpandNetworks(new HashSet<GameObject> {gameObject, collision.gameObject});
+            BlocksGraphData.AttachNode(gameObject, collision.gameObject);
+            blocksGraphManager.AddStartExpandNetworks(new HashSet<GameObject> {gameObject, collision.gameObject});
             //Debug.Log($"myself:{gameObject.name} ------ other:{collision.gameObject.name}");
         }
     }
@@ -180,7 +180,7 @@ public class BlockInfo : MonoBehaviour
         //もし二つのブロック(ノード)が離れたなら、その二つのノード間のエッジを消去
         if (collision.gameObject.CompareTag("PrimeNumberBlock"))
         {
-            blocksGraph.DetachNode(gameObject, collision.gameObject);
+            BlocksGraphData.DetachNode(gameObject, collision.gameObject);
             //Debug.Log($"DetachNode: {gameObject.name} ------ {collision.gameObject.name}");
         }
     }

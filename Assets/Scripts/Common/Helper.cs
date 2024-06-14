@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace Common
@@ -61,10 +62,11 @@ namespace Common
         //指定した素数プールから合成数を辞書型として生成する。合成数の上限値や、素数の数も下限と上限を指定することができる。
         public static Dictionary<int, int> GenerateCompositeNumberDictCustom(List<int> primeNumberPool, int maxCompositeNumber, int minRand, int maxRand)
         {
-            int randomIndex;
+            int randomIndex; //素数のインデックス(乱数によって生成)
+            int randomPrimeNumber; //インデックスに対応する素数
             int nowCompositeNumber = 1;
-            int randomPrimeNumber;
             int numberOfPrimeNumber = UnityEngine.Random.Range(minRand, maxRand+1);
+
             Dictionary<int, int> compositeNumbersDict = new Dictionary<int, int>();
             for (int i = 0; i < numberOfPrimeNumber; i++)
             {
@@ -78,6 +80,18 @@ namespace Common
             //Debug.Log(String.Join(",", compositeNumbersDict.Keys));
             //Debug.Log(String.Join(",", compositeNumbersDict.Values));
             return compositeNumbersDict;
+        }
+
+        //引数で与えられたゲームオブジェクトたちの重心を計算して返すメソッド
+        public static Vector3 CaluculateCenter(List<GameObject> gameObjects)
+        {
+            Vector3 center = Vector3.zero;
+            foreach (var gameObject in gameObjects)
+            {
+                center += gameObject.transform.position;
+            }
+            center /= gameObjects.Count;
+            return center;
         }
     }
 }

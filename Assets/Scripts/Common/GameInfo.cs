@@ -15,37 +15,13 @@ namespace Common
         static readonly Color fleezeColor = new Color(23f / 255f, 1f, 1f);
 
         //visual studioでどこから参照されているのかが追跡できるようにするために、プロパティで参照するようにする。
-        public static bool AILearning
-        {
-            get { return aiLearning; }
-        }
-        public static int RankDisplayLimit
-        {
-            get { return rankDisplayLimit; }
-        }
-        public static int CameraTrackingStartHeight
-        {
-            get { return cameraTrackingStartHeight; }
-        }
-        public static float GroundHeight
-        {
-            get { return groundHeight; }
-        }
-
-        public static string AIName
-        {
-            get { return aiName; }
-        }
-
-        public static Color ButtonGray
-        {
-            get { return buttonGray; }
-        }
-
-        public static Color FleezeColor
-        {
-            get { return fleezeColor; }
-        }
+        public static bool AILearning => aiLearning;
+        public static int RankDisplayLimit => rankDisplayLimit;
+        public static int CameraTrackingStartHeight => cameraTrackingStartHeight;
+        public static float GroundHeight => groundHeight;
+        public static string AIName => aiName;
+        public static Color ButtonGray => buttonGray;
+        public static Color FleezeColor => fleezeColor;
 
         //ゲーム内で可変の情報
         public static class Variables

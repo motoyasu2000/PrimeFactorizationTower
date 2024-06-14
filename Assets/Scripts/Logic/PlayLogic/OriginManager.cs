@@ -50,7 +50,7 @@ public class OriginManager : MonoBehaviour
         currentOriginNumberDict = new Dictionary<int, int>(originNextNumberDict);
 
         //nextOriginの更新 
-        if (GameInfo.AILearning) originNextNumberDict = Helper.GenerateCompositeNumberDictCustom(gameModeManager.InsanePool, int.MaxValue, 7, 13);
+        if (GameInfo.AILearning) originNextNumberDict = Helper.GenerateCompositeNumberDictCustom(gameModeManager.InsanePool, int.MaxValue, 4, 13);
         else
         {
             switch (GameModeManager.Ins.NowDifficultyLevel)
