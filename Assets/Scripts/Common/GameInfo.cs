@@ -6,7 +6,7 @@ namespace Common
     public static class GameInfo
     {
         //ゲーム内で不変の情報
-        static bool aiLearning = true; //強化学習中にはこのフラグがtrueになるようにする。(jsonファイルの書き込みやデータベースの更新を行わないように)
+        static bool aiLearning = false; //強化学習中にはこのフラグがtrueになるようにする。(jsonファイルの書き込みやデータベースの更新を行わないように)
         static readonly int rankDisplayLimit = 10; //表示するランキングの上限値
         static readonly int cameraTrackingStartHeight = 4; //どこまで高く積んだらカメラが動き出すか
         static readonly float groundHeight = 0.5f; //元の地面の高さ

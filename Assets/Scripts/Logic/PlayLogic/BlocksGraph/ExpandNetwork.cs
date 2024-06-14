@@ -9,8 +9,8 @@ public class ExpandNetwork
     List<GameObject> myNetwork = new List<GameObject>(); //現在のネットワーク情報
     List<GameObject> closedList = new List<GameObject>(); //現在のネットワークに対するクローズドリスト。これより小さいクローズドリストの情報も引き継ぐ。
 
-    public List<GameObject> MyNetwork => myNetwork.Where(g=>g!=null).ToList();
-    public List<GameObject> ClosedList => closedList.Where(g => g != null).ToList();
+    public List<GameObject> MyNetwork => myNetwork;
+    public List<GameObject> ClosedList => closedList;
 
     ExpandNetwork beforeNetwork; //ひとつ前のネットワークに戻ることがあるので必要
     public ExpandNetwork Beforenetwork => beforeNetwork;
