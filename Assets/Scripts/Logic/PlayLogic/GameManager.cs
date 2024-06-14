@@ -211,11 +211,9 @@ public class GameManager : MonoBehaviour
         if(ChengeNextTurnFlag)
         {
             //高さの更新
-            maxHeightCalculator.
+            maxHeightCalculator.CalculateAllGameObjectsMaxHeight();
 
             //スコアを計算し、UIを更新
-            CalculateAllGameObjectsMaxHeight();
-
             CalculateAndDisplayScore();
 
             //ターンを切り替えて

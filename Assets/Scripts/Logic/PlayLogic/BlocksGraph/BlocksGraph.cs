@@ -16,11 +16,11 @@ public class BlocksGraph : MonoBehaviour
     Dictionary<int, List<GameObject>> nodesDict = new Dictionary<int, List<GameObject>>();
 
     //サブグラフの探索
-    int CheckNumParFrame = 3; //1フレーム当たりにキューから取り出す数
+    int CheckNumParFrame = 5; //1フレーム当たりにキューから取り出す数
     Queue<ExpandNetwork> startExpandNetworks = new Queue<ExpandNetwork>(); //ネットワークの拡張を開始する最初のサブネットワークをリストとして保存しておく。非同期の処理を一つずつ実行するため、タプルの２つ目の要素は条件の辞書
 
     //条件の生成
-    bool nowCriteriaMetChecking = false; //条件を達成した後、生成した合成数を現在のネットワークが既に満たしているかをどうかを表す変数
+    bool newConditionChecking = false; //条件を達成してから、新たに条件を生成しおえるまでの間はtrueになる
     ConditionManager conditionGenerator;
 
     //条件達成時の処理 ※ゲームモードごとに条件達成時の処理が変わる可能性がある。
@@ -53,14 +53,10 @@ public class BlocksGraph : MonoBehaviour
         {
             if (startExpandNetworks.Count == 0)
             {
-                nowCriteriaMetChecking = false;
+                newConditionChecking = false;
                 return;
             }
             var item = startExpandNetworks.Dequeue();
-            foreach (var block in item.myNetwork)
-            {
-                //if (block.GetComponent<BlockInfo>().enabled == false) return; //もうネットワークから切り離されて処理を行う予定でないブロックもこの中に含まれてしまっており、そのようなものは条件を満たさない。
-            }
             ExpandAndSearch(item);
         }
 
@@ -212,7 +208,7 @@ public class BlocksGraph : MonoBehaviour
         }
         //後処理
         startExpandNetworks = new Queue<ExpandNetwork>(); //探索が完了したらもうネットワーク内に条件を満たすものが存在しないと考えられるので、キューをリセットしておく。(あるとバグが発生する)
-        nowCriteriaMetChecking = true;
+        newConditionChecking = true;
         CheckConditionBlocksGraph();
         conditionGenerator.GenerateCondition();
     }
@@ -325,11 +321,10 @@ public class BlocksGraph : MonoBehaviour
         if (ContainsAllRequiredNodes(currentNetwork.myNetwork, conditionGenerator.ConditionNumberDict))
         {
             //条件生成時に既に条件を達成していた場合→条件を再生成して再び調査。
-            if (nowCriteriaMetChecking) 
+            if (newConditionChecking) 
             {
-                conditionGenerator.GenerateCondition();
-                nowCriteriaMetChecking = true;
-                CheckConditionBlocksGraph();
+                conditionGenerator.GenerateCondition(); //条件を生成し
+                CheckConditionBlocksGraph(); //その条件がすでに達成していないかチェック。達成したら再度ここの条件分岐に入るので、もう一度生成される。
                 Debug.Log("再生成");
                 return;
             }
