@@ -10,7 +10,6 @@ using UnityEngine;
 public class MaterialDatabase
 {
     public List<BlockMaterialData> blockMaterials = new List<BlockMaterialData>();
-
     public MaterialDatabase() { }
     public MaterialDatabase(MaterialDatabase materialDatabase)
     {
@@ -96,8 +95,15 @@ public class BlockMaterialData
 [System.Serializable]
 public class ParameterData
 {
+    public enum PropertyType
+    {
+        Float = 0,
+        Color = 1,
+        Invalid = -1
+    }
+
     public int parameterEnumIndex;//BlocksMaterialPropertyの値
-    public int type; //パラメーターの型を表す（0: float, 1: Color,）
+    public PropertyType type;
     public float floatValue;
 
     //色のパラメーター

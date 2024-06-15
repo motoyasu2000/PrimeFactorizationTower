@@ -12,14 +12,9 @@ using System.Text;
 /// </summary>
 public class LambdaAccesser : MonoBehaviour
 {
-    private string apiUrl = "https://3tbzpdw367.execute-api.ap-northeast-1.amazonaws.com/dev/";
-    private string getRankingUrl;
-    private string saveRankingUrl;
-    void Start()
-    {
-        getRankingUrl = apiUrl + "/ranking/query";
-        saveRankingUrl = apiUrl + "/ranking/update";
-    }
+    static readonly string apiUrl = "https://3tbzpdw367.execute-api.ap-northeast-1.amazonaws.com/dev/";
+    static readonly string getRankingUrl = apiUrl + "/ranking/query";
+    static readonly string saveRankingUrl = apiUrl + "/ranking/update";
 
     /// <summary>
     /// 非同期でDynamoDBからTop10のレコードを取得、各レコードをリストとしてコールバックで返す。

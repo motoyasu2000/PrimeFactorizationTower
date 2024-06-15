@@ -43,11 +43,11 @@ public class BlockMaterialSetting : MonoBehaviour
             enumValue = genericGetEnumValueFromIndexMethod.Invoke(null, new object[] { parameter.parameterEnumIndex });
 
             //読み取ったマテリアルデータベースの情報からbinderのマテリアルの更新。
-            if (parameter.type == 0)
+            if (parameter.type == ParameterData.PropertyType.Float)
             {
                 genericSetPropertyFloatMethod.Invoke(binder, new object[] { enumValue, parameter.floatValue });
             }
-            else if (parameter.type == 1)
+            else if (parameter.type == ParameterData.PropertyType.Color)
             {
                 Color color = new Color(parameter.redValue, parameter.greenValue, parameter.blueValue);
                 genericSetPropertyColorMethod.Invoke(binder, new object[] { enumValue, color });

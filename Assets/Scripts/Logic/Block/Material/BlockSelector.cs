@@ -113,15 +113,15 @@ public class BlockSelector : MonoBehaviour
     }
 
     /// <summary>
-    /// 現在選択中のブロックのマテリアルを設定する
+    /// 現在選択中のブロックのマテリアルを中間のマテリアルデータベースのものに変換する
     /// </summary>
-    /// <typeparam name="TEnum">どの列挙型からプロパティを設定するか</typeparam>
+    /// <typeparam name="TEnum">どの列挙型(シェーダ)からプロパティを設定するか</typeparam>
     public void SetBlockMaterialDataToSingleBlock<TEnum>() where TEnum : Enum
     {
-        //中間のマテリアルを取得
+        //中間のマテリアルデータベースを取得
         MaterialDatabase materialDatabase = materialDatabaseManager.MiddleMaterialDatabase;
 
-        //取得したデータベースから現在表示されているブロックのものを取得
+        //取得したデータベースから現在表示されているブロックのマテリアルデータを取得
         BlockMaterialData blockMaterialData = materialDatabase.GetBlockMaterialData(NowBlockNum);
 
         if (blockMaterialData != null)
@@ -131,12 +131,12 @@ public class BlockSelector : MonoBehaviour
             foreach (ParameterData parameter in blockMaterialData.parameters)
             {
                 //float型のパラメーター
-                if (parameter.type == 0)
+                if (parameter.type == ParameterData.PropertyType.Float)
                 {
                     //binderのメソッドと、Enumのインデックス情報を使い、parameterからパラメーターを調整する
                     binder.SetPropertyFloat<TEnum>(EnumManager.GetEnumValueFromIndex<TEnum>(parameter.parameterEnumIndex), parameter.floatValue);
                 }
-                else if (parameter.type == 1)
+                else if (parameter.type == ParameterData.PropertyType.Color)
                 {
                     //parameterから色の生成
                     Color color = new Color(parameter.redValue, parameter.greenValue, parameter.blueValue);

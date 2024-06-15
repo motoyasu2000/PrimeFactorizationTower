@@ -4,7 +4,7 @@ namespace MaterialLibrary
 {
     /// <summary>
     /// しましまのマテリアルのプロパティ。
-    /// しましまを構成する2色としましまの感覚、しましまの流れる速度を指定できる。
+    /// しましまを構成する2色としましまの間隔、しましまの流れる速度を指定できる。
     /// </summary>
     public enum StripesMaterialProperty
     {

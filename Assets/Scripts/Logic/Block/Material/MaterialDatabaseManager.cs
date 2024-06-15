@@ -67,7 +67,7 @@ public class MaterialDatabaseManager : MonoBehaviour
         //色のパラメーターであれば、typeと各色を初期化して返す
         if (parameterName.Contains("Color") || parameterName.Contains("color"))
         {
-            parameterData.type = 1;
+            parameterData.type = ParameterData.PropertyType.Color;
             parameterData.redValue = initColorValue;
             parameterData.greenValue = initColorValue;
             parameterData.blueValue = initColorValue;
@@ -75,7 +75,7 @@ public class MaterialDatabaseManager : MonoBehaviour
         //color以外(今のところfloatのみ)はtypeとfloat値を初期化して返す
         else
         {
-            parameterData.type = 0;
+            parameterData.type = ParameterData.PropertyType.Float;
             parameterData.floatValue = initFloatValue;
         }
         return parameterData;
