@@ -93,7 +93,7 @@ public class TouchBlock : MonoBehaviour
         }
 
         //ブロックが上部に存在しない場合もブロックを移動する処理は行わない。
-        if (singleGenerateManager.GetSingleGameObject() == null) return;
+        if (singleGenerateManager.GetSingleBlock() == null) return;
 
         //タッチした位置にブロックを移動する(x軸方向の移動のみ)
         MoveBlockX(touchPosition.x); //ブロックx座標をタッチしている座標に
@@ -115,14 +115,14 @@ public class TouchBlock : MonoBehaviour
 
     void MoveBlockX(float newX)
     {
-        draggedObject = singleGenerateManager.GetSingleGameObject().transform;
+        draggedObject = singleGenerateManager.GetSingleBlock().transform;
         draggedObject.position = new Vector3(newX, primeNumberGeneratingPoint.transform.position.y, primeNumberGeneratingPoint.transform.position.z);
     }
 
     void BlockRelease()
     {
         draggedObject = null;
-        singleGenerateManager.SetSingleGameObject(null); //このブロックがsingleGameObjectに入ったままにしていると、ボタンが押された瞬間にDestroyが呼ばれてしまう。
+        singleGenerateManager.GenerateSingleBlock(null); //このブロックがsingleGameObjectに入ったままにしていると、ボタンが押された瞬間にDestroyが呼ばれてしまう。
         this.enabled = false;
         this.tag = "PrimeNumberBlock";
         gameObject.layer = LayerMask.NameToLayer("PrimeNumberBlock"); //レイヤーを変更することにより、初めて他のブロックと衝突するようになる。

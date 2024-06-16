@@ -20,14 +20,14 @@ public class SingleGenerateManager : MonoBehaviour
     }
     private void Update()
     {
-        MoveSingleGameObjectPoint();
+        MoveBlockGenerationPoint();
     }
 
     /// <summary>
-    /// 複数のブロックが同時に生成されないよう、異なるブロックを生成仕様としたとき、初めにあったブロックの方が削除され、上書きされるようにする。
+    /// 複数のブロックが同時に生成されないよう、異なるブロックを生成しようとしたとき、初めにあったブロックの方が削除され、上書きされるようにする。
     /// </summary>
     /// <param name="newBlock">新たに生成したいブロック</param>
-    public void SetSingleGameObject(GameObject newBlock)
+    public void GenerateSingleBlock(GameObject newBlock)
     {
         //引数がnullならsingleGameObjectをnullにして処理を終了
         if(newBlock == null)
@@ -59,13 +59,13 @@ public class SingleGenerateManager : MonoBehaviour
         }
     }
 
-    public GameObject GetSingleGameObject()
+    public GameObject GetSingleBlock()
     {
         return singleBlock;
     }
 
     //ブロックの生成地点をブロックの高さに合わせて変更する
-    void MoveSingleGameObjectPoint()
+    void MoveBlockGenerationPoint()
     {
         if(maxHeightCalculator.NowHeight < GameInfo.CameraTrackingStartHeight) return;
         transform.position = GeneratingPoint; //最も高いブロックよりより一定数(dropHeightAbovePeak)上にブロックを生成

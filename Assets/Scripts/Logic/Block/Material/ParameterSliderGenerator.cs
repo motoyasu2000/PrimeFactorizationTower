@@ -15,7 +15,7 @@ public class ParameterSliderGenerator : MonoBehaviour
     static readonly float floatSliderEpsilon = 0.01f; //スライダーで定めた値はシェーダー内で割り算の式に使う可能性がある。0除算が発生しないようにするために加算する項
     static readonly float sliderCellAlphaOffset = 0.8f; //スライダーセルのalphaに減算するための定数 1-minusAlphaがスライダーセルのアルファ値として設定される。
     
-    int generateSliderCounter = 0;
+    int generateSliderCounter = 0; //今上から何個目のスライダーを生成しているか
     float[] splitAnchorPoints_y; //表示するスライダーを分割するyのビューポート座標
     GameObject parameterSliderCellPrefab;
     IBinder activeBinder;
@@ -41,17 +41,16 @@ public class ParameterSliderGenerator : MonoBehaviour
     }
 
     /// <summary>
-    /// 与えられた列挙型に応じて必要な数だけスライダーを生成する
+    /// 与えられた列挙型(シェーダ)に応じて必要な数だけスライダーを生成する
     /// </summary>
     /// <typeparam name="TEnum">どの列挙型(シェーダー)か</typeparam>
     public void GenerateParameterSliders<TEnum>() where TEnum : Enum
     {
-        InitializeSlider();
+        DestroyAllSlider();
 
         string[] parameterNames = EnumManager.GetEnumNames<TEnum>();
         foreach (string parameterName in parameterNames)
         {
-            Debug.Log(parameterName);
             if(generateSliderCounter >= maxSliders)
             {
                 Debug.LogError("生成したいスライダーが10個以上生成できません。");
@@ -134,11 +133,9 @@ public class ParameterSliderGenerator : MonoBehaviour
         else if (sliderType == SliderType.RedValue || sliderType == SliderType.GreenValue || sliderType == SliderType.BlueValue) parameterData.type = ParameterData.PropertyType.Color;
         else { parameterData.type = ParameterData.PropertyType.Invalid; Debug.LogError($"SliderTypeが予期せぬ値になっています。: {sliderType}"); }
 
-        //生成したスライダーの値や色を初期化
+        //生成したスライダーの初期値や色を設定し、イベントを追加する
         InitializeSliderValue(sliderType, parameterData, parameterSlider);
         SetupSliderCellColor(sliderType, parameterSliderCell);
-
-        //スライダーのイベントの設定
         SetupSliderEvent<TEnum>(sliderType, parameterData, parameterSlider);
     }
 
@@ -185,7 +182,7 @@ public class ParameterSliderGenerator : MonoBehaviour
 
     }
 
-    //引数で受け取ったparameterDataをvalueに応じて更新する。
+    //引数で受け取ったparameterDataをvalueに応じて更新する。(スライダーによって操作される。)
     void UpdateParameterData(float value,SliderType sliderType, ParameterData parameterData)
     {
         //スライダーによる設定
@@ -196,14 +193,15 @@ public class ParameterSliderGenerator : MonoBehaviour
         else Debug.LogError("予期せぬSlidertypeが呼ばれました。");
     }
 
-    //今あるスライダーの全消去
-    public void InitializeSlider()
+    //選択中のブロックや、ブロックに割り当てるマテリアルを切り替えて、新たなスライダーを生成するたびによばれる。
+    public void DestroyAllSlider()
     {
         foreach(Transform slider in gameObject.transform)
         {
             Destroy(slider.gameObject);
         }
     }
+
     /// <summary>
     /// 今設定しているゲームオブジェクトに一時的に割り当てられるマテリアルを設定する。どのマテリアルにするのかを選択するために必要。
     /// </summary>

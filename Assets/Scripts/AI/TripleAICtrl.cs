@@ -91,7 +91,7 @@ public class TripleAICtrl : MonoBehaviour
         }
 
         preTotalTurn = nowTotalTurn;
-        nowTotalTurn = TurnMangaer.GetTotalTurn();
+        nowTotalTurn = TurnMangaer.GetTotalTurnCount();
         if (preTotalTurn != nowTotalTurn)
         {
             wasActedNowFrame = false;

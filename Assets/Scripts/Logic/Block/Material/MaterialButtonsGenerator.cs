@@ -6,7 +6,7 @@ using System.Reflection;
 using UnityEngine.UI;
 
 /// <summary>
-/// MaterialSceneでマテリアルを選択するためのボタンを生成するクラス
+/// MaterialSceneでブロックに割り当てるマテリアルを選択するためのボタンを生成するクラス
 /// </summary>
 public class MaterialButtonsGenerator : MonoBehaviour
 {

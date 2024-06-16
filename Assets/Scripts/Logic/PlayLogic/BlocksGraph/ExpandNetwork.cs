@@ -6,16 +6,16 @@ using UnityEngine;
 /// このネットワークを拡張していきpatternにマッチしたgraphを探索する。
 /// 拡張するとは拡張されたインスタンスを生成することで、後退するとはbeforeNetworkに戻り、戻る前に追加していたリストをクローズドリストに追加する。
 /// ネットワーク内に特定のパターンがあるかどうか見つけるための、拡張されていく特殊なデータ構造
-/// 特定のサブグラフを探索するための独自のアルゴリズムに使用するデータ構造
+/// 特定のサブグラフを探索するための独自のアルゴリズムに使用する
 /// </summary>
 
 public class ExpandNetwork
 {
-    List<GameObject> myNetwork = new List<GameObject>(); //現在のネットワーク情報
-    List<GameObject> closedList = new List<GameObject>(); //現在のネットワークに対するクローズドリスト。これより小さいクローズドリストの情報も引き継ぐ。
+    List<GameObject> network = new List<GameObject>(); //現在のネットワーク情報
+    List<GameObject> closedNodes = new List<GameObject>(); //現在のネットワークに対するクローズドリスト。これより小さいクローズドリストの情報も引き継ぐ。
 
-    public List<GameObject> MyNetwork => myNetwork;
-    public List<GameObject> ClosedList => closedList;
+    public List<GameObject> Network => network;
+    public List<GameObject> ClosedNodes => closedNodes;
 
     ExpandNetwork beforeNetwork; //ひとつ前のネットワークに戻ることがあるので必要
     public ExpandNetwork Beforenetwork => beforeNetwork;
@@ -23,46 +23,49 @@ public class ExpandNetwork
     public bool BackFlag => backFlag;
 
     /// <summary>
-    /// コンストラクタ。呼び出す側から見て、現在のネットワークと追加したいノードを引数で指定する。
+    /// コンストラクタ。呼び出す側から見て、現在のネットワークと、そのネットワークに追加したいノードを引数で指定する。
     /// </summary>
-    /// <param name="beforeNetwork">現在のネットワーク</param>
+    /// <param name="originNetwork">元となるネットワーク</param>
     /// <param name="addNode">ネットワークに追加するノード</param>
     /// <param name="condition">現在のcondition</param>
-    public ExpandNetwork(ExpandNetwork beforeNetwork, GameObject addNode, Dictionary<int, int> condition)
+    public ExpandNetwork(ExpandNetwork originNetwork, GameObject addNode, Dictionary<int, int> condition)
     {
-        //beforeNetworkがあるということはnowNodeは１番目以降のノード => closedListとmyNetworkをbeforeNetworkで初期化
-        if (beforeNetwork != null)
-        {
-            closedList = new List<GameObject>(beforeNetwork.closedList);
-            myNetwork = new List<GameObject>(beforeNetwork.myNetwork);
-            this.beforeNetwork = beforeNetwork;
-        }
-        if (beforeNetwork != null) beforeNetwork.closedList.Add(addNode); //一個前のネットワークに今追加したノードをクローズドリストに追加する。
+        if (addNode == null) Debug.LogError("ExpandNetworkに追加しようとしたノードがnullです");
 
-        int nodeValue = addNode.GetComponent<BlockInfo>().GetPrimeNumber();
-        //ネットワークに追加される素数が、条件を満たすのかのチェック
-        if (condition.ContainsKey(nodeValue))
+        if (originNetwork != null)
         {
-            int requiredCount = condition[nodeValue];
-            int currentCount = myNetwork.Count(node => node.GetComponent<BlockInfo>().GetPrimeNumber() == nodeValue);
-
-            //追加したいノードが、条件を満たすための数が足りていなければ追加
-            if (currentCount < requiredCount)
-            {
-                myNetwork.Add(addNode);
-            }
-            //もうすでに足りていたなら元のネットワークに戻る
-            else
-            {
-                backFlag = true;
-            }
+            TakeOverBeforeNetwork(originNetwork);
+            originNetwork.closedNodes.Add(addNode); //一個前のネットワークに今追加したノードをクローズドリストに追加する。
         }
+
+        //追加予定のノードの数値
+        int addNodeValue = addNode.GetComponent<BlockInfo>().GetPrimeNumber();
+        //現在のネットワークの個数
+        int currentCount = network.Count(node => node.GetComponent<BlockInfo>().GetPrimeNumber() == addNodeValue);
+        //conditionで要求される個数
+        int requiredCount = 0;
+
+        //conditionの条件として追加予定のノードが含まれており、ノードを追加しても要求された個数を上回らないなら、追加
+        if (condition.TryGetValue(addNodeValue, out requiredCount) && currentCount < requiredCount)
+        {
+            network.Add(addNode);
+        }
+        //条件を満たさなければ戻る
         else
         {
-            backFlag= true;
+            backFlag = true;
         }
-        closedList.Add(addNode);
-        if(addNode == null) Debug.LogError("nowNodeNull");
+        closedNodes.Add(addNode);
     }
 
+    /// <summary>
+    /// 今回生成するネットワークに、もととなるネットワークの情報を引き継ぐ(closedListとnetworkを引継ぎ、beforeNetworkに追加)
+    /// </summary>
+    /// <param name="originNetwork"></param>
+    void TakeOverBeforeNetwork(ExpandNetwork originNetwork)
+    {
+        closedNodes = new List<GameObject>(originNetwork.closedNodes);
+        network = new List<GameObject>(originNetwork.network);
+        beforeNetwork = originNetwork;
+    }
 }

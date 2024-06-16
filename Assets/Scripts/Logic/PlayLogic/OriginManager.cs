@@ -14,14 +14,17 @@ public class OriginManager : MonoBehaviour
     //キーが素数、バリューがその素数の数の辞書
     Dictionary<int, int> startOriginNumberDict = new Dictionary<int, int>(); //生成されたときの初めのもの
     Dictionary<int, int> currentOriginNumberDict = new Dictionary<int, int>(); //ブロックを生成してその分減少したもの
+
     Dictionary<int, int> originNextNumberDict = new Dictionary<int, int>(); //ネクストのもの
     public Dictionary<int, int> StartoriginNumberDict => startOriginNumberDict;
     public Dictionary<int,int> CurrentOriginNumberDict => currentOriginNumberDict;
+
     public Dictionary<int, int> OriginNextNumberDict => originNextNumberDict;
 
     //上の辞書を数値に変換したもの
     public int OriginNumber => Helper.CalculateCompsiteNumberForDict(startOriginNumberDict);
     public int CurrentOriginNumber => Helper.CalculateCompsiteNumberForDict(currentOriginNumberDict);
+
     public int OriginNextNumber => Helper.CalculateCompsiteNumberForDict(originNextNumberDict);
 
     GameModeManager gameModeManager;
@@ -32,7 +35,7 @@ public class OriginManager : MonoBehaviour
     {
         gameModeManager = GameModeManager.Ins;
         upperUIManager = GameObject.Find("UpperUIManager").GetComponent<UpperUIManager>();
-        GenerateOrigin();
+        UpdateOriginAndNextOrigin();
     }
 
     private void Update()
@@ -40,18 +43,39 @@ public class OriginManager : MonoBehaviour
         //今の数値が1なら、つまり素因数分解し終えたなら
         if(CurrentOriginNumber == 1)
         {
-            GenerateOrigin();
+            UpdateOriginAndNextOrigin();
         }
     }
 
-    //条件を生成するメソッド(難易度ごとに異なる素数プール、異なる素数の数、異なる値の範囲で提供)
-    public void GenerateOrigin()
+    /// <summary>
+    /// 難易度に応じてOriginを更新する。NextOriginをOriginに送り、NextOriginを生成する
+    /// </summary>
+    public void UpdateOriginAndNextOrigin()
     {
-        //nextOriginをoriginに入れて
+        MoveNextOriginToOrigin();
+        GenerateNextOrigin();
+
+        //更新したOriginとNextOriginの表示
+        upperUIManager.ChangeDisplayText(UpperUIManager.KindOfUI.Origin , OriginNumber.ToString());
+        upperUIManager.ChangeDisplayText(UpperUIManager.KindOfUI.NextOrigin, OriginNextNumber.ToString());
+
+        //最初だけ2回実行することで、OriginもNextOriginも両方初期化する
+        if (isFirstGeneration)
+        {
+            isFirstGeneration = false;
+            UpdateOriginAndNextOrigin();
+        }
+    }
+
+    //NextOriginをOriginに入れる
+    void MoveNextOriginToOrigin()
+    {
         startOriginNumberDict = new Dictionary<int, int>(originNextNumberDict);
         currentOriginNumberDict = new Dictionary<int, int>(originNextNumberDict);
+    }
 
-        //nextOriginの更新 
+    void GenerateNextOrigin()
+    {
         if (GameInfo.AILearning) originNextNumberDict = Helper.GenerateCompositeNumberDictCustom(gameModeManager.InsanePool, int.MaxValue, 4, 13);
         else
         {
@@ -69,20 +93,6 @@ public class OriginManager : MonoBehaviour
                     originNextNumberDict = Helper.GenerateCompositeNumberDictCustom(gameModeManager.InsanePool, int.MaxValue, 3, 5);
                     break;
             }
-        }
-
-        //合成数の計算と表示
-        upperUIManager.ChangeDisplayText(UpperUIManager.KindOfUI.Origin , OriginNumber.ToString());
-        upperUIManager.ChangeDisplayText(UpperUIManager.KindOfUI.NextOrigin, OriginNextNumber.ToString());
-
-        //Debug.Log("Keys : " + string.Join(",", startOriginNumberDict.Keys));
-        //Debug.Log("Values : " + string.Join(",", startOriginNumberDict.Values));
-
-        //最初だけ2回実行することで、originもnextも両方初期化する
-        if (isFirstGeneration)
-        {
-            isFirstGeneration = false;
-            GenerateOrigin();
         }
     }
 

@@ -15,11 +15,11 @@ public class UpperUIManager : MonoBehaviour
         NextOrigin,
     }
 
-    TextMeshProUGUI conditionNumberText; //左上の条件テキスト
+    //画面上部に表示される、condition,origin,nextOrigin
+    TextMeshProUGUI conditionNumberText;
     TextMeshProUGUI originNumberText;
     TextMeshProUGUI nextOriginNumberText;
 
-    public TextMeshProUGUI OriginNumberText => originNumberText;
     private void Awake()
     {
         conditionNumberText = GameObject.Find("ConditonNumberText").GetComponent<TextMeshProUGUI>();
@@ -27,18 +27,23 @@ public class UpperUIManager : MonoBehaviour
         nextOriginNumberText = GameObject.Find("NextOriginNumberText").GetComponent<TextMeshProUGUI>();
     }
 
-    public void ChangeDisplayText(KindOfUI kindOfUI,string str)
+    /// <summary>
+    /// 画面上部のUIのテキストを変更する
+    /// </summary>
+    /// <param name="kindOfUI">どのUIを変更するか(Condition, Origin, NextOrigin)</param>
+    /// <param name="string_number">表示するテキスト</param>
+    public void ChangeDisplayText(KindOfUI kindOfUI,string string_number)
     {
         switch (kindOfUI)
         {
             case KindOfUI.Condition:
-                conditionNumberText.text = str; 
+                conditionNumberText.text = string_number; 
                 break;
             case KindOfUI.Origin:
-                originNumberText.text = str; 
+                originNumberText.text = string_number; 
                 break;
             case KindOfUI.NextOrigin:
-                nextOriginNumberText.text = str;
+                nextOriginNumberText.text = string_number;
                 break;
             default:
                 Debug.LogError("予期せぬKindOfUIが呼ばれました。");

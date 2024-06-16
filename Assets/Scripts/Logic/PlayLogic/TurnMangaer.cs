@@ -8,7 +8,7 @@ public static class TurnMangaer
 {
     static int nowNamesIndex = 0; //今何番目の人か
     static int maxNamesIndex = 0; //何番目の人までいるか
-    static int totalTurn = 0;
+    static int totalTurnCount = 0;
     static List<string> names = new List<string>(); //すべての名前を保存するリスト
 
     //プレイヤーの名前を設定する
@@ -41,7 +41,7 @@ public static class TurnMangaer
     //次のターンに進む
     public static void ChangeNextTurn()
     {
-        totalTurn++;
+        totalTurnCount++;
         if (nowNamesIndex < maxNamesIndex)
         {
             nowNamesIndex++;
@@ -64,8 +64,8 @@ public static class TurnMangaer
         return nowNamesIndex;
     }
 
-    public static int GetTotalTurn()
+    public static int GetTotalTurnCount()
     {
-        return totalTurn;
+        return totalTurnCount;
     }
 }

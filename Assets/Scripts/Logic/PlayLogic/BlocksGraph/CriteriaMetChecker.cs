@@ -77,12 +77,13 @@ public class CriteriaMetChecker : MonoBehaviour
 
     /// <summary>
     /// ネットワークを拡張しながらサブグラフを探索する独自のアルゴリズム
+    /// https://www.youtube.com/watch?v=syBXS7UtUN0&t=3s
     /// </summary>
     /// <param name="currentNetwork">現在のExpandNetwork</param>
     public void ExpandAndSearch(ExpandNetwork currentNetwork)
     {
         //拡張したネットワークが条件を満たしていたら
-        if (ContainsAllRequiredNodes(currentNetwork.MyNetwork, conditionManager.ConditionNumberDict))
+        if (ContainsAllRequiredNodes(currentNetwork.Network, conditionManager.ConditionNumberDict))
         {
             //条件生成時に既に条件を達成していた場合→条件を再生成して再び調査。
             if (NewConditionGenerating)
@@ -92,19 +93,19 @@ public class CriteriaMetChecker : MonoBehaviour
                 Debug.Log("再生成");
                 return;
             }
-            Debug.Log(string.Join(", ", currentNetwork.MyNetwork));
-            CompleteConditionsProcess(currentNetwork.MyNetwork);
+            Debug.Log(string.Join(", ", currentNetwork.Network));
+            CompleteConditionsProcess(currentNetwork.Network);
             return;
         }
 
         //現在拡張中のネットワークに存在する各ノードの隣接ノードを探索
-        foreach (var node in currentNetwork.MyNetwork)
+        foreach (var node in currentNetwork.Network)
         {
             //今見ているノードに隣接するノードを全てリストに追加
             List<GameObject> adjacentNodes = node.GetComponent<BlockInfo>().GetNeighborEdge();
 
             //現在のネットワークとclosedListに含まれていないノードのみを選択
-            adjacentNodes = adjacentNodes.Where(n => !currentNetwork.ClosedList.Contains(n) && !currentNetwork.MyNetwork.Contains(n)).ToList();
+            adjacentNodes = adjacentNodes.Where(n => !currentNetwork.ClosedNodes.Contains(n) && !currentNetwork.Network.Contains(n)).ToList();
 
             //隣接する新しいノードがなければスキップ
             if (adjacentNodes.Count == 0) continue;

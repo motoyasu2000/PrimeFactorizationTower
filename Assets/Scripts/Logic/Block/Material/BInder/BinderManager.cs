@@ -5,7 +5,9 @@ namespace MaterialLibrary
     /// </summary>
     public static class BinderManager
     {
-        //EnumParametersBinderのインスタンスを格納する
+        /// <summary>
+        /// ここにすべてのバインダーを定義する。
+        /// </summary>
         static readonly IBinder[] binders = new IBinder[]
         {
             new DefaultMaterialBinder(),
@@ -13,12 +15,15 @@ namespace MaterialLibrary
             new WaveMaterialBinder(),
         };
 
-        public static int BindersCount => binders.Length;
-
+        /// <summary>
+        /// すべてのバインダーが格納された配列
+        /// </summary>
         public static IBinder[] Binders
         {
             get { return binders; }
         }
+
+        public static int BindersCount => binders.Length;
 
         //EnumParametersBinderを継承したクラスから、bindersのインデックスを取得。
         public static int GetBindersIndex(IBinder ibinder)
