@@ -24,7 +24,9 @@ public class BlocksGraphManager : MonoBehaviour
 
     private void Update()
     {
-        if (StartExpandNetworks.Count == 0) SetConditionGenerating(false);
+        //StartExpandNetworks.Count == 0は、新たに生成した条件が、BlocksGraphに存在しないことを表している。
+        //NewConditionGeneratingは理論的に不必要だが、可読性向上のためにつけている。
+        if (NewConditionGenerating && StartExpandNetworks.Count == 0) SetConditionGenerating(false);
 
         //checkNumParFrameの整数値回だけキューに入っていて条件を満たすものがないかネットワーク内でチェックを行う。
         for (int i = 0; i < CheckNumParFrame; i++)

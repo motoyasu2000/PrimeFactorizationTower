@@ -6,7 +6,14 @@ using UnityEngine;
 /// </summary>
 public static class BlocksGraphData
 {
-    static bool newConditionGenerating = false; //新たな条件を生成するフェーズであることを表す。 条件を達成してから、新たに条件を生成しおえるまでの間はtrueになる
+    /// <summary>
+    /// 新たな条件を生成するフェーズであることを表す。 条件を達成してから、新たに条件を生成しおえるまでの間はtrueになる
+    /// </summary>
+    static bool newConditionGenerating = false;
+
+    /// <summary>
+    /// 新たな条件を生成するフェーズであることを表す。 条件を達成してから、新たに条件を生成しおえるまでの間はtrueになる
+    /// </summary>
     public static bool NewConditionGenerating => newConditionGenerating;
 
     //ネットワークの構造や基本機能に使用するもの
@@ -98,6 +105,9 @@ public static class BlocksGraphData
         info2.AddNeighborBlock(node1);
     }
 
+    /// <summary>
+    /// 新たな条件を生成するフェーズであるnewConditionGeneratingを書き換える。 条件を達成してから、新たに条件を生成しおえるまでの間のみtrueになるように設定する必要がある
+    /// </summary>
     public static void SetConditionGenerating(bool flag)
     {
         newConditionGenerating = flag;
