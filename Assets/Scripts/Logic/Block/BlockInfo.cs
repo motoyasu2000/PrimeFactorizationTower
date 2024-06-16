@@ -31,7 +31,11 @@ public class BlockInfo : MonoBehaviour
         myCollider = GetComponent<Collider2D>();
         if(SceneManager.GetActiveScene().name =="PlayScene") blocksGraphManager = GameObject.Find("BlocksGraphManager").GetComponent<BlocksGraphManager>();
         SetText();
-        //SetShader();
+    }
+
+    private void Start()
+    {
+        
     }
 
     /// <summary>

@@ -24,14 +24,12 @@ public class BlocksGraphManager : MonoBehaviour
 
     private void Update()
     {
+        if (StartExpandNetworks.Count == 0) SetConditionGenerating(false);
+
         //checkNumParFrameの整数値回だけキューに入っていて条件を満たすものがないかネットワーク内でチェックを行う。
         for (int i = 0; i < CheckNumParFrame; i++)
         {
-            if (StartExpandNetworks.Count == 0)
-            {
-                SetConditionGenerating(false);
-                return;
-            }
+            if (StartExpandNetworks.Count == 0) return;
             var item = DequeueStartExpandNetworks();
             criteriaMetChecker.ExpandAndSearch(item);
         }

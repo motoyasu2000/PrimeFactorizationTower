@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using static BlocksGraphData;
 
@@ -103,9 +102,12 @@ public class CriteriaMetChecker : MonoBehaviour
                 Debug.Log("再生成");
                 return;
             }
-            Debug.Log(string.Join(", ", currentNetwork.Network));
-            CriteriaMetProcess(currentNetwork.Network);
-            return;
+            else
+            {
+                Debug.Log(string.Join(", ", currentNetwork.Network));
+                CriteriaMetProcess(currentNetwork.Network);
+                return;
+            }
         }
 
         //現在拡張中のネットワークに存在する各ノードの隣接ノードを探索
@@ -137,7 +139,10 @@ public class CriteriaMetChecker : MonoBehaviour
                 criteriaMetProcessor.ProcessFreeze(nodes);
                 break;
         }
-        ClearStartExpandNetworks(); //探索が完了したらもうネットワーク内に条件を満たすものが存在しないと考えられるので、キューをリセットしておく。(あるとバグが発生する)
+        //探索が完了したらもうネットワーク内に条件を満たすものが存在しないと考えられるので、キューをリセットしておく。
+        //(あるとGameInfoが消されたゲームオブジェクトが残り続けることになるためバグが発生する)
+        ClearStartExpandNetworks(); 
+
         SetConditionGenerating(true); //条件を達成したため、新しい条件を生成するフェーズにはいる
         CheckConditionBlocksGraph();
         conditionManager.GenerateCondition();
