@@ -115,10 +115,12 @@ public class BlockInfo : MonoBehaviour
             neighborEdge.Add(block);
         }
     }
+    
 
     /// <summary>
     /// 他のブロックと衝突した際、自分のブロックが相手のブロックの上にあるならtrueを返す関数。
     /// 2つのブロックが衝突した際、エッジの情報をネットワークに追加するが、それが2回呼ばれないように、trueになったゲームオブジェクトのみがネットワークにノードを追加する処理を呼び出すようにする。
+    /// </summary>
     /// <param name="other">衝突した相手のGameObject</param>
     /// <returns>上か否か</returns>
     private bool IsUpOrRight(GameObject other)
@@ -140,12 +142,8 @@ public class BlockInfo : MonoBehaviour
             {
                 return true;
             }
-            else { return false; }
         }
-        else
-        {
-            return false;
-        }
+        return false;
     }
 
     private void OnCollisionStay2D(Collision2D collision)

@@ -1,8 +1,10 @@
 using Common;
 using MaterialLibrary;
 using System;
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.UI;
+using static Unity.Collections.AllocatorManager;
 
 /// <summary>
 /// MaterialScene内で、どのブロックを選択するのかを指定したり、そのブロックに対して色を割り当てたりするクラス。
@@ -26,13 +28,13 @@ public class BlockSelector : MonoBehaviour
         singleBlockParent = GameObject.Find("SingleBlockParent");
         blockNumberSetter = GameObject.Find("BlockNumberText").GetComponent<BlockNumberSetter>();
         materialDatabaseManager = GameObject.Find("MaterialDatabaseManager").GetComponent<MaterialDatabaseManager>();
-        SetSingleBlock(); //実行時にブロックを配置
+        InitializeAndSetCurrentBlock(); //実行時にブロックを配置
     }
 
     /// <summary>
     /// 今何のブロックが選ばれているのかを指定するメソッド。
     /// </summary>
-    void SetSingleBlock()
+    void InitializeAndSetCurrentBlock()
     {
         InitializeSingleBlockParent();
         GenerateBlock();
@@ -63,21 +65,28 @@ public class BlockSelector : MonoBehaviour
             Debug.LogError($"指定されたブロックがResourcesから見つかりませんでした。: {NowBlockNum}");
             return;
         }
-        GameObject nowBlock = Instantiate(resourcesBlock);
 
+        //ブロックを生成して初期化
+        GameObject block = Instantiate(resourcesBlock);
+        InitializeBlock(block);
+    }
+
+    //生成したブロックの初期化処理
+    void InitializeBlock(GameObject block)
+    {
         //不必要なコンポーネントを無効に
-        nowBlock.GetComponent<LineViewer>().enabled = false;
-        nowBlock.GetComponent<LineRenderer>().enabled = false;
-        nowBlock.GetComponent<TouchBlock>().enabled = false;
+        block.GetComponent<LineViewer>().enabled = false;
+        block.GetComponent<LineRenderer>().enabled = false;
+        block.GetComponent<TouchBlock>().enabled = false;
 
         //ブロックに表示する文字の設定
-        BlockInfo blockInfo = nowBlock.GetComponent<BlockInfo>();
+        BlockInfo blockInfo = block.GetComponent<BlockInfo>();
         blockInfo.SetPrimeNumber(NowBlockNum);
         blockInfo.SetText();
 
         //親の設定と位置の調整
-        nowBlock.transform.SetParent(singleBlockParent.transform);
-        nowBlock.transform.localPosition = Vector3.zero;
+        block.transform.SetParent(singleBlockParent.transform);
+        block.transform.localPosition = Vector3.zero;
     }
 
     //現在選ばれているブロックを戻す
@@ -100,7 +109,7 @@ public class BlockSelector : MonoBehaviour
         materialDatabaseManager.LoadMaterialDatabase(); //切り替わる前に設定していた情報を消去
         nowBlockIndex++;
         if(nowBlockIndex > allprimenumber.Length-1) nowBlockIndex = 0;
-        SetSingleBlock();
+        InitializeAndSetCurrentBlock();
     }
 
     //前の素数のブロックを生成
@@ -109,56 +118,67 @@ public class BlockSelector : MonoBehaviour
         materialDatabaseManager.LoadMaterialDatabase();　//切り替わる前に設定していた情報を消去
         nowBlockIndex--;
         if(nowBlockIndex < 0) nowBlockIndex = allprimenumber.Length-1;
-        SetSingleBlock() ;
+        InitializeAndSetCurrentBlock() ;
     }
 
     /// <summary>
-    /// 現在選択中のブロックのマテリアルを中間のマテリアルデータベースのものに変換する
+    /// 現在選択中のブロックのマテリアルを中間のマテリアルデータベースのものにする
     /// </summary>
     /// <typeparam name="TEnum">どの列挙型(シェーダ)からプロパティを設定するか</typeparam>
     public void SetBlockMaterialDataToSingleBlock<TEnum>() where TEnum : Enum
     {
-        //中間のマテリアルデータベースを取得
-        MaterialDatabase materialDatabase = materialDatabaseManager.MiddleMaterialDatabase;
-
-        //取得したデータベースから現在表示されているブロックのマテリアルデータを取得
-        BlockMaterialData blockMaterialData = materialDatabase.GetBlockMaterialData(NowBlockNum);
-
+        //中間のマテリアルデータベースから、現在表示されているブロックのマテリアルデータを取得
+        BlockMaterialData blockMaterialData = materialDatabaseManager.MiddleMaterialDatabase.GetBlockMaterialData(NowBlockNum);
+        IBinder binder = BinderManager.Binders[blockMaterialData.binderIndex];//現在のマテリアル
         if (blockMaterialData != null)
         {
-            IBinder binder = BinderManager.Binders[blockMaterialData.binderIndex];//現在のマテリアル
-
-            foreach (ParameterData parameter in blockMaterialData.parameters)
-            {
-                //float型のパラメーター
-                if (parameter.type == ParameterData.PropertyType.Float)
-                {
-                    //binderのメソッドと、Enumのインデックス情報を使い、parameterからパラメーターを調整する
-                    binder.SetPropertyFloat<TEnum>(EnumManager.GetEnumValueFromIndex<TEnum>(parameter.parameterEnumIndex), parameter.floatValue);
-                }
-                else if (parameter.type == ParameterData.PropertyType.Color)
-                {
-                    //parameterから色の生成
-                    Color color = new Color(parameter.redValue, parameter.greenValue, parameter.blueValue);
-                    //binderのメソッドと、Enumのインデックス情報を使い、上で生成した色を割り当てる。
-                    binder.SetPropertyColor<TEnum>(EnumManager.GetEnumValueFromIndex<TEnum>(parameter.parameterEnumIndex), color);
-                }
-                else
-                {
-                    Debug.LogError($"想定外のtypeが指定されました。: {parameter.type}");
-                }
-            }
-
-            //現在選択されているブロックを取得して、実際にマテリアルを適用する
-            GameObject singleBlock = GetSingleBlock();
-            SpriteRenderer spriteRenderer = singleBlock.GetComponent<SpriteRenderer>();
-            spriteRenderer.material = new Material(binder.Material);
+            UpdateBinder<TEnum>(blockMaterialData, binder);
+            AssignBlockToBinder(binder);
         }
         else
         {
             Debug.LogError("blockMaterialDataが取得できませんでした。");
         }
     }
+
+    /// <summary>
+    /// 中間のマテリアルデータベースのBlockMaterialDataの情報をbinderに適用する
+    /// </summary>
+    /// <typeparam name="TEnum">どの列挙型(シェーダーか)</typeparam>
+    /// <param name="blockMaterialData">中間のブロックのマテリアルデータ</param>
+    /// <param name="binder">現在のマテリアルに対応するバインダー</param>
+    void UpdateBinder<TEnum>(BlockMaterialData blockMaterialData, IBinder binder) where TEnum : Enum
+    {
+        foreach (ParameterData parameter in blockMaterialData.parameters)
+        {
+            //float型のパラメーター
+            if (parameter.type == ParameterData.PropertyType.Float)
+            {
+                //binderのメソッドと、Enumのインデックス情報を使い、parameterからパラメーターを調整する
+                binder.SetPropertyFloat<TEnum>(EnumManager.GetEnumValueFromIndex<TEnum>(parameter.parameterEnumIndex), parameter.floatValue);
+            }
+            else if (parameter.type == ParameterData.PropertyType.Color)
+            {
+                //parameterから色の生成
+                Color color = new Color(parameter.redValue, parameter.greenValue, parameter.blueValue);
+                //binderのメソッドと、Enumのインデックス情報を使い、上で生成した色を割り当てる。
+                binder.SetPropertyColor<TEnum>(EnumManager.GetEnumValueFromIndex<TEnum>(parameter.parameterEnumIndex), color);
+            }
+            else
+            {
+                Debug.LogError($"想定外のtypeが指定されました。: {parameter.type}");
+            }
+        }
+    }
+
+    //現在選択されているブロックを取得して、実際にマテリアルを適用する
+    void AssignBlockToBinder(IBinder binder)
+    {
+        GameObject singleBlock = GetSingleBlock();
+        SpriteRenderer spriteRenderer = singleBlock.GetComponent<SpriteRenderer>();
+        spriteRenderer.material = new Material(binder.Material);
+    }
+
     //初期化のために現在選択中のブロックに割り当てられているマテリアルに対応したMaterialButtonをクリックする。
     void InvokeNowBlockMaterialButton()
     {
