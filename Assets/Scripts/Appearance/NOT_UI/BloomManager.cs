@@ -5,7 +5,7 @@ using UnityEngine.Rendering.Universal;
 /// <summary>
 /// bloomの値を上昇し続けて画面が明るくなっていくようにするクラス。
 /// ゲームオーバー時に呼ばれる演出。
-/// 外部からisLightUpStartをtrueにすることで、Update内で明るくする処理を行う
+/// 外部からLightUpStartメソッドを通してisLightUpStartをtrueにすることで、Update内で明るくする処理を行う
 /// </summary>
 public class BloomManager : MonoBehaviour
 {

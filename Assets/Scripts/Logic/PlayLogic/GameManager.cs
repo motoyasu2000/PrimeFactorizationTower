@@ -61,7 +61,7 @@ public class GameManager : MonoBehaviour
         earthQuakeManager = GameObject.Find("EarthQuakeManager").GetComponent<EarthQuakeManager>();
         explainPileUp = GameObject.Find("Canvas").transform.Find("ExplainPileUp").gameObject;
         maxHeightCalculator = GameObject.Find("MaxHeightCalculator").GetComponent<MaxHeightCalculator>();
-        DisplayerMaxScore();
+        DisplayMaxScore();
     }
 
     private void Start()
@@ -119,7 +119,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    //テキストの描画、場合によってはゲームオーバー primeNumberCheckFieldの子要素の数が変化したときに呼ばれる
+    //生成したブロックの塊がOriginのものになっているかチェック、なっていなければ地震を発生させる primeNumberCheckFieldの子要素の数が変化したときに呼ばれる
     void CheckMatchingOrigin()
     {
         if (primeNumberCheckField.transform.childCount == prePrimeNumberCheckFieldCount) return;
@@ -212,7 +212,7 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 次のターンに進んでよいか判断し、進んでよければ進んで初期化。
+    /// 次のターンに進んでよいか判断し、進んでよければ進んで次のターンに進めるか計測するためのタイマーやフラグを初期化する。
     /// また、高さの更新やスコアの更新も行う
     /// </summary>
     void ChangeNextTurnProcess()
@@ -251,7 +251,7 @@ public class GameManager : MonoBehaviour
     }
 
     //各ゲームモードでの最大スコアの表示(Awakeで呼ばれる。)
-    void DisplayerMaxScore()
+    void DisplayMaxScore()
     {
         switch (GameModeManager.Ins.NowGameMode)
         {
