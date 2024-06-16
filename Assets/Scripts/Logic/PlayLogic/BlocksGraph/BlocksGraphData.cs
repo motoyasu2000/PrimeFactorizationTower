@@ -84,8 +84,8 @@ public static class BlocksGraphData
     public static void DetachNode(GameObject node1, GameObject node2)
     {
         BlockInfo info1 = node1.GetComponent<BlockInfo>();
-        info1.RemoveNeighborBlock(node2);
         BlockInfo info2 = node2.GetComponent<BlockInfo>();
+        info1.RemoveNeighborBlock(node2);
         info2.RemoveNeighborBlock(node1);
     }
 
@@ -93,12 +93,12 @@ public static class BlocksGraphData
     public static void AttachNode(GameObject node1, GameObject node2)
     {
         BlockInfo info1 = node1.GetComponent<BlockInfo>();
-        info1.AddNeighborBlock(node2);
         BlockInfo info2 = node2.GetComponent<BlockInfo>();
+        info1.AddNeighborBlock(node2);
         info2.AddNeighborBlock(node1);
     }
 
-    public static void SetConditionChecking(bool flag)
+    public static void SetConditionGenerating(bool flag)
     {
         newConditionGenerating = flag;
     }

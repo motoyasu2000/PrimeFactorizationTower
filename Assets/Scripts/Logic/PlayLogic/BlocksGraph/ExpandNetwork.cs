@@ -23,7 +23,7 @@ public class ExpandNetwork
     public bool BackFlag => backFlag;
 
     /// <summary>
-    /// コンストラクタ。呼び出す側から見て、現在のネットワークと、そのネットワークに追加したいノードを引数で指定する。
+    /// コンストラクタ。拡張元となるネットワークと、そのネットワークに追加したいノードを指定する。
     /// </summary>
     /// <param name="originNetwork">元となるネットワーク</param>
     /// <param name="addNode">ネットワークに追加するノード</param>
@@ -38,6 +38,29 @@ public class ExpandNetwork
             originNetwork.closedNodes.Add(addNode); //一個前のネットワークに今追加したノードをクローズドリストに追加する。
         }
 
+        AddNewNode(addNode, condition);
+
+        closedNodes.Add(addNode);
+    }
+
+    /// <summary>
+    /// 今回生成するネットワークに、元となるネットワークの情報を引き継ぐ (closedListとnetworkを引継ぎ、beforeNetworkに元となるネットワークを追加)
+    /// </summary>
+    /// <param name="originNetwork">元となるネットワーク</param>
+    void TakeOverBeforeNetwork(ExpandNetwork originNetwork)
+    {
+        closedNodes = new List<GameObject>(originNetwork.closedNodes);
+        network = new List<GameObject>(originNetwork.network);
+        beforeNetwork = originNetwork;
+    }
+
+    /// <summary>
+    /// 現在のネットワークに新たなノードを追加する
+    /// </summary>
+    /// <param name="addNode">追加するノード</param>
+    /// <param name="condition">現在のcondition</param>
+    void AddNewNode(GameObject addNode, Dictionary<int, int> condition)
+    {
         //追加予定のノードの数値
         int addNodeValue = addNode.GetComponent<BlockInfo>().GetPrimeNumber();
         //現在のネットワークの個数
@@ -55,17 +78,5 @@ public class ExpandNetwork
         {
             backFlag = true;
         }
-        closedNodes.Add(addNode);
-    }
-
-    /// <summary>
-    /// 今回生成するネットワークに、もととなるネットワークの情報を引き継ぐ(closedListとnetworkを引継ぎ、beforeNetworkに追加)
-    /// </summary>
-    /// <param name="originNetwork"></param>
-    void TakeOverBeforeNetwork(ExpandNetwork originNetwork)
-    {
-        closedNodes = new List<GameObject>(originNetwork.closedNodes);
-        network = new List<GameObject>(originNetwork.network);
-        beforeNetwork = originNetwork;
     }
 }

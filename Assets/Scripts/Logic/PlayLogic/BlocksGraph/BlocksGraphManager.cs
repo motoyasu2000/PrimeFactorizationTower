@@ -29,7 +29,7 @@ public class BlocksGraphManager : MonoBehaviour
         {
             if (StartExpandNetworks.Count == 0)
             {
-                SetConditionChecking(false);
+                SetConditionGenerating(false);
                 return;
             }
             var item = DequeueStartExpandNetworks();

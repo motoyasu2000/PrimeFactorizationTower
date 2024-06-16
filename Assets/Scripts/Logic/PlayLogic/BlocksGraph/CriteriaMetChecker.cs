@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using static BlocksGraphData;
 
@@ -12,8 +13,6 @@ public class CriteriaMetChecker : MonoBehaviour
     ConditionManager conditionManager;
     CriteriaMetProcessor criteriaMetProcessor;
 
-    public bool NowConditionChecking => NowConditionChecking;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -21,32 +20,43 @@ public class CriteriaMetChecker : MonoBehaviour
         criteriaMetProcessor = GameObject.Find("CriteriaMetProcessor").GetComponent<CriteriaMetProcessor>();
     }
 
-
     /// <summary>
-    /// グラフ全体に条件にマッチするものがないかを探索するためのメソッド
+    /// グラフ全体に条件にマッチするものがないかを探索する
     /// 条件に存在する素数のうち、ネットワーク全体で最小個数の素数を探し、そのノードを条件のチェックを行うキューであるstartExpandNetworksに追加
+    /// conditionの生成時に、conditionに存在しないグラフを生成するために使用する。
     /// </summary>
     void CheckConditionBlocksGraph()
     {
-        if (!NewConditionGenerating) return;
+        if (!NewConditionGenerating) return; //条件のチェック中でなければ以降の処理を飛ばす
+        int minCountPrime = SearchMinCountPrime();
 
-        int minNode = -1; //最小個数の素数
-        int minNodeNum = int.MaxValue; //最小個数の素数の数
+        //最小個数の素数に対してfor分を回して探索を行う
+        foreach (var node in BlocksDict[minCountPrime])
+        {
+             EnqueueStartExpandNetworks(new ExpandNetwork(null, node, conditionManager.ConditionNumberDict));
+        }
+    }
+
+    /// <summary>
+    /// グラフから最小個数の素数を見つけて返す
+    /// </summary>
+    /// <returns>グラフ上の最小個数の素数</returns>
+    int SearchMinCountPrime()
+    {
+        int minCountPrime = -1; //最小個数の素数
+        int minCount = int.MaxValue; //最小個数の素数の数
 
         //条件に存在する素数を全探索し、最小個数のものを探す
         foreach (int conditionKey in conditionManager.ConditionNumberDict.Keys)
         {
-            if (minNodeNum > BlocksDict[conditionKey].Count)
+            if (minCount > BlocksDict[conditionKey].Count)
             {
-                minNodeNum = BlocksDict[conditionKey].Count;
-                minNode = conditionKey;
+                minCount = BlocksDict[conditionKey].Count;
+                minCountPrime = conditionKey;
             }
         }
-        //最小個数の素数はすでに求まっているので、それに対してfor分を回して探索を行う
-        foreach (var node in BlocksDict[minNode])
-        {
-             EnqueueStartExpandNetworks(new ExpandNetwork(null, node, conditionManager.ConditionNumberDict));
-        }
+
+        return minCountPrime;
     }
 
     //第二引数で指定した条件を満たすサブグラフの条件を、第一引数で指定したネットワークが満たしているかをチェックするメソッド
@@ -94,39 +104,29 @@ public class CriteriaMetChecker : MonoBehaviour
                 return;
             }
             Debug.Log(string.Join(", ", currentNetwork.Network));
-            CompleteConditionsProcess(currentNetwork.Network);
+            CriteriaMetProcess(currentNetwork.Network);
             return;
         }
 
         //現在拡張中のネットワークに存在する各ノードの隣接ノードを探索
-        foreach (var node in currentNetwork.Network)
+        foreach (GameObject node in currentNetwork.Network)
         {
-            //今見ているノードに隣接するノードを全てリストに追加
-            List<GameObject> adjacentNodes = node.GetComponent<BlockInfo>().GetNeighborEdge();
+            //今見ているノードに隣接しているノードのうち、拡張できそうなノードを取得する
+            var adjacentNodes = GetValidAdjacentNode(currentNetwork, node);
 
-            //現在のネットワークとclosedListに含まれていないノードのみを選択
-            adjacentNodes = adjacentNodes.Where(n => !currentNetwork.ClosedNodes.Contains(n) && !currentNetwork.Network.Contains(n)).ToList();
-
-            //隣接する新しいノードがなければスキップ
-            if (adjacentNodes.Count == 0) continue;
-
-            //今見ているノードに隣接するノードを探索
-            foreach (var adjacentNode in adjacentNodes)
+            //求めたすべてのadjacentNodesについて、拡張を試みる
+            foreach (GameObject adjacentNode in adjacentNodes)
             {
-                if (adjacentNode.gameObject.GetComponent<BlockInfo>().enabled == false) continue; //ネットワークから切り離されてblockinfoがなくなったブロックがadjacentNodesに含まれれば、処理をスキップ
-                ExpandNetwork newNetwork = new ExpandNetwork(currentNetwork, adjacentNode, conditionManager.ConditionNumberDict); //拡張
-
-                //場合によっては拡張前に戻る
+                //拡張し、場合によっては拡張に前に戻り、また探索を行う。
+                ExpandNetwork newNetwork = new ExpandNetwork(currentNetwork, adjacentNode, conditionManager.ConditionNumberDict);
                 if (newNetwork.BackFlag) newNetwork = newNetwork.Beforenetwork;
-
-                //再帰呼び出し
                 ExpandAndSearch(newNetwork);
             }
         }
     }
 
     //条件を満たしたときの処理
-    void CompleteConditionsProcess(List<GameObject> nodes)
+    void CriteriaMetProcess(List<GameObject> nodes)
     {
         switch (GameModeManager.Ins.NowGameMode)
         {
@@ -137,10 +137,24 @@ public class CriteriaMetChecker : MonoBehaviour
                 criteriaMetProcessor.ProcessFreeze(nodes);
                 break;
         }
-        //後処理
         ClearStartExpandNetworks(); //探索が完了したらもうネットワーク内に条件を満たすものが存在しないと考えられるので、キューをリセットしておく。(あるとバグが発生する)
-        SetConditionChecking(true); //条件を達成したため、新しい条件を生成するフェーズにはいる
+        SetConditionGenerating(true); //条件を達成したため、新しい条件を生成するフェーズにはいる
         CheckConditionBlocksGraph();
         conditionManager.GenerateCondition();
+    }
+
+    /// <summary>
+    /// adjacentNodesのうち、closedNodesに含まれておらず、currentNetwork上にないものを計算して返す
+    /// </summary>
+    /// <param name="currentNetwork">現在拡張中のネットワーク</param>
+    /// <param name="adjacentNodes">現在見ているノードに隣接しているもの、ここから必要なノードのみを抽出する。</param>
+    /// <returns>ネットワークに追加可能できる可能性のあるノードのリストを返す。</returns>
+    List<GameObject> GetValidAdjacentNode(ExpandNetwork currentNetwork, GameObject node)
+    {
+        List<GameObject> adjacentNodes = node.GetComponent<BlockInfo>().GetNeighborEdge();
+        return
+        adjacentNodes = adjacentNodes.Where(n =>
+        !currentNetwork.ClosedNodes.Contains(n) && 
+        !currentNetwork.Network.Contains(n)).ToList();
     }
 }
