@@ -37,7 +37,7 @@ namespace UI
 
         //どのランキングを表示するか選ぶタブボタン
         Button[] rankButtons_localOrGlobal = new Button[2];
-        Button[] rankButtons_gameMode = new Button[1];
+        Button[] rankButtons_gameMode = new Button[2];
         Button[] rankButtons_difficultyLevel = new Button[3];
 
         DynamoDBManager ddbManager;
@@ -76,6 +76,7 @@ namespace UI
             ChooseSingleButton(rankButtons_localOrGlobal, (int)nowRankButton_localOrGlobal);
 
             rankButtons_gameMode[0] = GameObject.Find("PileUpButton").GetComponent<Button>();
+            rankButtons_gameMode[1] = GameObject.Find("PileUp60sButton").GetComponent<Button>();
             ChooseSingleButton(rankButtons_gameMode, nowRankButton_gameMode);
 
             rankButtons_difficultyLevel[0] = GameObject.Find("NormalButton").GetComponent<Button>();
@@ -241,16 +242,7 @@ namespace UI
             else if(localOrGlobal == LocalOrGlobal.local)
             {
                 names = Enumerable.Repeat<string>(PlayerInfoManager.Ins.PlayerName, 10).ToArray(); //ローカルランキングでは全て自分の名前。
-                switch ((GameModeManager.GameMode)gameMode)
-                {
-                    case GameModeManager.GameMode.PileUp:
-                        scores = ScoreManager.Ins.AllScores[(GameModeManager.GameMode)gameMode][(GameModeManager.DifficultyLevel)diffLevel];
-                        
-                        break;
-                    default:
-                        Debug.LogError("予期せぬゲームモードです");
-                        break;
-                }
+                scores = ScoreManager.Ins.AllScores[(GameModeManager.GameMode)gameMode][(GameModeManager.DifficultyLevel)diffLevel];
             }
 
             else
