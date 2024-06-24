@@ -140,13 +140,19 @@ namespace UI
         //----------------シーンの推移---------------------
 
         //------------------PlaySceneの設定-----------------------
-        public void SetPileUp()
+        public void SetupPileUp()
         {
             GameModeManager.Ins.SetGameMode(GameModeManager.GameMode.PileUp);
             TurnNameSetter.Ins.SetNames_Single();//参加者の名前をプレイヤー一人にすることで、シングルで遊べるようにする。
         }
 
-        public void SetAIBattle()
+        public void SetupPileUp60s()
+        {
+            GameModeManager.Ins.SetGameMode(GameModeManager.GameMode.PileUp_60s);
+            TurnNameSetter.Ins.SetNames_Single();//参加者の名前をプレイヤー一人にすることで、シングルで遊べるようにする。
+        }
+
+        public void SetupAIBattle()
         {
             GameModeManager.Ins.SetGameMode(GameModeManager.GameMode.Battle); //ゲームモードを非シングルに
             TurnNameSetter.Ins.SetNames_AI();//参加者の名前をプレイヤーとAIにすることで、参加者とAIで対戦できるようにする。

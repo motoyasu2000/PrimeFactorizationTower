@@ -247,6 +247,13 @@ public class GameManager : MonoBehaviour
                     nowScoreText.text = GameInfo.Variables.GetNowScore().ToString();
                 }
                 break;
+            case GameModeManager.GameMode.PileUp_60s:
+                if (areAllBlocksGrounded)
+                {
+                    GameInfo.Variables.SetNowScore(scoreManager.CalculatePileUpScore());
+                    nowScoreText.text = GameInfo.Variables.GetNowScore().ToString();
+                }
+                break;
         }
     }
 

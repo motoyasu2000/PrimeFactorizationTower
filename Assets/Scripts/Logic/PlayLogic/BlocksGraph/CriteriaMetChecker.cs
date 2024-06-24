@@ -135,6 +135,9 @@ public class CriteriaMetChecker : MonoBehaviour
             case GameModeManager.GameMode.PileUp:
                 criteriaMetProcessor.ProcessFreeze(nodes);
                 break;
+            case GameModeManager.GameMode.PileUp_60s:
+                criteriaMetProcessor.ProcessFreeze(nodes);
+                break;
             case GameModeManager.GameMode.Battle:
                 criteriaMetProcessor.ProcessFreeze(nodes);
                 break;

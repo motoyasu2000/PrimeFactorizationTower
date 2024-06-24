@@ -17,7 +17,7 @@ public class GameModeManager : MonoBehaviour
     public enum GameMode
     {
         PileUp, //積み上げモード
-        PileUp_Timer, //時間制限のある積み上げモード
+        PileUp_60s, //時間制限のある積み上げモード
         Battle, //対戦モード(AI含む)
     }
     GameMode nowGameMode = GameMode.PileUp; //初期値は積み上げモード
