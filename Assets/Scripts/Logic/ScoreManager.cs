@@ -68,7 +68,7 @@ public class ScoreManager : MonoBehaviour
     void InitializeFields()
     {
 
-        foreach (GameMode gameMode in Enum.GetValues(typeof(DifficultyLevel)))
+        foreach (GameMode gameMode in Enum.GetValues(typeof(GameMode)))
         {
             if (!instance.allScores.ContainsKey(gameMode))
             {
@@ -89,7 +89,7 @@ public class ScoreManager : MonoBehaviour
     }
 
     //新しいスコアをスコアを管理する辞書に追加し、ソートを行う。
-    public void InsertScoreAndSort(int newScore)
+    public void AddAndSortScore(int newScore)
     {
         DifficultyLevel nowLevel = GameModeManager.Ins.NowDifficultyLevel;
         GameMode nowGameMode = GameModeManager.Ins.NowGameMode;
@@ -101,8 +101,8 @@ public class ScoreManager : MonoBehaviour
     //現在のスコアをjson形式で保存
     public void SaveScoreData()
     {
-        ScoreData_EachDiffLevel eachLevelScores = new ScoreData_EachDiffLevel();
-        eachLevelScores.SetEachLevelScores(instance.allScores[GameModeManager.Ins.NowGameMode]);
+        GameModeScores_EachDiffLevel eachLevelScores = new GameModeScores_EachDiffLevel();
+        eachLevelScores.SetScoresEachLevel(instance.allScores[GameModeManager.Ins.NowGameMode]);
         string jsonstr = JsonUtility.ToJson(eachLevelScores);
         StreamWriter writer = new StreamWriter(Application.persistentDataPath + $"/{GameModeManager.Ins.NowGameMode}.json", false);
         writer.Write(jsonstr);
@@ -111,7 +111,7 @@ public class ScoreManager : MonoBehaviour
     }
 
     //json形式で保存されたデータを読み込む
-    public static void LoadScoreData()
+    public void LoadScoreData()
     {
         foreach (GameMode gameMode in Enum.GetValues(typeof(GameMode)))
         {
@@ -119,9 +119,8 @@ public class ScoreManager : MonoBehaviour
             StreamReader reader = new StreamReader(Application.persistentDataPath + $"/{gameMode}.json");
             string datastr = reader.ReadToEnd();
             reader.Close();
-            var obj = JsonUtility.FromJson<ScoreData_EachDiffLevel>(datastr);
-            instance.allScores[gameMode]=obj.GetEachLevelScores();
-            Debug.Log($"LoadedScores: {String.Join(",", obj.GetEachLevelScores()[DifficultyLevel.Normal])}");
+            var obj = JsonUtility.FromJson<GameModeScores_EachDiffLevel>(datastr);
+            instance.allScores[gameMode]=obj.GetScoresEachLevel();
         }
     }
 
@@ -161,12 +160,12 @@ public class ScoreManager : MonoBehaviour
     /// 難易度ごとのトップ10のスコア
     /// </summary>
     [Serializable]
-    class ScoreData_EachDiffLevel
+    class GameModeScores_EachDiffLevel
     {
         //シリアライズ可能なクラスのリストを使用 難易度ごとのトップ10のスコア
         [SerializeField] private List<Top10Score> scoresEachDiffLevel = new List<Top10Score>();
 
-        public ScoreData_EachDiffLevel()
+        public GameModeScores_EachDiffLevel()
         {
             foreach (DifficultyLevel level in Enum.GetValues(typeof(DifficultyLevel)))
             {
@@ -174,7 +173,12 @@ public class ScoreManager : MonoBehaviour
             }
         }
 
-        public void SetEachLevelScores(Dictionary<DifficultyLevel, int[]> newScores)
+        /// <summary>
+        /// Dictionary&lt;DifficultyLevel, int[]&gt;型で受け取り、List&lt;Top10Score&gt;型にして保存。
+        /// 最終的にはjson形式で保存される。
+        /// </summary>
+        /// <param name="newScores">保存したい難易度ごとのトップ10スコア</param>
+        public void SetScoresEachLevel(Dictionary<DifficultyLevel, int[]> newScores)
         {
             foreach (var scorePair in newScores)
             {
@@ -182,7 +186,10 @@ public class ScoreManager : MonoBehaviour
             }
         }
 
-        public Dictionary<DifficultyLevel, int[]> GetEachLevelScores()
+        /// <summary>
+        /// 内部でList&lt;Top10Score&gt;型であつかっているものをDictionary&lt;DifficultyLevel, int[]&gt;型に変換して返す
+        /// </summary>
+        public Dictionary<DifficultyLevel, int[]> GetScoresEachLevel()
         {
             var result = new Dictionary<DifficultyLevel, int[]>();
             foreach (DifficultyLevel level in Enum.GetValues(typeof(DifficultyLevel)))

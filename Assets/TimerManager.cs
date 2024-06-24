@@ -6,7 +6,7 @@ using UnityEngine;
 /// </summary>
 public class TimerManager : MonoBehaviour
 {
-    static readonly float startTime = 10f;
+    static readonly float startTime = 60f;
     float timer;
 
     TextMeshProUGUI timerText;
@@ -32,6 +32,7 @@ public class TimerManager : MonoBehaviour
         {
             gameOverManager.SetGameOverReason(GameOverManager.GameOverReason.TimeUp);
             gameOverManager.GameOver();
+            timer = 0;
         }
     }
 }
