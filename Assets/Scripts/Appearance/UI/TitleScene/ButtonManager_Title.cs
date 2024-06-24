@@ -31,9 +31,9 @@ namespace UI
 
         //現在表示させているランキングが何のランキングであるのかを示す変数。
         public enum LocalOrGlobal {local, global}
-        static LocalOrGlobal nowRankButton_localOrGlobal; //0ならローカル、1ならグローバル
-        static int nowRankButton_gameMode;
-        static int nowRankButton_difficultyLevel;
+        LocalOrGlobal nowRankButton_localOrGlobal; //0ならローカル、1ならグローバル
+        int nowRankButton_gameMode;
+        int nowRankButton_difficultyLevel;
 
         //どのランキングを表示するか選ぶタブボタン
         Button[] rankButtons_localOrGlobal = new Button[2];
@@ -42,17 +42,15 @@ namespace UI
 
         DynamoDBManager ddbManager;
 
-        void Awake()
+        void Start()
         {
             rankingCell = Resources.Load("RankingCell") as GameObject;
             ddbManager = GameObject.Find("DynamoDBManager").GetComponent<DynamoDBManager>();
             InitializeMenus();
-            if (ranking) {
-                ranking_transform = ranking.transform.Find("RankingTable");
-                InitializeRankingButtons();
-                DisplayNowStateRanking();
-            }
-            if (setting) InitializeDifficultyLevelButton();
+            ranking_transform = ranking.transform.Find("RankingTable");
+            InitializeRankingButtons();
+            InitializeDifficultyLevelButton();
+            InactiveMenus();
         }
         void InitializeMenus()
         {
@@ -88,21 +86,18 @@ namespace UI
         //難易度設定画面が表示されると、現在の難易度のボタンのみが緑に見えるようにする。
         void InitializeDifficultyLevelButton()
         {
-            difficultyLevelButtons[0] = GameObject.Find("NormalButton").GetComponent<Button>();
-            difficultyLevelButtons[1] = GameObject.Find("DifficultButton").GetComponent<Button>();
-            difficultyLevelButtons[2] = GameObject.Find("InsaneButton").GetComponent<Button>();
+            difficultyLevelButtons[0] = GameObject.Find("ChangeNormalButton").GetComponent<Button>();
+            difficultyLevelButtons[1] = GameObject.Find("ChangeDifficultButton").GetComponent<Button>();
+            difficultyLevelButtons[2] = GameObject.Find("ChangeInsaneButton").GetComponent<Button>();
             ChooseSingleButton(difficultyLevelButtons, (int)GameModeManager.Ins.NowDifficultyLevel);
         }
 
-        //現在のゲームモード・難易度でスコアを表示する。ランキングを開いて最初の状態。
-        void DisplayNowStateRanking()
+        void InactiveMenus()
         {
-            //難易度のみ現在の難易度を表示。ゲームの仕様上、私はこの難易度でこのゲームをするといったようなのがある程度決まっていることが多く、自分以外のランキングに興味がない人が多いと考えられるため。
-            nowRankButton_difficultyLevel = (int)GameModeManager.Ins.NowDifficultyLevel;
-            //直前までプレイしていたゲームモード
-            nowRankButton_gameMode = (int)GameModeManager.Ins.NowGameMode;
-            nowRankButton_localOrGlobal = 0;
-            DisplayRankingHandler();
+            foreach(var menu in menus)
+            {
+                menu.SetActive(false);
+            }
         }
 
         //----------------メニューの推移---------------------
@@ -116,7 +111,7 @@ namespace UI
             foreach (var menu in menus)
             {
                 if (menu == null) continue;
-                menu.gameObject.SetActive(false);
+                menu.SetActive(false);
             }
         }
         //----------------メニューの推移---------------------
@@ -210,6 +205,18 @@ namespace UI
         //----------------現在選ばれているランキングのタブや難易度選択ボタンが単一であることを保証する---------------------
 
         //----------------ランキングの表示---------------------
+        //現在のゲームモード・難易度でスコアを表示する。ランキングを開いて最初の状態。
+        public void DisplayNowStateRanking()
+        {
+            //難易度のみ現在の難易度を表示。ゲームの仕様上、私はこの難易度でこのゲームをするといったようなのがある程度決まっていることが多く、自分以外のランキングに興味がない人が多いと考えられるため。
+            nowRankButton_difficultyLevel = (int)GameModeManager.Ins.NowDifficultyLevel;
+            //直前までプレイしていたゲームモード
+            nowRankButton_gameMode = (int)GameModeManager.Ins.NowGameMode;
+            //初期はローカルを表示
+            nowRankButton_localOrGlobal = 0;
+            DisplayRankingHandler();
+        }
+
         public async void DisplayRankingHandler()
         {
             await DisplayRanking(nowRankButton_difficultyLevel, nowRankButton_gameMode, nowRankButton_localOrGlobal);

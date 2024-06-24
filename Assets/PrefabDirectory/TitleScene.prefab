@@ -88,7 +88,6 @@ GameObject:
   - component: {fileID: 5429599937992024079}
   - component: {fileID: 6418023136891746399}
   - component: {fileID: 8607694704096105795}
-  - component: {fileID: 494218320470210869}
   m_Layer: 5
   m_Name: MultiPlayButton
   m_TagString: Untagged
@@ -198,7 +197,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 494218320470210869}
+      - m_Target: {fileID: 2121775085324685392}
         m_TargetAssemblyTypeName: UI.ButtonManager_Title, Assembly-CSharp
         m_MethodName: DisplayMenu
         m_Mode: 2
@@ -210,18 +209,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &494218320470210869
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 134117312693656600}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 120f8d989d94c9d4c926ba0b95d650cd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &143938108522061688
 GameObject:
   m_ObjectHideFlags: 0
@@ -597,7 +584,6 @@ GameObject:
   - component: {fileID: 3868615393651817420}
   - component: {fileID: 3311253641371362930}
   - component: {fileID: 3027572432955240577}
-  - component: {fileID: 8409268526492326649}
   m_Layer: 5
   m_Name: NormalButton
   m_TagString: Untagged
@@ -707,7 +693,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8409268526492326649}
+      - m_Target: {fileID: 2121775085324685392}
         m_TargetAssemblyTypeName: UI.ButtonManager_Title, Assembly-CSharp
         m_MethodName: DisplayRankingByDifficultyLevel
         m_Mode: 3
@@ -719,18 +705,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &8409268526492326649
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 402812314723683117}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 120f8d989d94c9d4c926ba0b95d650cd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &417140422102695087
 GameObject:
   m_ObjectHideFlags: 0
@@ -1013,9 +987,8 @@ GameObject:
   - component: {fileID: 452469374508060811}
   - component: {fileID: 6749103361029593551}
   - component: {fileID: 2240962358983469956}
-  - component: {fileID: 7102132791935085466}
   m_Layer: 5
-  m_Name: InsaneButton
+  m_Name: ChangeInsaneButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1123,8 +1096,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7340511514464677931}
-        m_TargetAssemblyTypeName: ButtonManager, Assembly-CSharp
+      - m_Target: {fileID: 2121775085324685392}
+        m_TargetAssemblyTypeName: UI.ButtonManager_Title, Assembly-CSharp
         m_MethodName: ChangeDifficultyLevel
         m_Mode: 3
         m_Arguments:
@@ -1135,18 +1108,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &7102132791935085466
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 569265023013113643}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 120f8d989d94c9d4c926ba0b95d650cd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &652703544168843081
 GameObject:
   m_ObjectHideFlags: 0
@@ -1798,7 +1759,6 @@ GameObject:
   - component: {fileID: 4372613103994646404}
   - component: {fileID: 4871882087350779645}
   - component: {fileID: 9071667154150368385}
-  - component: {fileID: 2575331054765403439}
   m_Layer: 5
   m_Name: Back
   m_TagString: Untagged
@@ -1908,7 +1868,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2575331054765403439}
+      - m_Target: {fileID: 2121775085324685392}
         m_TargetAssemblyTypeName: UI.ButtonManager_Title, Assembly-CSharp
         m_MethodName: BackFirstMenu
         m_Mode: 1
@@ -1920,18 +1880,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &2575331054765403439
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1248197394845322334}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 120f8d989d94c9d4c926ba0b95d650cd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1293505610171129710
 GameObject:
   m_ObjectHideFlags: 0
@@ -2041,7 +1989,7 @@ RectTransform:
   m_Father: {fileID: 2720910881517418966}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -2744,7 +2692,6 @@ GameObject:
   - component: {fileID: 4523620641384940234}
   - component: {fileID: 6006703823069129329}
   - component: {fileID: 6506795436864374760}
-  - component: {fileID: 273302143570613107}
   m_Layer: 5
   m_Name: outline (2)
   m_TagString: Untagged
@@ -2854,7 +2801,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 878377870940427364}
+      - m_Target: {fileID: 8505212584276929714}
         m_TargetAssemblyTypeName: 
         m_MethodName: 
         m_Mode: 1
@@ -2866,18 +2813,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &273302143570613107
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1724682708757573205}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 120f8d989d94c9d4c926ba0b95d650cd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1797696477019506950
 GameObject:
   m_ObjectHideFlags: 0
@@ -2986,7 +2933,7 @@ RectTransform:
   m_Father: {fileID: 5727898349515942604}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -3348,7 +3295,6 @@ GameObject:
   - component: {fileID: 3150490739122567015}
   - component: {fileID: 395471498766152345}
   - component: {fileID: 8628710753389552361}
-  - component: {fileID: 9153306041135238554}
   m_Layer: 5
   m_Name: SettingButton
   m_TagString: Untagged
@@ -3458,8 +3404,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 494218320470210869}
-        m_TargetAssemblyTypeName: ButtonManager, Assembly-CSharp
+      - m_Target: {fileID: 2121775085324685392}
+        m_TargetAssemblyTypeName: UI.ButtonManager_Title, Assembly-CSharp
         m_MethodName: DisplayMenu
         m_Mode: 2
         m_Arguments:
@@ -3470,18 +3416,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &9153306041135238554
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2064686100378609674}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 120f8d989d94c9d4c926ba0b95d650cd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &2132049291797004865
 GameObject:
   m_ObjectHideFlags: 0
@@ -4259,7 +4193,6 @@ GameObject:
   - component: {fileID: 8050772357008687655}
   - component: {fileID: 6662668941590256454}
   - component: {fileID: 2319540747213151390}
-  - component: {fileID: 5710916376547945322}
   m_Layer: 5
   m_Name: Back
   m_TagString: Untagged
@@ -4369,8 +4302,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5710916376547945322}
-        m_TargetAssemblyTypeName: ButtonManager, Assembly-CSharp
+      - m_Target: {fileID: 2121775085324685392}
+        m_TargetAssemblyTypeName: UI.ButtonManager_Title, Assembly-CSharp
         m_MethodName: BackFirstMenu
         m_Mode: 1
         m_Arguments:
@@ -4381,18 +4314,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &5710916376547945322
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2456407729504458387}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 120f8d989d94c9d4c926ba0b95d650cd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &2480326868048257429
 GameObject:
   m_ObjectHideFlags: 0
@@ -4718,7 +4639,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &5683530350586609378
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4924,7 +4845,6 @@ GameObject:
   - component: {fileID: 6686758070707500664}
   - component: {fileID: 3789116798780170934}
   - component: {fileID: 2173085417229934823}
-  - component: {fileID: 8156943405567164429}
   m_Layer: 5
   m_Name: outline (1)
   m_TagString: Untagged
@@ -5033,19 +4953,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3789116798780170934}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
---- !u!114 &8156943405567164429
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2715323466601778838}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 120f8d989d94c9d4c926ba0b95d650cd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+      m_Calls:
+      - m_Target: {fileID: 8505212584276929714}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &2793960116854463320
 GameObject:
   m_ObjectHideFlags: 0
@@ -5058,7 +4978,6 @@ GameObject:
   - component: {fileID: 5463686849193663172}
   - component: {fileID: 8330635258569946544}
   - component: {fileID: 1168821555281521338}
-  - component: {fileID: 1853167770973137591}
   m_Layer: 5
   m_Name: outline (2)
   m_TagString: Untagged
@@ -5167,19 +5086,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8330635258569946544}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
---- !u!114 &1853167770973137591
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2793960116854463320}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 120f8d989d94c9d4c926ba0b95d650cd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+      m_Calls:
+      - m_Target: {fileID: 8505212584276929714}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &2820677244608203628
 GameObject:
   m_ObjectHideFlags: 0
@@ -5269,7 +5188,6 @@ GameObject:
   - component: {fileID: 2344887815880513962}
   - component: {fileID: 2095680072369267768}
   - component: {fileID: 5884161069793513607}
-  - component: {fileID: 708319226158751539}
   m_Layer: 5
   m_Name: PileUp60sButton
   m_TagString: Untagged
@@ -5379,7 +5297,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 708319226158751539}
+      - m_Target: {fileID: 2121775085324685392}
         m_TargetAssemblyTypeName: UI.ButtonManager_Title, Assembly-CSharp
         m_MethodName: DisplayRankingByGameMode
         m_Mode: 3
@@ -5391,18 +5309,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &708319226158751539
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2952408084360295652}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 120f8d989d94c9d4c926ba0b95d650cd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &3125877700324604833
 GameObject:
   m_ObjectHideFlags: 0
@@ -5626,9 +5532,8 @@ GameObject:
   - component: {fileID: 2695278221611229158}
   - component: {fileID: 5514038070142283903}
   - component: {fileID: 1827098812064780434}
-  - component: {fileID: 913315565368355336}
   m_Layer: 5
-  m_Name: DifficultButton
+  m_Name: ChangeDifficultButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5736,8 +5641,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7340511514464677931}
-        m_TargetAssemblyTypeName: ButtonManager, Assembly-CSharp
+      - m_Target: {fileID: 2121775085324685392}
+        m_TargetAssemblyTypeName: UI.ButtonManager_Title, Assembly-CSharp
         m_MethodName: ChangeDifficultyLevel
         m_Mode: 3
         m_Arguments:
@@ -5748,18 +5653,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &913315565368355336
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3190077968015863391}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 120f8d989d94c9d4c926ba0b95d650cd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &3251723709071457390
 GameObject:
   m_ObjectHideFlags: 0
@@ -6166,7 +6059,6 @@ GameObject:
   - component: {fileID: 6622228912001473983}
   - component: {fileID: 6950813698284177723}
   - component: {fileID: 2755979092445774780}
-  - component: {fileID: 3424903592074533745}
   m_Layer: 5
   m_Name: SinglePlayButton
   m_TagString: Untagged
@@ -6276,8 +6168,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3424903592074533745}
-        m_TargetAssemblyTypeName: ButtonManager, Assembly-CSharp
+      - m_Target: {fileID: 2121775085324685392}
+        m_TargetAssemblyTypeName: UI.ButtonManager_Title, Assembly-CSharp
         m_MethodName: DisplayMenu
         m_Mode: 2
         m_Arguments:
@@ -6288,18 +6180,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &3424903592074533745
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3504468543880876908}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 120f8d989d94c9d4c926ba0b95d650cd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &3585712080244144329
 GameObject:
   m_ObjectHideFlags: 0
@@ -6589,6 +6469,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2556093781146651478}
+  - {fileID: 1712443733838167174}
   - {fileID: 8218627336641577813}
   - {fileID: 4491863402281652398}
   - {fileID: 3164842476516141096}
@@ -6973,7 +6854,6 @@ GameObject:
   - component: {fileID: 7065932328252162105}
   - component: {fileID: 7795879280106686399}
   - component: {fileID: 4171073180700657016}
-  - component: {fileID: 846105336539966757}
   m_Layer: 5
   m_Name: GlobalButton
   m_TagString: Untagged
@@ -7083,7 +6963,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 846105336539966757}
+      - m_Target: {fileID: 2121775085324685392}
         m_TargetAssemblyTypeName: UI.ButtonManager_Title, Assembly-CSharp
         m_MethodName: DisplayRankingByLocalOrGlobal
         m_Mode: 3
@@ -7095,18 +6975,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &846105336539966757
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4079691025817417370}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 120f8d989d94c9d4c926ba0b95d650cd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &4147184756925195553
 GameObject:
   m_ObjectHideFlags: 0
@@ -7275,7 +7143,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1853236730071454202
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7535,7 +7403,7 @@ RectTransform:
   m_Father: {fileID: 599282995912968398}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -7589,7 +7457,6 @@ GameObject:
   - component: {fileID: 5376218321484632370}
   - component: {fileID: 9165965875825020476}
   - component: {fileID: 4071353973770656957}
-  - component: {fileID: 2232086434389728708}
   m_Layer: 5
   m_Name: RankingButton
   m_TagString: Untagged
@@ -7699,8 +7566,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2232086434389728708}
-        m_TargetAssemblyTypeName: ButtonManager, Assembly-CSharp
+      - m_Target: {fileID: 2121775085324685392}
+        m_TargetAssemblyTypeName: UI.ButtonManager_Title, Assembly-CSharp
         m_MethodName: DisplayMenu
         m_Mode: 2
         m_Arguments:
@@ -7711,18 +7578,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &2232086434389728708
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4566760435679453807}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 120f8d989d94c9d4c926ba0b95d650cd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+      - m_Target: {fileID: 2121775085324685392}
+        m_TargetAssemblyTypeName: UI.ButtonManager_Title, Assembly-CSharp
+        m_MethodName: DisplayNowStateRanking
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &4571189385961263822
 GameObject:
   m_ObjectHideFlags: 0
@@ -8176,7 +8043,7 @@ RectTransform:
   m_Father: {fileID: 5912943366277999601}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -8440,9 +8307,8 @@ GameObject:
   - component: {fileID: 8646892517776290613}
   - component: {fileID: 3801021137240196690}
   - component: {fileID: 7274454402145897036}
-  - component: {fileID: 7340511514464677931}
   m_Layer: 5
-  m_Name: NormalButton
+  m_Name: ChangeNormalButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8550,8 +8416,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7340511514464677931}
-        m_TargetAssemblyTypeName: ButtonManager, Assembly-CSharp
+      - m_Target: {fileID: 2121775085324685392}
+        m_TargetAssemblyTypeName: UI.ButtonManager_Title, Assembly-CSharp
         m_MethodName: ChangeDifficultyLevel
         m_Mode: 3
         m_Arguments:
@@ -8562,18 +8428,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &7340511514464677931
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4963953382516428595}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 120f8d989d94c9d4c926ba0b95d650cd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &5024213409256555577
 GameObject:
   m_ObjectHideFlags: 0
@@ -9277,7 +9131,6 @@ GameObject:
   - component: {fileID: 2565215077826516346}
   - component: {fileID: 8662367268152089938}
   - component: {fileID: 8363195519263861118}
-  - component: {fileID: 1111535607686872204}
   m_Layer: 5
   m_Name: InsaneButton
   m_TagString: Untagged
@@ -9387,7 +9240,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1111535607686872204}
+      - m_Target: {fileID: 2121775085324685392}
         m_TargetAssemblyTypeName: UI.ButtonManager_Title, Assembly-CSharp
         m_MethodName: DisplayRankingByDifficultyLevel
         m_Mode: 3
@@ -9399,18 +9252,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &1111535607686872204
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5403531718118106995}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 120f8d989d94c9d4c926ba0b95d650cd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &5413003117961970430
 GameObject:
   m_ObjectHideFlags: 0
@@ -9423,7 +9264,6 @@ GameObject:
   - component: {fileID: 1360290500210977488}
   - component: {fileID: 7230538058976217763}
   - component: {fileID: 3100689439040441415}
-  - component: {fileID: 8715582004925617991}
   m_Layer: 5
   m_Name: CreditButton
   m_TagString: Untagged
@@ -9533,8 +9373,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8715582004925617991}
-        m_TargetAssemblyTypeName: ButtonManager, Assembly-CSharp
+      - m_Target: {fileID: 2121775085324685392}
+        m_TargetAssemblyTypeName: UI.ButtonManager_Title, Assembly-CSharp
         m_MethodName: DisplayMenu
         m_Mode: 2
         m_Arguments:
@@ -9545,18 +9385,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &8715582004925617991
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5413003117961970430}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 120f8d989d94c9d4c926ba0b95d650cd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &5455657135083364428
 GameObject:
   m_ObjectHideFlags: 0
@@ -10511,7 +10339,7 @@ RectTransform:
   m_Father: {fileID: 882045360619068786}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -10565,7 +10393,6 @@ GameObject:
   - component: {fileID: 7006537525979592883}
   - component: {fileID: 8442906075573633671}
   - component: {fileID: 7131190693742708842}
-  - component: {fileID: 1355148616475022680}
   m_Layer: 5
   m_Name: SetMaterial
   m_TagString: Untagged
@@ -10675,7 +10502,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1355148616475022680}
+      - m_Target: {fileID: 2121775085324685392}
         m_TargetAssemblyTypeName: UI.ButtonManager_Title, Assembly-CSharp
         m_MethodName: MoveMaterialScene
         m_Mode: 1
@@ -10687,18 +10514,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &1355148616475022680
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6001307736725385604}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 120f8d989d94c9d4c926ba0b95d650cd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &6031803352199081818
 GameObject:
   m_ObjectHideFlags: 0
@@ -10923,7 +10738,6 @@ GameObject:
   - component: {fileID: 1827131305628659111}
   - component: {fileID: 5452094027031673699}
   - component: {fileID: 5794353267475215079}
-  - component: {fileID: 6089190688212829243}
   m_Layer: 5
   m_Name: AI
   m_TagString: Untagged
@@ -11033,7 +10847,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 6089190688212829243}
+      - m_Target: {fileID: 2121775085324685392}
         m_TargetAssemblyTypeName: UI.ButtonManager_Title, Assembly-CSharp
         m_MethodName: SetupAIBattle
         m_Mode: 1
@@ -11045,8 +10859,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 6089190688212829243}
-        m_TargetAssemblyTypeName: ButtonManager, Assembly-CSharp
+      - m_Target: {fileID: 2121775085324685392}
+        m_TargetAssemblyTypeName: UI.ButtonManager_Title, Assembly-CSharp
         m_MethodName: MovePlayScene
         m_Mode: 1
         m_Arguments:
@@ -11057,18 +10871,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &6089190688212829243
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6172467574560043739}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 120f8d989d94c9d4c926ba0b95d650cd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &6264273055767335108
 GameObject:
   m_ObjectHideFlags: 0
@@ -11779,7 +11581,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &7829631012061823269
 RectTransform:
   m_ObjectHideFlags: 0
@@ -11989,7 +11791,6 @@ GameObject:
   - component: {fileID: 5520509246500575424}
   - component: {fileID: 6992476736829549310}
   - component: {fileID: 8363522381099699729}
-  - component: {fileID: 533458891644936065}
   m_Layer: 5
   m_Name: PileUp60s
   m_TagString: Untagged
@@ -12099,7 +11900,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 533458891644936065}
+      - m_Target: {fileID: 2121775085324685392}
         m_TargetAssemblyTypeName: UI.ButtonManager_Title, Assembly-CSharp
         m_MethodName: SetupPileUp60s
         m_Mode: 1
@@ -12111,7 +11912,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 533458891644936065}
+      - m_Target: {fileID: 2121775085324685392}
         m_TargetAssemblyTypeName: UI.ButtonManager_Title, Assembly-CSharp
         m_MethodName: MovePlayScene
         m_Mode: 1
@@ -12123,18 +11924,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &533458891644936065
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6833381191794189799}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 120f8d989d94c9d4c926ba0b95d650cd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &6836072655130327050
 GameObject:
   m_ObjectHideFlags: 0
@@ -12147,7 +11936,6 @@ GameObject:
   - component: {fileID: 2797248587441402813}
   - component: {fileID: 7142657322080444579}
   - component: {fileID: 1881673148424382119}
-  - component: {fileID: 6249957267679742665}
   m_Layer: 5
   m_Name: PileUpButton
   m_TagString: Untagged
@@ -12257,7 +12045,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 6249957267679742665}
+      - m_Target: {fileID: 2121775085324685392}
         m_TargetAssemblyTypeName: UI.ButtonManager_Title, Assembly-CSharp
         m_MethodName: DisplayRankingByGameMode
         m_Mode: 3
@@ -12269,18 +12057,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &6249957267679742665
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6836072655130327050}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 120f8d989d94c9d4c926ba0b95d650cd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &7272447128932829811
 GameObject:
   m_ObjectHideFlags: 0
@@ -12429,7 +12205,6 @@ GameObject:
   - component: {fileID: 1621330528505391451}
   - component: {fileID: 829642482761081363}
   - component: {fileID: 6189768653494257565}
-  - component: {fileID: 4113819682738866367}
   m_Layer: 5
   m_Name: Back
   m_TagString: Untagged
@@ -12539,8 +12314,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4113819682738866367}
-        m_TargetAssemblyTypeName: ButtonManager, Assembly-CSharp
+      - m_Target: {fileID: 2121775085324685392}
+        m_TargetAssemblyTypeName: UI.ButtonManager_Title, Assembly-CSharp
         m_MethodName: BackFirstMenu
         m_Mode: 1
         m_Arguments:
@@ -12551,18 +12326,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &4113819682738866367
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7275605128253362791}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 120f8d989d94c9d4c926ba0b95d650cd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &7357952781063593916
 GameObject:
   m_ObjectHideFlags: 0
@@ -12919,7 +12682,6 @@ GameObject:
   - component: {fileID: 6353272938995512487}
   - component: {fileID: 3917388284601526484}
   - component: {fileID: 4339905287070475057}
-  - component: {fileID: 4535739196670886918}
   m_Layer: 5
   m_Name: LocalButton
   m_TagString: Untagged
@@ -13029,7 +12791,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4535739196670886918}
+      - m_Target: {fileID: 2121775085324685392}
         m_TargetAssemblyTypeName: UI.ButtonManager_Title, Assembly-CSharp
         m_MethodName: DisplayRankingByLocalOrGlobal
         m_Mode: 3
@@ -13041,18 +12803,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &4535739196670886918
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7619631959782614077}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 120f8d989d94c9d4c926ba0b95d650cd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &7643380928857618408
 GameObject:
   m_ObjectHideFlags: 0
@@ -13065,7 +12815,6 @@ GameObject:
   - component: {fileID: 4083813436820577445}
   - component: {fileID: 5452957929848393654}
   - component: {fileID: 4883840467546391214}
-  - component: {fileID: 2496138796569941023}
   m_Layer: 5
   m_Name: Back
   m_TagString: Untagged
@@ -13175,8 +12924,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 878377870940427364}
-        m_TargetAssemblyTypeName: ButtonManager, Assembly-CSharp
+      - m_Target: {fileID: 2121775085324685392}
+        m_TargetAssemblyTypeName: UI.ButtonManager_Title, Assembly-CSharp
         m_MethodName: BackFirstMenu
         m_Mode: 1
         m_Arguments:
@@ -13187,18 +12936,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &2496138796569941023
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7643380928857618408}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 120f8d989d94c9d4c926ba0b95d650cd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &7714430995612415327
 GameObject:
   m_ObjectHideFlags: 0
@@ -13520,7 +13257,7 @@ RectTransform:
   m_Father: {fileID: 2401498330072724217}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -13651,7 +13388,6 @@ GameObject:
   - component: {fileID: 3815047719601653309}
   - component: {fileID: 3779622680013264332}
   - component: {fileID: 7049760004364784118}
-  - component: {fileID: 4676420609502698273}
   m_Layer: 5
   m_Name: DifficultButton
   m_TagString: Untagged
@@ -13761,7 +13497,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4676420609502698273}
+      - m_Target: {fileID: 2121775085324685392}
         m_TargetAssemblyTypeName: UI.ButtonManager_Title, Assembly-CSharp
         m_MethodName: DisplayRankingByDifficultyLevel
         m_Mode: 3
@@ -13773,18 +13509,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &4676420609502698273
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8186988477981640166}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 120f8d989d94c9d4c926ba0b95d650cd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &8206511867596167149
 GameObject:
   m_ObjectHideFlags: 0
@@ -13797,7 +13521,6 @@ GameObject:
   - component: {fileID: 7445794897107141562}
   - component: {fileID: 6240354184723339917}
   - component: {fileID: 3756899263784442836}
-  - component: {fileID: 4420818656355862769}
   m_Layer: 5
   m_Name: Back
   m_TagString: Untagged
@@ -13907,8 +13630,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4420818656355862769}
-        m_TargetAssemblyTypeName: ButtonManager, Assembly-CSharp
+      - m_Target: {fileID: 2121775085324685392}
+        m_TargetAssemblyTypeName: UI.ButtonManager_Title, Assembly-CSharp
         m_MethodName: BackFirstMenu
         m_Mode: 1
         m_Arguments:
@@ -13919,18 +13642,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &4420818656355862769
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8206511867596167149}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 120f8d989d94c9d4c926ba0b95d650cd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &8334023116154346962
 GameObject:
   m_ObjectHideFlags: 0
@@ -13948,7 +13659,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1257894839943247053
 RectTransform:
   m_ObjectHideFlags: 0
@@ -14220,6 +13931,50 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!1 &8505212584276929714
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1712443733838167174}
+  - component: {fileID: 2121775085324685392}
+  m_Layer: 0
+  m_Name: ButtonManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1712443733838167174
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8505212584276929714}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8354504171607043444}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2121775085324685392
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8505212584276929714}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 120f8d989d94c9d4c926ba0b95d650cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8607183972173903659
 GameObject:
   m_ObjectHideFlags: 0
@@ -14232,7 +13987,6 @@ GameObject:
   - component: {fileID: 3839294115649467652}
   - component: {fileID: 892972682588324182}
   - component: {fileID: 8741113243079280278}
-  - component: {fileID: 878377870940427364}
   m_Layer: 5
   m_Name: PileUp
   m_TagString: Untagged
@@ -14342,7 +14096,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 878377870940427364}
+      - m_Target: {fileID: 2121775085324685392}
         m_TargetAssemblyTypeName: UI.ButtonManager_Title, Assembly-CSharp
         m_MethodName: SetupPileUp
         m_Mode: 1
@@ -14354,8 +14108,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 878377870940427364}
-        m_TargetAssemblyTypeName: ButtonManager, Assembly-CSharp
+      - m_Target: {fileID: 2121775085324685392}
+        m_TargetAssemblyTypeName: UI.ButtonManager_Title, Assembly-CSharp
         m_MethodName: MovePlayScene
         m_Mode: 1
         m_Arguments:
@@ -14366,18 +14120,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &878377870940427364
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8607183972173903659}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 120f8d989d94c9d4c926ba0b95d650cd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &8783931851553101662
 GameObject:
   m_ObjectHideFlags: 0
@@ -14395,7 +14137,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &7571515808758400731
 RectTransform:
   m_ObjectHideFlags: 0
