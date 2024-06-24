@@ -9,13 +9,21 @@ public class GameOverManager : MonoBehaviour
 {
     const float delayTime = 1.2f;
 
+    public enum GameOverReason
+    {
+        DropDown, //落下
+        TimeUp, //時間切れ
+    }
+
     bool isGameOver = false; //ゲームオーバーになったらこのフラグをtrueにし、falseの時のみゲームオーバーの処理を実行するようにすることで、ゲームオーバーの処理が1度しか呼ばれないようにする。
+    GameOverReason reason;
     GameObject gameOverMenu;
     BloomManager bloomManager; //ゲームオーバー時の演出用
     DynamoDBManager ddbManager;
 
-    public bool IsGameOver => isGameOver;  
+    public bool IsGameOver => isGameOver; 
     public bool IsBreakScore => GameInfo.Variables.GetOldMaxScore() < GameInfo.Variables.GetNowScore(); //スコアを更新したかを判定するフラグ
+    public GameOverReason Reason => reason;
 
 
     private void Awake()
@@ -23,6 +31,16 @@ public class GameOverManager : MonoBehaviour
         ddbManager = GameObject.Find("DynamoDBManager").GetComponent<DynamoDBManager>();
         gameOverMenu = GameObject.Find("Canvas").transform.Find("GameOverMenu").gameObject;
         bloomManager = GameObject.Find("GlobalVolume").GetComponent<BloomManager>();
+    }
+
+    /// <summary>
+    /// ゲームオーバーになった理由を設定する。
+    /// ゲームオーバー時に表示するテキストに使用する。
+    /// </summary>
+    /// <param name="reason">ゲームオーバーの理由</param>
+    public void SetGameOverReason(GameOverReason reason)
+    {
+        this.reason = reason;
     }
 
     /// <summary>

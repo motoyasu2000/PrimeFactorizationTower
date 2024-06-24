@@ -13,7 +13,7 @@ namespace UI
         int newScore;
         GameOverManager gameOverManager;
         GameObject UI_TextGameOver;
-        GameObject UI_TextFellDown;
+        GameObject UI_TextGameOverReason;
         GameObject UI_nonUpdate; //スコアを更新しなかった場合のレコードの表示UI
         GameObject UI_updateRecord; //スコアを更新た場合のレコードの表示UI
         GameObject UI_winOrLose; //対戦モードで勝敗が決まった時に表示するUI
@@ -23,7 +23,7 @@ namespace UI
 
             //非アクティブなのでtransform.Findで取得
             UI_TextGameOver = transform.Find("Text_GameOver").gameObject;
-            UI_TextFellDown = transform.Find("TextFellDown").gameObject;
+            UI_TextGameOverReason = transform.Find("TextGameOverReason").gameObject;
             UI_nonUpdate = transform.Find("Scores_NonUpdateRecord").gameObject;
             UI_updateRecord = transform.Find("Scores_UpdateRecord").gameObject;
             UI_winOrLose = transform.Find("WinOrLose").gameObject;
@@ -37,8 +37,30 @@ namespace UI
             else
             {
                 UI_TextGameOver.SetActive(true);
-                UI_TextFellDown.SetActive(true);
+                UI_TextGameOverReason.SetActive(true);
+                PrintGameOverReason();
                 DisplayScoreMenu();
+            }
+        }
+
+        /// <summary>
+        /// ゲームオーバーになった理由を表示する。
+        /// GameOverManagerが内部にゲームオーバーの際にその理由を保存するようになっており、その値に応じてテキストを変化させる。
+        /// </summary>
+        void PrintGameOverReason()
+        {
+            TextMeshProUGUI gameOverUIText = UI_TextGameOverReason.GetComponent<TextMeshProUGUI>();
+            switch (gameOverManager.Reason)
+            {
+                case GameOverManager.GameOverReason.DropDown:
+                    gameOverUIText.text = "Drop Down";
+                    break;
+                case GameOverManager.GameOverReason.TimeUp:
+                    gameOverUIText.text = "Time Up";
+                    break;
+                default:
+                    Debug.LogError("ゲームオーバーの理由に予期せぬ列挙型の値が使われています。");
+                    break;
             }
         }
 

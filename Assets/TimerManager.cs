@@ -30,6 +30,7 @@ public class TimerManager : MonoBehaviour
         timerText.text = Mathf.Ceil(timer).ToString();
         if(timer < 0)
         {
+            gameOverManager.SetGameOverReason(GameOverManager.GameOverReason.TimeUp);
             gameOverManager.GameOver();
         }
     }
