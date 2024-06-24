@@ -17,10 +17,10 @@ public class GameModeManager : MonoBehaviour
     public enum GameMode
     {
         PileUp, //積み上げモード
+        PileUp_Timer, //時間制限のある積み上げモード
         Battle, //対戦モード(AI含む)
     }
     GameMode nowGameMode = GameMode.PileUp; //初期値は積み上げモード
-    public GameMode NowGameMode => nowGameMode;
 
     //難易度関係
     public enum DifficultyLevel
@@ -45,6 +45,7 @@ public class GameModeManager : MonoBehaviour
     public List<int> NormalPool => normalPool;
     public List<int> DifficultPool => difficultPool;
     public List<int> InsanePool => insanePool;
+    public GameMode NowGameMode => nowGameMode;
     public DifficultyLevel NowDifficultyLevel => nowDifficultyLevel;
 
     void Awake()

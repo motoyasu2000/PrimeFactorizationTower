@@ -29,8 +29,7 @@ public class GameOverManager : MonoBehaviour
     /// ゲームオーバー時に一度だけ呼ばれるゲームオーバー処理
     /// 画面全体がまぶしくなり、スコアの更新を行い、BGMが減衰していき、PostGameOberを実行する
     /// </summary>
-    /// <param name="isFactorizationIncorrect"></param>
-    public void GameOver(bool isFactorizationIncorrect)
+    public void GameOver()
     {
         //このメソッドが1度しか呼ばれないように
         if (isGameOver) return;

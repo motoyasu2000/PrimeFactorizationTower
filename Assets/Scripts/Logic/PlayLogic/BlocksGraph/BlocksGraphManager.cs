@@ -24,7 +24,7 @@ public class BlocksGraphManager : MonoBehaviour
 
     private void Update()
     {
-        //StartExpandNetworks.Count == 0は、新たに生成した条件が、BlocksGraphに存在しないことを表している。
+        //NewConditionGenerating&&StartExpandNetworks.Count == 0は、条件達成後新たに生成した条件が、BlocksGraphに存在しないことを表している。
         //NewConditionGeneratingは理論的に不必要だが、可読性向上のためにつけている。
         if (NewConditionGenerating && StartExpandNetworks.Count == 0) SetConditionGenerating(false);
 
@@ -39,7 +39,7 @@ public class BlocksGraphManager : MonoBehaviour
     }
 
     /// <summary>
-    /// ネットワークからサブグラフを探索する拡張前のExpandNetworkを、拡張するネットワークを格納するキューに追加する。
+    /// 引数で受け取ったノードのセットを、拡張しながら条件の探索を行うネットワークを格納するキューに追加する。
     /// Update内でこのキューから要素が取り出され、自動で探索が始まる。
     /// </summary>
     /// <param name="neiborSet">条件を満たしている可能性のある隣接するBlockのセット</param>
