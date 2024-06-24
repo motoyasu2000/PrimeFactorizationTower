@@ -244,7 +244,7 @@ namespace UI
                 switch ((GameModeManager.GameMode)gameMode)
                 {
                     case GameModeManager.GameMode.PileUp:
-                        scores = ScoreManager.Ins.PileUpScores[(GameModeManager.DifficultyLevel)diffLevel];
+                        scores = ScoreManager.Ins.AllScores[(GameModeManager.GameMode)gameMode][(GameModeManager.DifficultyLevel)diffLevel];
                         
                         break;
                     default:

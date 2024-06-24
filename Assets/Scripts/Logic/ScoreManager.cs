@@ -2,8 +2,10 @@ using Common;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using static GameModeManager;
 
 /// <summary>
 /// スコア管理を担当するクラス。
@@ -16,8 +18,8 @@ public class ScoreManager : MonoBehaviour
     MaxHeightCalculator maxHeightCalculator;
 
     //各レベルのスコアは要素数11の配列として保存される。0~9番目が過去のランキング、10番目に最新のスコアが入り、ソートされるという仕組み
-    [SerializeField] Dictionary<GameModeManager.DifficultyLevel, int[]> pileUpScores = new Dictionary<GameModeManager.DifficultyLevel,int[]>();　//Json形式で保存するために、シリアライズ可能にしておく
-    public Dictionary<GameModeManager.DifficultyLevel, int[]> PileUpScores => pileUpScores;
+    [SerializeField] Dictionary<GameMode, Dictionary<DifficultyLevel, int[]>> allScores = new Dictionary<GameMode, Dictionary<DifficultyLevel, int[]>>();　//Json形式で保存するために、シリアライズ可能にしておく
+    public Dictionary<GameMode, Dictionary<DifficultyLevel, int[]>> AllScores => allScores;
 
     //インスタンス
     private static ScoreManager instance;
@@ -57,40 +59,52 @@ public class ScoreManager : MonoBehaviour
         InitializeFields();
     }
 
-    //シーンロード時に呼ばれる初期化メソッド
+    /// <summary>
+    /// シーンロード時に呼ばれる初期化メソッド
+    /// 列挙型GameModeで定義されているのに、辞書のキー内に存在しないゲームモードがあったら、そのモードのキーを追加する。
+    /// 列挙型DifficultyLevelで定義されているのに、辞書のキー内に存在しない難易度があったら、その難易度のキーを追加する。
+    /// </summary>
+
     void InitializeFields()
     {
-        //列挙型DifficultyLevelで定義されているのに、辞書のキー内に存在しない難易度があったら、その難易度のキーを追加する。
-        foreach (GameModeManager.DifficultyLevel level in Enum.GetValues(typeof(GameModeManager.DifficultyLevel)))
+
+        foreach (GameMode gameMode in Enum.GetValues(typeof(DifficultyLevel)))
         {
-            if (!instance.pileUpScores.ContainsKey(level))
+            if (!instance.allScores.ContainsKey(gameMode))
             {
-                instance.pileUpScores[level] = new int[GameInfo.RankDisplayLimit + 1];
+                instance.allScores[gameMode] = new Dictionary<DifficultyLevel, int[]>();
+            }
+            foreach (DifficultyLevel level in Enum.GetValues(typeof(DifficultyLevel)))
+            {
+                if (!instance.allScores[gameMode].ContainsKey(level))
+                {
+                    instance.allScores[gameMode][level] = new int[GameInfo.RankDisplayLimit + 1];
+                }
             }
         }
 
         //ゲームシーンにあるゲームオブジェクト名を使って変数を作っているので 現在PlayScene以外ならこの後の処理を行わない。
         if (SceneManager.GetActiveScene() != SceneManager.GetSceneByName("PlayScene")) return;
         instance.maxHeightCalculator = GameObject.Find("MaxHeightCalculator").GetComponent<MaxHeightCalculator>();
-        //Debug.Log(instance.pileUpScores[GameModeManager.GameModemanagerInstance.NowDifficultyLevel][0]);
     }
 
     //新しいスコアをスコアを管理する辞書に追加し、ソートを行う。
-    public void InsertPileUpScoreAndSort(int newScore)
+    public void InsertScoreAndSort(int newScore)
     {
-        GameModeManager.DifficultyLevel nowLevel = GameModeManager.Ins.NowDifficultyLevel;
-        Ins.pileUpScores[nowLevel][GameInfo.RankDisplayLimit] = newScore;
-        Array.Sort(Ins.pileUpScores[nowLevel]);
-        Array.Reverse(Ins.pileUpScores[nowLevel]);
+        DifficultyLevel nowLevel = GameModeManager.Ins.NowDifficultyLevel;
+        GameMode nowGameMode = GameModeManager.Ins.NowGameMode;
+        Ins.allScores[nowGameMode][nowLevel][GameInfo.RankDisplayLimit] = newScore;
+        Array.Sort(Ins.allScores[nowGameMode][nowLevel]);
+        Array.Reverse(Ins.allScores[nowGameMode][nowLevel]);
     }
 
     //現在のスコアをjson形式で保存
     public void SaveScoreData()
     {
-        ScoreData score = new ScoreData();
-        score.SetScore(instance.pileUpScores);
-        string jsonstr = JsonUtility.ToJson(score);
-        StreamWriter writer = new StreamWriter(Application.persistentDataPath + "/PileUp.json", false);
+        ScoreData_EachDiffLevel eachLevelScores = new ScoreData_EachDiffLevel();
+        eachLevelScores.SetEachLevelScores(instance.allScores[GameModeManager.Ins.NowGameMode]);
+        string jsonstr = JsonUtility.ToJson(eachLevelScores);
+        StreamWriter writer = new StreamWriter(Application.persistentDataPath + $"/{GameModeManager.Ins.NowGameMode}.json", false);
         writer.Write(jsonstr);
         writer.Flush();
         writer.Close();
@@ -99,12 +113,16 @@ public class ScoreManager : MonoBehaviour
     //json形式で保存されたデータを読み込む
     public static void LoadScoreData()
     {
-        if (!File.Exists(Application.persistentDataPath + "/PileUp.json")) { return; }
-        StreamReader reader = new StreamReader(Application.persistentDataPath + "/PileUp.json");
-        string datastr = reader.ReadToEnd();
-        reader.Close();
-        var obj = JsonUtility.FromJson<ScoreData>(datastr); //Monobehaviorを継承したクラスではJsonファイルを読み込むことができないため、他のクラスを生成し読み込む
-        instance.pileUpScores = obj.GetScore();
+        foreach (GameMode gameMode in Enum.GetValues(typeof(GameMode)))
+        {
+            if (!File.Exists(Application.persistentDataPath + $"/{gameMode}.json")) { return; }
+            StreamReader reader = new StreamReader(Application.persistentDataPath + $"/{gameMode}.json");
+            string datastr = reader.ReadToEnd();
+            reader.Close();
+            var obj = JsonUtility.FromJson<ScoreData_EachDiffLevel>(datastr);
+            instance.allScores[gameMode]=obj.GetEachLevelScores();
+            Debug.Log($"LoadedScores: {String.Join(",", obj.GetEachLevelScores()[DifficultyLevel.Normal])}");
+        }
     }
 
 
@@ -120,47 +138,96 @@ public class ScoreManager : MonoBehaviour
     [Serializable]
     public class Top10Score
     {
-        public int[] scores;
+        [SerializeField] int[] scores;
 
         public Top10Score()
         {
             scores = new int[GameInfo.RankDisplayLimit + 1];
         }
+
+        public void SetTop10Score(int[] newScores)
+        {
+            scores = newScores;
+        }
+
+        public int[] GetTop10Score()
+        {
+            return scores;
+        }
     }
 
     /// <summary>
-    /// シリアライズ可能なクラスのリストを持ったシリアライズ可能なクラス(辞書をシリアライズ化しているイメージ)
+    /// シリアライズ可能なクラスのリストを持ったシリアライズ可能なクラス
+    /// 難易度ごとのトップ10のスコア
     /// </summary>
     [Serializable]
-    class ScoreData
+    class ScoreData_EachDiffLevel
     {
-        //シリアライズ可能なクラスのリストを使用 ※他次元配列や辞書はシリアライズできない
-        [SerializeField] private List<Top10Score> pileUpScores_Serializable = new List<Top10Score>();
+        //シリアライズ可能なクラスのリストを使用 難易度ごとのトップ10のスコア
+        [SerializeField] private List<Top10Score> scoresEachDiffLevel = new List<Top10Score>();
 
-        public ScoreData()
+        public ScoreData_EachDiffLevel()
         {
-            foreach (GameModeManager.DifficultyLevel level in Enum.GetValues(typeof(GameModeManager.DifficultyLevel)))
+            foreach (DifficultyLevel level in Enum.GetValues(typeof(DifficultyLevel)))
             {
-                pileUpScores_Serializable.Add(new Top10Score());
+                scoresEachDiffLevel.Add(new Top10Score());
             }
         }
 
-        public void SetScore(Dictionary<GameModeManager.DifficultyLevel, int[]> pileUpScores)
+        public void SetEachLevelScores(Dictionary<DifficultyLevel, int[]> newScores)
         {
-            foreach (var scorePair in pileUpScores)
+            foreach (var scorePair in newScores)
             {
-                pileUpScores_Serializable[(int)scorePair.Key].scores = scorePair.Value;
+                scoresEachDiffLevel[(int)scorePair.Key].SetTop10Score(scorePair.Value);
             }
         }
 
-        public Dictionary<GameModeManager.DifficultyLevel, int[]> GetScore()
+        public Dictionary<DifficultyLevel, int[]> GetEachLevelScores()
         {
-            var result = new Dictionary<GameModeManager.DifficultyLevel, int[]>();
-            foreach (GameModeManager.DifficultyLevel level in Enum.GetValues(typeof(GameModeManager.DifficultyLevel)))
+            var result = new Dictionary<DifficultyLevel, int[]>();
+            foreach (DifficultyLevel level in Enum.GetValues(typeof(DifficultyLevel)))
             {
-                result[level] = pileUpScores_Serializable[(int)level].scores;
+                result[level] = scoresEachDiffLevel[(int)level].GetTop10Score();
             }
             return result;
         }
     }
+
+    //[Serializable]
+    //class AllScoreData
+    //{
+    //    //シリアライズ可能なクラスのリストを使用 ※他次元配列や辞書はシリアライズできない
+    //    [SerializeField] private List<ScoreData_EachDiffLevel> scoresEachGameMode = new List<ScoreData_EachDiffLevel>();
+
+    //    public AllScoreData()
+    //    {
+    //        foreach (GameMode level in Enum.GetValues(typeof(GameMode)))
+    //        {
+    //            scoresEachGameMode.Add(new ScoreData_EachDiffLevel());
+    //        }
+    //    }
+
+    //    public void SetAllScores(Dictionary<GameMode, Dictionary<DifficultyLevel, int[]>> scoresEachMode)
+    //    {
+    //        foreach (var mode__EachLevelScores in scoresEachMode)
+    //        {
+    //            scoresEachGameMode[(int)mode__EachLevelScores.Key].SetEachLevelScores(mode__EachLevelScores.Value);
+    //        }
+    //    }
+
+    //    public Dictionary<GameMode, Dictionary<DifficultyLevel, int[]>> GetAllScore()
+    //    {
+    //        var result = new Dictionary<GameMode, Dictionary<DifficultyLevel, int[]>>();
+    //        foreach(GameMode gameMode in Enum.GetValues(typeof(GameMode)))
+    //        {
+    //            Dictionary<DifficultyLevel, int[]> eachLevelScores = scoresEachGameMode[(int)gameMode].GetEachLevelScores();
+    //            foreach (DifficultyLevel level in Enum.GetValues(typeof(DifficultyLevel)))
+    //            {
+    //                result[gameMode][level] = eachLevelScores[level];
+    //            }
+    //        }
+    //        return result;
+    //    }
+
+    //}
 }

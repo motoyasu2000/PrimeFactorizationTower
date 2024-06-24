@@ -59,8 +59,8 @@ public class GameOverManager : MonoBehaviour
 
         //ゲームオーバー時の演出とスコアの更新、後処理の呼び出し。
         bloomManager.LightUpStart();
-        GameInfo.Variables.SetOldMaxScore(ScoreManager.Ins.PileUpScores[GameModeManager.Ins.NowDifficultyLevel][0]);  //ソート前に過去の最高スコアの情報を取得しておく(のちにこのゲームで最高スコアを更新したかを確認するため)
-        ScoreManager.Ins.InsertPileUpScoreAndSort(GameInfo.Variables.GetNowScore()) ;
+        GameInfo.Variables.SetOldMaxScore(ScoreManager.Ins.AllScores[GameModeManager.Ins.NowGameMode][GameModeManager.Ins.NowDifficultyLevel][0]);  //ソート前に過去の最高スコアの情報を取得しておく(のちにこのゲームで最高スコアを更新したかを確認するため)
+        ScoreManager.Ins.InsertScoreAndSort(GameInfo.Variables.GetNowScore()) ;
         ScoreManager.Ins.SaveScoreData();
         SoundManager.Ins.FadeOutVolume();
         //スコアを更新していれば、データベースの更新

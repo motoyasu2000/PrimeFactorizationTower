@@ -263,7 +263,10 @@ public class GameManager : MonoBehaviour
         switch (GameModeManager.Ins.NowGameMode)
         {
             case GameModeManager.GameMode.PileUp:
-                maxScoreText.text = ScoreManager.Ins.PileUpScores[GameModeManager.Ins.NowDifficultyLevel][0].ToString();
+                maxScoreText.text = ScoreManager.Ins.AllScores[GameModeManager.Ins.NowGameMode][GameModeManager.Ins.NowDifficultyLevel][0].ToString();
+                break;
+            case GameModeManager.GameMode.PileUp_60s:
+                maxScoreText.text = ScoreManager.Ins.AllScores[GameModeManager.Ins.NowGameMode][GameModeManager.Ins.NowDifficultyLevel][0].ToString();
                 break;
         }
     }
