@@ -234,25 +234,23 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    //各ゲームモードでのスコア計算
+    /// <summary>
+    /// 各ゲームモードでのスコア計算
+    /// すべてのブロックが地面に設置していれば、計算する
+    /// </summary>
     void CalculateAndDisplayScore()
     {
+        if (!areAllBlocksGrounded) return;
         switch (GameModeManager.Ins.NowGameMode)
         {
             //もし積み上げモードで、すべてのブロックが地面に設置しており、ターンのチェンジ時であればスコアの更新。
             case GameModeManager.GameMode.PileUp:
-                if (areAllBlocksGrounded)
-                {
-                    GameInfo.Variables.SetNowScore(scoreManager.CalculatePileUpScore());
-                    nowScoreText.text = GameInfo.Variables.GetNowScore().ToString();
-                }
+                GameInfo.Variables.SetNowScore(scoreManager.CalculatePileUpScore());
+                nowScoreText.text = GameInfo.Variables.GetNowScore().ToString();
                 break;
             case GameModeManager.GameMode.PileUp_60s:
-                if (areAllBlocksGrounded)
-                {
-                    GameInfo.Variables.SetNowScore(scoreManager.CalculatePileUpScore());
-                    nowScoreText.text = GameInfo.Variables.GetNowScore().ToString();
-                }
+                GameInfo.Variables.SetNowScore(scoreManager.CalculatePileUpScore());
+                nowScoreText.text = GameInfo.Variables.GetNowScore().ToString();
                 break;
         }
     }

@@ -44,13 +44,13 @@ namespace UI
 
         void Start()
         {
-            rankingCell = Resources.Load("RankingCell") as GameObject;
-            ddbManager = GameObject.Find("DynamoDBManager").GetComponent<DynamoDBManager>();
             InitializeMenus();
-            ranking_transform = ranking.transform.Find("RankingTable");
             InitializeRankingButtons();
             InitializeDifficultyLevelButton();
             InactiveMenus();
+            rankingCell = Resources.Load("RankingCell") as GameObject;
+            ddbManager = GameObject.Find("DynamoDBManager").GetComponent<DynamoDBManager>();
+            ranking_transform = ranking.transform.Find("RankingTable");
         }
         void InitializeMenus()
         {
@@ -66,7 +66,7 @@ namespace UI
             menus[4] = credit;
         }
 
-        //ランキングに扱うボタンの初期化。変数にボタンを割り当てるほか、最初に表示されているランキングのボタンが光るようにする。
+        //ランキングに扱うボタンの初期化。変数にボタンを割り当てるほか、最初に表示されているランキングのボタンが緑になるようにする。
         void InitializeRankingButtons()
         {
             rankButtons_localOrGlobal[0] = GameObject.Find("LocalButton").GetComponent<Button>();
@@ -83,7 +83,9 @@ namespace UI
             ChooseSingleButton(rankButtons_difficultyLevel, nowRankButton_difficultyLevel); 
         }
 
-        //難易度設定画面が表示されると、現在の難易度のボタンのみが緑に見えるようにする。
+        /// <summary>
+        /// 難易度のボタンを変数に格納し、現在選択されている難易度のものの色が緑に表示されるようにする。
+        /// </summary>
         void InitializeDifficultyLevelButton()
         {
             difficultyLevelButtons[0] = GameObject.Find("ChangeNormalButton").GetComponent<Button>();
@@ -92,6 +94,11 @@ namespace UI
             ChooseSingleButton(difficultyLevelButtons, (int)GameModeManager.Ins.NowDifficultyLevel);
         }
 
+        /// <summary>
+        /// GameObject.Findでゲームオブジェクトを探したいため、探索対象のゲームオブジェクトははじめはactiveにしておきたいが、
+        /// 初期のタイトル画面では非activeでいてほしい。
+        /// はじめはactiveで初期化が完了したら非activeにする。
+        /// </summary>
         void InactiveMenus()
         {
             foreach(var menu in menus)
@@ -186,6 +193,11 @@ namespace UI
         }
 
         //----------------現在選ばれているランキングのタブや難易度選択ボタンが単一であることを保証する---------------------
+        /// <summary>
+        /// 引数で受け取ったボタンの配列のうち、選択中のものを緑、選択されてないものを赤にして表示する
+        /// </summary>
+        /// <param name="buttons">どのボタンの配列に対して色の選択を行うか</param>
+        /// <param name="buttonsNumber">どのボタンを緑にするか(buttonsのインデックス)</param>
         public void ChooseSingleButton(Button[] buttons, int buttonsNumber)
         {
             for (int i = 0; i < buttons.Length; i++)

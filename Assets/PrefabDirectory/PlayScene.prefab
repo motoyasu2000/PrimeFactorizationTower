@@ -5356,7 +5356,7 @@ GameObject:
   - component: {fileID: 2252368196529093756}
   - component: {fileID: 552403900806968287}
   - component: {fileID: 5136720065820634150}
-  - component: {fileID: 7126405064978004334}
+  - component: {fileID: 3355316570082036231}
   m_Layer: 5
   m_Name: Title
   m_TagString: Untagged
@@ -5466,8 +5466,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7126405064978004334}
-        m_TargetAssemblyTypeName: ButtonManager, Assembly-CSharp
+      - m_Target: {fileID: 3355316570082036231}
+        m_TargetAssemblyTypeName: UI.ButtonManager_Play, Assembly-CSharp
         m_MethodName: MoveTitleScene
         m_Mode: 1
         m_Arguments:
@@ -5478,7 +5478,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &7126405064978004334
+--- !u!114 &3355316570082036231
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5487,7 +5487,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3915693265647652787}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 120f8d989d94c9d4c926ba0b95d650cd, type: 3}
+  m_Script: {fileID: 11500000, guid: d5c3beefb177a2445aea59d029f5e05e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &3997615182234850723
@@ -9259,8 +9259,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1543726661561006046}
   - component: {fileID: 1822902052025989336}
-  - component: {fileID: 6995608240857167130}
   - component: {fileID: 6139945076743420199}
+  - component: {fileID: 4972491936376686450}
   m_Layer: 0
   m_Name: PrimeNumberGeneratingPoint
   m_TagString: Untagged
@@ -9335,18 +9335,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &6995608240857167130
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6476055636518361203}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a429728ee9c053840a87ef664aba5dde, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &6139945076743420199
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9357,6 +9345,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8a92fbc074debbb44a7799a470b5aab4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4972491936376686450
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6476055636518361203}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7610859d71a1ed94595e60a40b0841bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &6521078998008618755
@@ -12990,7 +12990,7 @@ GameObject:
   - component: {fileID: 6604571252067095000}
   - component: {fileID: 3382352683356330018}
   - component: {fileID: 5624380630484906474}
-  - component: {fileID: 8306734762849025795}
+  - component: {fileID: 2735038966515054941}
   m_Layer: 5
   m_Name: Restart
   m_TagString: Untagged
@@ -13100,9 +13100,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8306734762849025795}
-        m_TargetAssemblyTypeName: ButtonManager, Assembly-CSharp
-        m_MethodName: RestartScene
+      - m_Target: {fileID: 2735038966515054941}
+        m_TargetAssemblyTypeName: UI.ButtonManager_Play, Assembly-CSharp
+        m_MethodName: MovePlayScene
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -13112,7 +13112,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &8306734762849025795
+--- !u!114 &2735038966515054941
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -13121,7 +13121,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8508029788785519927}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 120f8d989d94c9d4c926ba0b95d650cd, type: 3}
+  m_Script: {fileID: 11500000, guid: d5c3beefb177a2445aea59d029f5e05e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &8510635442800157629

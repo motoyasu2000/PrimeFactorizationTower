@@ -3,6 +3,7 @@ using UnityEngine;
 
 /// <summary>
 /// ターンを管理する静的クラス
+/// 複数の名前が入ったstringのリストのインデックスに対応する変数(nowNamesIndex)を操作することによってターンを管理する
 /// </summary>
 public static class TurnMangaer
 {

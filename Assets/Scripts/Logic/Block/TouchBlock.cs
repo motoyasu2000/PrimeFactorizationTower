@@ -16,9 +16,8 @@ public class TouchBlock : MonoBehaviour
                                     //選択するゲームオブジェクトが変更されないようにドラッグ中のオブジェクトのみを取得するようにしている。
     //ブロックの処理
     BlockInfo blockInfo;
-    BlocksGraphManager blocksGraph;
     GraphicRaycaster graphicRaycaster;
-    SingleGenerateManager singleGenerateManager; //ゲームオブジェクトが単一であることを保証するためのクラス
+    SingleBlockManager singleBlockManager; //ゲームオブジェクトが単一であることを保証するためのクラス
     GameObject primeNumberGeneratingPoint; //ゲームオブジェクトを生成する場所を示すゲームオブジェクト  
     GameObject blockField;
     GameObject primeNumberCheckField;
@@ -78,22 +77,8 @@ public class TouchBlock : MonoBehaviour
     //UI上で無ければブロックの生成先を指定できるようにする。その後ドラッグで調整可能
     void HandleTouchBegan(Touch touch)
     {
-        //UI上をタッチしていないかのチェック、UIの上をタッチしている間はブロックを移動するべきではない。
-        PointerEventData pointerEventData = new PointerEventData(eventSystem);
-        pointerEventData.position = touch.position; //スクリーン座標で指定することに注意
-        List<RaycastResult> results = new List<RaycastResult>();
-        graphicRaycaster.Raycast(pointerEventData, results);
-
-        //ヒットしたゲームオブジェクトにUIが含まれていたら処理を行わない。
-        foreach (RaycastResult result in results)
-        {
-            GameObject hitGameObject = result.gameObject;
-            Debug.Log(hitGameObject);
-            if (hitGameObject != null && !hitGameObject.CompareTag("UnderClickable")) return;
-        }
-
-        //ブロックが上部に存在しない場合もブロックを移動する処理は行わない。
-        if (singleGenerateManager.GetSingleBlock() == null) return;
+        //ブロックを移動してよければ
+        if (!CheckMovableBlock(touch)) return;
 
         //タッチした位置にブロックを移動する(x軸方向の移動のみ)
         MoveBlockX(touchPosition.x); //ブロックx座標をタッチしている座標に
@@ -113,16 +98,42 @@ public class TouchBlock : MonoBehaviour
         BlockRelease();
     }
 
+    /// <summary>
+    /// 画面に触れた際、ブロックを移動できる状態にあるかをチェックする
+    /// 上にブロックが存在しない場合や②指の下にUIが存在する場合にfalseを返す
+    /// </summary>
+    /// <returns>ブロックを移動しても良い(true)か否(false)か</returns>
+    bool CheckMovableBlock(Touch touch)
+    {
+        //ブロックが上部に存在しない場合はブロックを移動する処理は行わない。
+        if (singleBlockManager.SingleBlock == null) return false;
+
+        //UI上をタッチしていないかのチェック、UIの上をタッチしている間はブロックを移動するべきではない。
+        PointerEventData pointerEventData = new PointerEventData(eventSystem);
+        pointerEventData.position = touch.position; //スクリーン座標で指定することに注意
+        List<RaycastResult> results = new List<RaycastResult>();
+        graphicRaycaster.Raycast(pointerEventData, results);
+        //ヒットしたゲームオブジェクトにUIが含まれていたら処理を行わない。
+        foreach (RaycastResult result in results)
+        {
+            GameObject hitGameObject = result.gameObject;
+            Debug.Log(hitGameObject);
+            if (hitGameObject != null && !hitGameObject.CompareTag("UnderClickable")) return false;
+        }
+
+        return true;
+    }
+
     void MoveBlockX(float newX)
     {
-        draggedObject = singleGenerateManager.GetSingleBlock().transform;
+        draggedObject = singleBlockManager.SingleBlock.transform;
         draggedObject.position = new Vector3(newX, primeNumberGeneratingPoint.transform.position.y, primeNumberGeneratingPoint.transform.position.z);
     }
 
     void BlockRelease()
     {
         draggedObject = null;
-        singleGenerateManager.GenerateSingleBlock(null); //このブロックがsingleGameObjectに入ったままにしていると、ボタンが押された瞬間にDestroyが呼ばれてしまう。
+        singleBlockManager.SeparateSingleBlockManager(); //SingleGenerateMangerによって次にほかのボタンを押した際にDestroyが呼ばれないように。
         this.enabled = false;
         this.tag = "PrimeNumberBlock";
         gameObject.layer = LayerMask.NameToLayer("PrimeNumberBlock"); //レイヤーを変更することにより、初めて他のブロックと衝突するようになる。
@@ -145,10 +156,9 @@ public class TouchBlock : MonoBehaviour
         //初期化
         blockInfo = GetComponent<BlockInfo>();
         primeNumberGeneratingPoint = GameObject.Find("PrimeNumberGeneratingPoint");
-        singleGenerateManager = primeNumberGeneratingPoint.GetComponent<SingleGenerateManager>();
+        singleBlockManager = primeNumberGeneratingPoint.GetComponent<SingleBlockManager>();
         blockField = GameObject.Find("BlockField");
         primeNumberCheckField = blockField.transform.Find("PrimeNumberCheckField").gameObject;
-        blocksGraph = GameObject.Find("BlocksGraphManager").GetComponent<BlocksGraphManager>();
         canvas = GameObject.Find("Canvas");
         eventSystem = FindObjectOfType<EventSystem>();
         graphicRaycaster = canvas.GetComponent<GraphicRaycaster>();

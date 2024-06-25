@@ -12,14 +12,14 @@ public class BlockGenerator : MonoBehaviour
     GameObject blockField;
     GameObject beforeField;
     AllBlocksManager allBlocksManager;
-    SingleGenerateManager singleGenerateManager;
+    SingleBlockManager singleBlockManager;
     TextMeshProUGUI buttonText;
     GameManager gameManager;
 
     private void Start()
     {
         primeNumberGeneratingPoint = GameObject.Find("PrimeNumberGeneratingPoint");
-        singleGenerateManager = primeNumberGeneratingPoint.GetComponent<SingleGenerateManager>();
+        singleBlockManager = primeNumberGeneratingPoint.GetComponent<SingleBlockManager>();
         blockField = GameObject.Find("BlockField");
         beforeField = blockField.transform.Find("BeforeField").gameObject;
         allBlocksManager = GameObject.Find("AllBlocksManager").GetComponent<AllBlocksManager>();
@@ -46,7 +46,7 @@ public class BlockGenerator : MonoBehaviour
     {
         //ゲームオブジェクトの生成とその情報をもつインスタンスの取得
         GameObject generateObject = Instantiate(GetPrimeNumberBlock(primeNumber), primeNumberGeneratingPoint.transform.position, GetPrimeNumberBlock(primeNumber).transform.rotation, beforeField.transform);
-        singleGenerateManager.GenerateSingleBlock(generateObject);//生成したゲームオブジェクトの情報を、生成できるゲームオブジェクトが常に単一であるように管理するメソッドに入れる。
+        singleBlockManager.EnsureBlockIsSingle(generateObject); //生成できるゲームオブジェクトが常に単一であるように保障する。
         BlockInfo blockInfo = generateObject.GetComponent<BlockInfo>();
 
         //ブロックの持つ素数の設定とテキストの切り替え

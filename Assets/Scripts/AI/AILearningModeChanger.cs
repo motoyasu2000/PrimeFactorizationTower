@@ -1,7 +1,9 @@
 using Common;
 using UnityEngine;
 
-//GameinfoのAILearningがtrueの場合に、AIが学習するための環境を整えるクラス
+/// <summary>
+/// GameinfoのAILearningがtrueの場合に、AIが学習するための環境を整えるクラス
+/// </summary>
 public class AILearningModeChanger : MonoBehaviour
 {
     Camera UICamera;

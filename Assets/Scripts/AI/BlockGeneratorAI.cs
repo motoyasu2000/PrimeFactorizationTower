@@ -20,13 +20,13 @@ public class BlockGeneratorAI : Agent
     AIActions actions;
     OriginManager originManager;
     ConditionManager conditionManager;
-    SingleGenerateManager generateManager;
+    SingleBlockManager generateManager;
     public override void Initialize()
     {
         actions = transform.parent.GetComponent<AIActions>();
         originManager = GameObject.Find("OriginManager").GetComponent<OriginManager>();
         conditionManager = GameObject.Find("ConditionManager").GetComponent<ConditionManager>();
-        generateManager = GameObject.Find("PrimeNumberGeneratingPoint").GetComponent<SingleGenerateManager>();
+        generateManager = GameObject.Find("PrimeNumberGeneratingPoint").GetComponent<SingleBlockManager>();
     }
 
     public override void CollectObservations(VectorSensor sensor)

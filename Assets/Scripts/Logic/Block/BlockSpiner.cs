@@ -5,6 +5,11 @@ using UnityEngine;
 /// </summary>
 public class BlockSpiner : MonoBehaviour
 {
+    SingleBlockManager singleBlockManager;
+    private void Start()
+    {
+        singleBlockManager = GetComponent<SingleBlockManager>();
+    }
     //落下前の単一のブロックを反時計回りに45度回転させる
     public void SpinSingleBlock_45()
     {
@@ -19,15 +24,10 @@ public class BlockSpiner : MonoBehaviour
     }
     void SpinSingleBlock(float angleOfRotation)
     {
-        GameObject singleBlock = GetComponent<SingleGenerateManager>().SingleBlock;
+        GameObject singleBlock = singleBlockManager.SingleBlock;
+        if(singleBlock == null) Debug.LogError($"singleblockはnullです");
         if (singleBlock != null)
-        {
-            singleBlock.transform.Rotate(Vector3.forward * angleOfRotation);
-        }
-        else
-        {
-            Debug.LogError($"singleblockはnullです");
-        }
+        singleBlock.transform.Rotate(Vector3.forward * angleOfRotation);
     }
 
 }
