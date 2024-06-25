@@ -32,7 +32,7 @@ namespace UI
             DisplayEffectText(displayText, durationTime, displayColor);
             yield return null;
         }
-        //1.2秒経過後にeffectTextを非表示にする
+        //durationTime秒経過後にeffectTextを非表示にする
         IEnumerator HiddenEffectText(float durationTime)
         {
             yield return new WaitForSeconds(durationTime);

@@ -87,7 +87,7 @@ public class CriteriaMetProcessor : MonoBehaviour
         StartCoroutine(FreezeBlocks(nodes, freezeDelayTime));
         StartCoroutine(SoundManager.Ins.PlayAudio(SoundManager.Ins.VOICE_FREEZE, freezeDelayTime));
         StartCoroutine(SoundManager.Ins.PlayAudio(SoundManager.Ins.SE_FREEZE, freezeDelayTime));
-        StartCoroutine(effectTextManager.DisplayEffectText("Freeze", freezeDelayTime, 0, GameInfo.FleezeColor));
+        StartCoroutine(effectTextManager.DisplayEffectText("Freeze", freezeDelayTime, freezeDelayTime, GameInfo.FleezeColor));
         StartCoroutine(InstantiateEffect(freezeEffect, nodesCenter, freezeDelayTime));
     }
 
