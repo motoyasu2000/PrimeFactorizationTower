@@ -119,8 +119,6 @@ public static class BlocksGraphData
     /// ノードごとに隣接するノードの状態を保持しているが、お互いの隣接関係を追加し、くっつける
     /// 引数にどのノードとどのノードの隣接関係を追加するのかを指定する。
     /// </summary>
-    /// <param name="node1"></param>
-    /// <param name="node2"></param>
     public static void AttachNode(GameObject node1, GameObject node2)
     {
         BlockInfo info1 = node1.GetComponent<BlockInfo>();

@@ -185,12 +185,13 @@ namespace UI
         }
         //----------------ランキングのタブボタンの操作---------------------
 
-        //難易度ボタンの操作
+        //----------------難易度変更ボタンの操作---------------------
         public void ChangeDifficultyLevel(int diffLevel)
         {
             GameModeManager.Ins.ChangeDifficultyLevel((GameModeManager.DifficultyLevel)diffLevel);
             ChooseSingleButton(difficultyLevelButtons, diffLevel);
         }
+        //----------------難易度変更ボタンの操作---------------------
 
         //----------------現在選ばれているランキングのタブや難易度選択ボタンが単一であることを保証する---------------------
         /// <summary>
@@ -237,11 +238,25 @@ namespace UI
         //ローカルランキングが否か・ゲームモード・難易度によって異なるランキングを表示する。
         public async Task DisplayRanking(int diffLevel, int gameMode, LocalOrGlobal localOrGlobal)
         {
-            //ランキングに表示する要素の初期化
-            scores = new int[10];
-            names = Enumerable.Repeat<string>("", 10).ToArray();
+            var (scores, names) = await GetNamesAndScores(diffLevel, gameMode, localOrGlobal);
+            //ランキングに表示する各セルの生成。
+            GenerateRankingCells();
+        }
 
-            //globalランキングを表示させる場合
+        /// <summary>
+        /// トップ10の名前とスコアを計算してタプルとして返す。
+        /// </summary>
+        /// <param name="diffLevel">どの難易度のスコアを取得したいか</param>
+        /// <param name="gameMode">どのゲームモードのスコアを取得したいか</param>
+        /// <param name="localOrGlobal">ローカルと世界ランキングどちらのスコアを取得したいか</param>
+        /// <returns>トップ10のスコア(int[])と名前(string[])のタプル</returns>
+        async Task<(int[], string[])> GetNamesAndScores(int diffLevel, int gameMode, LocalOrGlobal localOrGlobal)
+        {
+            //スコアと名前のリストの初期化
+            scores = new int[10];
+            names = new string[10];
+
+            //世界ランキングを表示する場合にはdynamoDBからデータを取得する
             if (localOrGlobal == LocalOrGlobal.global)
             {
                 string modeAndLevel = $"{(GameModeManager.GameMode)gameMode}_{(GameModeManager.DifficultyLevel)diffLevel}";
@@ -252,16 +267,16 @@ namespace UI
                     {
                         scores[i] = records[i].Score;
                         names[i] = records[i].PlayerName;
-                        Debug.Log($"{i+1}位のスコア: {scores[i]} 名前: {names[i]}");
+                        Debug.Log($"{i + 1}位のスコア: {scores[i]} 名前: {names[i]}");
                     }
                 };
             }
 
-            //ローカルランキングを表示させる場合。
-            else if(localOrGlobal == LocalOrGlobal.local)
+            //ローカルランキングを表示させる場合にはScoreManagerの保持するスコアを取得する
+            else if (localOrGlobal == LocalOrGlobal.local)
             {
-                names = Enumerable.Repeat<string>(PlayerInfoManager.Ins.PlayerName, 10).ToArray(); //ローカルランキングでは全て自分の名前。
                 scores = ScoreManager.Ins.AllScores[(GameModeManager.GameMode)gameMode][(GameModeManager.DifficultyLevel)diffLevel];
+                names = Enumerable.Repeat<string>(PlayerInfoManager.Ins.PlayerName, 10).ToArray(); //ローカルランキングでは全て自分の名前。
             }
 
             else
@@ -269,8 +284,7 @@ namespace UI
                 Debug.LogError($"localOrGlobalに予期せぬ値が入っています localOrGlobal: {localOrGlobal}");
             }
 
-            //ランキングに表示する各セルの生成。
-            GenerateRankingCells();
+            return (scores, names);
         }
         void GenerateRankingCells()
         {
