@@ -70,7 +70,7 @@ public class GameModeManager : MonoBehaviour
         Debug.Log($"ModeSet : {newGameMode}");
     }
 
-    public int[] GetGameModeMatchDifficultyLevel()
+    public int[] GetPrimeWithDifficultyLevel()
     {
         switch (instance.nowDifficultyLevel)
         {

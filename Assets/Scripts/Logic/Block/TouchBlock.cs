@@ -141,7 +141,7 @@ public class TouchBlock : MonoBehaviour
         StartCoroutine(blockInfo.EnableCollider()); //ゲームオブジェクトの落下地点を視覚化する線の描画のためにコライダーを非活性化しているので復活させる。
         gameObject.transform.parent = primeNumberCheckField.transform;
         BlocksGraphData.AddBlock(gameObject);
-        gameManager.DropBlockProcess();
+        gameManager.SetIsDropBlockNowTurn(true);
     }
 
     //AIが操作する

@@ -11,7 +11,7 @@ public static class BlocksGraphData
 
     //ネットワークの構造や基本機能に使用するもの
     static List<GameObject> wholeGraph; //全ノードのリスト、ネットワーク全体
-    static Dictionary<int, List<GameObject>> blocksDict; //ネットワーク全体を表す素数ごとのブロックのリスト
+    static Dictionary<int, List<GameObject>> nodesDict; //ネットワーク全体を表す素数ごとのブロックのリスト
     static Queue<ExpandNetwork> startExpandNetworks; //ネットワークの拡張を開始する最初のサブネットワークをリストとして保存しておく。非同期の処理を一つずつ実行するため、タプルの２つ目の要素は条件の辞書
 
     /// <summary>
@@ -26,7 +26,7 @@ public static class BlocksGraphData
     /// <summary>
     /// ネットワーク全体を表す素数ごとのブロックのリスト
     /// </summary>
-    public static Dictionary<int, List<GameObject>> BlocksDict => blocksDict;
+    public static Dictionary<int, List<GameObject>> NodesDict => nodesDict;
 
     /// <summary>
     /// 条件の探索を始めるExpandNetworkを保持するキュー
@@ -40,28 +40,28 @@ public static class BlocksGraphData
     {
         newConditionGenerating = false;
         wholeGraph = new List<GameObject>();
-        blocksDict = new Dictionary<int, List<GameObject>>();
+        nodesDict = new Dictionary<int, List<GameObject>>();
         startExpandNetworks = new Queue<ExpandNetwork>();
         foreach (var value in GameModeManager.Ins.PrimeNumberPool)
         {
-            blocksDict.Add(value, new List<GameObject>());
+            nodesDict.Add(value, new List<GameObject>());
         }
     }
 
-    public static void WholeGraphAdd(GameObject block)
+    public static void WholeGraphAdd(GameObject node)
     {
-        wholeGraph.Add(block);
+        wholeGraph.Add(node);
     }
 
     /// <summary>
     /// ネットワークから特定のブロックを取り除く処理
     /// ネットワーク全体を表すリストと辞書から、単一のブロックを消去する
     /// </summary>
-    /// <param name="removeBlock">ネットワークから取り除きたいブロック</param>
-    public static void BlocksGraphRemoveBlock(GameObject removeBlock)
+    /// <param name="removeNode">ネットワークから取り除きたいブロック</param>
+    public static void RemoveNode(GameObject removeNode)
     {
-        WholeGraphRemove(removeBlock);
-        BlocksDictRemoveBlock(removeBlock);
+        WholeGraphRemove(removeNode);
+        BlocksDictRemoveBlock(removeNode);
     }
 
     static void WholeGraphRemove(GameObject removeBlock)
@@ -70,7 +70,7 @@ public static class BlocksGraphData
     }
     static void BlocksDictRemoveBlock(GameObject removeBlock) 
     {
-        blocksDict[removeBlock.GetComponent<BlockInfo>().GetPrimeNumber()].Remove(removeBlock);
+        nodesDict[removeBlock.GetComponent<BlockInfo>().GetPrimeNumber()].Remove(removeBlock);
     }
 
     public static ExpandNetwork DequeueStartExpandNetworks()
@@ -100,7 +100,7 @@ public static class BlocksGraphData
         {
             Debug.LogError("素数定義外のノードが定義されようとしています。");
         }
-        BlocksDict[info.GetPrimeNumber()].Add(block);
+        NodesDict[info.GetPrimeNumber()].Add(block);
     }
 
     /// <summary>

@@ -33,6 +33,11 @@ public class CriteriaMetProcessor : MonoBehaviour
         effectTextManager.DisplayEffectText("Criteria Met", freezeDelayTime, GameInfo.FleezeColor); //条件達成時のUIを表示
         SoundManager.Ins.PlayAudio(SoundManager.Ins.VOICE_CRITERIAMAT); //条件達成時のSEを再生
 
+        RunPostProcess(nodes);
+    }
+
+    void RunPostProcess(List<GameObject> nodes)
+    {
         //現在の条件に合わせて異なる後処理を行う。
         switch (GameModeManager.Ins.NowGameMode)
         {
@@ -89,11 +94,14 @@ public class CriteriaMetProcessor : MonoBehaviour
         {
             DetachNode(neighborNode, node);
         }
-        BlocksGraphRemoveBlock(node);
+        RemoveNode(node);
         node.GetComponent<BlockInfo>().enabled = false;
     }
 
-    //ネットワークから特定のサブネットワークを切り離すメソッド
+    /// <summary>
+    /// ネットワークから複数のノードを切りはなす
+    /// </summary>
+    /// <param name="nodes">条件を達成したノード</param>
     private void SafeCutNodes(List<GameObject> nodes)
     {
         foreach (var node in nodes)

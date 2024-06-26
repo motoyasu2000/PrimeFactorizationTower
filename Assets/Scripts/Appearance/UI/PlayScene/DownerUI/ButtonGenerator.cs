@@ -1,5 +1,7 @@
 using UnityEngine;
 using Common;
+using TMPro;
+using UnityEngine.UI;
 
 namespace UI
 {
@@ -20,8 +22,8 @@ namespace UI
             buttonArea = GameObject.Find("BlockGanerateButtonArea");
             buttonPrefab = Resources.Load("ButtonPrefab") as GameObject;
             gameModeManager = GameModeManager.Ins;
-            int[] myPrimeNumberPool = gameModeManager.GetGameModeMatchDifficultyLevel();
-            for (int i=0; i<myPrimeNumberPool.Length; i++)
+            int[] nowPrimeNumberPool = gameModeManager.GetPrimeWithDifficultyLevel();
+            for (int i=0; i<nowPrimeNumberPool.Length; i++)
             {
                 //左端(もしくは上端)を基準にしたインデックス
                 int xi_left = i % splitCount;
@@ -44,8 +46,14 @@ namespace UI
                 buttonRectTransform.localScale = new Vector3(xScale, yScale, 1);
                 buttonRectTransform.anchoredPosition3D = Vector3.zero;
 
-                //ボタンに素数を割り当てる
-                newButton.GetComponent<BlockGenerator>().SetPrimeNumber(myPrimeNumberPool[i]);
+                //ボタンのテキストと生成するブロックに素数を割り当てる。
+                int prime = nowPrimeNumberPool[i];
+                newButton.GetComponentInChildren<TextMeshProUGUI>().text = prime.ToString(); 
+                newButton.GetComponent<BlockGenerator>().SetPrimeNumber(prime);
+
+                Image miniBlockImage = newButton.transform.GetChild(1).GetComponent<Image>();
+                SpriteRenderer generateBlockRenderer = newButton.GetComponent<BlockGenerator>().GetPrimeNumberBlock(prime).GetComponent<SpriteRenderer>();
+                miniBlockImage.GetComponent<Image>().sprite = generateBlockRenderer.sprite;
             }
         }
     }

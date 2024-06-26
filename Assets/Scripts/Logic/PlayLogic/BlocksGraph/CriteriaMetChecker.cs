@@ -30,7 +30,7 @@ public class CriteriaMetChecker : MonoBehaviour
         int minCountPrime = SearchMinCountPrime();
 
         //最小個数の素数に対してfor分を回して探索を行う
-        foreach (var node in BlocksDict[minCountPrime])
+        foreach (var node in NodesDict[minCountPrime])
         {
              EnqueueStartExpandNetworks(new ExpandNetwork(null, node, conditionManager.ConditionNumberDict));
         }
@@ -48,9 +48,9 @@ public class CriteriaMetChecker : MonoBehaviour
         //条件に存在する素数を全探索し、最小個数のものを探す
         foreach (int conditionKey in conditionManager.ConditionNumberDict.Keys)
         {
-            if (minCount > BlocksDict[conditionKey].Count)
+            if (minCount > NodesDict[conditionKey].Count)
             {
-                minCount = BlocksDict[conditionKey].Count;
+                minCount = NodesDict[conditionKey].Count;
                 minCountPrime = conditionKey;
             }
         }

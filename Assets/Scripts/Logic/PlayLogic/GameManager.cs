@@ -270,8 +270,8 @@ public class GameManager : MonoBehaviour
     }
 
     //ブロックがドロップしたとき(primeNumberCheckFieldに送られたとき)に呼び出されるメソッド
-    public void DropBlockProcess()
+    public void SetIsDropBlockNowTurn(bool flag)
     {
-        isDropBlockNowTurn = true;
+        isDropBlockNowTurn = flag;
     }
 }

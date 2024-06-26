@@ -13,10 +13,9 @@ public class BlockGenerator : MonoBehaviour
     GameObject beforeField;
     AllBlocksManager allBlocksManager;
     SingleBlockManager singleBlockManager;
-    TextMeshProUGUI buttonText;
     GameManager gameManager;
 
-    private void Start()
+    private void Awake()
     {
         primeNumberGeneratingPoint = GameObject.Find("PrimeNumberGeneratingPoint");
         singleBlockManager = primeNumberGeneratingPoint.GetComponent<SingleBlockManager>();
@@ -24,11 +23,6 @@ public class BlockGenerator : MonoBehaviour
         beforeField = blockField.transform.Find("BeforeField").gameObject;
         allBlocksManager = GameObject.Find("AllBlocksManager").GetComponent<AllBlocksManager>();
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-        if (transform.Find("Text") != null)
-        {
-            buttonText = transform.Find("Text").GetComponent<TextMeshProUGUI>();
-            buttonText.text = primeNumber.ToString();
-        }
     }
     //ブロックを生成する関数の引数を制御する関数。
     public void GenerateBlock()
@@ -63,7 +57,7 @@ public class BlockGenerator : MonoBehaviour
     {
         HundleGenerateBlock(primeNumber);
     }
-    GameObject GetPrimeNumberBlock(int primeNumber)
+    public GameObject GetPrimeNumberBlock(int primeNumber)
     {
         return allBlocksManager.BlocksDict[primeNumber];
     }
