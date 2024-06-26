@@ -89,8 +89,7 @@ public class CriteriaMetProcessor : MonoBehaviour
         {
             DetachNode(neighborNode, node);
         }
-        WholeGraphRemove(node);
-        BlocksDictRemoveBlock(node);
+        BlocksGraphRemoveBlock(node);
         node.GetComponent<BlockInfo>().enabled = false;
     }
 

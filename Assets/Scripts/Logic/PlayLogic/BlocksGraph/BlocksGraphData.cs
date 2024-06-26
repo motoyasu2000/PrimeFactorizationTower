@@ -53,11 +53,22 @@ public static class BlocksGraphData
         wholeGraph.Add(block);
     }
 
-    public static void WholeGraphRemove(GameObject block)
+    /// <summary>
+    /// ネットワークから特定のブロックを取り除く処理
+    /// ネットワーク全体を表すリストと辞書から、単一のブロックを消去する
+    /// </summary>
+    /// <param name="removeBlock">ネットワークから取り除きたいブロック</param>
+    public static void BlocksGraphRemoveBlock(GameObject removeBlock)
     {
-        wholeGraph.Remove(block);
+        WholeGraphRemove(removeBlock);
+        BlocksDictRemoveBlock(removeBlock);
     }
-    public static void BlocksDictRemoveBlock(GameObject removeBlock) 
+
+    static void WholeGraphRemove(GameObject removeBlock)
+    {
+        wholeGraph.Remove(removeBlock);
+    }
+    static void BlocksDictRemoveBlock(GameObject removeBlock) 
     {
         blocksDict[removeBlock.GetComponent<BlockInfo>().GetPrimeNumber()].Remove(removeBlock);
     }
