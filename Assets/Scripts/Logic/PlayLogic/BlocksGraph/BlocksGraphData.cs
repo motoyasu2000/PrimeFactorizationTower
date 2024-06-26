@@ -2,28 +2,40 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// ネットワーク全体のデータとそれを操作するメソッドと定義した静的なクラス
+/// ネットワーク全体のデータとそれを操作するメソッドを定義した静的なクラス
 /// </summary>
 public static class BlocksGraphData
 {
-    /// <summary>
     /// 新たな条件を生成するフェーズであることを表す。 条件を達成してから、新たに条件を生成しおえるまでの間はtrueになる
-    /// </summary>
     static bool newConditionGenerating = false;
+
+    //ネットワークの構造や基本機能に使用するもの
+    static List<GameObject> wholeGraph; //全ノードのリスト、ネットワーク全体
+    static Dictionary<int, List<GameObject>> blocksDict; //ネットワーク全体を表す素数ごとのブロックのリスト
+    static Queue<ExpandNetwork> startExpandNetworks; //ネットワークの拡張を開始する最初のサブネットワークをリストとして保存しておく。非同期の処理を一つずつ実行するため、タプルの２つ目の要素は条件の辞書
 
     /// <summary>
     /// 新たな条件を生成するフェーズであることを表す。 条件を達成してから、新たに条件を生成しおえるまでの間はtrueになる
     /// </summary>
     public static bool NewConditionGenerating => newConditionGenerating;
 
-    //ネットワークの構造や基本機能に使用するもの
-    static List<GameObject> wholeGraph; //全ノードのリスト、ネットワーク全体
-    static Dictionary<int, List<GameObject>> blocksDict; //ネットワーク全体を表す素数ごとのブロックのリスト
-    static Queue<ExpandNetwork> startExpandNetworks; //ネットワークの拡張を開始する最初のサブネットワークをリストとして保存しておく。非同期の処理を一つずつ実行するため、タプルの２つ目の要素は条件の辞書
+    /// <summary>
+    /// ネットワーク全体を表す素数ごとのブロックのリスト
+    /// </summary>
     public static List<GameObject> WholeGraph => wholeGraph;
+    /// <summary>
+    /// ネットワーク全体を表す素数ごとのブロックのリスト
+    /// </summary>
     public static Dictionary<int, List<GameObject>> BlocksDict => blocksDict;
+
+    /// <summary>
+    /// 条件の探索を始めるExpandNetworkを保持するキュー
+    /// </summary>
     public static Queue<ExpandNetwork> StartExpandNetworks => startExpandNetworks;
 
+    /// <summary>
+    /// ネットワーク情報の初期化
+    /// </summary>
     public static void InitializeBlocksGraph()
     {
         newConditionGenerating = false;
@@ -45,9 +57,9 @@ public static class BlocksGraphData
     {
         wholeGraph.Remove(block);
     }
-    public static void BlocksDictRemoveSingleBlock(GameObject singleBlock) 
+    public static void BlocksDictRemoveBlock(GameObject removeBlock) 
     {
-        blocksDict[singleBlock.GetComponent<BlockInfo>().GetPrimeNumber()].Remove(singleBlock);
+        blocksDict[removeBlock.GetComponent<BlockInfo>().GetPrimeNumber()].Remove(removeBlock);
     }
 
     public static ExpandNetwork DequeueStartExpandNetworks()
@@ -66,28 +78,24 @@ public static class BlocksGraphData
     }
 
     /// <summary>
-    /// ノードの追加、wholeGraphとblocksDictの更新を行う。
+    /// ブロック全体のネットワークにノードの追加、wholeGraphとblocksDictの更新を行う。
     /// </summary>
     /// <param name="block">新たに追加するブロック</param>
     public static void AddBlock(GameObject block)
     {
         WholeGraphAdd(block);
         BlockInfo info = block.GetComponent<BlockInfo>();
-        if (System.Array.Exists(GameModeManager.Ins.PrimeNumberPool, element => element == info.GetPrimeNumber()))
-        {
-            if (!BlocksDict.ContainsKey(info.GetPrimeNumber()))
-            {
-                BlocksDict.Add(info.GetPrimeNumber(), new List<GameObject>());
-            }
-            BlocksDict[info.GetPrimeNumber()].Add(block);
-        }
-        else
+        if(!System.Array.Exists(GameModeManager.Ins.PrimeNumberPool, element => element == info.GetPrimeNumber()))
         {
             Debug.LogError("素数定義外のノードが定義されようとしています。");
-        }                                                              
+        }
+        BlocksDict[info.GetPrimeNumber()].Add(block);
     }
 
-    //エッジの更新を行う(削除)
+    /// <summary>
+    /// ノードごとに隣接するノードの状態を保持しているが、お互いの隣接関係を無くし、切り離す
+    /// 引数にはどのノードとどのノードの隣接関係をなくすのかを指定する。
+    /// </summary>
     public static void DetachNode(GameObject node1, GameObject node2)
     {
         BlockInfo info1 = node1.GetComponent<BlockInfo>();
@@ -96,7 +104,12 @@ public static class BlocksGraphData
         info2.RemoveNeighborBlock(node1);
     }
 
-    //エッジの更新を行う(追加)
+    /// <summary>
+    /// ノードごとに隣接するノードの状態を保持しているが、お互いの隣接関係を追加し、くっつける
+    /// 引数にどのノードとどのノードの隣接関係を追加するのかを指定する。
+    /// </summary>
+    /// <param name="node1"></param>
+    /// <param name="node2"></param>
     public static void AttachNode(GameObject node1, GameObject node2)
     {
         BlockInfo info1 = node1.GetComponent<BlockInfo>();

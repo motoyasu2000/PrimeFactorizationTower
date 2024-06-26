@@ -21,37 +21,107 @@ public class CriteriaMetProcessor : MonoBehaviour
         freezeEffect = (GameObject)Resources.Load("FreezeEffect");
     }
 
-    //サブネットワークの色を変更させるメソッド
-    private void ChangeColorNodes(List<GameObject> nodes)
+    /// <summary>
+    /// 条件を満たした瞬間に呼ばれる処理。
+    /// </summary>
+    /// <param name="nodes">条件を満たしたノード</param>
+    public void ProcessCriteriaMet(List<GameObject> nodes)
     {
-        foreach (var node in nodes)
+        CombineNodes(nodes);
+        SafeCutNodes(nodes);
+        ChangeCriteriaMetAppearance(nodes);
+        effectTextManager.DisplayEffectText("Criteria Met", freezeDelayTime, GameInfo.FleezeColor); //条件達成時のUIを表示
+        SoundManager.Ins.PlayAudio(SoundManager.Ins.VOICE_CRITERIAMAT); //条件達成時のSEを再生
+
+        //現在の条件に合わせて異なる後処理を行う。
+        switch (GameModeManager.Ins.NowGameMode)
         {
-            node.GetComponent<SpriteRenderer>().color = Color.white;
-            node.GetComponent<SpriteRenderer>().material.color = Color.white;
+            case GameModeManager.GameMode.PileUp:
+                ProcessFreeze(nodes, freezeDelayTime);
+                break;
+            case GameModeManager.GameMode.PileUp_60s:
+                ProcessFreeze(nodes, freezeDelayTime);
+                break;
+            case GameModeManager.GameMode.Battle:
+                ProcessFreeze(nodes, freezeDelayTime);
+                break;
         }
     }
 
-    //サブネットワーク内のGameObjectを物理的に結合し色を変更し、仮想的なネットワークから切り離すメソッド
-    private void FreezeNodes(List<GameObject> nodes)
+    /// <summary>
+    /// 左上のconditionを満たした数秒後に呼ばれる処理、複数のブロックを空中に固定させて動かなくする。
+    /// pileUpや対戦モードでの条件達成時の後処理
+    /// </summary>
+    /// <param name="nodes">条件を満たしたノード</param>
+    private void ProcessFreeze(List<GameObject> nodes, float freezeDelayTime)
+    {
+        Vector3 nodesCenter = Helper.CaluculateCenter(nodes);
+        StartCoroutine(FreezeBlocks(nodes, freezeDelayTime));
+        StartCoroutine(InstantiateEffect(freezeEffect, nodesCenter, freezeDelayTime));
+        StartCoroutine(SoundManager.Ins.PlayAudio(SoundManager.Ins.VOICE_FREEZE, freezeDelayTime));
+        StartCoroutine(SoundManager.Ins.PlayAudio(SoundManager.Ins.SE_FREEZE, freezeDelayTime));
+        StartCoroutine(effectTextManager.DisplayEffectText("Freeze", freezeDelayTime, freezeDelayTime, GameInfo.FleezeColor));
+    }
+
+    /// <summary>
+    /// 条件を満たしたブロック同士を結合させる。
+    /// </summary>
+    /// <param name="nodes">条件を満たしたノード</param>
+    void CombineNodes(List<GameObject> nodes)
     {
         for (int i = 1; i < nodes.Count; i++)
         {
             nodes[i].AddComponent<FixedJoint2D>().connectedBody = nodes[i - 1].GetComponent<Rigidbody2D>();
         }
-        SafeCutNodes(nodes);
-        ChangeColorNodes(nodes);
     }
 
-    private void SetCriteriaMetLayerAndMaterial(List<GameObject> nodes)
+    //ネットワークから特定のノードを切り離すメソッド(Destroyはしない)
+    private void SafeCutNode(GameObject node)
+    {
+        //切り離し元のノードと隣接するエッジを一時的な変数に格納(コレクションがイテレーション中に変更してはならないため)
+        List<GameObject> tmpNeighborNode = new List<GameObject>();
+        foreach (var neighborNode in node.GetComponent<BlockInfo>().GetNeighborEdge())
+        {
+            tmpNeighborNode.Add(neighborNode);
+        }
+        //切り離し元のノードと隣接するエッジを実際に削除する
+        foreach (var neighborNode in tmpNeighborNode)
+        {
+            DetachNode(neighborNode, node);
+        }
+        WholeGraphRemove(node);
+        BlocksDictRemoveBlock(node);
+        node.GetComponent<BlockInfo>().enabled = false;
+    }
+
+    //ネットワークから特定のサブネットワークを切り離すメソッド
+    private void SafeCutNodes(List<GameObject> nodes)
     {
         foreach (var node in nodes)
         {
-            node.layer = LayerMask.NameToLayer("CriteriaMet");
-            node.GetComponent<SpriteRenderer>().material = CriteriaMetMaterial;
+            SafeCutNode(node);
         }
     }
 
-    //第二引数で指定した時間後、第一引数で指定したゲームオブジェクトのリストに、物理的な計算を行わなくするメソッド。空中に固定し、水色にする。
+    /// <summary>
+    /// 引数で指定したノード(ブロック)の見た目を条件達成時のものに変更する
+    /// </summary>
+    private void ChangeCriteriaMetAppearance(List<GameObject> nodes)
+    {
+        foreach (var node in nodes)
+        {
+            node.layer = LayerMask.NameToLayer("CriteriaMet"); //AIがこの状態を見れるようにする
+            node.GetComponent<SpriteRenderer>().material = CriteriaMetMaterial;
+            node.GetComponent<SpriteRenderer>().color = Color.white;
+        }
+    }
+
+    /// <summary>
+    /// 一定時間経過した後、条件を満たしたブロックに対して空中に固定し、びくともしなくさせる。
+    /// また、色も変更する
+    /// </summary>
+    /// <param name="nodes">条件を満たしたノード(ブロック)</param>
+    /// <param name="second">この処理を行うのに、どのくらい待つか</param>
     IEnumerator FreezeBlocks(List<GameObject> nodes, float second)
     {
         yield return new WaitForSeconds(second);
@@ -63,66 +133,17 @@ public class CriteriaMetProcessor : MonoBehaviour
             rb2d.isKinematic = true;
             node.GetComponent<SpriteRenderer>().color = GameInfo.FleezeColor;
         }
-        yield break;
     }
 
     /// <summary>
-    /// 条件を満たしたノードに対して、Freeze処理を行う
+    /// 一定時間経過後にエフェクトを生成する
     /// </summary>
-    /// <param name="nodes">条件を満たしたノード</param>
-    public void ProcessFreeze(List<GameObject> nodes)
-    {
-        SetCriteriaMetLayerAndMaterial(nodes); //条件を満たしたブロックの色を変更
-        FreezeNodes(nodes); //凍らせる
-        effectTextManager.DisplayEffectText("Criteria Met", freezeDelayTime, GameInfo.FleezeColor); //条件達成時のUIを表示
-        SoundManager.Ins.PlayAudio(SoundManager.Ins.VOICE_CRITERIAMAT); //条件達成時のSEを再生
-
-        DelayProcessFreeze(nodes, freezeDelayTime); //Freezeの後処理。(こっちで空中に固定する)
-    }
-
-    //第二引数で指定した時間後、Freezeの文字、サウンド、エフェクトを出力し、第一引数で指定したGameObjectのリストを空中に固定する
-    private void DelayProcessFreeze(List<GameObject> nodes, float freezeDelayTime)
-    {
-        Vector3 nodesCenter = Helper.CaluculateCenter(nodes);
-        StartCoroutine(FreezeBlocks(nodes, freezeDelayTime));
-        StartCoroutine(SoundManager.Ins.PlayAudio(SoundManager.Ins.VOICE_FREEZE, freezeDelayTime));
-        StartCoroutine(SoundManager.Ins.PlayAudio(SoundManager.Ins.SE_FREEZE, freezeDelayTime));
-        StartCoroutine(effectTextManager.DisplayEffectText("Freeze", freezeDelayTime, freezeDelayTime, GameInfo.FleezeColor));
-        StartCoroutine(InstantiateEffect(freezeEffect, nodesCenter, freezeDelayTime));
-    }
-
-    //第三引数で指定した時間後に、第二引数で指定した位置に、第一引数で指定したeffect(GameObject)を生成するメソッド
+    /// <param name="effect">どのエフェクトを生成するか</param>
+    /// <param name="position">どの位置に生成するか</param>
+    /// <param name="second">何秒後に生成するか</param>
     private IEnumerator InstantiateEffect(GameObject effect, Vector3 position, float second)
     {
         yield return new WaitForSeconds(second);
         Instantiate(effect, position, Quaternion.identity);
-    }
-
-    //ネットワークから特定のノードを切り離すメソッド(Destroyはしない)
-    private void SafeCutNode(GameObject originNode)
-    {
-        //切り離し元のノードと隣接するエッジを一時的な変数に格納(コレクションがイテレーション中に変更してはならないため)
-        List<GameObject> tmpNeighborNode = new List<GameObject>();
-        foreach (var neighborNode in originNode.GetComponent<BlockInfo>().GetNeighborEdge())
-        {
-            tmpNeighborNode.Add(neighborNode);
-        }
-        //切り離し元のノードと隣接するエッジを実際に削除する
-        foreach (var neighborNode in tmpNeighborNode)
-        {
-            DetachNode(neighborNode, originNode);
-        }
-        WholeGraphRemove(originNode);
-        BlocksDictRemoveSingleBlock(originNode);
-        originNode.GetComponent<BlockInfo>().enabled = false;
-    }
-
-    //ネットワークから特定のサブネットワークを切り離すメソッド
-    private void SafeCutNodes(List<GameObject> nodes)
-    {
-        foreach (var node in nodes)
-        {
-            SafeCutNode(node);
-        }
     }
 }

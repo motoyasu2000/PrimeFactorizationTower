@@ -102,10 +102,11 @@ public class CriteriaMetChecker : MonoBehaviour
                 Debug.Log("再生成");
                 return;
             }
+            //ネットワークから条件を満たし、条件を探索するフェーズの場合には、条件を満たした時に実行する処理をまとめたProcessCriteriaMetを実行
             else
             {
                 Debug.Log(string.Join(", ", currentNetwork.Network));
-                CriteriaMetProcess(currentNetwork.Network);
+                ProcessCriteriaMet(currentNetwork.Network);
                 return;
             }
         }
@@ -127,36 +128,28 @@ public class CriteriaMetChecker : MonoBehaviour
         }
     }
 
-    //条件を満たしたときの処理
-    void CriteriaMetProcess(List<GameObject> nodes)
+    /// <summary>
+    /// 条件を満たしたときに行う処理
+    /// </summary>
+    /// <param name="nodes"></param>
+    void ProcessCriteriaMet(List<GameObject> nodes)
     {
-        switch (GameModeManager.Ins.NowGameMode)
-        {
-            case GameModeManager.GameMode.PileUp:
-                criteriaMetProcessor.ProcessFreeze(nodes);
-                break;
-            case GameModeManager.GameMode.PileUp_60s:
-                criteriaMetProcessor.ProcessFreeze(nodes);
-                break;
-            case GameModeManager.GameMode.Battle:
-                criteriaMetProcessor.ProcessFreeze(nodes);
-                break;
-        }
+        criteriaMetProcessor.ProcessCriteriaMet(nodes);
         //探索が完了したらもうネットワーク内に条件を満たすものが存在しないと考えられるので、キューをリセットしておく。
         //(あるとGameInfoが消されたゲームオブジェクトが残り続けることになるためバグが発生する)
         ClearStartExpandNetworks(); 
-
         SetConditionGenerating(true); //条件を達成したため、新しい条件を生成するフェーズにはいる
         CheckConditionBlocksGraph();
         conditionManager.GenerateCondition();
     }
 
     /// <summary>
+    /// 条件を探索するExpandNetworkに追加可能できる可能性のあるノードのリストを返す。
     /// adjacentNodesのうち、closedNodesに含まれておらず、currentNetwork上にないものを計算して返す
     /// </summary>
     /// <param name="currentNetwork">現在拡張中のネットワーク</param>
     /// <param name="adjacentNodes">現在見ているノードに隣接しているもの、ここから必要なノードのみを抽出する。</param>
-    /// <returns>ネットワークに追加可能できる可能性のあるノードのリストを返す。</returns>
+    /// <returns>ExpandNetworkに追加可能できる可能性のあるノードのリスト</returns>
     List<GameObject> GetValidAdjacentNode(ExpandNetwork currentNetwork, GameObject node)
     {
         List<GameObject> adjacentNodes = node.GetComponent<BlockInfo>().GetNeighborEdge();
