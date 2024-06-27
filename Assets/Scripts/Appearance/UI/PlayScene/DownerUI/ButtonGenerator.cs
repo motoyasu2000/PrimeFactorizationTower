@@ -51,9 +51,12 @@ namespace UI
                 newButton.GetComponentInChildren<TextMeshProUGUI>().text = prime.ToString(); 
                 newButton.GetComponent<BlockGenerator>().SetPrimeNumber(prime);
 
+                //ミニブロックの設定
                 Image miniBlockImage = newButton.transform.GetChild(1).GetComponent<Image>();
                 SpriteRenderer generateBlockRenderer = newButton.GetComponent<BlockGenerator>().GetPrimeNumberBlock(prime).GetComponent<SpriteRenderer>();
-                miniBlockImage.GetComponent<Image>().sprite = generateBlockRenderer.sprite;
+                //miniBlockImage.sprite = generateBlockRenderer.sprite;
+                miniBlockImage.material = new Material(miniBlockImage.material);
+                miniBlockImage.material.SetTexture("_MainTex", generateBlockRenderer.sprite.texture);
             }
         }
     }
