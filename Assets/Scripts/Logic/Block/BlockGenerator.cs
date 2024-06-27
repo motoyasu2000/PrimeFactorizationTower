@@ -15,6 +15,8 @@ public class BlockGenerator : MonoBehaviour
     SingleBlockManager singleBlockManager;
     GameManager gameManager;
 
+    public int PrimeNumber => primeNumber;
+
     private void Awake()
     {
         primeNumberGeneratingPoint = GameObject.Find("PrimeNumberGeneratingPoint");

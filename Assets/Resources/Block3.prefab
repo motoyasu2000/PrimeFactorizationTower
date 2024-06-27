@@ -50,11 +50,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8997849181804842525, guid: 65b6fe0cae63e7346a7200419f8991ea, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.75
+      value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: 8997849181804842525, guid: 65b6fe0cae63e7346a7200419f8991ea, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1.75
+      value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: 8997849181804842525, guid: 65b6fe0cae63e7346a7200419f8991ea, type: 3}
       propertyPath: m_LocalPosition.x
@@ -200,7 +200,7 @@ PolygonCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.28866667}
-    oldSize: {x: 1, y: 1}
+    oldSize: {x: 2.56, y: 2.56}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -208,7 +208,7 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 0, y: 0.5773587}
-      - {x: 0.46, y: -0.2172644}
-      - {x: -0.45982313, y: -0.21726444}
+    - - {x: 0, y: 1.51}
+      - {x: 1.2, y: -0.576}
+      - {x: -1.2, y: -0.576}
   m_UseDelaunayMesh: 0

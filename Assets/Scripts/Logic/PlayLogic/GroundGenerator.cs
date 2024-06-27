@@ -10,6 +10,7 @@ public class GroundGenerator : MonoBehaviour
     private void Start()
     {
         groundToken = (GameObject)Resources.Load("GroundToken");
+        Vector3 groundScale = groundToken.transform.localScale;
 
         for(int i=-3; i<=3; i++)
         {
@@ -17,8 +18,8 @@ public class GroundGenerator : MonoBehaviour
             GameObject newGround = Instantiate(groundToken, new Vector3(i, 0, 0), Quaternion.identity);
 
             //変形
-            float randomHeight = Random.Range(0.5f, 1.5f);
-            newGround.transform.localScale = new Vector3(1, randomHeight, 1);
+            float randomHeight = Random.Range(0.3f, 0.5f);
+            newGround.transform.localScale = new Vector2(groundScale.x, randomHeight);
 
             //回転
             float randomSpinAngle = Random.Range(-20f, 20f);

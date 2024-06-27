@@ -16,6 +16,7 @@ namespace Common
         static readonly string aiName = "___AI___"; //AIの名前を表す特殊な文字列
         static readonly Color buttonGray = new Color(150f / 255f, 150f / 255f, 150f / 255f, 1);
         static readonly Color fleezeColor = new Color(23f / 255f, 1f, 1f);
+        static readonly Color miniBlockColor = Color.red;
 
         //visual studioでどこから参照されているのかが追跡できるようにするために、プロパティで参照するようにする。
         public static bool AILearning => aiLearning;
@@ -29,6 +30,7 @@ namespace Common
         public static string AIName => aiName;
         public static Color ButtonGray => buttonGray;
         public static Color FleezeColor => fleezeColor;
+        public static Color MiniBlockColor => miniBlockColor;
 
         /// <summary>
         /// 可変の情報の提供と操作を行うクラス
