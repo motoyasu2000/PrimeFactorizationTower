@@ -101,7 +101,7 @@ PrefabInstance:
       addedObject: {fileID: -6857071851712623487}
     - targetCorrespondingSourceObject: {fileID: 398697902959395074, guid: 65b6fe0cae63e7346a7200419f8991ea, type: 3}
       insertIndex: -1
-      addedObject: {fileID: -4146883946919506847}
+      addedObject: {fileID: 7788763766201446339}
   m_SourcePrefab: {fileID: 100100000, guid: 65b6fe0cae63e7346a7200419f8991ea, type: 3}
 --- !u!1 &8916167901171248615 stripped
 GameObject:
@@ -160,7 +160,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!60 &-4146883946919506847
+--- !u!60 &7788763766201446339
 PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -204,29 +204,8 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 0.16796875, y: -0.1640625}
-      - {x: 0.1953125, y: -0.1171875}
-      - {x: 0.25, y: -0.01953125}
-      - {x: 0.25, y: 0.01953125}
-      - {x: 0.2265625, y: 0.0625}
-      - {x: 0.1796875, y: 0.14453125}
-      - {x: 0.05859375, y: 0.35546875}
-      - {x: 0.0078125, y: 0.44140625}
-      - {x: 0, y: 0.44140625}
-      - {x: -0.015625, y: 0.4296875}
-      - {x: -0.078125, y: 0.3203125}
-      - {x: -0.16796875, y: 0.1640625}
-      - {x: -0.23046875, y: 0.0546875}
-      - {x: -0.25, y: 0.01953125}
-      - {x: -0.25, y: -0.01953125}
-      - {x: -0.23046875, y: -0.0546875}
-      - {x: -0.19921875, y: -0.109375}
-      - {x: -0.125, y: -0.23828125}
-      - {x: -0.078125, y: -0.3203125}
-      - {x: -0.06640625, y: -0.33984375}
-      - {x: -0.046875, y: -0.375}
-      - {x: -0.03515625, y: -0.39453125}
-      - {x: -0.015625, y: -0.4296875}
-      - {x: 0, y: -0.44140625}
-      - {x: 0.01171875, y: -0.4375}
+    - - {x: 0, y: -0.44}
+      - {x: -0.26, y: 0}
+      - {x: 0, y: 0.44}
+      - {x: 0.26, y: 0}
   m_UseDelaunayMesh: 0

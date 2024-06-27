@@ -14,7 +14,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6526292304093931351, guid: 65b6fe0cae63e7346a7200419f8991ea, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.27
+      value: 0.19
       objectReference: {fileID: 0}
     - target: {fileID: 8997849181804842525, guid: 65b6fe0cae63e7346a7200419f8991ea, type: 3}
       propertyPath: m_LocalPosition.x
@@ -156,7 +156,7 @@ PolygonCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -0.01, y: 0.455}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.23}

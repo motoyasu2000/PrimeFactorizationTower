@@ -29,6 +29,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6526292304093931351, guid: 65b6fe0cae63e7346a7200419f8991ea, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0.06
+      objectReference: {fileID: 0}
+    - target: {fileID: 6526292304093931351, guid: 65b6fe0cae63e7346a7200419f8991ea, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
@@ -101,7 +105,7 @@ PrefabInstance:
       addedObject: {fileID: 9039545881575538846}
     - targetCorrespondingSourceObject: {fileID: 398697902959395074, guid: 65b6fe0cae63e7346a7200419f8991ea, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 4936601174752707578}
+      addedObject: {fileID: 7113914758779572556}
   m_SourcePrefab: {fileID: 100100000, guid: 65b6fe0cae63e7346a7200419f8991ea, type: 3}
 --- !u!1 &4527490833444924435 stripped
 GameObject:
@@ -160,7 +164,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!60 &4936601174752707578
+--- !u!60 &7113914758779572556
 PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -205,6 +209,6 @@ PolygonCollider2D:
   m_Points:
     m_Paths:
     - - {x: 0, y: 0.5773587}
-      - {x: -0.5, y: -0.28866667}
-      - {x: 0.5, y: -0.28866667}
+      - {x: 0.46, y: -0.2172644}
+      - {x: -0.45982313, y: -0.21726444}
   m_UseDelaunayMesh: 0

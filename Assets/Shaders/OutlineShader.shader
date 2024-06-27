@@ -37,15 +37,15 @@ Shader "Custom/OutlineShader" {
                 fixed4 tex = tex2D(_MainTex, i.uv);
                 float alpha = tex.a;
 
-                //エッジ検出
+                //周囲のアルファ値の取得
                 float2 offsets = float2(0.03, 0.03);
                 float alphaRight = tex2D(_MainTex, i.uv + float2(offsets.x, 0)).a;
                 float alphaUp = tex2D(_MainTex, i.uv + float2(0, offsets.y)).a;
                 float alphaLeft = tex2D(_MainTex, i.uv - float2(offsets.x, 0)).a;
                 float alphaDown = tex2D(_MainTex, i.uv - float2(0, offsets.y)).a;
 
-                //エッジの周辺で色を変更
-                if (alpha > 0.5 && (alphaRight == 0 || alphaUp == 0 || alphaLeft == 0 || alphaDown == 0)) {
+                //色のある部分で、かつ周囲にアルファ値が存在するなら赤で表示。そうでなければ描画しない
+                if (alpha > 0 && (alphaRight == 0 || alphaUp == 0 || alphaLeft == 0 || alphaDown == 0)) {
                     return fixed4(1, 0, 0, 1);
                 }
                 else{
