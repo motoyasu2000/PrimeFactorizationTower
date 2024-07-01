@@ -16,8 +16,9 @@ namespace Common
             SceneManager.LoadScene(sceneName);
             SoundManager.LoadSoundSettingData();
             SoundManager soundManager = SoundManager.Ins;
-            if (sceneName == "PlayScene") soundManager.PlayAudio(SoundManager.Ins.BGM_PLAY);
-            else if (sceneName == "TitleScene") soundManager.PlayAudio(SoundManager.Ins.BGM_TITLE);
+            if (sceneName == "PlayScene") soundManager.PlayAudio(soundManager.BGM_PLAY);
+            else if (sceneName == "TitleScene") soundManager.PlayAudio(soundManager.BGM_TITLE);
+            else if (sceneName == "MaterialScene") soundManager.PlayAudio(soundManager.BGM_MATERIAL);
         }
 
 

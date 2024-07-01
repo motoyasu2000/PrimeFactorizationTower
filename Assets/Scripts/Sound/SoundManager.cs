@@ -40,6 +40,7 @@ public class SoundManager : MonoBehaviour
     AudioSource se_warning;
     AudioSource bgm_play;
     AudioSource bgm_title;
+    AudioSource bgm_material;
 
     //音声データのプロパティ
     public AudioSource VOICE_DONE => voice_done;
@@ -51,6 +52,7 @@ public class SoundManager : MonoBehaviour
     public AudioSource SE_Warning => se_warning;
     public AudioSource BGM_PLAY => bgm_play;
     public AudioSource BGM_TITLE => bgm_title;
+    public AudioSource BGM_MATERIAL => bgm_material;
 
     //音声データを声・効果音・BGMに分けたリスト
     List<AudioSource> Voices = new List<AudioSource>();
@@ -72,6 +74,7 @@ public class SoundManager : MonoBehaviour
         se_warning = transSEs.Find("Warning").GetComponent<AudioSource>();
         bgm_play = transBGMs.Find("Play").GetComponent <AudioSource>();
         bgm_title = transBGMs.Find("Title").GetComponent<AudioSource>();
+        bgm_material = transBGMs.Find("Material").GetComponent<AudioSource>();
 
         //リストの更新処理
         Voices.Add(voice_done);
@@ -83,6 +86,7 @@ public class SoundManager : MonoBehaviour
         SEs.Add(se_warning);
         BGMs.Add(bgm_play);
         BGMs.Add(bgm_title);
+        BGMs.Add(bgm_material);
 
         //インスタンスの生成
         if(instance == null)
