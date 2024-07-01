@@ -191,11 +191,6 @@ public class GameManager : MonoBehaviour
             standingStillTimerVisualizer.SetActiveUI(true);
             standingStillTimerVisualizer.UpdateTimer(standingStillTimer);
         }
-        else
-        {
-            standingStillTimer = 0;
-            standingStillTimerVisualizer.SetActiveUI(false);
-        }
     }
 
     void CountTotalTimer()
@@ -246,6 +241,7 @@ public class GameManager : MonoBehaviour
             standingStillTimer = 0;
             afterDropTotalTimer = 0;
             isDropBlockNowTurn = false;
+            standingStillTimerVisualizer.SetActiveUI(false);
         }
     }
 
