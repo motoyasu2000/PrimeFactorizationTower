@@ -87,7 +87,7 @@ public class MaterialDatabaseManager : MonoBehaviour
     /// <param name="ibinder">どのバインダーか(現在ではデフォルトのバインダーが呼ばれる)</param>
     public void InitializeMaterialDatabase<TEnum>(IBinder ibinder) where TEnum : Enum
     {
-        if (middleMaterialDatabase == null) middleMaterialDatabase = PlayerInfoManager.Ins.MaterialDatabase;
+        if (middleMaterialDatabase == null) middleMaterialDatabase = new MaterialDatabase(PlayerInfoManager.Ins.MaterialDatabase);
         if(middleMaterialDatabase == null) new MaterialDatabase();
         foreach (var prime in GameModeManager.Ins.PrimeNumberPool)
         {

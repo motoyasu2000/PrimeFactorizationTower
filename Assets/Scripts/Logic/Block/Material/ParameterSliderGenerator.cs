@@ -21,7 +21,6 @@ public class ParameterSliderGenerator : MonoBehaviour
     IBinder activeBinder;
     MaterialDatabaseManager materialDatabaseManager;
     BlockSelector blockMaterialSelector;
-    SaveUIManager saveUIManager;
 
     //ParameterDataのvalue達と同じ並び順であるべき
     enum SliderType
@@ -39,7 +38,6 @@ public class ParameterSliderGenerator : MonoBehaviour
         parameterSliderCellPrefab = Resources.Load("ParameterSliderCell") as GameObject;
         materialDatabaseManager = GameObject.Find("MaterialDatabaseManager").GetComponent<MaterialDatabaseManager>();
         blockMaterialSelector = GameObject.Find("BlockMaterialSelector").GetComponent<BlockSelector>();
-        saveUIManager = FindObjectOfType<SaveUIManager>();
     }
 
     /// <summary>
@@ -181,7 +179,6 @@ public class ParameterSliderGenerator : MonoBehaviour
         parameterSlider.onValueChanged.AddListener((v) => { UpdateParameterData(v,sliderType,parameterData); });
         parameterSlider.onValueChanged.AddListener((v) => { materialDatabaseManager.SetShaderParameter(blockMaterialSelector.NowBlockNum, materialPathAndName, activeBinder, parameterData); });
         parameterSlider.onValueChanged.AddListener((v) => { blockMaterialSelector.SetBlockMaterialDataToSingleBlock<TEnum>(); });
-        parameterSlider.onValueChanged.AddListener((v) => { saveUIManager.ChangeColor(false); });
     }
 
     //引数で受け取ったparameterDataをvalueに応じて更新する。(スライダーによって操作される。)

@@ -9,23 +9,35 @@ public class SaveUIManager : MonoBehaviour
     static readonly Color saveColor_complete = Color.green;
     static readonly Color saveColor_incomplete = Color.red;
     Image saveUIImage;
+    BlockSelector blockSelector;
+    MaterialDatabaseManager materialDatabaseManager;
 
     void Start()
     {
         saveUIImage = GetComponent<Image>();
+        blockSelector = FindObjectOfType<BlockSelector>();
+        materialDatabaseManager = FindObjectOfType<MaterialDatabaseManager>();
+    }
+
+    private void Update()
+    {
+        int blockNum = blockSelector.NowBlockNum;
+        BlockMaterialData middleBlockData = materialDatabaseManager.MiddleMaterialDatabase.GetBlockMaterialData(blockNum);
+        BlockMaterialData loadBlockData = PlayerInfoManager.Ins.MaterialDatabase.GetBlockMaterialData(blockNum);
+        if (middleBlockData.Equal(loadBlockData)) SetColor(true);
+        else                                      SetColor(false);
     }
 
     /// <summary>
+    /// SaveButtonのUIの見た目を変化させるメソッド
     /// マテリアルのパラメーターが保存されているか否かを可視化するために使用している。
     /// </summary>
-    /// <param name="changesComplete">
-    /// セーブされた状態の見た目に切り替える(true)か否(false)か
-    /// マテリアルボタンの発火時や、マテリアルボタンの発火を内部で行うブロックの切り替えボタンのタップ時や、セーブ時に引数にtrue
-    /// スライダーを通して値を変更したときにfalse
+    /// <param name="isComplete">
+    /// セーブされた状態の見た目にする(true)か否(false)か
     /// </param>
-    public void ChangeColor(bool changesComplete)
+    public void SetColor(bool isComplete)
     {
-        if(changesComplete) saveUIImage.color = saveColor_complete;
+        if(isComplete) saveUIImage.color = saveColor_complete;
         else                saveUIImage.color = saveColor_incomplete;
     }
 }

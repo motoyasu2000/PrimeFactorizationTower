@@ -32,7 +32,7 @@ public class MaterialDatabase
     //BlockMaterialDataをブロックの番号から取得する
     public BlockMaterialData GetBlockMaterialData(int blockNum)
     {
-        return blockMaterials.Find(b => b.blockNumber == blockNum);
+        return new BlockMaterialData(blockMaterials.Find(b => b.blockNumber == blockNum));
     }
 
     //中身の表示
@@ -83,7 +83,19 @@ public class BlockMaterialData
     //ParameterDataをparameterEnumIndexを使って取得
     public ParameterData GetParameter(int parameterEnumIndex)
     {
-        return parameters.Find(p => p.parameterEnumIndex == parameterEnumIndex);
+        return new ParameterData(parameters.Find(p => p.parameterEnumIndex == parameterEnumIndex));
+    }
+
+    public bool Equal(BlockMaterialData compareData)
+    {
+        int paramCount = parameters.Count;
+        int compareParamCount = compareData.parameters.Count;
+        if (paramCount != compareParamCount) return false;
+        for (int i=0; i<paramCount; i++)
+        {
+            if (!parameters[i].Equal(compareData.parameters[i])) return false;
+        }
+        return true;
     }
 }
 
@@ -118,5 +130,21 @@ public class ParameterData
         this.redValue = other.redValue;
         this.greenValue = other.greenValue;
         this.blueValue = other.blueValue;
+    }
+
+    /// <summary>
+    /// ParameterDataの要素が完全に一致しているかの比較
+    /// </summary>
+    /// <param name="compareData">比較対象のParameterData</param>
+    /// <returns>要素がすべて一致した(true)か否(false)か</returns>
+    public bool Equal(ParameterData compareData)
+    {
+        if(parameterEnumIndex != compareData.parameterEnumIndex) return false;
+        if(type != compareData.type) return false;
+        if(floatValue != compareData.floatValue) return false;
+        if(redValue != compareData.redValue) return false;
+        if(greenValue != compareData.greenValue) return false;
+        if(blueValue != compareData.blueValue) return false;
+        return true;
     }
 }

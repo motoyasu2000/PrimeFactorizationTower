@@ -50,8 +50,6 @@ namespace UI
                 int prime = nowPrimeNumberPool[i];
                 newButton.GetComponentInChildren<TextMeshProUGUI>().text = prime.ToString(); 
                 newButton.GetComponent<BlockGenerator>().SetPrimeNumber(prime);
-
-
             }
         }
     }
