@@ -120,7 +120,7 @@ public class MaterialDatabaseManager : MonoBehaviour
         }
     }
 
-    //中間のMaterialDatabaseを実際にゲーム中にブロックが読み込むMaterialDatabaseに追加する。
+    //中間のMaterialDatabaseの情報をjson形式で保存し、いつでもロードできるようにする。
     public void SaveMaterialDatabase()
     {
         PlayerInfoManager.Ins.SaveMaterialDatabase(middleMaterialDatabase);

@@ -20,12 +20,14 @@ public class MaterialButtonsGenerator : MonoBehaviour
     ParameterSliderGenerator sliderGenerater;
     MaterialDatabaseManager materialDatabaseManager;
     BlockSelector blockSelector;
+    SaveUIManager saveUIManager;
     void Start()
     {
         materialButtonPrefab = Resources.Load("MaterialButton") as GameObject;
         sliderGenerater = GameObject.Find("ParameterSlidersPanel").GetComponent<ParameterSliderGenerator>();
         materialDatabaseManager = GameObject.Find("MaterialDatabaseManager").GetComponent<MaterialDatabaseManager>();
         blockSelector = GameObject.Find("BlockMaterialSelector").GetComponent<BlockSelector>();
+        saveUIManager = FindObjectOfType<SaveUIManager>();
         GenerateMaterialButtons();
     }
 
@@ -77,6 +79,7 @@ public class MaterialButtonsGenerator : MonoBehaviour
             materialDatabaseManager.InitializeBlockMaterial<TEnum>(ibinder, blockSelector.NowBlockNum); //TmpMaterialDatabeseの現在のブロック部分を選択したマテリアルのものに変更する;
             sliderGenerater.GenerateParameterSliders<TEnum>();
             blockSelector.SetBlockMaterialDataToSingleBlock<TEnum>();
+            saveUIManager.ChangeColor(true);
         });
     }
 }
