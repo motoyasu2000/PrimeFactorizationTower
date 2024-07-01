@@ -35,12 +35,15 @@ public class GameManager : MonoBehaviour
 
     //ターンの切り替え
     bool isDropBlockNowTurn = false;
+    float afterDropTotalTimer = 0; //ブロックを落下させてから合計でどれだけ時間が経過したか
     float standingStillTimer = 0; //全てのゲームオブジェクトが連続で静止している時間
     static readonly float changeTurnTime = 1f; //全てのゲームオブジェクトがどれだけの時間静止すればターンが切り替わるのか
-    static readonly float judgeStillStanding = 0.01f; //ゲームオブジェクトの速度がどのくらいなら静止しているとみなすか
+    static readonly float judgeStillStandingTime = 0.01f; //ゲームオブジェクトの速度がどのくらいなら静止しているとみなすか
+    static readonly float additionalJudgeStillStandingScale = 0.005f; //ブロックドロップ後の経過時間に併せて、静止とみなす速度の閾値をどのくらい上昇させるか
     public bool IsDropBlockNowTurn => isDropBlockNowTurn;
     //全てのゲームオブジェクトの静止時間が基準を超えており、かつ、このターン内にブロックが生成されていればターンを切り替える
-    bool ChengeNextTurnFlag => (standingStillTimer > changeTurnTime) && isDropBlockNowTurn;
+    bool chengesNextTurn => (standingStillTimer > changeTurnTime) && isDropBlockNowTurn;
+    float AdditionalJudgeStillStandingTime => afterDropTotalTimer * additionalJudgeStillStandingScale;
 
     //その他
     int nowPhase = 0; //現在いくつの合成数を素因数分解し終えたか　これが増えると上に表示される合成数の値が大きくなるなどすることが可能。
@@ -85,6 +88,9 @@ public class GameManager : MonoBehaviour
 
         //全てのブロックが静止している時間(allBlocksStandingStillTimer)を計算
         CountAllBlocksStandingStillTime();
+
+        //ブロックを落下させてからの総時間を計算する
+        CountTotalTimer();
 
         //ターンの切り替え条件をチェックし、必要であればターンを切り替える
         ChangeNextTurnProcess();
@@ -192,6 +198,14 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    void CountTotalTimer()
+    {
+        if (isDropBlockNowTurn)
+        {
+            afterDropTotalTimer += Time.deltaTime;
+        }
+    }
+
     //全てのブロックがほぼ静止していればtrue
     bool CheckAllBlocksStandingStill()
     {
@@ -205,7 +219,7 @@ public class GameManager : MonoBehaviour
     //引数で受け取ったblock(Transform型)がほぼ静止していればtrue
     bool CheckBlockStandStill(Transform block)
     {
-        if (block.GetComponent<Rigidbody2D>().velocity.magnitude < judgeStillStanding)
+        if (block.GetComponent<Rigidbody2D>().velocity.magnitude < judgeStillStandingTime + AdditionalJudgeStillStandingTime)
             return true;
         else
             return false;
@@ -217,7 +231,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     void ChangeNextTurnProcess()
     {
-        if(ChengeNextTurnFlag)
+        if(chengesNextTurn)
         {
             //高さの更新
             maxHeightCalculator.CalculateAllGameObjectsMaxHeight();
@@ -230,6 +244,7 @@ public class GameManager : MonoBehaviour
 
             //初期化
             standingStillTimer = 0;
+            afterDropTotalTimer = 0;
             isDropBlockNowTurn = false;
         }
     }
