@@ -10,6 +10,10 @@ using UnityEngine.UI;
 /// </summary>
 public class MaterialButtonsGenerator : MonoBehaviour
 {
+    //ボタン間に設ける間隔
+    static readonly float widthSpace = 20;
+    static readonly float heightSpace = 20;
+
     int generateButtonCounter = 0;
     float[] splitAnchorPoints_x = Helper.CalculateSplitAnchorPoints(BinderManager.BindersCount);
     GameObject materialButtonPrefab;
@@ -58,12 +62,11 @@ public class MaterialButtonsGenerator : MonoBehaviour
         buttonRectTransform.anchorMin = new Vector2(splitAnchorPoints_x[generateButtonCounter], 0);
         buttonRectTransform.anchorMax = new Vector2(splitAnchorPoints_x[generateButtonCounter+1], 1);
 
-        //Anchorとの差を0に
-        buttonRectTransform.offsetMin = Vector2.zero;
-        buttonRectTransform.offsetMax = Vector2.zero;
+        //ボタン間に間隔を設ける
+        buttonRectTransform.offsetMin = new Vector2(widthSpace/2,heightSpace/2);
+        buttonRectTransform.offsetMax = new Vector2(-widthSpace/2,-heightSpace/2);
 
-        //スケールやz軸方向のanchorも0に初期化しておく
-        buttonRectTransform.localScale = Vector2.one;
+        //z軸方向のanchorを0に初期化しておく
         buttonRectTransform.anchoredPosition3D = Vector3.zero;
 
         materialButton.GetComponent<Image>().material = new Material(ibinder.Material);
