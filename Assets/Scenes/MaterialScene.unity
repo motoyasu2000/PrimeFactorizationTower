@@ -175,6 +175,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4395002512889085446, guid: 7dca2266f71a61441a31b16490010a8a, type: 3}
+      propertyPath: m_Color.b
+      value: 0.7528302
+      objectReference: {fileID: 0}
+    - target: {fileID: 4395002512889085446, guid: 7dca2266f71a61441a31b16490010a8a, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4395002512889085446, guid: 7dca2266f71a61441a31b16490010a8a, type: 3}
+      propertyPath: m_Color.r
+      value: 0.9270109
+      objectReference: {fileID: 0}
     - target: {fileID: 6661140278071219983, guid: 7dca2266f71a61441a31b16490010a8a, type: 3}
       propertyPath: m_Name
       value: MaterialScene
