@@ -56,7 +56,6 @@ public class BlockMaterialData
 {
     public int blockNumber; //データベースでいう主キー
     public int binderIndex;
-    public string materialPath;
     public List<ParameterData> parameters = new List<ParameterData>();
 
     public BlockMaterialData() { }
@@ -64,7 +63,6 @@ public class BlockMaterialData
     {
         this.blockNumber = other.blockNumber;
         this.binderIndex = other.binderIndex;
-        this.materialPath = other.materialPath;
         this.parameters = new List<ParameterData>();
         foreach(var parameter in other.parameters)
         {

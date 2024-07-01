@@ -46,7 +46,6 @@ public class MaterialDatabaseManager : MonoBehaviour
             Debug.LogError("指定されたインデックスが見つかりませんでした。");
             blockData = new BlockMaterialData() { blockNumber = blockNum };
         }
-        blockData.materialPath = materialPath;
         blockData.binderIndex = BinderManager.GetBindersIndex(ibinder);
 
 
