@@ -203,7 +203,8 @@ public class ParameterSliderGenerator : MonoBehaviour
     }
 
     /// <summary>
-    /// 今設定しているゲームオブジェクトに一時的に割り当てられるマテリアルを設定する。どのマテリアルにするのかを選択するために必要。
+    /// activeBinderが何であるのかを設定する
+    /// 現在選択中のブロックのbinderをactiveBinderにするために使用
     /// </summary>
     /// <param name="binder">アクティブなマテリアルに対応するBinder</param>
     public void SetActiveBinder(IBinder binder)

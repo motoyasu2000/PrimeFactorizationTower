@@ -96,13 +96,13 @@ public class MaterialDatabaseManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 現在のマテリアルと押したボタンのマテリアルが一致していなければ単一のBlockMaterialを初期化を行い、
-    /// さらにBlockMaterialを中間のmiddleMaterialDatabaseに追加 
+    /// 現在のマテリアルと押したボタンのマテリアルが一致していなければ
+    /// binderに存在するマテリアルの各データを中間のマテリアルデータベースに追加していく。
     /// MaterialButtonのタップ時に呼ばれる
     /// </summary>
     /// <typeparam name="TEnum">どの列挙型のパラメーターを初期化するか</typeparam>
     /// <param name="ibinder">どのバインダーか</param>
-    /// <param name="prime">どのブロックのパラメーターか</param>
+    /// <param name="prime">どのブロックか</param>
 
     public void InitializeBlockMaterial<TEnum>(IBinder ibinder, int prime) where TEnum : Enum
     {
@@ -126,7 +126,9 @@ public class MaterialDatabaseManager : MonoBehaviour
         PlayerInfoManager.Ins.SaveMaterialDatabase(middleMaterialDatabase);
     }
 
-    //ゲーム中にブロックが読み込むMaterialDatabeseの情報を中間のMaterialDatabeseにロードする。無ければ初期化を行う。
+    /// <summary>
+    /// ゲーム中にブロックが読み込むMaterialDatabeseの情報を中間のMaterialDatabeseにロードする。無ければ初期化を行う。
+    /// </summary>
     public void LoadMaterialDatabase()
     {
         middleMaterialDatabase = new MaterialDatabase(PlayerInfoManager.Ins.MaterialDatabase);
