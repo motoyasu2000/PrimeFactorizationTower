@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
-/// シーン上にあるすべてのボタンに影をつけるクラス
+/// シーン上にあるあらゆる種類のボタンに影をつけるクラス(現状はImageのspriteがUISpriteのもののみ)
 /// </summary>
 public class ButtonShadowAdder : MonoBehaviour
 {
@@ -14,11 +14,12 @@ public class ButtonShadowAdder : MonoBehaviour
         shadowPrefab = Resources.Load("Shadow") as GameObject;
         foreach(var button in allButton)
         {
-            AddShadowToButton(button);
+            Sprite sourceImage = button.GetComponent<Image>().sprite;
+            if(sourceImage.name == "UISprite") AddShadowToButton_UISprite(button);
         }
     }
 
-    void AddShadowToButton(Button button)
+    void AddShadowToButton_UISprite(Button button)
     {
         GameObject shadow = Instantiate(shadowPrefab);
         shadow.transform.SetParent(button.transform);
