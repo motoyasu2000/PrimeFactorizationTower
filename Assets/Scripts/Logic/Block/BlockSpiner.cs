@@ -25,7 +25,7 @@ public class BlockSpiner : MonoBehaviour
     void SpinSingleBlock(float angleOfRotation)
     {
         GameObject singleBlock = singleBlockManager.SingleBlock;
-        if(singleBlock == null) Debug.LogError($"singleblockはnullです");
+        if(singleBlock == null) Debug.LogWarning($"singleblockはnullです");
         if (singleBlock != null)
         singleBlock.transform.Rotate(Vector3.forward * angleOfRotation);
     }
