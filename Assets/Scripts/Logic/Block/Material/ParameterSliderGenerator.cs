@@ -218,23 +218,18 @@ public class ParameterSliderGenerator : MonoBehaviour
     /// </summary>
     /// <typeparam name="TEnum">どの列挙型(シェーダーか)</typeparam>
     /// <param name="parameterName">パラメーターの名前</param>
-    /// <returns>指定したパラメーターのParameterData</returns>
+    /// <returns>指定したパラメーターのParameterData、見つからなければnull</returns>
     ParameterData GetNowStateParameterData<TEnum>(string parameterName) where TEnum : Enum
     {
         MaterialDatabase materialDatabase = materialDatabaseManager.MiddleMaterialDatabase;
         int parameterEnumindex = EnumManager.GetEnumIndexFromString<TEnum>(parameterName);
-
+        BlockMaterialData blockMaterialData = materialDatabase.GetBlockMaterialData(blockMaterialSelector.NowBlockNum);
         //指定したインデックスが中間のmaterialDatabaseに含まれていれば
-        if (materialDatabase.GetBlockMaterialData(blockMaterialSelector.NowBlockNum).GetParameter(parameterEnumindex)!=null)
+        if (blockMaterialData.GetParameter(parameterEnumindex)!=null)
         {
-            return materialDatabase.GetBlockMaterialData(blockMaterialSelector.NowBlockNum).GetParameter(parameterEnumindex);
+            return blockMaterialData.GetParameter(parameterEnumindex);
         }
-        else
-        {
-            if (materialDatabase.GetBlockMaterialData(blockMaterialSelector.NowBlockNum) == null) Debug.Log("blockdataがnullです");
-            if (materialDatabase.GetBlockMaterialData(blockMaterialSelector.NowBlockNum).GetParameter(parameterEnumindex) == null) Debug.Log("parameterがnullです");
-            Debug.LogError("指定したインデックスが存在しませんでした。");
-            return new ParameterData();
-        }
+        Debug.LogError("指定されたパラメーターを発見できませんでした。");
+        return null;
     }
 }
