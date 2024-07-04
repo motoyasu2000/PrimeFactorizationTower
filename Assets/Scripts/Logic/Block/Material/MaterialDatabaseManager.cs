@@ -31,11 +31,11 @@ public class MaterialDatabaseManager : MonoBehaviour
     /// <param name="materialPath">どのマテリアルか</param>
     /// <param name="ibinder">どのバインダーか</param>
     /// <param name="parameter">どの様なパラメーターか</param>
-    public void SetShaderParameter(int blockNum, string materialPath, IBinder ibinder ,ParameterData parameter)
+    public void SetShaderParameter(int blockNum, IBinder ibinder ,ParameterData parameter)
     {
         //パラメーターを保存するためため、ブロックデータの取得処理
         BlockMaterialData blockData;
-        //データベース上に既にブロックの情報があれば、そこから取得
+        //中間のデータベース上に既にブロックの情報があれば、そこから取得
         if (middleMaterialDatabase.blockMaterials.Any(b =>  b.blockNumber == blockNum))
         {
             blockData = middleMaterialDatabase.GetBlockMaterialData(blockNum);

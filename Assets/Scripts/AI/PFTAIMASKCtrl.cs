@@ -27,7 +27,7 @@ public class PFTAIMASKCtrl : MonoBehaviour
     void Update()
     {
         //現在AIのターンで、かつブロックが落下していないなら
-        if (TurnMangaer.GetPlayerNames_NowTurn() != null && TurnMangaer.GetPlayerNames_NowTurn() == GameInfo.AIName && !gameManager.IsDropBlockNowTurn)
+        if (TurnMangaer.GetPlayerNames_NowTurn() == GameInfo.AIName && !gameManager.IsDropBlockNowTurn)
         {
             getRewardFlag = false;//AIのターンになったばかりなので、ここではまだ報酬は受け取っていない
             agent.RequestDecision();
@@ -39,7 +39,7 @@ public class PFTAIMASKCtrl : MonoBehaviour
             if (!getRewardFlag)
             {
                 int numOfBlocks = CalculateTotalBlocksCount();
-                //現在のブロック数の二乗/2だけ報酬がもらえる
+                //現在のブロック数の二乗だけ報酬がもらえる(yaml側でスケーリングをする)
                 if (numOfBlocks >= 8) agent.AddReward(numOfBlocks* numOfBlocks);
                 getRewardFlag = true;
             }
@@ -48,8 +48,8 @@ public class PFTAIMASKCtrl : MonoBehaviour
         //ゲームオーバーになり、強化学習中であればエピソードリセット
         if (gameOverManager.IsGameOver && GameInfo.AILearning)
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             agent.EndEpisode();
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
 
         preCondition = nowCondition;
