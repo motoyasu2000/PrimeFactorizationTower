@@ -1,14 +1,13 @@
 using UnityEngine;
 using Common;
 using TMPro;
-using UnityEngine.UI;
 
 namespace UI
 {
     /// <summary>
     /// 画面下部にあるブロック生成ボタンを生成するクラス
     /// </summary>
-    public class ButtonGenerator : MonoBehaviour
+    public class BlockButtonGenerator : MonoBehaviour
     {
         static readonly int splitCount = 3;
         static readonly float xScale = 0.97f;
@@ -19,8 +18,8 @@ namespace UI
         GameModeManager gameModeManager;
         void Awake()
         {
-            buttonArea = GameObject.Find("BlockGanerateButtonArea");
-            buttonPrefab = Resources.Load("ButtonPrefab") as GameObject;
+            buttonArea = GameObject.Find("BlockButtonArea");
+            buttonPrefab = Resources.Load("BlockButton") as GameObject;
             gameModeManager = GameModeManager.Ins;
             int[] nowPrimeNumberPool = gameModeManager.GetPrimeWithDifficultyLevel();
             for (int i=0; i<nowPrimeNumberPool.Length; i++)
