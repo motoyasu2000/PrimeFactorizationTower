@@ -114,6 +114,8 @@ public class ParameterData
 
     public int parameterEnumIndex;//BlocksMaterialPropertyの値
     public PropertyType type;
+
+    //数値のパラメーター
     public float floatValue;
 
     //色のパラメーター

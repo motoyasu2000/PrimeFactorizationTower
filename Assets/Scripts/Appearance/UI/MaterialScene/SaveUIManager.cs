@@ -21,6 +21,7 @@ public class SaveUIManager : MonoBehaviour
 
     private void Update()
     {
+        //現在表示しているマテリアルのデータと、現在保存されているマテリアルのデータを比較して一致しているかどうかをチェック
         int blockNum = blockSelector.NowBlockNum;
         BlockMaterialData middleBlockData = materialDatabaseManager.MiddleMaterialDatabase.GetBlockMaterialData(blockNum);
         BlockMaterialData loadBlockData = PlayerInfoManager.Ins.MaterialDatabase.GetBlockMaterialData(blockNum);
@@ -38,6 +39,6 @@ public class SaveUIManager : MonoBehaviour
     public void SetColor(bool isComplete)
     {
         if(isComplete) saveUIImage.color = saveColor_complete;
-        else                saveUIImage.color = saveColor_incomplete;
+        else           saveUIImage.color = saveColor_incomplete;
     }
 }
