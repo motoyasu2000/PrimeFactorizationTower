@@ -81,7 +81,7 @@ public class MaterialDatabaseManager : MonoBehaviour
 
     /// <summary>
     /// 現在のマテリアルと押したボタンのマテリアルが一致していなければ
-    /// binderに存在するマテリアルの各データを中間のマテリアルデータベースに追加していく。
+    /// 中間のマテリアルデータベースの特定の数値のマテリアルを初期化する。
     /// MaterialButtonのタップ時に呼ばれる
     /// </summary>
     /// <typeparam name="TEnum">どの列挙型のパラメーターを初期化するか</typeparam>
@@ -121,12 +121,11 @@ public class MaterialDatabaseManager : MonoBehaviour
     /// <summary>
     /// middleMaterialDatabaseの初期化し、保存も行う 初回のみ実行されることを想定　
     /// </summary>
-    /// <typeparam name="TEnum">どの列挙型のパラメーターを初期化するか</typeparam>
-    /// <param name="ibinder">どのバインダーか(現在ではデフォルトのバインダーが呼ばれる)</param>
     public void InitializeMaterialDatabase()
     {
         middleMaterialDatabase = new MaterialDatabase();
 
+        //すべてのブロックをデフォルトのマテリアルで初期化
         foreach (var prime in GameModeManager.Ins.PrimeNumberPool)
         {
             InitializeBlockMaterial<DefaultBlocksMaterialProperty>(BinderManager.Binders[0], prime);

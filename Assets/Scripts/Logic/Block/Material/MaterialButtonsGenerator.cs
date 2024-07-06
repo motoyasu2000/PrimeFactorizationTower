@@ -74,10 +74,20 @@ public class MaterialButtonsGenerator : MonoBehaviour
         materialButton.GetComponent<Image>().material = new Material(ibinder.Material);
 
         materialButton.GetComponent<Button>().onClick.AddListener(() => {
-            materialDatabaseManager.LoadMaterialDatabase(); //中間のMaterialDatabeseにjson上のマテリアルをロードする
+
+            //中間のMaterialDatabeseにjson上のマテリアルをロードする
+            materialDatabaseManager.LoadMaterialDatabase(); 
+
+            //引数で指定したマテリアルと中間のMaterialDatabeseのマテリアルが異なっていれば、中間で指定した引数で指定したマテリアルで初期化
+            materialDatabaseManager.InitializeBlockMaterial<TEnum>(ibinder, blockSelector.NowBlockNum); 
+
+            //生成するスライダーを現在ブロックについているマテリアルものに設定する
             sliderGenerater.SetActiveBinder(ibinder);
-            materialDatabaseManager.InitializeBlockMaterial<TEnum>(ibinder, blockSelector.NowBlockNum); //TmpMaterialDatabeseの現在のブロック部分を選択したマテリアルのものに変更する;
+
+            //スライダーを生成する
             sliderGenerater.GenerateParameterSliders<TEnum>();
+
+            //現在表示されているブロックに中間のMaterialDatabaseのマテリアルを割り当てる
             blockSelector.SetBlockMaterialDataToSingleBlock<TEnum>();
         });
     }

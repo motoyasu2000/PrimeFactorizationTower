@@ -18,17 +18,23 @@ public class ParameterSliderGenerator : MonoBehaviour
     int generateSliderCounter = 0; //今上から何個目のスライダーを生成しているか
     float[] splitAnchorPoints_y; //表示するスライダーを分割するyのビューポート座標
     GameObject parameterSliderCellPrefab;
-    IBinder activeBinder;
     MaterialDatabaseManager materialDatabaseManager;
     BlockSelector blockMaterialSelector;
+    /// <summary>
+    /// 現在設定中のマテリアルのBinderのこと
+    /// </summary>
+    IBinder activeBinder;
 
-    //ParameterDataのvalue達と同じ並び順であるべき
+    /// <summary>
+    /// ParameterDataのvalue達と同じ並び順であるべき
+    /// float,red,green,blueが存在する
+    /// </summary>
     enum SliderType
     {
-        floatValue,
-        RedValue,
-        GreenValue, 
-        BlueValue,
+        Float,
+        Red,
+        Green, 
+        Blue,
     }
 
     void Awake()
@@ -60,14 +66,14 @@ public class ParameterSliderGenerator : MonoBehaviour
             //colorのパラメーターだった場合はr,g,b文3つのスライダーを生成する
             if(parameterName.Contains("Color") || parameterName.Contains("color"))
             {
-                GenerateParameterSliderCell<TEnum>(parameterName, parameterData, SliderType.RedValue);
-                GenerateParameterSliderCell<TEnum>(parameterName, parameterData, SliderType.GreenValue);
-                GenerateParameterSliderCell<TEnum>(parameterName, parameterData, SliderType.BlueValue);
+                GenerateParameterSliderCell<TEnum>(parameterName, parameterData, SliderType.Red);
+                GenerateParameterSliderCell<TEnum>(parameterName, parameterData, SliderType.Green);
+                GenerateParameterSliderCell<TEnum>(parameterName, parameterData, SliderType.Blue);
             }
             //color以外(今のところfloatのみ)は全て1つだけ生成
             else
             {
-                GenerateParameterSliderCell<TEnum>(parameterName, parameterData, SliderType.floatValue);
+                GenerateParameterSliderCell<TEnum>(parameterName, parameterData, SliderType.Float);
             }
         }
         generateSliderCounter = 0; //GenerateParameterSliderCell関数の呼び出しごとにgenerateSliderCounterが増えるのでここで初期化
@@ -131,8 +137,8 @@ public class ParameterSliderGenerator : MonoBehaviour
 
         //パラメーターデータの設定(スライダーではこのparameterDataの設定を行う)
 
-        if (sliderType == SliderType.floatValue) parameterData.type = ParameterData.PropertyType.Float;
-        else if (sliderType == SliderType.RedValue || sliderType == SliderType.GreenValue || sliderType == SliderType.BlueValue) parameterData.type = ParameterData.PropertyType.Color;
+        if (sliderType == SliderType.Float) parameterData.type = ParameterData.PropertyType.Float;
+        else if (sliderType == SliderType.Red || sliderType == SliderType.Green || sliderType == SliderType.Blue) parameterData.type = ParameterData.PropertyType.Color;
         else { parameterData.type = ParameterData.PropertyType.Invalid; Debug.LogError($"SliderTypeが予期せぬ値になっています。: {sliderType}"); }
 
         //生成したスライダーの初期値や色を設定し、イベントを追加する
@@ -145,10 +151,10 @@ public class ParameterSliderGenerator : MonoBehaviour
     void InitializeSliderValue(SliderType sliderType, ParameterData parameterData, Slider slider)
     {
         //スライダーによる設定
-        if (sliderType == SliderType.floatValue) slider.value = (parameterData.floatValue-floatSliderEpsilon)/floatSliderScale;
-        else if (sliderType == SliderType.RedValue) slider.value = parameterData.redValue;
-        else if (sliderType == SliderType.GreenValue) slider.value = parameterData.greenValue;
-        else if (sliderType == SliderType.BlueValue) slider.value = parameterData.blueValue;
+        if (sliderType == SliderType.Float) slider.value = (parameterData.floatValue-floatSliderEpsilon)/floatSliderScale;
+        else if (sliderType == SliderType.Red) slider.value = parameterData.redValue;
+        else if (sliderType == SliderType.Green) slider.value = parameterData.greenValue;
+        else if (sliderType == SliderType.Blue) slider.value = parameterData.blueValue;
         else Debug.LogError("予期せぬSlidertypeが呼ばれました。");
     }
 
@@ -157,10 +163,10 @@ public class ParameterSliderGenerator : MonoBehaviour
     {
         Image cellImage = parameterSliderCell.GetComponent<Image>();
         //スライダーによる設定
-        if (sliderType == SliderType.floatValue) cellImage.color = Color.black;
-        else if (sliderType == SliderType.RedValue) cellImage.color = Color.red;
-        else if (sliderType == SliderType.GreenValue) cellImage.color = Color.green;
-        else if (sliderType == SliderType.BlueValue) cellImage.color = Color.blue;
+        if (sliderType == SliderType.Float) cellImage.color = Color.black;
+        else if (sliderType == SliderType.Red) cellImage.color = Color.red;
+        else if (sliderType == SliderType.Green) cellImage.color = Color.green;
+        else if (sliderType == SliderType.Blue) cellImage.color = Color.blue;
         else Debug.LogError("予期せぬSlidertypeが呼ばれました。");
         cellImage.color = cellImage.color - new Color(0, 0, 0, sliderCellAlphaOffset);
     }
@@ -187,10 +193,10 @@ public class ParameterSliderGenerator : MonoBehaviour
     void UpdateParameterData(float value,SliderType sliderType, ParameterData parameterData)
     {
         //スライダーによる設定
-        if (sliderType == SliderType.floatValue) parameterData.floatValue = floatSliderScale * value + floatSliderEpsilon;
-        else if (sliderType == SliderType.RedValue) parameterData.redValue = value;
-        else if (sliderType == SliderType.GreenValue) parameterData.greenValue = value;
-        else if (sliderType == SliderType.BlueValue) parameterData.blueValue = value;
+        if (sliderType == SliderType.Float) parameterData.floatValue = floatSliderScale * value + floatSliderEpsilon;
+        else if (sliderType == SliderType.Red) parameterData.redValue = value;
+        else if (sliderType == SliderType.Green) parameterData.greenValue = value;
+        else if (sliderType == SliderType.Blue) parameterData.blueValue = value;
         else Debug.LogError("予期せぬSlidertypeが呼ばれました。");
     }
 
