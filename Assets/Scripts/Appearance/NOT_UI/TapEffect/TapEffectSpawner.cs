@@ -15,7 +15,6 @@ public class TapEffectSpawner : MonoBehaviour
     SoundManager soundManager;
     EventSystem eventSystem;
     GraphicRaycaster raycaster;
-    Camera uiCamera;
     Camera tapEffectCamera;
     Touch touch;
     Scene tapEffectScene;
@@ -26,7 +25,6 @@ public class TapEffectSpawner : MonoBehaviour
         soundManager = SoundManager.Ins;
         eventSystem = FindObjectOfType<EventSystem>();
         raycaster = FindObjectOfType<GraphicRaycaster>();
-        uiCamera = GameObject.Find("UICamera").GetComponent<Camera>();
         tapEffectCamera = GameObject.Find("TapEffectCamera").GetComponent<Camera>();
         tapEffectScene = SceneManager.GetSceneByName("TapEffectScene");
     }
@@ -37,28 +35,28 @@ public class TapEffectSpawner : MonoBehaviour
         {
             touch = Input.GetTouch(0); //最初のタッチを取得
 
-            //タッチが開始された瞬間にエフェクトを生成
-            if (touch.phase == TouchPhase.Began)
+            //ディスプレイ上に指があるならその間はエフェクトを生成し続ける
+            if (CheckDisplayOnFinger(touch))
             {
                 SpawnVisualEffect();
             }
-            //指が画面にずっとついている状態であり、動いていないときエフェクトを生成
-            if (touch.phase == TouchPhase.Stationary)
-            {
-                SpawnVisualEffect();
-            }
-            //指が画面にずっとついている状態であり、動いているときエフェクトを生成
-            if (touch.phase == TouchPhase.Moved)
-            {
-                SpawnVisualEffect();
-            }
-            //指を話したとき、下にあるゲームオブジェクトに合わせてSEを再生する
+            //指を離したとき、下にあるゲームオブジェクトに合ったSEを再生する
             if(touch.phase == TouchPhase.Ended)
             {
                 GameObject touchObj = GetTouchObj(touch);
                 SpawnSoundEffect(touchObj);
             }
         }
+    }
+
+    /// <summary>
+    /// 引数で与えられた指が、ディスプレイ上にあったらtrueを返す
+    /// </summary>
+    bool CheckDisplayOnFinger(Touch touch)
+    {
+        return (touch.phase == TouchPhase.Began ||
+            touch.phase == TouchPhase.Stationary ||
+            touch.phase == TouchPhase.Moved) ;
     }
 
     void SpawnVisualEffect()
@@ -97,7 +95,7 @@ public class TapEffectSpawner : MonoBehaviour
         List<RaycastResult> results = new List<RaycastResult>();
         raycaster.Raycast(pointerEventData, results);
         GameObject buttonObj = results.Find(g => g.gameObject.GetComponent<Button>() != null).gameObject;
-        Debug.Log($"TapUIButton = {buttonObj}");
+        Debug.Log($"TapButton = {buttonObj}");
         return buttonObj;
     }
 
@@ -110,7 +108,7 @@ public class TapEffectSpawner : MonoBehaviour
         RaycastHit hit;
         Physics.Raycast(ray, out hit);
         if (hit.collider == null) return null;
-        Debug.Log($"TapNotUIButton = {hit.collider.gameObject.name}");
+        Debug.Log($"TapNotButton = {hit.collider.gameObject.name}");
         return hit.collider.gameObject;
     }
 

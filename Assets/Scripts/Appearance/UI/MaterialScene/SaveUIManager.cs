@@ -23,8 +23,10 @@ public class SaveUIManager : MonoBehaviour
     {
         //現在表示しているマテリアルのデータと、現在保存されているマテリアルのデータを比較して一致しているかどうかをチェック
         int blockNum = blockSelector.NowBlockNum;
+        if (materialDatabaseManager.MiddleMaterialDatabase == null || PlayerInfoManager.Ins.MaterialDatabase == null) return;
         BlockMaterialData middleBlockData = materialDatabaseManager.MiddleMaterialDatabase.GetBlockMaterialData(blockNum);
         BlockMaterialData loadBlockData = PlayerInfoManager.Ins.MaterialDatabase.GetBlockMaterialData(blockNum);
+        if (middleBlockData == null || loadBlockData == null) return;
         if (middleBlockData.Equal(loadBlockData)) SetColor(true);
         else                                      SetColor(false);
     }

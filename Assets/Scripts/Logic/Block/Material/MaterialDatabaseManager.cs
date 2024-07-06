@@ -48,7 +48,6 @@ public class MaterialDatabaseManager : MonoBehaviour
         }
         blockData.binderIndex = BinderManager.GetBindersIndex(ibinder);
 
-
         blockData.AddParameter(parameter);
         middleMaterialDatabase.AddBlockMaterial(blockData);
     }
@@ -81,21 +80,6 @@ public class MaterialDatabaseManager : MonoBehaviour
     }
 
     /// <summary>
-    /// materialDatabaseの初期化 初回のみ実行されることを想定　
-    /// </summary>
-    /// <typeparam name="TEnum">どの列挙型のパラメーターを初期化するか</typeparam>
-    /// <param name="ibinder">どのバインダーか(現在ではデフォルトのバインダーが呼ばれる)</param>
-    public void InitializeMaterialDatabase<TEnum>(IBinder ibinder) where TEnum : Enum
-    {
-        if (middleMaterialDatabase == null) middleMaterialDatabase = new MaterialDatabase(PlayerInfoManager.Ins.MaterialDatabase);
-        if(middleMaterialDatabase == null) new MaterialDatabase();
-        foreach (var prime in GameModeManager.Ins.PrimeNumberPool)
-        {
-            if (middleMaterialDatabase.GetBlockMaterialData(prime) == null) InitializeBlockMaterial<TEnum>(ibinder, prime);
-        }
-    }
-
-    /// <summary>
     /// 現在のマテリアルと押したボタンのマテリアルが一致していなければ
     /// binderに存在するマテリアルの各データを中間のマテリアルデータベースに追加していく。
     /// MaterialButtonのタップ時に呼ばれる
@@ -106,8 +90,10 @@ public class MaterialDatabaseManager : MonoBehaviour
 
     public void InitializeBlockMaterial<TEnum>(IBinder ibinder, int prime) where TEnum : Enum
     {
-        //もし、押されたボタンのbinderが、現在の数字のブロックのbinderと等しくなければ、もしくはそもそも現在の数字がMiddleMaterialDatabase上に存在しなければ 初期化して中間のMaterialDatabaseを更新
-        if ((MiddleMaterialDatabase.GetBlockMaterialData(prime) == null) || (BinderManager.GetBindersIndex(ibinder) != MiddleMaterialDatabase.GetBlockMaterialData(prime).binderIndex))
+        //もし、押されたボタンのbinderが、現在の数字のブロックのbinderと等しくなければ、
+        //もしくはそもそも現在の数字がMiddleMaterialDatabase上に存在しなければ初期化して中間のMaterialDatabaseを更新
+        if ((MiddleMaterialDatabase.GetBlockMaterialData(prime) == null) ||
+            (BinderManager.GetBindersIndex(ibinder) != MiddleMaterialDatabase.GetBlockMaterialData(prime).binderIndex))
         {
             BlockMaterialData materialData = new BlockMaterialData() { blockNumber = prime, binderIndex = BinderManager.GetBindersIndex(ibinder) };
             for (int i = 0; i < Enum.GetValues(ibinder.EnumType).Length; i++)
@@ -120,18 +106,38 @@ public class MaterialDatabaseManager : MonoBehaviour
         }
     }
 
-    //中間のMaterialDatabaseの情報をjson形式で保存し、いつでもロードできるようにする。
-    public void SaveMaterialDatabase()
-    {
-        PlayerInfoManager.Ins.SaveMaterialDatabase(middleMaterialDatabase);
-    }
-
     /// <summary>
     /// ゲーム中にブロックが読み込むMaterialDatabeseの情報を中間のMaterialDatabeseにロードする。無ければ初期化を行う。
     /// </summary>
     public void LoadMaterialDatabase()
     {
-        middleMaterialDatabase = new MaterialDatabase(PlayerInfoManager.Ins.MaterialDatabase);
-        if (middleMaterialDatabase == null || middleMaterialDatabase.blockMaterials == null || middleMaterialDatabase.blockMaterials.Count == 0) InitializeMaterialDatabase<DefaultBlocksMaterialProperty>(new DefaultMaterialBinder());
+        if (PlayerInfoManager.Ins.MaterialDatabase != null)
+            middleMaterialDatabase = new MaterialDatabase(PlayerInfoManager.Ins.MaterialDatabase);
+
+        else
+            InitializeMaterialDatabase();
+    }
+
+    /// <summary>
+    /// middleMaterialDatabaseの初期化し、保存も行う 初回のみ実行されることを想定　
+    /// </summary>
+    /// <typeparam name="TEnum">どの列挙型のパラメーターを初期化するか</typeparam>
+    /// <param name="ibinder">どのバインダーか(現在ではデフォルトのバインダーが呼ばれる)</param>
+    public void InitializeMaterialDatabase()
+    {
+        middleMaterialDatabase = new MaterialDatabase();
+
+        foreach (var prime in GameModeManager.Ins.PrimeNumberPool)
+        {
+            InitializeBlockMaterial<DefaultBlocksMaterialProperty>(BinderManager.Binders[0], prime);
+        }
+
+        SaveMaterialDatabase();
+    }
+
+    //中間のMaterialDatabaseの情報をjson形式で保存し、いつでもロードできるようにする。
+    public void SaveMaterialDatabase()
+    {
+        PlayerInfoManager.Ins.SaveMaterialDatabase(middleMaterialDatabase);
     }
 }

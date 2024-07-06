@@ -13,7 +13,7 @@ public class MaterialDatabase
     public MaterialDatabase() { }
     public MaterialDatabase(MaterialDatabase materialDatabase)
     {
-        this.blockMaterials = new List<BlockMaterialData>();
+        blockMaterials = new List<BlockMaterialData>();
         foreach(var blockMaterial in materialDatabase.blockMaterials)
         {
             blockMaterials.Add(new BlockMaterialData(blockMaterial));
@@ -32,7 +32,9 @@ public class MaterialDatabase
     //BlockMaterialDataをブロックの番号から取得する
     public BlockMaterialData GetBlockMaterialData(int blockNum)
     {
-        return new BlockMaterialData(blockMaterials.Find(b => b.blockNumber == blockNum));
+        BlockMaterialData resultData = blockMaterials.Find(b => b.blockNumber == blockNum);
+        if (resultData == null) return null;
+        return new BlockMaterialData(resultData);
     }
 
     //中身の表示
@@ -86,6 +88,11 @@ public class BlockMaterialData
         return new ParameterData(parameters.Find(p => p.parameterEnumIndex == parameterEnumIndex));
     }
 
+    /// <summary>
+    /// 2つのブロックのマテリアルが内部のパラメーターの値含めてすべて一致しているかをチェックする
+    /// </summary>
+    /// <param name="compareData">比較対象</param>
+    /// <returns>2つのブロックのマテリアルが完全に一致した(true)か否(false)か</returns>
     public bool Equal(BlockMaterialData compareData)
     {
         int paramCount = parameters.Count;
