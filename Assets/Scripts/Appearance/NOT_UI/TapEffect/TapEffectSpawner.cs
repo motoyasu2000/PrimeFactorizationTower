@@ -76,10 +76,10 @@ public class TapEffectSpawner : MonoBehaviour
 
     GameObject GetTouchObj(Touch touch)
     {
-        GameObject UIObj = GetTouchButton(touch);
-        GameObject NotUIObj = GetTouchNotButton(touch);
-        if(UIObj && UIObj.GetComponent<Button>()) return UIObj;
-        else if(NotUIObj) return NotUIObj;
+        GameObject ButtonObj = GetTouchButton(touch);
+        GameObject NotButtonObj = GetTouchNotButton(touch);
+        if(ButtonObj && ButtonObj.GetComponent<Button>()) return ButtonObj;
+        else if(NotButtonObj) return NotButtonObj;
         else return null;
     }
 

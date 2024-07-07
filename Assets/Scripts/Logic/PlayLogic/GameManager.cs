@@ -183,13 +183,18 @@ public class GameManager : MonoBehaviour
     //全てのゲームオブジェクトが連続で静止した時間をカウントする
     void CountAllBlocksStandingStillTime()
     {
-
         //ブロックの落下したターンであり、全てのゲームオブジェクトが動いておらず、地面にくっついていればTimerをカウント
         if (isDropBlockNowTurn && CheckAllBlocksStandingStill() && areAllBlocksGrounded)
         {
             standingStillTimer += Time.deltaTime;
             standingStillTimerVisualizer.SetActiveUI(true);
             standingStillTimerVisualizer.UpdateTimer(standingStillTimer);
+        }
+        //地面にくっついていなかったり、動いていたらタイマーをリセットする
+        else
+        {
+            standingStillTimer = 0;
+            standingStillTimerVisualizer.UpdateTimer(0);
         }
     }
 
@@ -251,7 +256,6 @@ public class GameManager : MonoBehaviour
     /// </summary>
     void CalculateAndDisplayScore()
     {
-        if (!areAllBlocksGrounded) return;
         switch (GameModeManager.Ins.NowGameMode)
         {
             //もし積み上げモードで、すべてのブロックが地面に設置しており、ターンのチェンジ時であればスコアの更新。
@@ -280,9 +284,12 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    //ブロックがドロップしたとき(primeNumberCheckFieldに送られたとき)に呼び出されるメソッド
-    public void SetIsDropBlockNowTurn(bool flag)
+    /// <summary>
+    /// 現在のターンがブロックがドロップした後かを判定する変数(isDropBlockNowTurn)をtrueにする
+    /// ブロックがドロップしたとき(primeNumberCheckFieldに送られたとき)に呼び出されるメソッド
+    /// </summary>
+    public void SetUpDropTurn()
     {
-        isDropBlockNowTurn = flag;
+        isDropBlockNowTurn = true;
     }
 }
