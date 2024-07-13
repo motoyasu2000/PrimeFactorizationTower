@@ -45,8 +45,6 @@ public class GameManager : MonoBehaviour
     bool chengesNextTurn => (standingStillTimer > changeTurnTime) && isDropBlockNowTurn;
     float AdditionalJudgeStillStandingTime => afterDropTotalTimer * additionalJudgeStillStandingScale;
 
-    //その他
-    int nowPhase = 0; //現在いくつの合成数を素因数分解し終えたか　これが増えると上に表示される合成数の値が大きくなるなどすることが可能。
     MaxHeightCalculator maxHeightCalculator; //高さの計算を行う
 
     //初期化処理

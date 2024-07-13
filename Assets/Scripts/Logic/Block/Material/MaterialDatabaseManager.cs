@@ -33,7 +33,7 @@ public class MaterialDatabaseManager : MonoBehaviour
     /// <param name="parameter">どの様なパラメーターか</param>
     public void SetShaderParameter(int blockNum, IBinder ibinder ,ParameterData parameter)
     {
-        //パラメーターを保存するためため、ブロックデータの取得処理
+        //パラメーターを保存するため、現在のブロックに割り当てられているマテリアルの取得処理
         BlockMaterialData blockData;
         //中間のデータベース上に既にブロックの情報があれば、そこから取得
         if (middleMaterialDatabase.blockMaterials.Any(b =>  b.blockNumber == blockNum))
@@ -92,8 +92,9 @@ public class MaterialDatabaseManager : MonoBehaviour
     {
         //もし、押されたボタンのbinderが、現在の数字のブロックのbinderと等しくなければ、
         //もしくはそもそも現在の数字がMiddleMaterialDatabase上に存在しなければ初期化して中間のMaterialDatabaseを更新
-        if ((MiddleMaterialDatabase.GetBlockMaterialData(prime) == null) ||
-            (BinderManager.GetBindersIndex(ibinder) != MiddleMaterialDatabase.GetBlockMaterialData(prime).binderIndex))
+        BlockMaterialData middleMaterialData = MiddleMaterialDatabase.GetBlockMaterialData(prime);
+        if ((middleMaterialData == null) ||
+            (BinderManager.GetBindersIndex(ibinder) != middleMaterialData.binderIndex))
         {
             BlockMaterialData materialData = new BlockMaterialData() { blockNumber = prime, binderIndex = BinderManager.GetBindersIndex(ibinder) };
             for (int i = 0; i < Enum.GetValues(ibinder.EnumType).Length; i++)

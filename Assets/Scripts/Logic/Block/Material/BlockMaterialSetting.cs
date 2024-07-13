@@ -31,8 +31,10 @@ public class BlockMaterialSetting : MonoBehaviour
         MethodInfo setPropertyColorMethod = typeof(IBinder).GetMethod("SetPropertyColor").MakeGenericMethod(dynamicEnumType);
         MethodInfo getEnumValueFromIndexMethod = typeof(EnumManager).GetMethod("GetEnumValueFromIndex").MakeGenericMethod(dynamicEnumType);
 
+        //現在ブロックに割り当てられているマテリアルを取得
+        BlockMaterialData blockMaterialData = materialDatabase.GetBlockMaterialData(blockInfo.GetPrimeNumber());
         //全てのパラメーターをデーターベースから受け取ったものに変更
-        foreach (var parameter in materialDatabase.GetBlockMaterialData(blockInfo.GetPrimeNumber()).parameters)
+        foreach (var parameter in blockMaterialData.parameters)
         {
             //EnumのインデックスからEnumの値(シェーダーのプロパティ)を動的に取得
             object enumValue = getEnumValueFromIndexMethod.Invoke(null, new object[] { parameter.parameterEnumIndex });

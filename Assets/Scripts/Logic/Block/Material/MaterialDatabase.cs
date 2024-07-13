@@ -32,9 +32,8 @@ public class MaterialDatabase
     //BlockMaterialDataをブロックの番号から取得する
     public BlockMaterialData GetBlockMaterialData(int blockNum)
     {
-        BlockMaterialData resultData = blockMaterials.Find(b => b.blockNumber == blockNum);
-        if (resultData == null) return null;
-        return new BlockMaterialData(resultData);
+        BlockMaterialData materialData = blockMaterials.Find(b => b.blockNumber == blockNum);
+        return materialData;
     }
 
     //中身の表示
@@ -85,7 +84,7 @@ public class BlockMaterialData
     //ParameterDataをparameterEnumIndexを使って取得
     public ParameterData GetParameter(int parameterEnumIndex)
     {
-        return new ParameterData(parameters.Find(p => p.parameterEnumIndex == parameterEnumIndex));
+        return parameters.Find(p => p.parameterEnumIndex == parameterEnumIndex);
     }
 
     /// <summary>

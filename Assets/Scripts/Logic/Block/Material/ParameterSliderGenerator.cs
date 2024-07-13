@@ -230,10 +230,11 @@ public class ParameterSliderGenerator : MonoBehaviour
         MaterialDatabase materialDatabase = materialDatabaseManager.MiddleMaterialDatabase;
         int parameterEnumindex = EnumManager.GetEnumIndexFromString<TEnum>(parameterName);
         BlockMaterialData blockMaterialData = materialDatabase.GetBlockMaterialData(blockMaterialSelector.NowBlockNum);
+        ParameterData parameterData = blockMaterialData.GetParameter(parameterEnumindex);
         //指定したインデックスが中間のmaterialDatabaseに含まれていれば
-        if (blockMaterialData.GetParameter(parameterEnumindex)!=null)
+        if (parameterData != null)
         {
-            return blockMaterialData.GetParameter(parameterEnumindex);
+            return new ParameterData(parameterData);
         }
         Debug.LogError("指定されたパラメーターを発見できませんでした。");
         return null;

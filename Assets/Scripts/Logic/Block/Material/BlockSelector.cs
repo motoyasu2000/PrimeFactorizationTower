@@ -182,12 +182,13 @@ public class BlockSelector : MonoBehaviour
     {
         int nowMaterialIndex = 0;
 
+        BlockMaterialData middleMaterialData = materialDatabaseManager.MiddleMaterialDatabase.GetBlockMaterialData(NowBlockNum);
+
         //全てのマテリアルを検索して
         foreach (var ibinder in BinderManager.Binders)
         {
-            Debug.Log($"binder:{ibinder} nowBlockMaterialData:{materialDatabaseManager.MiddleMaterialDatabase.GetBlockMaterialData(NowBlockNum)}");
             //現在の選択中のブロックのマテリアルのMaterialButtonがあれば
-            if (BinderManager.GetBindersIndex(ibinder) == materialDatabaseManager.MiddleMaterialDatabase.GetBlockMaterialData(NowBlockNum).binderIndex)
+            if (middleMaterialData.binderIndex == BinderManager.GetBindersIndex(ibinder))
             {
                 //そのMaterialButtonをクリックする。
                 Button materialButton = materialButtonsParent.GetChild(nowMaterialIndex).GetComponent<Button>();
