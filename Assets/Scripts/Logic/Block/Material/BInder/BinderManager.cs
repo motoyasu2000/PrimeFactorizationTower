@@ -23,6 +23,14 @@ namespace MaterialLibrary
             get { return binders; }
         }
 
+        public static void ResetBinders()
+        {
+            foreach (var binder in binders)
+            {
+                binder.ResetMaterial();
+            }
+        }
+
         public static int BindersCount => binders.Length;
 
         //EnumParametersBinderを継承したクラスから、bindersのインデックスを取得。

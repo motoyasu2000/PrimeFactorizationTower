@@ -13,6 +13,7 @@ namespace MaterialLibrary
         string MaterialPathAndName { get; }
         Type EnumType { get; }
         Material Material { get; set; }
+        void ResetMaterial();
         void SetPropertyColor<TEnum>(TEnum property, Color value) where TEnum : Enum;
         void SetPropertyFloat<TEnum>(TEnum property, float value) where TEnum : Enum;
     }
@@ -67,6 +68,14 @@ namespace MaterialLibrary
             {
                 throw new InvalidOperationException("Enumの型が不一致です。");
             }
+        }
+
+        /// <summary>
+        /// binderのマテリアルに対して行った設定をすべてリセットする。
+        /// </summary>
+        public void ResetMaterial()
+        {
+            _material = LoadMaterial();
         }
 
         /// <summary>

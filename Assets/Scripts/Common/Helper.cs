@@ -1,3 +1,4 @@
+using MaterialLibrary;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,7 +11,10 @@ namespace Common
     /// </summary>
     public static class Helper
     {
-        //シーンを推移すると同時に、BGMをシーンに合わせて適切に変更する
+        /// <summary>
+        /// シーンを推移するBGMの変更や、初期化を行いながら、シーンのロードを行う
+        /// </summary>
+        /// <param name="sceneName"></param>
         public static void LoadScene(string sceneName)
         {
             SceneManager.LoadScene(sceneName);
@@ -18,7 +22,11 @@ namespace Common
             SoundManager soundManager = SoundManager.Ins;
             if (sceneName == "PlayScene") soundManager.PlayAudio(soundManager.BGM_PLAY);
             else if (sceneName == "TitleScene") soundManager.PlayAudio(soundManager.BGM_TITLE);
-            else if (sceneName == "MaterialScene") soundManager.PlayAudio(soundManager.BGM_MATERIAL);
+            else if (sceneName == "MaterialScene")
+            {
+                BinderManager.ResetBinders();
+                soundManager.PlayAudio(soundManager.BGM_MATERIAL);
+            }
         }
 
 
