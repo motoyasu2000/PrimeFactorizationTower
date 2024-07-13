@@ -228,6 +228,7 @@ namespace UI
             //初期はローカルを表示
             nowRankButton_localOrGlobal = 0;
             DisplayRankingHandler();
+            ChooseSingleButton(rankButtons_difficultyLevel, nowRankButton_difficultyLevel); //現在の難易度のものが、表示されていることを可視化する。
         }
 
         public async void DisplayRankingHandler()
