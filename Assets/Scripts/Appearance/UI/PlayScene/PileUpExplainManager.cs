@@ -3,9 +3,9 @@ using UnityEngine;
 namespace UI
 {
     /// <summary>
-    /// チュートリアルのテキストをトグルするクラス
+    /// PileUpモードのチュートリアルテキストをトグルするクラス
     /// </summary>
-    public class ToggleExplainText : MonoBehaviour
+    public class PileUpExplainManager : MonoBehaviour
     {
         int toggleCounter = 0; //toggleした回数を数える変数
         int overCount = -1; //toggleCounterの値がいくつでtoggle数をオーバーするか

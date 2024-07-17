@@ -14,15 +14,19 @@ namespace UI
     /// </summary>
     public class ButtonManager_Title : MonoBehaviour
     {
+        static readonly int menuCount = 5;
+        static readonly int diffLevelCount = 3;
+        static readonly int gameModeCount = 2; //ランキングを表示する可能性のあるゲームモードの数。
+
         //Titleで扱うメニュー
         GameObject singlePlay;
         GameObject multiPlay;
         GameObject ranking;
         GameObject setting;
         GameObject credit;
-        GameObject[] menus = new GameObject[5];
+        GameObject[] allMenus = new GameObject[menuCount];
 
-        Button[] difficultyLevelButtons = new Button[3]; //難易度を切り替えるボタン
+        Button[] difficultyLevelButtons = new Button[diffLevelCount]; //難易度を切り替えるボタン
 
         int[] scores; //ランキングに表示するスコア
         string[] names; //ランキングに表示する名前
@@ -36,9 +40,9 @@ namespace UI
         int nowRankButton_difficultyLevel;
 
         //どのランキングを表示するか選ぶタブボタン
-        Button[] rankButtons_localOrGlobal = new Button[2];
-        Button[] rankButtons_gameMode = new Button[2];
-        Button[] rankButtons_difficultyLevel = new Button[3];
+        Button[] rankButtons_localOrGlobal = new Button[Enum.GetValues(typeof(LocalOrGlobal)).Length]; //グローバルかローカルかの２つ
+        Button[] rankButtons_gameMode = new Button[gameModeCount];
+        Button[] rankButtons_difficultyLevel = new Button[diffLevelCount];
 
         DynamoDBManager ddbManager;
 
@@ -54,16 +58,19 @@ namespace UI
         }
         void InitializeMenus()
         {
+            //すべてのメニュー画面を変数に格納し
             singlePlay = GameObject.Find("SinglePlay");
             multiPlay = GameObject.Find("MultiPlay");
             ranking = GameObject.Find("Ranking");
             setting = GameObject.Find("Setting");
             credit = GameObject.Find("Credit");
-            menus[0] = singlePlay;
-            menus[1] = multiPlay;
-            menus[2] = ranking;
-            menus[3] = setting;
-            menus[4] = credit;
+
+            //すべてのメニューを配列に格納する。
+            allMenus[0] = singlePlay;
+            allMenus[1] = multiPlay;
+            allMenus[2] = ranking;
+            allMenus[3] = setting;
+            allMenus[4] = credit;
         }
 
         //ランキングに扱うボタンの初期化。変数にボタンを割り当てるほか、最初に表示されているランキングのボタンが緑になるようにする。
@@ -101,7 +108,7 @@ namespace UI
         /// </summary>
         void InactiveMenus()
         {
-            foreach(var menu in menus)
+            foreach(var menu in allMenus)
             {
                 menu.SetActive(false);
             }
@@ -115,7 +122,7 @@ namespace UI
 
         public void BackFirstMenu()
         {
-            foreach (var menu in menus)
+            foreach (var menu in allMenus)
             {
                 if (menu == null) continue;
                 menu.SetActive(false);

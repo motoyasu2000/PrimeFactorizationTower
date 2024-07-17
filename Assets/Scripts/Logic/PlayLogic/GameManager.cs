@@ -12,8 +12,8 @@ public class GameManager : MonoBehaviour
     //UI
     TextMeshProUGUI nowScoreText;
     TextMeshProUGUI maxScoreText;
-    GameObject explainPileUp; //チュートリアル時のテキスト
     UpperUIManager upperUIManager;
+    NowTurnTextManager nowTurnTextManager; //現在誰のターンであるのかを表すUI
     StandingStillTimerVisualizer standingStillTimerVisualizer; //ブロックが静止している間に表示するUIを管理するクラス
 
     //スコアの管理
@@ -38,7 +38,7 @@ public class GameManager : MonoBehaviour
     float afterDropTotalTimer = 0; //ブロックを落下させてから合計でどれだけ時間が経過したか
     float standingStillTimer = 0; //全てのゲームオブジェクトが連続で静止している時間
     static readonly float changeTurnTime = 1f; //全てのゲームオブジェクトがどれだけの時間静止すればターンが切り替わるのか
-    static readonly float judgeStillStandingTime = 0.01f; //ゲームオブジェクトの速度がどのくらいなら静止しているとみなすか
+    static readonly float judgeStillStandingTime = 0.005f; //ゲームオブジェクトの速度がどのくらいなら静止しているとみなすか
     static readonly float additionalJudgeStillStandingScale = 0.005f; //ブロックドロップ後の経過時間に併せて、静止とみなす速度の閾値をどのくらい上昇させるか
     public bool IsDropBlockNowTurn => isDropBlockNowTurn;
     //全てのゲームオブジェクトの静止時間が基準を超えており、かつ、このターン内にブロックが生成されていればターンを切り替える
@@ -53,6 +53,7 @@ public class GameManager : MonoBehaviour
         upperUIManager = GameObject.Find("UpperUIManager").GetComponent<UpperUIManager>();
         nowScoreText = GameObject.Find("NowScoreText").GetComponent<TextMeshProUGUI>();
         maxScoreText = GameObject.Find("MaxScoreText").GetComponent<TextMeshProUGUI>();
+        nowTurnTextManager = FindObjectOfType<NowTurnTextManager>();
         standingStillTimerVisualizer = GameObject.Find("StandingStillTimerVisualizer").GetComponent<StandingStillTimerVisualizer>();
         blockField = GameObject.Find("BlockField");
         primeNumberCheckField = blockField.transform.Find("PrimeNumberCheckField").gameObject;
@@ -60,14 +61,8 @@ public class GameManager : MonoBehaviour
         scoreManager = ScoreManager.Ins;
         originManager = GameObject.Find("OriginManager").GetComponent<OriginManager>();
         earthQuakeManager = GameObject.Find("EarthQuakeManager").GetComponent<EarthQuakeManager>();
-        explainPileUp = GameObject.Find("Canvas").transform.Find("ExplainPileUp").gameObject;
         maxHeightCalculator = GameObject.Find("MaxHeightCalculator").GetComponent<MaxHeightCalculator>();
         DisplayMaxScore();
-    }
-
-    private void Start()
-    {
-        if (!File.Exists(Application.persistentDataPath + "/PileUp.json")) explainPileUp.gameObject.SetActive(true); //セーブデータがなければ説明を行う。
     }
 
     void Update()
@@ -224,8 +219,8 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 次のターンに進んでよいか判断し、進んでよければ進んで次のターンに進めるか計測するためのタイマーやフラグを初期化する。
-    /// また、高さの更新やスコアの更新も行う
+    /// 次のターンに進んでよいと判断されれば、高さの更新やスコアの更新も行い、対戦モードであれば、現在のターンの人の名前を切り替え、
+    /// 次のターンに進めるか計測するためのタイマーやフラグを初期化する。
     /// </summary>
     void ChangeNextTurnProcess()
     {
@@ -239,6 +234,9 @@ public class GameManager : MonoBehaviour
 
             //ターンを切り替えて
             TurnMangaer.ChangeNextTurn();
+
+            //対戦モードであれば、ターンが切り替わった後の人の名前を表示。
+            if (nowTurnTextManager != null) nowTurnTextManager.DisplayNowTurnName();
 
             //初期化
             standingStillTimer = 0;

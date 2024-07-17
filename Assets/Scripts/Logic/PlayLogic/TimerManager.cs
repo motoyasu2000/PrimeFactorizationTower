@@ -14,10 +14,6 @@ public class TimerManager : MonoBehaviour
 
     private void Start()
     {
-        if (GameModeManager.Ins.NowGameMode != GameModeManager.GameMode.PileUp_60s)
-        {
-            gameObject.SetActive(false);
-        }
         timerText = GetComponent<TextMeshProUGUI>();
         timer = startTime;
         timerText.text = Mathf.Ceil(timer).ToString();
