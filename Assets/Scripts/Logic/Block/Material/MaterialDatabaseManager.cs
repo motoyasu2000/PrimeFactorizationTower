@@ -3,6 +3,7 @@ using MaterialLibrary;
 using System;
 using System.Linq;
 using UnityEngine;
+using static Common.GameInfo;
 
 /// <summary>
 /// 実際にブロックに設定するためのMaterialDatabaseを設定する前に、
@@ -10,7 +11,6 @@ using UnityEngine;
 /// </summary>
 public class MaterialDatabaseManager : MonoBehaviour
 {
-    static readonly float initColorValue = 0.8f; //R,G,Bの初期化色、明るめのグレー
     static readonly float initFloatValue = 10f; //floatの初期化値
 
     //MaterialScene上で設定中の情報を保存するMaterialDatabase。
@@ -66,9 +66,9 @@ public class MaterialDatabaseManager : MonoBehaviour
         if (parameterName.Contains("Color") || parameterName.Contains("color"))
         {
             parameterData.type = ParameterData.PropertyType.Color;
-            parameterData.redValue = initColorValue;
-            parameterData.greenValue = initColorValue;
-            parameterData.blueValue = initColorValue;
+            parameterData.redValue = InitialBlockColor.r;
+            parameterData.greenValue = InitialBlockColor.g;
+            parameterData.blueValue = InitialBlockColor.b;
         }
         //color以外(今のところfloatのみ)はtypeとfloat値を初期化して返す
         else

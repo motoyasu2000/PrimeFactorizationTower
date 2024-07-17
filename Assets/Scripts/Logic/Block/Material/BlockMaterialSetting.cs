@@ -12,15 +12,24 @@ public class BlockMaterialSetting : MonoBehaviour
 {
     MaterialDatabase materialDatabase;
     BlockInfo blockInfo;
+    Material myBlockMaterial;
 
     void Start()
     {
         //マテリアルデータベースをplayerinfoから取得
         blockInfo = GetComponent<BlockInfo>();
         materialDatabase = PlayerInfoManager.Ins.MaterialDatabase;
-        if (materialDatabase == null) return;
-        if (materialDatabase.blockMaterials == null) return;
-        if (materialDatabase.blockMaterials.Count == 0) return;
+        myBlockMaterial = GetComponent<SpriteRenderer>().material;
+
+        //現在ブロックに割り当てられているマテリアルを取得
+        BlockMaterialData blockMaterialData = materialDatabase.GetBlockMaterialData(blockInfo.GetPrimeNumber());
+
+        //もし、ブロックのマテリアル情報が取得できなければ、初期色で描画してreturn
+        if (blockMaterialData == null)
+        {
+            myBlockMaterial.color = GameInfo.InitialBlockColor;
+            return;
+        }
 
         //マテリアルの取得と、その設定を保存していたデータから読み取って、適切に反映する。
         IBinder binder = BinderManager.Binders[materialDatabase.GetBlockMaterialData(blockInfo.GetPrimeNumber()).binderIndex];
@@ -31,8 +40,6 @@ public class BlockMaterialSetting : MonoBehaviour
         MethodInfo setPropertyColorMethod = typeof(IBinder).GetMethod("SetPropertyColor").MakeGenericMethod(dynamicEnumType);
         MethodInfo getEnumValueFromIndexMethod = typeof(EnumManager).GetMethod("GetEnumValueFromIndex").MakeGenericMethod(dynamicEnumType);
 
-        //現在ブロックに割り当てられているマテリアルを取得
-        BlockMaterialData blockMaterialData = materialDatabase.GetBlockMaterialData(blockInfo.GetPrimeNumber());
         //全てのパラメーターをデーターベースから受け取ったものに変更
         foreach (var parameter in blockMaterialData.parameters)
         {

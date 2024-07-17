@@ -78,7 +78,7 @@ public class MaterialButtonsGenerator : MonoBehaviour
             //中間のMaterialDatabeseにjson上のマテリアルをロードする
             materialDatabaseManager.LoadMaterialDatabase(); 
 
-            //引数で指定したマテリアルと中間のMaterialDatabeseのマテリアルが異なっていれば、中間で指定した引数で指定したマテリアルで初期化
+            //引数で指定したマテリアルと中間のMaterialDatabeseのマテリアルが異なっていれば、引数で指定したマテリアルで初期化
             materialDatabaseManager.InitializeBlockMaterial<TEnum>(ibinder, blockSelector.NowBlockNum); 
 
             //生成するスライダーを現在ブロックについているマテリアルものに設定する

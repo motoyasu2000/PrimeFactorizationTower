@@ -106,7 +106,7 @@ public class BlockSelector : MonoBehaviour
     {
         materialDatabaseManager.LoadMaterialDatabase(); //切り替わる前に設定していた情報を消去
         nowBlockIndex++;
-        if(nowBlockIndex > allprimenumber.Length-1) nowBlockIndex = 0;
+        if (nowBlockIndex > allprimenumber.Length - 1) nowBlockIndex = 0;
         InitializeAndSetCurrentBlock();
     }
 
@@ -115,8 +115,8 @@ public class BlockSelector : MonoBehaviour
     {
         materialDatabaseManager.LoadMaterialDatabase();　//切り替わる前に設定していた情報を消去
         nowBlockIndex--;
-        if(nowBlockIndex < 0) nowBlockIndex = allprimenumber.Length-1;
-        InitializeAndSetCurrentBlock() ;
+        if (nowBlockIndex < 0) nowBlockIndex = allprimenumber.Length - 1;
+        InitializeAndSetCurrentBlock();
     }
 
     /// <summary>
@@ -183,6 +183,7 @@ public class BlockSelector : MonoBehaviour
         int nowMaterialIndex = 0;
 
         BlockMaterialData middleMaterialData = materialDatabaseManager.MiddleMaterialDatabase.GetBlockMaterialData(NowBlockNum);
+        if (middleMaterialData == null) return;
 
         //全てのマテリアルを検索して
         foreach (var ibinder in BinderManager.Binders)
