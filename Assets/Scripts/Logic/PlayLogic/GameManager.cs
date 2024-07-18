@@ -187,7 +187,7 @@ public class GameManager : MonoBehaviour
         else
         {
             standingStillTimer = 0;
-            standingStillTimerVisualizer.UpdateTimer(0);
+            standingStillTimerVisualizer.SetActiveUI(false);
         }
     }
 

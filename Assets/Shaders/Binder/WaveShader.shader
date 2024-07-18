@@ -29,8 +29,8 @@
             float _WaveSpeed;
             float _WaveHeight;
 
-            //スライダーのvalueが取りうる値の半分
-            static float limitedSliderValue = 50.0;
+            //スライダーのvalueが取りうる上限値
+            static float maxSliderValue  = 50.0;
 
             struct appdata {
                 float4 vertex : POSITION;
@@ -52,11 +52,11 @@
             fixed4 frag (v2f i) : SV_Target {
                 fixed4 texColor = tex2D(_MainTex, i.uv);
 
-                //振幅や速さ、振幅を定義することで、移動するsin波を定義
-                float localWave = sin(i.uv.x * _WaveFrequency + _Time.y * _WaveSpeed) * _WaveAmplitude / limitedSliderValue;
+                //周波数や速さ、振幅を定義することで、移動するsin波を定義
+                float localWave = sin(i.uv.x * _WaveFrequency + _Time.y * _WaveSpeed) * _WaveAmplitude / maxSliderValue ;
 
-                //上で定義したsin波に高さも考慮
-                float resultWave = localWave +_WaveHeight/limitedSliderValue;
+                //上で定義したsin波に高さも考慮(テクスチャは0~1で表されるが、sin波の基線が0であることに注意)
+                float resultWave = localWave +_WaveHeight/maxSliderValue ;
 
                 float2 wavedUV = i.uv;
                 fixed4 color = _AnotherColor;

@@ -23,24 +23,36 @@ public class SaveUIManager : MonoBehaviour
     {
         //現在表示しているマテリアルのデータと、現在保存されているマテリアルのデータを比較して一致しているかどうかをチェック
         int blockNum = blockSelector.NowBlockNum;
-        if (materialDatabaseManager.MiddleMaterialDatabase == null || PlayerInfoManager.Ins.MaterialDatabase == null) return;
+        if (materialDatabaseManager.MiddleMaterialDatabase == null || PlayerInfoManager.Ins.MaterialDatabase == null) {
+            ChangeUnSavedColor();
+            return;
+        }
         BlockMaterialData middleBlockData = materialDatabaseManager.MiddleMaterialDatabase.GetBlockMaterialData(blockNum);
         BlockMaterialData loadBlockData = PlayerInfoManager.Ins.MaterialDatabase.GetBlockMaterialData(blockNum);
-        if (middleBlockData == null || loadBlockData == null) return;
-        if (middleBlockData.Equal(loadBlockData)) SetColor(true);
-        else                                      SetColor(false);
+        if (middleBlockData == null || loadBlockData == null)
+        {
+            ChangeUnSavedColor();
+            return;
+        }
+        if (middleBlockData.Equal(loadBlockData)) ChangeSavedColor();
+        else                                      ChangeUnSavedColor();
     }
 
     /// <summary>
     /// SaveButtonのUIの見た目を変化させるメソッド
-    /// マテリアルのパラメーターが保存されているか否かを可視化するために使用している。
-    /// </summary>
-    /// <param name="isComplete">
-    /// セーブされた状態の見た目にする(true)か否(false)か
+    /// マテリアルのパラメーターの設定が保存されていることを色で可視化する
     /// </param>
-    public void SetColor(bool isComplete)
+    public void ChangeSavedColor()
     {
-        if(isComplete) saveUIImage.color = saveColor_complete;
-        else           saveUIImage.color = saveColor_incomplete;
+        saveUIImage.color = saveColor_complete;
+    }
+
+    /// <summary>
+    /// SaveButtonのUIの見た目を変化させるメソッド
+    /// マテリアルのパラメーターの設定がまだ保存されていないことを色で可視化する
+    /// </param>
+    public void ChangeUnSavedColor()
+    {
+        saveUIImage.color = saveColor_incomplete;
     }
 }
