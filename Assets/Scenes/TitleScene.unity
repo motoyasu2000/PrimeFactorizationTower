@@ -151,6 +151,14 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6044403214208693552, guid: 390ad338d9f3e95459dbff9880a17862, type: 3}
+      propertyPath: m_ScaleFactor
+      value: 2.56
+      objectReference: {fileID: 0}
+    - target: {fileID: 6044403214208693552, guid: 390ad338d9f3e95459dbff9880a17862, type: 3}
+      propertyPath: m_UiScaleMode
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6689485214994871744, guid: 390ad338d9f3e95459dbff9880a17862, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
